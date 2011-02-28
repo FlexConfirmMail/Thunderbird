@@ -1,0 +1,30 @@
+2011-02-24 00:22:56  tanabec <chiemitanabe@gmail.com>
+
+	* confirm-address-dialog-tree.css : Remove
+	* confirm-address-dialog-tree.js : Remove
+	* confirm-address-dialog-tree.xul : Remove
+	* confirm-address-dialog.xul : Rename to confirm-mail-dialog.js
+	* confirm-address-overlay.js : Rename to confirm-mail-overlay.js
+	* confirm-address.js : Rename to confirm-mail.js
+	* confirm-address.xul : Rename to confirm-mail.xul
+	* confirm-address-dialog.xul : Rename to confirm-mail-dialog.xul
+	* unittest/confirm-address-test.js : Rename to confirm-mail-test.js
+	* setting.js : change domain name in 
+		DOMAIN_LIST, IS_NOT_DISPLAY, IS_COUNT_DOWN, COUNT_DOWN_TIME  
+	* setting.js : Remove comments about "tree style"
+	* setting.js : Fixed missing variable declaration 
+	* setting.js : Change window size.
+	* setting.js : Change error check on cdTime.
+	* setting.js : startup() : Change initialise step at listitems. 
+	* setting.js : add() : Add duplication check on domain name. 
+	* setting.js : edit() : Add duplication check on domain name. 
+	* setting.js : remove() : Add process which save domain name. 
+	* setting.js : doOK() : Split function in saving domain name. -> "saveDomainName()".
+	* setting.js : saveDomainName() :Add
+	* confirm-address.dtd : Rename to confirm-mail.dtd
+	* confirm-address.dtd : Change messages
+	* confirm-mail.js : Add function : Collect attachments name in function "collectFileName"
+	* confirm-mail-dialog.js : Add function :Display attachments name in function "startup"
+	* install.rdf : Change author, name etc.
+	
+

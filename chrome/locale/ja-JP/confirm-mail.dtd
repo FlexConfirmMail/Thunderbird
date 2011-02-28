@@ -1,0 +1,21 @@
+<!ENTITY confirm.dialog.title "あて先メールアドレスの確認">
+<!ENTITY confirm.dialog.message "あて先メールアドレスを確認してください。">
+<!ENTITY confirm.dialog.yourdomain.label "組織内へのメール">
+<!ENTITY confirm.dialog.otherdomain.label "組織外へのメール">
+<!ENTITY confirm.dialog.fileName.label "添付ファイル">
+<!ENTITY confirm.dialog.check.label "確認！">
+<!ENTITY setting.dialog.title "confirm-mail 設定">
+<!ENTITY setting.dialog.message "あなたの組織のメールアドレスのドメイン名を指定してください。">
+<!ENTITY setting.dialog.list.label "ドメイン名">
+<!ENTITY setting.dialog.button.add.label "追加">
+<!ENTITY setting.dialog.button.edit.label "編集">
+<!ENTITY setting.dialog.button.remove.label "削除">
+<!ENTITY setting.dialog.checkbox.notdisplay "自ドメイン宛てのメール送信時は確認ダイアログを表示しない">
+<!ENTITY setting.dialog.checkbox.countdown "[送信]ボタン押下後にカウントダウンを開始する(1-3000秒)-->">
+<!ENTITY setting.dialog.label.countdown "秒">
+<!ENTITY setting.sub-dialog.title "ドメイン名の入力">
+<!ENTITY setting.sub-dialog.message "ドメイン名を入力してください(例：example.com)">
+<!ENTITY countdown.dialog.title "カウントダウン">
+<!ENTITY countdown.dialog.msg1 "あと">
+<!ENTITY countdown.dialog.msg2 "秒で送信します。">
+<!ENTITY countdown.dialog.skip "送信">
