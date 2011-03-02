@@ -20,9 +20,9 @@
 PrefUtil = {
 	PREF : Components.classes['@mozilla.org/preferences;1'].getService(Components.interfaces.nsIPrefBranch),
 	
-	KEY_DOMAIN_LIST : "net.nyail.confirm-mail.domain-list",
-	KEY_NOT_DISPLAY : "net.nyail.confirm-mail.not-display",
-	COUNT_DOWN_TIME : "net.nyail.confirm-mail.countdown-time",
+	KEY_DOMAIN_LIST : "net.nyail.tanabec.confirm-mail.domain-list",
+	KEY_NOT_DISPLAY : "net.nyail.tanabec.confirm-mail.not-display",
+	COUNT_DOWN_TIME : "net.nyail.tanabec.confirm-mail.countdown-time",
 
 	getDomainList : function() {
 		return this.getPref(PrefUtil.KEY_DOMAIN_LIST);

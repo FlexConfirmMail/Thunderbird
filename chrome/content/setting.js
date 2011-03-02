@@ -35,7 +35,8 @@ function startup(){
 
 	var domains = nsPreferences.copyUnicharPref(CA_CONST.DOMAIN_LIST);
 	dump("[registed domains] " + domains + "\n");
-	
+
+
 	if(domains != null && domains != "" ){
 		var domainList = domains.split(",");
 
@@ -45,7 +46,9 @@ function startup(){
 			listitem.setAttribute("id", Math.random());
 			groupList.appendChild(listitem);
 		}
- 	}
+	}else{
+		nsPreferences.setUnicharPref(CA_CONST.DOMAIN_LIST,"");
+	}
 
 	//init checkbox [not dispaly when only my domain mail]
 	var isNotDisplay = nsPreferences.getBoolPref(CA_CONST.IS_NOT_DISPLAY, false);
@@ -85,7 +88,7 @@ function add(event){
 		var domainName = window.domainName;
 		
 		// check duplication
-		if(domainName.length > 0 
+		if(domainName.length > 0  
 			&& nsPreferences.copyUnicharPref(CA_CONST.DOMAIN_LIST).indexOf(domainName) == -1){
 
 			dump("[add!] " + domainName + "\n");

@@ -78,6 +78,34 @@ function testJudge_OutSiderNameLooksLikeInSiderDomainName() {
 	assertEquals(1, insiders.length);
 	assertEquals(1, outsiders.length);
 }
+/*
+ * 追加1：組織内ドメインのサブドメインが指定されたとき、
+ * ただしくそのアドレスを組織外として認識するか 
+ */
+function testJudge_InSiderDomainName_SubDomain() {
+	addressList = new Array("aaa@me.com","bbb@sub.me.com","ccc@sub2.sub.me.com");
+	domainList = new Array("me.com");
+	insiders = new Array();
+	outsiders = new Array();
+	r = ConfirmMail.judge(addressList, domainList, insiders, outsiders);
+	assertEquals(1, insiders.length);
+	assertEquals(2, outsiders.length);
+}
+
+/*
+ * 追加2：組織内ドメインのサブドメインが指定されたとき、
+ * ただしくそのアドレスを組織外として認識するか 
+ */
+function testJudge_InSiderDomainName_SubDomain2() {
+	addressList = new Array("aaa@me.com","bbb@sub.me.com","ccc@other.com");
+	domainList = new Array("sub.me.com");
+	insiders = new Array();
+	outsiders = new Array();
+	r = ConfirmMail.judge(addressList, domainList, insiders, outsiders);
+	assertEquals(1, insiders.length);
+	assertEquals(2, outsiders.length);
+}
+
 
 /*
  * ドメインリストの取得ができるか

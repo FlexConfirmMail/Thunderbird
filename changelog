@@ -6,9 +6,13 @@
 	* confirm-address-dialog.xul : Rename to confirm-mail-dialog.js
 	* confirm-address-overlay.js : Rename to confirm-mail-overlay.js
 	* confirm-address.js : Rename to confirm-mail.js
+	* confirm-address.js : getByDomainMap() : Remove
+	* confirm-address.js : judge() : Change logic
 	* confirm-address.xul : Rename to confirm-mail.xul
 	* confirm-address-dialog.xul : Rename to confirm-mail-dialog.xul
 	* unittest/confirm-address-test.js : Rename to confirm-mail-test.js
+	* uniitest/confirm-mail-test.js
+		: testJudge_InSiderDomainName_SubDomain() : Add.
 	* setting.js : change domain name in 
 		DOMAIN_LIST, IS_NOT_DISPLAY, IS_COUNT_DOWN, COUNT_DOWN_TIME  
 	* setting.js : Remove comments about "tree style"
@@ -20,10 +24,12 @@
 	* setting.js : edit() : Add duplication check on domain name. 
 	* setting.js : remove() : Add process which save domain name. 
 	* setting.js : doOK() : Split function in saving domain name. -> "saveDomainName()".
-	* setting.js : saveDomainName() :Add
+	* setting.js : saveDomainName() :Add.
+	* countdown.js : startup() : Change setInterval() to nsITimer().
 	* confirm-address.dtd : Rename to confirm-mail.dtd
 	* confirm-address.dtd : Change messages
 	* confirm-mail.js : Add function : Collect attachments name in function "collectFileName"
+	* confirm-mail.js : judge() : Change  broad matching to exact matching
 	* confirm-mail-dialog.js : Add function :Display attachments name in function "startup"
 	* install.rdf : Change author, name etc.
 	

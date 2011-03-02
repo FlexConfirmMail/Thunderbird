@@ -25,18 +25,25 @@ var CountDown = {
 		var time = window.arguments[1];
 		var limit = time;
 		var label = document.getElementById("counter");
-	
+		
 		label.value = limit;
-		setInterval(function() {
+		
+		var timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+		   
+		timer.initWithCallback( {notify: function(timer) {
 			limit--;
-			if(limit < 0) {
+			if(limit<0){
+				timer.cancel();
 				CountDown.complete();
-				close();	
-			} else {
-				label.value = limit;
+				delete timer;
+				close();
+				
+		 	}else{
+				label.value=limit;
 			}
-		},1000);
+		    }},1000, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);	
 	},
+	
 
 	/**
 	 * カウントダウン完了フラグを立てます
@@ -45,5 +52,7 @@ var CountDown = {
 		var parentWindow = window.arguments[0];
 		parentWindow.countDownComplete = true;
 		return true;
-	}	
+	},
+
+ 	   
 }

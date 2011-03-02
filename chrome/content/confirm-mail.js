@@ -26,24 +26,24 @@ var ConfirmMail = {
   	var ccList = [];
   	var bccList = [];
   	this.collectAddress(msgCompFields, toList, ccList, bccList)
-  	dump("[TO] "+ toList + "\n");
-  	dump("[CC] "+ ccList + "\n");
-  	dump("[BCC] "+ bccList + "\n");
+  	//dump("[TO] "+ toList + "\n");
+  	//dump("[CC] "+ ccList + "\n");
+  	//dump("[BCC] "+ bccList + "\n");
   
     var domainList = this.getDomainList();
-  	dump("[DOMAINLIST] "+ domainList + "\n");
+  	//dump("[DOMAINLIST] "+ domainList + "\n");
 
   	var internalList = [];
   	var externalList = [];
   	this.judge(toList, domainList, internalList, externalList);
   	this.judge(ccList, domainList, internalList, externalList);
   	this.judge(bccList, domainList, internalList, externalList);
-  	dump("[INTERNAL] "+ internalList + "\n");
-  	dump("[EXTERNAL] "+ externalList + "\n");
+  	//dump("[INTERNAL] "+ internalList + "\n");
+  	//dump("[EXTERNAL] "+ externalList + "\n");
     
 	var fileNamesList = [];
     	this.collectFileName(msgCompFields,fileNamesList);
-    	dump("[FILENAME]" + fileNamesList + "¥n");
+    	//dump("[FILENAME]" + fileNamesList + "\n");
 
   	var isNotDisplay = nsPreferences.getBoolPref(CA_CONST.IS_NOT_DISPLAY, false);
 
@@ -69,7 +69,7 @@ var ConfirmMail = {
   			if(window.countDownComplete){
   				return true;
   			}else{
-  				dump("cancel");
+  				//dump("cancel");
   				return false;
   			}
   		}else{
@@ -80,24 +80,6 @@ var ConfirmMail = {
   	}
   },
 
-  getByDomainMap : function(list){
-    var resultMap = new Array();
-    
-    for(var i=0; i<list.length; i++){
-      var adrs = list[i];
-      dump(adrs);
-      var idx = adrs.indexOf("@");
-      var domain = adrs.substring(idx);
-      if(!resultMap[domain]){
-          resultMap[domain] = new Array();
-      }
-      resultMap[domain].push(adrs);
-      dump(resultMap[domain]);
-    }
-		dump(resultMap);
-    return resultMap;
-  },
-  
   collectAddress : function(msgCompFields, toList, ccList, bccList){
 
   	if (msgCompFields == null){
@@ -172,7 +154,7 @@ collectFileName: function(msgCompFields,fileNamesList) {
       
     } catch (e) {
         //ignore
-        dump(e);
+        //dump(e);
     }
         
 },
@@ -180,8 +162,8 @@ collectFileName: function(msgCompFields,fileNamesList) {
 /**
  * addressArrayに含まれるアドレスを判定し、組織外、組織内に振り分けます
  */
-  judge : function(addressArray, domainList, yourDomainAddress, otherDomainAddress){
-  	dump("[JUDGE] "+addressArray+"\n");
+judge : function(addressArray, domainList, yourDomainAddress, otherDomainAddress){
+  	//dump("[JUDGE] "+addressArray+"\n");
   	
   	//if domainList is empty, all addresses are external.
   	if(domainList.length == 0){
@@ -197,21 +179,29 @@ collectFileName: function(msgCompFields,fileNamesList) {
   		if(address.length == 0){
   			continue;
   		}
-			var domain = address.substring(address.indexOf("@")).toLowerCase();
+		
+		var domain = address.substring(1+address.indexOf("@")).toLowerCase();
+		var match = false;
 
-			var match = false;
+		 if(domain.search(/>$/)!=-1){
+	            //address end with ">"
+	            domain = domain.substring(0,domain.length-1);
+	        }
+
   		for(var j = 0; j < domainList.length; j++){
   			var insiderDomain = domainList[j].toLowerCase();
-  			if(domain.indexOf(insiderDomain) != -1){
-					match = true;
+  			if(domain == insiderDomain){
+				match = true;
   			}
   		}
-			if(match){
+		
+		if(match){
   			yourDomainAddress.push(address);
-			}else{
- 				otherDomainAddress.push(address);
-			}
+		}else{
+ 			otherDomainAddress.push(address);
+		}
   	}
+
   },
 
   getDomainList : function(){

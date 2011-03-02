@@ -52,7 +52,7 @@ function startup(){
 	var externals = window.arguments[2];
 	var externalList = document.getElementById("otherDomains");
 	if(externals.length > 0){
-		externalList.setAttribute("style","font-weight: bold; font-color:#FF0000;");
+		externalList.setAttribute("style","font-weight: bold; color:#FF0000;");
 	}
 
 	for(var i = 0; i < externals.length; i++){
@@ -65,7 +65,7 @@ function startup(){
 	var fileNames = window.arguments[3];
 	var fileNamesList = document.getElementById("fileNames");
 	if (fileNames.length > 0) {
-	    fileNamesList.setAttribute("style", "font-weight: bold; font-color:#FF0000");
+	    fileNamesList.setAttribute("style", "font-weight: bold; color:#FF0000");
    	}
 
 	for (var i = 0; i < fileNames.length; i++) {
