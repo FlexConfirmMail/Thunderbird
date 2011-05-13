@@ -18,37 +18,44 @@
 * Contributor(s): tanabec
 */ 
 function startup(){
-
-	var okBtn = document.documentElement.getButton("accept");
+    
+    var okBtn = document.documentElement.getButton("accept");
 	okBtn.disabled = true;
 
-	
-
-	//ボタン名設定
+	// set button label
 	var strbundle = document.getElementById("strings");
 	var BtnLabel = strbundle.getString("confirm.dialog.acceptbtn.label");
 	okBtn.label = BtnLabel;
 
-	//自ドメインあて先リスト
+	// create internal-domain list
 	var internals = window.arguments[1];
 	var internalList = document.getElementById("yourDomains");
-	for(var i = 0; i < internals.length; i++){
+
+    for(var i = 0; i < internals.length; i++){
 		var address = internals[i];
 		var listitem = createListItem(address);
 		internalList.appendChild(listitem);
 	}
 
-	//自ドメインあて先リストヘッダ
+    // if internal-domain was empty, "select all" checkbox set checked.
+    // when internalList is empty, internalList.length equals 0.
+    if(internals.length == 0){
+        document.getElementById("check_all").checked = true;
+        document.getElementById("check_all").disabled = true;
+    }
+
+    // listheader for internal domains
 	var checkboxHeader = document.getElementById("checkbox_header");
-	checkboxHeader.onclick = function(event){
-		if(internals.length==0) return;
-		switchInternalCheckBox(internalList);
+	
+    checkboxHeader.onclick = function(event){
+		
+        switchInternalCheckBox(internalList);
 		checkAllChecked();
 	};
 
 	
 
-	//他ドメインあて先リスト
+	//external domains
 	var externals = window.arguments[2];
 	var externalList = document.getElementById("otherDomains");
 	if(externals.length > 0){
@@ -75,7 +82,7 @@ function startup(){
 	}	
 }
 
-function createListItem(address){
+function createListItem(item){
 
 	var listitem = document.createElement("listitem");
 	var cell1 = document.createElement("listcell");
@@ -92,7 +99,7 @@ function createListItem(address){
 	};
 
 	var cell2 = document.createElement("listcell");
-	cell2.setAttribute("label", address);
+	cell2.setAttribute("label", item);
 	listitem.appendChild(cell2);
 	
 	return listitem;
@@ -105,6 +112,7 @@ function checkAllChecked(){
 	var checkboxes = yourdomains.getElementsByTagName("checkbox");
 	var isAllcheckON = checkboxes[0].checked; //[すべて確認]チェックボックスの状況
 	var internalComplete = true;
+
 	for(var i=1; i<checkboxes.length; i++){
 		var chk = checkboxes[i].checked
 		if(!chk){
@@ -114,7 +122,7 @@ function checkAllChecked(){
 
 	}
 
-	checkboxes[0].checked = internalComplete;
+	//checkboxes[0].checked = internalComplete;
 	
 	//すべてのチェックボックスの状況確認
 
@@ -144,11 +152,14 @@ function switchInternalCheckBox(internalList){
 
 	var checkAll = document.getElementById("check_all");
 	var isCheck = checkAll.checked;
-
+checkAll.setAttribute("checked",isCheck);
 	var yourdomains = document.getElementById("yourDomains");
 	var checkboxes = yourdomains.getElementsByTagName("checkbox");
-	for(var i=0; i<checkboxes.length; i++){
-		checkboxes[i].checked = isCheck;
+
+    document.getElementById("check_all").setAttribute("checked",isCheck);
+   
+    for(var i=0; i<checkboxes.length; i++){
+        checkboxes[i].setAttribute("checked",isCheck);
 	}
 
 }
