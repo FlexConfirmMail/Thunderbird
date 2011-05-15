@@ -1,3 +1,11 @@
+2011-05-15 23:07:19  tanabec <chiemitanabe@gmail.com>
+
+	* confirm-mail-dialog.js : Rename variables in the global namespase of the
+	compose window including confirmOK and countDownComplete.
+	* confirm-mail-dialog.js : fix 'select all' checkbox in the confirm
+	window. 1) If the first listbox is empty, the checkbox is disabled. 2) If
+	the first llistbox includes over 6 mailaddresses, all checkbox is checked.
+
 2011-02-24 00:22:56  tanabec <chiemitanabe@gmail.com>
 
 	* confirm-address-dialog-tree.css : Remove
