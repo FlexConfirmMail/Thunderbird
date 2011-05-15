@@ -79,12 +79,12 @@ function startup(){
 }
 
 function add(event){
-	window.confirmOK = false;
+	window.confmail_confirmOK = false;
 	window.domainName = null;
 	window.openDialog("chrome://confirm-mail/content/setting-add-domain.xul",
 		"ConfirmAddressDialog", "chrome,modal,titlebar,centerscreen", window);
 
-	if(window.confirmOK){
+	if(window.confmail_confirmOK){
 		var domainName = window.domainName;
 		
 		// check duplication
@@ -106,12 +106,12 @@ function add(event){
 	}
 }
 function edit(event){
-	window.confirmOK = false;
+	window.confmail_confirmOK = false;
 	window.domainName = selectedItem.label;
 	window.openDialog("chrome://confirm-mail/content/setting-add-domain.xul",
 		"ConfirmAddressDialog", "chrome,modal,titlebar,centerscreen", window);
 		
-	if(window.confirmOK){
+	if(window.confmail_confirmOK){
 		var domainName = window.domainName;
 		
 		//check duplication

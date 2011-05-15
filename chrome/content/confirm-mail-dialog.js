@@ -122,6 +122,7 @@ function checkAllChecked(){
 
 	}
 
+    //error
 	//checkboxes[0].checked = internalComplete;
 	
 	//すべてのチェックボックスの状況確認
@@ -167,7 +168,7 @@ checkAll.setAttribute("checked",isCheck);
 function doOK(){
 
 	var parentWindow = window.arguments[0];
-	parentWindow.confirmOK = true;
+	parentWindow.confmail_confirmOK = true;
 
 	return true;
 
@@ -177,7 +178,7 @@ function doOK(){
 function doCancel(){
 
 	var parentWindow = window.arguments[0];
-	parentWindow.confirmOK = false;
+	parentWindow.confmail_confirmOK = false;
 	return true;
 }
 

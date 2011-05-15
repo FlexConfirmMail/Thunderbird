@@ -47,26 +47,27 @@ var ConfirmMail = {
 
   	var isNotDisplay = nsPreferences.getBoolPref(CA_CONST.IS_NOT_DISPLAY, false);
 
+
   	if(isNotDisplay && externalList.length == 0 && internalList.length > 0){
-  		window.confirmOK = true;
+  		window.confmail_confirmOK = true;
   	}else{
-      		window.confirmOK = false;
+      		window.confmail_confirmOK = false;
       		window.openDialog("chrome://confirm-mail/content/confirm-mail-dialog.xul",
         			"ConfirmAddressDialog", "resizable,chrome,modal,titlebar,centerscreen", 
         			window, internalList, externalList,fileNamesList);
     	}
     
-  	if(window.confirmOK){
+  	if(window.confmail_confirmOK){
   		var isCountDown = nsPreferences.getBoolPref(CA_CONST.IS_COUNT_DOWN, false);
   		
   		if(isCountDown){
   			var countDownTime = nsPreferences.copyUnicharPref(CA_CONST.COUNT_DOWN_TIME);
   			
-  			window.countDownComplete = false;
+  			window.confmail_countDownComplete = false;
   			window.openDialog("chrome://confirm-mail/content/countdown.xul", "CountDown Dialog", 
   			"resizable,chrome,modal,titlebar,centerscreen",window, countDownTime);
 
-  			if(window.countDownComplete){
+  			if(window.confmail_countDownComplete){
   				return true;
   			}else{
   				//dump("cancel");

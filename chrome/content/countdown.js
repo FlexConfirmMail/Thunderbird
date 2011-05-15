@@ -50,7 +50,7 @@ var CountDown = {
 	 */
 	complete : function(){
 		var parentWindow = window.arguments[0];
-		parentWindow.countDownComplete = true;
+		parentWindow.confmail_countDownComplete = true;
 		return true;
 	},
 
