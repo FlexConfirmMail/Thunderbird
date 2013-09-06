@@ -103,3 +103,15 @@ function SendMessageWithCheck()
                       nsIMsgCompDeliverMode.Background :
                       nsIMsgCompDeliverMode.Now));
 }
+
+//overlay
+//C:\Program Files\Mozilla Thunderbird\chrome\messenger\content\messenger\messengercompose\MsgComposeCommands.js
+function SendMessageLater()
+{
+  //add start
+  if(!confirmMail.checkAddress()){
+    return;
+  }
+  //add end
+  GenericSendMessage(nsIMsgCompDeliverMode.Later);
+}
