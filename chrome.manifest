@@ -2,3 +2,4 @@ content confirm-mail content/
 locale confirm-mail ja locale/ja/
 locale confirm-mail en-US locale/en-US/
 overlay chrome://messenger/content/messengercompose/messengercompose.xul	chrome://confirm-mail/content/confirm-mail.xul
+skin confirm-mail classic/1.0 skin/classic/confirm-mail/

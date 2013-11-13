@@ -26,14 +26,14 @@
 	buttons="accept,cancel"
 	onload="startup()"
 	ondialogaccept="return doOK();"
-	ondialogcancel="return doCancel();"
-	width="500" height="350">
+	ondialogcancel="return doCancel();">
 
 <script type="application/x-javascript" src="chrome://global/content/nsUserSettings.js"/>
 <script type="application/x-javascript" src="chrome://confirm-mail/content/setting.js"/>
 
 <label value="&setting.dialog.message;"/>
-<listbox id="group-list" rows="6" onselect="selectList(this.selectedItem);">
+<listbox id="group-list" rows="6" onselect="selectList(this.selectedItem);"
+	style="width:500px">
 	<listhead>
 		<listheader label="&setting.dialog.list.label;"/>
 	</listhead>
@@ -48,7 +48,7 @@
 	<button id="remove" label="&setting.dialog.button.remove.label;" flex="1"/>
 </hbox>
 
-<label style="margin-top: 0.5em; margin-top: 0.5em; padding-top: 0.5em;  border-top: solid thin;" />
+<separator/>
 
 <checkbox id="not-display" label="&setting.dialog.checkbox.notdisplay;"/>
 <hbox>
@@ -56,4 +56,5 @@
 	<textbox id="countdown-time" maxwidth="50"/>
 	<label value="&setting.dialog.label.countdown;" style="padding-top:5px; padding-bottom:5px;"/>
 </hbox>
+
 </dialog>

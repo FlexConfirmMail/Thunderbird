@@ -16,13 +16,17 @@
 * 
 * Contributor(s): tanabec
 */ 
+
+var Cc = Components.classes;
+var Ci = Components.interfaces;
+
 var selectedItem;
 
 var CA_CONST = {
 	DOMAIN_LIST : "net.nyail.tanabec.confirm-mail.domain-list",
 	IS_NOT_DISPLAY : "net.nyail.tanabec.confirm-mail.not-display",
 	IS_COUNT_DOWN : "net.nyail.tanabec.confirm-mail.is-countdown",
-	COUNT_DOWN_TIME : "net.nyail.tanabec.confirm-mail.cd-time",
+	COUNT_DOWN_TIME : "net.nyail.tanabec.confirm-mail.cd-time"
 };
 
 function startup(){
@@ -54,7 +58,7 @@ function startup(){
 	var isNotDisplay = nsPreferences.getBoolPref(CA_CONST.IS_NOT_DISPLAY, false);
 	var noDisplayBox = document.getElementById("not-display");
 	noDisplayBox.checked=isNotDisplay;
-	
+
 	//init checkbox [countdown]
 	var cdBox = document.getElementById("countdown");
 	var cdTimeBox = document.getElementById("countdown-time");
@@ -187,4 +191,3 @@ function doCancel(){
 	dump("[cancel]\n");
 	return true;
 }
-

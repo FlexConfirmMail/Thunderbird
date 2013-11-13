@@ -20,8 +20,10 @@
 var ConfirmMail = {
 
   checkAddress: function(){
+try { // DEBUG
   	var msgCompFields = gMsgCompose.compFields;
-  	
+  	Recipients2CompFields(msgCompFields);
+  	gMsgCompose.checkAndPopulateRecipients(true, false, {});
   	var toList = [];
   	var ccList = [];
   	var bccList = [];
@@ -79,61 +81,41 @@ var ConfirmMail = {
   	}else{
   		return false;
   	}
+} catch(error) { alert(e+'\n'+e.stack); } // DEBUG
+  },
+
+  splitRecipients: function(addressesSource, type){
+  	var gMimeHeaderParser = Components.classes["@mozilla.org/messenger/headerparser;1"].getService(Components.interfaces.nsIMsgHeaderParser);
+	var addresses = {};
+	var names = {};
+	var fullNames = {};
+	var numAddresses = gMimeHeaderParser.parseHeadersWithArray(
+	                     addressesSource, addresses, names, fullNames);
+	var recipients = [];
+	for (let i = 0; i < numAddresses; i++) {
+		recipients.push({
+			address:  addresses.value[i],
+			name:     names.value[i],
+			fullName: fullNames.value[i],
+			type:     type
+		});
+	}
+	return recipients;
   },
 
   collectAddress : function(msgCompFields, toList, ccList, bccList){
-
-  	if (msgCompFields == null){
-  		return;
-  	}
-  	var gMimeHeaderParser = Components.classes["@mozilla.org/messenger/headerparser;1"].getService(Components.interfaces.nsIMsgHeaderParser);
-  	
-  	var row = 1;
-  	while(true){
-  		var inputField = document.getElementById("addressCol2#" + row);
-  		
-  		if(inputField == null){
-  			break;
-  		}else{
-  			row++;
-  		}
-  		var fieldValue = inputField.value;
-  		if (fieldValue == null){
-  			fieldValue = inputField.getAttribute("value");
-  		}
-  		
-  		if (fieldValue != ""){
-  			
-  			var recipient = null;
-
-  			try {
-  				recipient = gMimeHeaderParser.reformatUnquotedAddresses(fieldValue);
-  			} catch (ex) {
-  				recipient = fieldValue;
-  			}
-
-  			var recipientType = "";
-  			var popupElement = document.getElementById("addressCol1#" + row);
-  			if(popupElement != null){
-  				recipientType = popupElement.selectedItem.getAttribute("value");
-  			}
-
-  			switch (recipientType){
-  			case "addr_to":
-  				toList.push(recipient);
-  				break;
-  			case "addr_cc":
-  				ccList.push(recipient);
-  				break;
-  			case "addr_bcc":
-  				bccList.push(recipient);
-  				break;
-  			default:
-  				toList.push(recipient);
-  				break;
-  			}
-  		}
-  	}
+	if (msgCompFields == null){
+		return;
+	}
+	this.splitRecipients(msgCompFields.to, "To").forEach(function(recipient) {
+		toList.push(recipient);
+	});
+	this.splitRecipients(msgCompFields.cc, "Cc").forEach(function(recipient) {
+		ccList.push(recipient);
+	});
+	this.splitRecipients(msgCompFields.bcc, "Bcc").forEach(function(recipient) {
+		bccList.push(recipient);
+	});
   },
   
 collectFileName: function(msgCompFields,fileNamesList) {
@@ -148,7 +130,9 @@ collectFileName: function(msgCompFields,fileNamesList) {
         
         for (var i = 0; i < attachmentList.getRowCount(); i++) {
        
-            var fileName = attachmentList.childNodes[i].getAttribute("label");
+
+            var attachmentItem = attachmentList.childNodes[i];
+            var fileName = attachmentItem.getAttribute("label") || attachmentItem.getAttribute("name");
             fileNamesList.push(fileName);
 	
         }
@@ -161,22 +145,25 @@ collectFileName: function(msgCompFields,fileNamesList) {
 },
     
 /**
- * addressArrayに含まれるアドレスを判定し、組織外、組織内に振り分けます
+ * recipientsに含まれるアドレスを判定し、組織外、組織内に振り分けます
  */
-judge : function(addressArray, domainList, yourDomainAddress, otherDomainAddress){
-  	//dump("[JUDGE] "+addressArray+"\n");
+judge : function(recipients, domainList, yourDomainRecipients, otherDomainRecipients){
+  	//dump("[JUDGE] "+JSON.stringify(recipients)+"\n");
   	
-  	//if domainList is empty, all addresses are external.
+  	//if domainList is empty, all recipients are external.
   	if(domainList.length == 0){
-  		for(var i = 0; i < addressArray.length; i++){
-  			otherDomainAddress.push(addressArray[i]);
+  		for(var i = 0; i < recipients.length; i++){
+  			otherDomainRecipients.push(recipients[i]);
   		}
   		return;
   	}
   	
-  	//compare addresses with registered domain lists.
-  	for(var i = 0; i < addressArray.length; i++){
-  		var address = addressArray[i];
+  	//compare recipients with registered domain lists.
+  	for(var i = 0; i < recipients.length; i++){
+  		var recipient = recipients[i];
+  		var address = recipient;
+  		if (recipient && typeof recipient != "string")
+  			address = recipient.address;
   		if(address.length == 0){
   			continue;
   		}
@@ -197,9 +184,9 @@ judge : function(addressArray, domainList, yourDomainAddress, otherDomainAddress
   		}
 		
 		if(match){
-  			yourDomainAddress.push(address);
+  			yourDomainRecipients.push(recipient);
 		}else{
- 			otherDomainAddress.push(address);
+ 			otherDomainRecipients.push(recipient);
 		}
   	}
 

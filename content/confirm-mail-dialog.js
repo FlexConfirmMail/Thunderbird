@@ -17,127 +17,289 @@
 * 
 * Contributor(s): tanabec
 */ 
-function startup(){
-    
-    var okBtn = document.documentElement.getButton("accept");
-	okBtn.disabled = true;
 
-	// set button label
-	var strbundle = document.getElementById("strings");
-	var BtnLabel = strbundle.getString("confirm.dialog.acceptbtn.label");
-	okBtn.label = BtnLabel;
+var Cc = Components.classes;
+var Ci = Components.interfaces;
 
-	// create internal-domain list
-	var internals = window.arguments[1];
-	var internalList = document.getElementById("yourDomains");
-
-    for(var i = 0; i < internals.length; i++){
-		var address = internals[i];
-		var listitem = createListItem(address);
-		internalList.appendChild(listitem);
-	}
-
-    // if internal-domain was empty, "select all" checkbox set checked.
-    // when internalList is empty, internalList.length equals 0.
-    if(internals.length == 0){
-        document.getElementById("check_all").checked = true;
-        document.getElementById("check_all").disabled = true;
-    }
-
-    // listheader for internal domains
-	var checkboxHeader = document.getElementById("checkbox_header");
-	
-    checkboxHeader.onclick = function(event){
-		
-        switchInternalCheckBox(internalList);
-		checkAllChecked();
-	};
-
-	
-
-	//external domains
-	var externals = window.arguments[2];
-	var externalList = document.getElementById("otherDomains");
-	if(externals.length > 0){
-		externalList.setAttribute("style","font-weight: bold; color:#FF0000;");
-	}
-
-	for(var i = 0; i < externals.length; i++){
-		var address = externals[i];
-		var listitem = createListItem(address);
-		externalList.appendChild(listitem);
-	}	
-    
-	//attachments list
-	var fileNames = window.arguments[3];
-	var fileNamesList = document.getElementById("fileNames");
-	if (fileNames.length > 0) {
-	    fileNamesList.setAttribute("style", "font-weight: bold; color:#FF0000");
-   	}
-
-	for (var i = 0; i < fileNames.length; i++) {
-		var file = fileNames[i];
-		var listitemFileName = createListItem(file);
-		fileNamesList.appendChild(listitemFileName);
-	}	
+function getLocaleString(id) {
+	var bundle = document.getElementById("strings");
+	return bundle.getString(id);
 }
 
-function createListItem(item){
+function startup() {
+	function setupOKButton() {
+		var okBtn = document.documentElement.getButton("accept");
+		okBtn.disabled = true;
+		// set button label
+		var strbundle = document.getElementById("strings");
+		var BtnLabel = strbundle.getString("confirm.dialog.acceptbtn.label");
+		okBtn.label = BtnLabel;
+	}
 
+	function createRecipientLabel(recipient) {
+		var typePrefix = recipient.type + ": ";
+		if (recipient.name && recipient.name != recipient.address)
+			return typePrefix + recipient.name + " <" + recipient.address + ">";
+		return typePrefix + (recipient.fullName || recipient.address);
+	}
+
+	function setupInternalDestinationList(internals) {
+		// create internal-domain list
+		var internalList = document.getElementById("yourDomains");
+
+		for (var i = 0; i < internals.length; i++) {
+			var listitem = createListItemWithCheckbox(createRecipientLabel(internals[i]));
+			listitem.addEventListener("click", updateCheckAllCheckBox, false);
+			internalList.appendChild(listitem);
+		}
+
+		// if internal-domain was empty, "select all" checkbox set checked.
+		// when internalList is empty, internalList.length equals 0.
+		if (internals.length == 0) {
+			document.getElementById("check_all").checked = true;
+			document.getElementById("check_all").disabled = true;
+		}
+
+		// listheader for internal domains
+		var checkboxHeader = document.getElementById("checkbox_header");
+		checkboxHeader.addEventListener("click", function(event) {
+			switchInternalCheckBox();
+			checkAllChecked();
+		}, false);
+	}
+
+	function setupExternalDomainList(externals) {
+		function createGroupHeader(domain) {
+			var headerItem = document.createElement("listitem");
+			headerItem.setAttribute("class", "confirm-mail-list-separator");
+			headerItem.setAttribute("data-domain-name", domain);
+
+			var headerIconItem = document.createElement("listcell");
+			headerIconItem.setAttribute("class", "listcell-iconic");
+
+			var headerLabelItem = document.createElement("listcell");
+			headerLabelItem.setAttribute("label", "@" + domain);
+
+			headerItem.appendChild(headerIconItem);
+			headerItem.appendChild(headerLabelItem);
+
+			return headerItem;
+		}
+
+		function setHeaderStarIconVisible(groupHeaderItem, groupAllChecked) {
+			// TODO: Use CSS
+			var icon = groupAllChecked ?
+				"chrome://confirm-mail/skin/icon/star16.png" :
+				"chrome://confirm-mail/skin/icon/blank16.png"
+			groupHeaderItem.firstChild.setAttribute("image", icon);
+		}
+
+		let groupedExternalAddressItems = {};
+		function isGroupAllChecked(domain) {
+			return groupedExternalAddressItems[domain]
+				.every(function (addressItem) {
+					return addressItem.querySelector("checkbox").checked;
+				});
+		}
+		function recordItemInGroup(domain, item) {
+			if (!groupedExternalAddressItems[domain])
+				groupedExternalAddressItems[domain] = [];
+			groupedExternalAddressItems[domain].push(item);
+		}
+
+		function getGroupHeaderForItem(originItem) {
+			var cursorItem = originItem;
+			while (cursorItem &&
+				cursorItem.getAttribute("class") !== "confirm-mail-list-separator") {
+				cursorItem = cursorItem.previousSibling;
+			}
+			return cursorItem;
+		}
+
+		var externalList = document.getElementById("otherDomains");
+		externalList.addEventListener("click", function (ev) {
+			let listitem = ev.originalTarget;
+			if (listitem.localName !== "listitem") return;
+
+			let groupHeaderItem = getGroupHeaderForItem(listitem);
+			let groupDomain = groupHeaderItem.getAttribute("data-domain-name");
+			setHeaderStarIconVisible(
+				groupHeaderItem,
+				isGroupAllChecked(groupDomain)
+			);
+		}, false);
+
+		// external domains
+		function createExternalDomainsListItems(externals) {
+			var groupedExternalRecipients = AddressUtil.groupDestinationsByDomain(externals);
+			for (let [domainForThisGroup, destinationsForThisGroup] in Iterator(groupedExternalRecipients)) {
+				// header for this group
+				let groupHeaderItem = createGroupHeader(domainForThisGroup);
+				setHeaderStarIconVisible(groupHeaderItem, false);
+				externalList.appendChild(groupHeaderItem);
+
+				// destinations in this group
+				for (let [, destination] in Iterator(destinationsForThisGroup)) {
+					let listitem = createListItemWithCheckbox(createRecipientLabel(destination), true);
+					externalList.appendChild(listitem);
+					recordItemInGroup(domainForThisGroup, listitem);
+				}
+			}
+		}
+
+		createExternalDomainsListItems(externals);
+	}
+
+	function setupAttachmentList(fileNames) {
+		//attachments list
+		var fileNamesList = document.getElementById("fileNames");
+
+		var items = [];
+		for (var i = 0; i < fileNames.length; i++) {
+			let fileName = fileNames[i];
+			let attachmentFileItem = createListItemWithCheckbox(fileName);
+			items.push(attachmentFileItem);
+		}
+		items.forEach(function(attachmentFileItem) {
+			fileNamesList.appendChild(attachmentFileItem);
+		});
+	}
+
+	setupOKButton();
+	setupInternalDestinationList(DestinationManager.getInternalDestinationList());
+	setupExternalDomainList(DestinationManager.getExternalDestinationList());
+	setupAttachmentList(AttachmentManager.getAttachmentList());
+}
+
+// Util
+
+var FilenameUtil = {
+	extractSuffix: function (fileName) {
+		if (/\.([^\.]*)$/.exec(fileName)) {
+			return RegExp.$1;
+		} else {
+			return "";
+		}
+	}
+};
+
+var AddressUtil = {
+	trim: function (string) {
+		return (string || "").replace(/^[\s\u3000]+|[\s\u3000]+$/g, "");
+	},
+
+	extractDomainFromAddress: function (address) {
+		if (address && typeof address != "string")
+			address = address.address || "";
+		return this.trim(address.split("@")[1]) || null;
+	},
+
+	destinationListToDomains: function (destinationList) {
+		return destinationList
+			.map(this.extractDomainFromAddress, this);
+	},
+
+	groupDestinationsByDomain: function (recipients) {
+		var recipientGroups = {};               // domain -> [recipients]
+
+		for (var i = 0, len = recipients.length; i < len; ++i) {
+			var recipient = recipients[i];
+			var domain = this.extractDomainFromAddress(recipient.address);
+			if (domain) {
+				if (!recipientGroups[domain]) {
+					recipientGroups[domain] = [];
+				}
+				recipientGroups[domain].push(recipient);
+			}
+		}
+
+		return recipientGroups;
+	}
+};
+
+// Manager
+
+var AttachmentManager = {
+	getAttachmentList: function () {
+		return window.arguments[3] || [];
+	},
+
+	hasAttachments: function () {
+		let attachments = this.getAttachmentList();
+		if (!attachments)
+			return false;
+		return attachments.length > 0;
+	}
+};
+
+var DestinationManager = {
+	getInternalDestinationList: function () {
+		return window.arguments[1];
+	},
+
+	getExternalDestinationList: function () {
+		return window.arguments[2];
+	},
+
+	getExternalDomainList: function () {
+		return AddressUtil.destinationListToDomains(
+			DestinationManager.getExternalDestinationList()
+		);
+	}
+};
+
+var maxTooltipTextLength = 60;
+function foldLongTooltipText(text) {
+	var folded = [];
+	while (text.length > 0) {
+		folded.push(text.substring(0, maxTooltipTextLength));
+		text = text.substring(maxTooltipTextLength);
+	}
+	return folded.join("\n");
+}
+
+function createListItemWithCheckbox(itemLabel, onlyRightColumn) {
 	var listitem = document.createElement("listitem");
+	listitem.setAttribute("tooltiptext", foldLongTooltipText(itemLabel));
+
 	var cell1 = document.createElement("listcell");
 	var checkbox = document.createElement("checkbox");
-	checkbox.setAttribute("style", "margin-left:7px;");
-	cell1.appendChild(checkbox);
 	listitem.appendChild(cell1);
-	listitem.checkbox = checkbox;
 
 	listitem.onclick = function(event){
-		var chekced = this.checkbox.checked;
-		this.checkbox.setAttribute("checked", !chekced);
+		var checked = checkbox.checked;
+		checkbox.setAttribute("checked", !checked);
 		checkAllChecked();
 	};
 
 	var cell2 = document.createElement("listcell");
-	cell2.setAttribute("label", item);
 	listitem.appendChild(cell2);
-	
+
+	if (onlyRightColumn) {
+		cell2.appendChild(checkbox);
+		checkbox.setAttribute("label", itemLabel);
+	} else {
+		cell1.appendChild(checkbox);
+		cell2.setAttribute("label", itemLabel);
+	}
+
 	return listitem;
 }
 
 function checkAllChecked(){
-
-	//自ドメインのチェック状況を確認
-	var yourdomains = document.getElementById("yourDomains");
-	var checkboxes = yourdomains.getElementsByTagName("checkbox");
-	var isAllcheckON = checkboxes[0].checked; //[すべて確認]チェックボックスの状況
-	var internalComplete = true;
-
-	for(var i=1; i<checkboxes.length; i++){
-		var chk = checkboxes[i].checked
-		if(!chk){
-			internalComplete = false;
-			break;
-		}
-
-	}
-
-    //error
-	//checkboxes[0].checked = internalComplete;
-	
 	//すべてのチェックボックスの状況確認
-
 	var complete = true;
 	var checkboxes = document.getElementsByTagName("checkbox");
 	for(var i = 0; i < checkboxes.length; i++){
 		var cb = checkboxes[i];
 		if(cb.id == "check_all") continue;
-		if(!cb.checked){
+		// don't use element.checked, because it doesn't work on hidden (out of screen) elements.
+		if(cb.getAttribute("checked") != "true"){
 			complete = false;
 			break;
 		}
 	}
-	
+
 	//送信ボタンのdisable切り替え
 	var okBtn = document.documentElement.getButton("accept");
 	if(complete){
@@ -149,31 +311,32 @@ function checkAllChecked(){
 
 //[すべて確認]チェックボックスがONなら、すべての自ドメインアドレスの確認ボックスをONにする。
 
-function switchInternalCheckBox(internalList){
+function switchInternalCheckBox(){
 
 	var checkAll = document.getElementById("check_all");
-	var isCheck = checkAll.checked;
-checkAll.setAttribute("checked",isCheck);
+	var isChecked = checkAll.checked;
 	var yourdomains = document.getElementById("yourDomains");
 	var checkboxes = yourdomains.getElementsByTagName("checkbox");
-
-    document.getElementById("check_all").setAttribute("checked",isCheck);
-   
     for(var i=0; i<checkboxes.length; i++){
-        checkboxes[i].setAttribute("checked",isCheck);
+        // don't use element.checked=true, because hidden (out of screen) elements are not checked.
+        checkboxes[i].setAttribute("checked", isChecked);
 	}
 
 }
 
-function doOK(){
+function updateCheckAllCheckBox(){
+	var checkAll = document.getElementById("check_all");
+	var allItems = document.querySelectorAll("#yourDomains listitem checkbox");
+	var checkedItems = document.querySelectorAll("#yourDomains listitem checkbox[checked='true']");
+	checkAll.setAttribute("checked", allItems.length === checkedItems.length);
+}
 
+function doOK(){
 	var parentWindow = window.arguments[0];
 	parentWindow.confmail_confirmOK = true;
 
 	return true;
-
 }
-
 
 function doCancel(){
 
@@ -181,4 +344,3 @@ function doCancel(){
 	parentWindow.confmail_confirmOK = false;
 	return true;
 }
-

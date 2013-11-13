@@ -22,6 +22,7 @@ var CountDown = {
 	 * カウントダウンを開始します
 	 */
 	onLoad : function(){
+try { // DEBUG
 		var time = window.arguments[1];
 		var limit = time;
 		var label = document.getElementById("counter");
@@ -42,6 +43,7 @@ var CountDown = {
 				label.value=limit;
 			}
 		    }},1000, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);	
+} catch(error) { alert(e+'\n'+e.stack); } // DEBUG
 	},
 	
 
@@ -52,7 +54,7 @@ var CountDown = {
 		var parentWindow = window.arguments[0];
 		parentWindow.confmail_countDownComplete = true;
 		return true;
-	},
+	}
 
  	   
-}
+};

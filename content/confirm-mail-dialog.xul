@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://confirm-mail/skin/css/confirm-mail-dialog.css"?>
 <!DOCTYPE window SYSTEM "chrome://confirm-mail/locale/confirm-mail.dtd">
 
 <!--
@@ -27,8 +28,10 @@
 	onload="startup()"
 	ondialogaccept="return doOK();"
 	ondialogcancel="return doCancel();"
-	width="500" height="500">
+	width="680" height="600"
+	persist="width height screenX screenY">
 
+	<script type="application/x-javascript" src="chrome://global/content/nsUserSettings.js"/>
 	<script type="application/x-javascript" src="chrome://confirm-mail/content/confirm-mail-dialog.js"/>
 
 	<stringbundleset id="strbundles">
@@ -36,7 +39,8 @@
 	</stringbundleset>
 
 	<label value="&confirm.dialog.message;" style="padding-bottom:3px; font-size:1.3em;"/>
-	<listbox id="yourDomains" height="125">
+	<vbox flex="1">
+	<listbox id="yourDomains" flex="1" height="150" persist="height">
 		<listhead>
 			<listheader id="checkbox_header">
 				<checkbox style="margin:0px;" id="check_all"/>
@@ -48,7 +52,8 @@
 			<listcol flex="1"/>
 		</listcols>
 	</listbox>
-	<listbox id="otherDomains" height="125">
+	<splitter/>
+	<listbox id="otherDomains" flex="2" height="250" persist="height">
 		<listhead>
 			<listheader/>
 			<listheader label="&confirm.dialog.otherdomain.label;"/>
@@ -58,7 +63,8 @@
 			<listcol flex="1"/>
 		</listcols>
 	</listbox>
-<listbox id="fileNames" height="125">
+	<splitter/>
+<listbox id="fileNames" flex="1">
     	<listhead>
 	       <listheader/>
 	       <listheader label="&confirm.dialog.fileName.label;"/>
@@ -68,5 +74,5 @@
    	      <listcol flex="1"/>
      </listcols>
    </listbox>
-
+	</vbox>
 </dialog>

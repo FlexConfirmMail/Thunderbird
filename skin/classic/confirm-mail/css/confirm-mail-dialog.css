@@ -1,0 +1,20 @@
+/* style */
+
+#otherDomains listitem:not(.confirm-mail-list-separator) checkbox {
+    padding-left: 21px;
+}
+
+.confirm-mail-list-separator {
+    font-weight: bold;
+}
+.confirm-mail-list-separator:not([selected="true"]) {
+    background: #DEEFFF;
+}
+
+listbox + splitter {
+    -moz-appearance: none;
+    background: transparent;
+    border: 0 none;
+    margin: -2px 0;
+}
+
