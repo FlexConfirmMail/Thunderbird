@@ -8,7 +8,6 @@
     <em:creator>ClearCode Inc.</em:creator>
     <em:contributor>tanabec (original author)</em:contributor>
     <em:description>Confirm mailaddress and attachments based on flexible rules.</em:description>
-    <em:aboutURL>chrome://confirm-mail/content/about.xul</em:aboutURL>
     <em:optionsURL>chrome://confirm-mail/content/setting.xul</em:optionsURL>
     <em:targetApplication>
       <Description>
