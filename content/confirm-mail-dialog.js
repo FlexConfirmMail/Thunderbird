@@ -21,8 +21,10 @@
 var Cc = Components.classes;
 var Ci = Components.interfaces;
 
-function getLocaleString(id) {
+function getLocaleString(id, parameters) {
 	var bundle = document.getElementById("strings");
+	if (arguments.length > 1 && parameters.length)
+		return bundle.getFormattedString(id, parameters);
 	return bundle.getString(id);
 }
 
@@ -133,20 +135,39 @@ function startup() {
 		function createExternalDomainsListItems(externals) {
 			var groupedExternalRecipients = AddressUtil.groupDestinationsByDomain(externals);
 			for (let [domainForThisGroup, destinationsForThisGroup] in Iterator(groupedExternalRecipients)) {
+				let shouldBeColored = ExceptionManager.isExceptionalDomain(domainForThisGroup) &&
+					AttachmentManager.hasAttachments();
+
 				// header for this group
 				let groupHeaderItem = createGroupHeader(domainForThisGroup);
+				if (shouldBeColored)
+					groupHeaderItem.setAttribute("data-exceptional", "true");
 				setHeaderStarIconVisible(groupHeaderItem, false);
 				externalList.appendChild(groupHeaderItem);
 
 				// destinations in this group
 				for (let [, destination] in Iterator(destinationsForThisGroup)) {
 					let listitem = createListItemWithCheckbox(createRecipientLabel(destination), true);
+					if (shouldBeColored) {
+						listitem.setAttribute("data-exceptional", "true");
+					}
 					externalList.appendChild(listitem);
 					recordItemInGroup(domainForThisGroup, listitem);
 				}
 			}
 		}
 
+		var exceptionalExternals = [];
+		externals = externals.filter(function(destination) {
+			var domain = AddressUtil.extractDomainFromAddress(destination);
+			if (ExceptionManager.isExceptionalDomain(domain)) {
+				exceptionalExternals.push(destination);
+				return false;
+			}
+			return true;
+		});
+		if (exceptionalExternals.length)
+			createExternalDomainsListItems(exceptionalExternals);
 		createExternalDomainsListItems(externals);
 	}
 
@@ -154,13 +175,19 @@ function startup() {
 		//attachments list
 		var fileNamesList = document.getElementById("fileNames");
 
-		var items = [];
+		var exceptionalItems = [];
+		var normalItems = [];
 		for (var i = 0; i < fileNames.length; i++) {
 			let fileName = fileNames[i];
 			let attachmentFileItem = createListItemWithCheckbox(fileName);
-			items.push(attachmentFileItem);
+			if (ExceptionManager.fileHasExceptionalSuffix(fileName)) {
+				attachmentFileItem.setAttribute("data-exceptional", "true");
+				exceptionalItems.push(attachmentFileItem);
+			} else {
+				normalItems.push(attachmentFileItem);
+			}
 		}
-		items.forEach(function(attachmentFileItem) {
+		exceptionalItems.concat(normalItems).forEach(function(attachmentFileItem) {
 			fileNamesList.appendChild(attachmentFileItem);
 		});
 	}
@@ -248,6 +275,47 @@ var DestinationManager = {
 	}
 };
 
+var ExceptionManager = {
+	PREF_DOMAINS : "net.nyail.tanabec.confirm-mail.exceptional-domains",
+	PREF_SUFFIXES : "net.nyail.tanabec.confirm-mail.exceptional-suffixes",
+
+	_splitToItems: function (list) {
+		return list.replace(/^\s+|\s+$/g, '').split(/[,\s\|;]+/).filter(function(item) {
+			return item;
+		});
+	},
+
+	// Exceptional Domain
+
+	get domains () {
+		delete this.domains;
+		var domains = nsPreferences.copyUnicharPref(this.PREF_DOMAINS) || "";
+		return this.domains = this._splitToItems(domains);
+	},
+
+	isExceptionalDomain: function (domain) {
+		return this.domains.indexOf(domain) >= 0;
+	},
+
+	// Exceptional Suffix
+
+	get suffixes () {
+		delete this.suffixes;
+		var suffixes = nsPreferences.copyUnicharPref(this.PREF_SUFFIXES) || "";
+		return this.suffixes = this._splitToItems(suffixes).map(function(suffix) {
+			return suffix.replace(/^\*?\./g, '');
+		});
+	},
+
+	isExceptionalSuffix: function (suffix) {
+		return this.suffixes.indexOf(suffix) >= 0;
+	},
+
+	fileHasExceptionalSuffix: function (fileName) {
+		return this.isExceptionalSuffix(FilenameUtil.extractSuffix(fileName));
+	}
+};
+
 var maxTooltipTextLength = 60;
 function foldLongTooltipText(text) {
 	var folded = [];
@@ -331,7 +399,75 @@ function updateCheckAllCheckBox(){
 	checkAll.setAttribute("checked", allItems.length === checkedItems.length);
 }
 
+var ConfirmMailDialog = {
+	getExceptionalRecipients: function () {
+		if (!nsPreferences.getBoolPref("net.nyail.tanabec.confirm-mail.exceptional-domains.confirm"))
+			return [];
+		if (nsPreferences.getBoolPref("net.nyail.tanabec.confirm-mail.exceptional-domains.onlyWithAttachment") &&
+			!AttachmentManager.hasAttachments())
+			return [];
+
+		return DestinationManager.getExternalDomainList()
+			.filter(function (recipient) {
+				var domain = AddressUtil.extractDomainFromAddress(recipient);
+				return ExceptionManager.isExceptionalDomain(domain);
+			});
+	},
+
+	getExceptionalAttachments: function () {
+		if (!nsPreferences.getBoolPref("net.nyail.tanabec.confirm-mail.exceptional-suffixes.confirm") ||
+			!AttachmentManager.hasAttachments())
+			return [];
+
+		return AttachmentManager.getAttachmentList()
+			.filter(function (attachment) {
+				var suffix = FilenameUtil.extractSuffix(attachment);
+				return ExceptionManager.isExceptionalSuffix(suffix);
+			});
+	},
+
+	confirmExceptionalDomains: function (exceptions) {
+		return this.confirm("exceptionalDomain", exceptions);
+	},
+
+	confirmExceptionalSuffixes: function (exceptions) {
+		return this.confirm("exceptionalSuffix", exceptions);
+	},
+
+	confirm: function (messageType, exceptions) {
+		let promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+			.getService(Components.interfaces.nsIPromptService);
+		let flags = (promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0)
+			+ (promptService.BUTTON_TITLE_CANCEL * promptService.BUTTON_POS_1);
+		return promptService.confirmEx(window,
+			nsPreferences.getLocalizedUnicharPref("net.nyail.tanabec.confirm-mail." + messageType + ".title"),
+			nsPreferences.getLocalizedUnicharPref("net.nyail.tanabec.confirm-mail." + messageType + ".message")
+				.replace(/\%s/i, exceptions),
+			flags,
+			getLocaleString("confirm.dialog.acceptbtn.label"),
+			"",
+			"",
+			null,
+			{}
+		) === 0;
+	}
+};
+
 function doOK(){
+	let recipients = ConfirmMailDialog.getExceptionalRecipients();
+	if (recipients.length > 0) {
+		if (!ConfirmMailDialog.confirmExceptionalDomains(recipients.join('\n'))) {
+			return false;
+		}
+	}
+
+	let attachments = ConfirmMailDialog.getExceptionalAttachments();
+	if (attachments.length > 0) {
+		if (!ConfirmMailDialog.confirmExceptionalSuffixes(attachments.join('\n'))) {
+			return false;
+		}
+	}
+
 	var parentWindow = window.arguments[0];
 	parentWindow.confmail_confirmOK = true;
 

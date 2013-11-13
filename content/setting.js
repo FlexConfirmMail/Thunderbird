@@ -26,7 +26,12 @@ var CA_CONST = {
 	DOMAIN_LIST : "net.nyail.tanabec.confirm-mail.domain-list",
 	IS_NOT_DISPLAY : "net.nyail.tanabec.confirm-mail.not-display",
 	IS_COUNT_DOWN : "net.nyail.tanabec.confirm-mail.is-countdown",
-	COUNT_DOWN_TIME : "net.nyail.tanabec.confirm-mail.cd-time"
+	COUNT_DOWN_TIME : "net.nyail.tanabec.confirm-mail.cd-time",
+	EXCEPTIONAL_DOMAINS_CONFIRM : "net.nyail.tanabec.confirm-mail.exceptional-domains.confirm",
+	EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT : "net.nyail.tanabec.confirm-mail.exceptional-domains.onlyWithAttachment",
+	EXCEPTIONAL_DOMAINS : "net.nyail.tanabec.confirm-mail.exceptional-domains",
+	EXCEPTIONAL_SUFFIXES_CONFIRM : "net.nyail.tanabec.confirm-mail.exceptional-suffixes.confirm",
+	EXCEPTIONAL_SUFFIXES : "net.nyail.tanabec.confirm-mail.exceptional-suffixes"
 };
 
 function startup(){
@@ -58,6 +63,19 @@ function startup(){
 	var isNotDisplay = nsPreferences.getBoolPref(CA_CONST.IS_NOT_DISPLAY, false);
 	var noDisplayBox = document.getElementById("not-display");
 	noDisplayBox.checked=isNotDisplay;
+
+	document.getElementById("exceptional-domains-confirm").checked=nsPreferences.getBoolPref(CA_CONST.EXCEPTIONAL_DOMAINS_CONFIRM, false);
+	document.getElementById("exceptional-domains-attachment").checked=nsPreferences.getBoolPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT, false);
+	var exceptionalDomains = document.getElementById("exceptional-domains");
+	exceptionalDomains.value = nsPreferences.copyUnicharPref(CA_CONST.EXCEPTIONAL_DOMAINS)
+		.replace(/^\s+|\s+$/g, '')
+		.replace(/\s+/g, '\n');
+
+	document.getElementById("exceptional-suffixes-confirm").checked=nsPreferences.getBoolPref(CA_CONST.EXCEPTIONAL_SUFFIXES_CONFIRM, false);
+	var exceptionalSuffixes = document.getElementById("exceptional-suffixes");
+	exceptionalSuffixes.value = nsPreferences.copyUnicharPref(CA_CONST.EXCEPTIONAL_SUFFIXES)
+		.replace(/^\s+|\s+$/g, '')
+		.replace(/\s+/g, '\n');
 
 	//init checkbox [countdown]
 	var cdBox = document.getElementById("countdown");
@@ -168,6 +186,15 @@ function doOK(){
 
 	var isCountdown = document.getElementById("countdown").checked;
 	nsPreferences.setBoolPref(CA_CONST.IS_COUNT_DOWN, isCountdown);
+
+	nsPreferences.setBoolPref(CA_CONST.EXCEPTIONAL_DOMAINS_CONFIRM, document.getElementById("exceptional-domains-confirm").checked);
+	nsPreferences.setBoolPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT, document.getElementById("exceptional-domains-attachment").checked);
+	var exceptionalDomains = document.getElementById("exceptional-domains").value;
+	nsPreferences.setUnicharPref(CA_CONST.EXCEPTIONAL_DOMAINS, exceptionalDomains.replace(/\s+/g, ' '));
+
+	nsPreferences.setBoolPref(CA_CONST.EXCEPTIONAL_SUFFIXES_CONFIRM, document.getElementById("exceptional-suffixes-confirm").checked);
+	var exceptionalSuffixes = document.getElementById("exceptional-suffixes").value;
+	nsPreferences.setUnicharPref(CA_CONST.EXCEPTIONAL_SUFFIXES, exceptionalSuffixes.replace(/\s+/g, ' '));
 
 	var cdTime = document.getElementById("countdown-time").value;
 	

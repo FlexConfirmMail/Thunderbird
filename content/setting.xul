@@ -48,6 +48,21 @@
 	<button id="remove" label="&setting.dialog.button.remove.label;" flex="1"/>
 </hbox>
 
+<groupbox orient="vertical">
+	<caption label="&setting.dialog.exceptionalDomains.label;" control="exceptional-domains"/>
+	<checkbox id="exceptional-domains-confirm" label="&setting.dialog.exceptionalDomains.confirm;"/>
+	<hbox>
+		<spacer style="width:1em"/>
+		<checkbox id="exceptional-domains-attachment" label="&setting.dialog.exceptionalDomains.attachment;"/>
+	</hbox>
+	<textbox id="exceptional-domains" multiline="true" rows="4"/>
+</groupbox>
+<groupbox orient="vertical">
+	<caption label="&setting.dialog.exceptionalSuffixes.label;" control="exceptional-suffixes"/>
+	<checkbox id="exceptional-suffixes-confirm" label="&setting.dialog.exceptionalSuffixes.confirm;"/>
+	<textbox id="exceptional-suffixes" multiline="true" rows="4"/>
+</groupbox>
+
 <separator/>
 
 <checkbox id="not-display" label="&setting.dialog.checkbox.notdisplay;"/>

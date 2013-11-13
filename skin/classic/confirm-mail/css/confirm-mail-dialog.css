@@ -11,6 +11,13 @@
     background: #DEEFFF;
 }
 
+#otherDomains listitem[data-exceptional]:not([selected="true"]),
+#otherDomains:not(:focus) listitem[data-exceptional][selected="true"],
+#fileNames listitem[data-exceptional]:not([selected="true"]),
+#fileNames:not(:focus) listitem[data-exceptional][selected="true"] {
+    color: red !important;
+}
+
 listbox + splitter {
     -moz-appearance: none;
     background: transparent;

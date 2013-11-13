@@ -24,6 +24,21 @@ function setAttachments(attachments) {
 	window.arguments[3] = attachments;
 }
 
+var exceptionalDomains, exceptionalSuffixes;
+ExceptionManager.getStringArrayPreferenceValue = function (id) {
+	if (id === this.PREF_EXCEPTIONAL_DOMAIN)
+		return exceptionalDomains;
+	return exceptionalSuffixes;
+};
+
+function setExceptionalDomains(domains) {
+	exceptionalDomains = domains;
+}
+
+function setExceptionalSuffixes(suffixes) {
+	exceptionalSuffixes = suffixes;
+}
+
 // Tests
 
 function test_FilenameUtil_extractSuffix() {
@@ -84,3 +99,73 @@ function test_DestinationManager_getExternalDomainList() {
 	assertEquals(["example.com", "example.org"], DestinationManager.getExternalDomainList());
 }
 
+function test_ExceptionManager() {
+	setExceptionalDomains(["example.com", "example.org"]);
+	assertEquals(exceptionalDomains, ExceptionManager.getExceptionalDomains());
+	assertEquals(true, ExceptionManager.isExceptionalDomain("example.com"));
+	assertEquals(false, ExceptionManager.isExceptionalDomain("example.net"));
+
+	setExceptionalSuffixes(["txt", "xpi"]);
+	assertEquals(exceptionalSuffixes, ExceptionManager.getExceptionalSuffixes());
+	assertEquals(true, ExceptionManager.isExceptionalSuffix("txt"));
+	assertEquals(true, ExceptionManager.isExceptionalSuffix("xpi"));
+	assertEquals(false, ExceptionManager.isExceptionalSuffix("jpg"));
+
+	assertEquals(true, ExceptionManager.fileHasExceptionalSuffix("foo.txt"));
+	assertEquals(true, ExceptionManager.fileHasExceptionalSuffix("bar.xpi"));
+	assertEquals(false, ExceptionManager.fileHasExceptionalSuffix("baz.jpg"));
+	assertEquals(false, ExceptionManager.fileHasExceptionalSuffix("txt"));
+	assertEquals(true, ExceptionManager.fileHasExceptionalSuffix(".txt"));
+}
+
+function test_ConfirmMailDialog_confirm_shouldConfirmExceptionalDomains() {
+	setExceptionalSuffixes([]);
+	setExceptionalDomains(["danger.example.com"]);
+
+	// has attachments && danger domain -> warn
+	setExternalDestinations([recipient("foo@safe.example.com"), recipient("bar@danger.example.com")]);
+	setAttachments(["some.txt"]);
+	assertEquals(true, ConfirmMailDialog.shouldConfirmExceptionalDomains());
+
+	// has no attachments && danger domain -> don't warn
+	setExternalDestinations([recipient("foo@safe.example.com"), recipient("bar@danger.example.com")]);
+	setAttachments([]);
+	assertEquals(false, ConfirmMailDialog.shouldConfirmExceptionalDomains());
+
+	// has attachments && not danger domain -> don't warn
+	setExternalDestinations([recipient("foo@safe.example.com"), recipient("bar@safe.example.com")]);
+	setAttachments(["some.txt"]);
+	assertEquals(false, ConfirmMailDialog.shouldConfirmExceptionalDomains());
+
+	// has no attachments && not danger domain -> don't warn
+	setExternalDestinations([recipient("foo@safe.example.com"), recipient("bar@safe.example.com")]);
+	setAttachments([]);
+	assertEquals(false, ConfirmMailDialog.shouldConfirmExceptionalDomains());
+}
+
+function test_ConfirmMailDialog_confirm_shouldConfirmExceptionalSuffixes() {
+	setExternalDestinations([recipient("foo@safe.example.com"), recipient("bar@safe.example.com")]);
+
+	setExceptionalDomains(["danger.example.com"]);
+	setExceptionalSuffixes(["txt"]);
+
+	setAttachments(["some.txt"]);
+	assertEquals(true, ConfirmMailDialog.shouldConfirmExceptionalSuffixes());
+
+	setAttachments([]);
+	assertEquals(false, ConfirmMailDialog.shouldConfirmExceptionalSuffixes());
+
+	setAttachments(["foo.txt.js"]);
+	assertEquals(false, ConfirmMailDialog.shouldConfirmExceptionalSuffixes());
+
+	setAttachments(["foo.txt.js", "foo.txt", "foo.jpeg"]);
+	assertEquals(true, ConfirmMailDialog.shouldConfirmExceptionalSuffixes());
+
+	setExceptionalSuffixes(["png", "pdf", "xls"]);
+
+	setAttachments(["foo.txt.js", "foo.txt", "foo.jpeg"]);
+	assertEquals(false, ConfirmMailDialog.shouldConfirmExceptionalSuffixes());
+
+	setAttachments(["foo.txt.js", "foo.txt", "foo.pdf"]);
+	assertEquals(true, ConfirmMailDialog.shouldConfirmExceptionalSuffixes());
+}
