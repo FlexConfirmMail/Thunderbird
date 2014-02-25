@@ -1,4 +1,4 @@
-#
+
 
 pref("net.nyail.tanabec.confirm-mail.exceptional-domains.confirm", true);
 pref("net.nyail.tanabec.confirm-mail.exceptional-domains.onlyWithAttachment", false);
