@@ -12,10 +12,10 @@
 <!ENTITY setting.dialog.button.remove.label "削除">
 <!ENTITY setting.dialog.checkbox.notdisplay "登録済みドメイン宛のメール送信時は確認ダイアログを表示しない">
 <!ENTITY setting.dialog.exceptionalDomains.label    "組織外のメールアドレスの例外">
-<!ENTITY setting.dialog.exceptionalDomains.confirm  "これらのドメインに該当する宛先がある場合は警告する">
-<!ENTITY setting.dialog.exceptionalDomains.attachment "添付ファイルがある場合のみ警告する">
+<!ENTITY setting.dialog.exceptionalDomains.confirm  "これらのドメインに該当する宛先がある場合は再度警告する">
+<!ENTITY setting.dialog.exceptionalDomains.attachment "添付ファイルがある場合のみ再度警告する">
 <!ENTITY setting.dialog.exceptionalSuffixes.label   "組織外宛メールの添付ファイルの例外">
-<!ENTITY setting.dialog.exceptionalSuffixes.confirm "これらの拡張子を持つファイルが添付されている場合は警告する">
+<!ENTITY setting.dialog.exceptionalSuffixes.confirm "これらの拡張子を持つファイルが添付されている場合は再度警告する">
 <!ENTITY setting.dialog.checkbox.countdown "[送信]ボタン押下後にカウントダウンを開始する(1-3000秒)-->">
 <!ENTITY setting.dialog.label.countdown "秒">
 <!ENTITY setting.sub-dialog.title "ドメイン名の入力">
