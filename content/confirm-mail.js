@@ -23,7 +23,11 @@ var ConfirmMail = {
 try { // DEBUG
   	var msgCompFields = gMsgCompose.compFields;
   	Recipients2CompFields(msgCompFields);
-  	gMsgCompose.checkAndPopulateRecipients(true, false, {});
+  	if ('expandMailingLists' in gMsgCompose) // Thunderbird 31 or later
+  		gMsgCompose.expandMailingLists();
+  	else // Thunderbird 24 or older
+  		gMsgCompose.checkAndPopulateRecipients(true, false, {});
+
   	var toList = [];
   	var ccList = [];
   	var bccList = [];
