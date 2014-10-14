@@ -11,10 +11,18 @@
     background: #DEEFFF;
 }
 
-#otherDomains listitem[data-exceptional]:not([selected="true"]),
-#otherDomains:not(:focus) listitem[data-exceptional][selected="true"],
-#fileNames listitem[data-exceptional]:not([selected="true"]),
-#fileNames:not(:focus) listitem[data-exceptional][selected="true"] {
+#otherDomains > listitem[data-exceptional]:not([selected="true"]),
+#otherDomains > listitem[data-exceptional][selected="true"],
+#otherDomains:focus > listitem[data-exceptional]:not([selected="true"]),
+#otherDomains:focus > listitem[data-exceptional][selected="true"],
+#otherDomains:not(:focus) > listitem[data-exceptional]:not([selected="true"]),
+#otherDomains:not(:focus) > listitem[data-exceptional][selected="true"],
+#fileNames > listitem[data-exceptional]:not([selected="true"]),
+#fileNames > listitem[data-exceptional][selected="true"],
+#fileNames:focus > listitem[data-exceptional]:not([selected="true"]),
+#fileNames:focus > listitem[data-exceptional][selected="true"],
+#fileNames:not(:focus) > listitem[data-exceptional]:not([selected="true"]),
+#fileNames:not(:focus) > listitem[data-exceptional][selected="true"] {
     color: red !important;
 }
 
