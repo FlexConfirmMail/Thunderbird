@@ -22,7 +22,6 @@ var CountDown = {
 	 * カウントダウンを開始します
 	 */
 	onLoad : function(){
-try { // DEBUG
 		var time = window.arguments[0];
 		var countDownComplete = window.arguments[1];
 		var limit = time;
@@ -41,8 +40,7 @@ try { // DEBUG
 		 	}else{
 				label.value=limit;
 			}
-		    }},1000, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);	
-} catch(error) { alert(e+'\n'+e.stack); } // DEBUG
+		    }},1000, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
 	},
 
 	onUnload : function(){
