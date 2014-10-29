@@ -30,21 +30,24 @@ try { // DEBUG
 		
 		label.value = limit;
 		
-		var timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
+		var timer = this.timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
 		   
 		timer.initWithCallback( {notify: function(timer) {
 			limit--;
 			if(limit<0){
-				timer.cancel();
 				countDownComplete.value = true;
-				delete timer;
-				close();
+				window.close();
 				
 		 	}else{
 				label.value=limit;
 			}
 		    }},1000, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);	
 } catch(error) { alert(e+'\n'+e.stack); } // DEBUG
+	},
+
+	onUnload : function(){
+		this.timer.cancel();
+		delete this.timer;
 	}
  	   
 };
