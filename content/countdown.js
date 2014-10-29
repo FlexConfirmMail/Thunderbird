@@ -17,7 +17,6 @@
 * 
 * Contributor(s): tanabec
 */ 
-var countDownComplete = window.arguments[1];
 var CountDown = {
 	/**
 	 * カウントダウンを開始します
@@ -25,6 +24,7 @@ var CountDown = {
 	onLoad : function(){
 try { // DEBUG
 		var time = window.arguments[0];
+		var countDownComplete = window.arguments[1];
 		var limit = time;
 		var label = document.getElementById("counter");
 		
