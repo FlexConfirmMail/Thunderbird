@@ -68,12 +68,12 @@ try { // DEBUG
   		
   		if(isCountDown){
   			var countDownTime = nsPreferences.copyUnicharPref(CA_CONST.COUNT_DOWN_TIME);
+  			var countDownComplete = { value : false };
   			
-  			window.confmail_countDownComplete = false;
   			window.openDialog("chrome://confirm-mail/content/countdown.xul", "CountDown Dialog", 
-  			"resizable,chrome,modal,titlebar,centerscreen",window, countDownTime);
+  			"resizable,chrome,modal,titlebar,centerscreen", countDownTime, countDownComplete);
 
-  			if(window.confmail_countDownComplete){
+  			if (countDownComplete.value){
   				return true;
   			}else{
   				//dump("cancel");

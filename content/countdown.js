@@ -17,13 +17,14 @@
 * 
 * Contributor(s): tanabec
 */ 
+var countDownComplete = window.arguments[1];
 var CountDown = {
 	/**
 	 * カウントダウンを開始します
 	 */
 	onLoad : function(){
 try { // DEBUG
-		var time = window.arguments[1];
+		var time = window.arguments[0];
 		var limit = time;
 		var label = document.getElementById("counter");
 		
@@ -35,7 +36,7 @@ try { // DEBUG
 			limit--;
 			if(limit<0){
 				timer.cancel();
-				CountDown.complete();
+				countDownComplete.value = true;
 				delete timer;
 				close();
 				
@@ -44,17 +45,6 @@ try { // DEBUG
 			}
 		    }},1000, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);	
 } catch(error) { alert(e+'\n'+e.stack); } // DEBUG
-	},
-	
-
-	/**
-	 * カウントダウン完了フラグを立てます
-	 */
-	complete : function(){
-		var parentWindow = window.arguments[0];
-		parentWindow.confmail_countDownComplete = true;
-		return true;
 	}
-
  	   
 };
