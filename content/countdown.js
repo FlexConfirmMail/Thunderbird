@@ -23,7 +23,7 @@ var CountDown = {
 	 */
 	onLoad : function(){
 		var time = window.arguments[0];
-		var countDownComplete = window.arguments[1];
+		this.completeFlag = window.arguments[1];
 		var limit = time;
 		var label = document.getElementById("counter");
 		
@@ -31,21 +31,24 @@ var CountDown = {
 		
 		var timer = this.timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
 		   
-		timer.initWithCallback( {notify: function(timer) {
+		timer.initWithCallback( {notify: (function(timer) {
 			limit--;
 			if(limit<0){
-				countDownComplete.value = true;
-				window.close();
-				
+				this.complete();
 		 	}else{
 				label.value=limit;
 			}
-		    }},1000, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
+		    }).bind(this) },1000, Components.interfaces.nsITimer.TYPE_REPEATING_SLACK);
 	},
 
 	onUnload : function(){
 		this.timer.cancel();
 		delete this.timer;
+	},
+
+	complete : function(){
+		this.completeFlag.value = true;
+		window.close();
 	}
  	   
 };
