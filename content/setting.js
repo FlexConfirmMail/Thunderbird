@@ -164,14 +164,10 @@ function selectList(item){
 function saveDomainName(){
 	
 	//ドメイン設定保存
-	var groupList = document.getElementById("group-list");
-	var domainList = new Array();
-	var nodes = groupList.childNodes;
-	for(var i = 0; i < nodes.length; i++){
-		if(nodes[i].nodeName == "listitem"){
-			domainList.push(nodes[i].label);
-		}
-	}
+	var groupList = document.querySelectorAll("#group-list listitem");
+	var domainList = Array.map(groupList, function(item) {
+		return item.getAttribute('label');
+	});
 	var domainListStr = domainList.join(",");
 	nsPreferences.setUnicharPref(CA_CONST.DOMAIN_LIST, domainListStr);
 }
