@@ -16,7 +16,7 @@
 <!ENTITY setting.dialog.exceptionalDomains.attachment "添付ファイルがある場合のみ再度警告する">
 <!ENTITY setting.dialog.exceptionalSuffixes.label   "組織外宛メールの添付ファイルの例外">
 <!ENTITY setting.dialog.exceptionalSuffixes.confirm "これらの拡張子を持つファイルが添付されている場合は再度警告する">
-<!ENTITY setting.dialog.checkbox.countdown "[送信]ボタン押下後にカウントダウンを開始する(1-3000秒)-->">
+<!ENTITY setting.dialog.checkbox.countdown "[送信]ボタン押下後にカウントダウンを開始する(1-3000秒)--&gt;">
 <!ENTITY setting.dialog.label.countdown "秒">
 <!ENTITY setting.sub-dialog.title "ドメイン名の入力">
 <!ENTITY setting.sub-dialog.message "ドメイン名を入力してください(例：example.com)">
