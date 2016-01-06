@@ -1,5 +1,5 @@
 <!ENTITY confirm.dialog.title "确认收信方的邮箱地址">
-<!ENTITY confirm.dialog.message "请确认收信方的邮箱地址。。">
+<!ENTITY confirm.dialog.message "请确认收信方的邮箱地址。">
 <!ENTITY confirm.dialog.yourdomain.label "向已登录域名发送的邮件">
 <!ENTITY confirm.dialog.otherdomain.label "向外部域名发送的邮件">
 <!ENTITY confirm.dialog.fileName.label "附件">
