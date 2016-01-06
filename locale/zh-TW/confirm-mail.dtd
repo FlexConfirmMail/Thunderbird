@@ -1,0 +1,26 @@
+<!ENTITY confirm.dialog.title "確認收信方的郵箱地址">
+<!ENTITY confirm.dialog.message "請確認收信方的郵箱地址。">
+<!ENTITY confirm.dialog.yourdomain.label "向已登錄域名發送的郵件">
+<!ENTITY confirm.dialog.otherdomain.label "向外部域名發送的郵件">
+<!ENTITY confirm.dialog.fileName.label "附件">
+<!ENTITY confirm.dialog.check.label "確認！">
+<!ENTITY setting.dialog.title "confirm-mail 設定">
+<!ENTITY setting.dialog.message "請登錄作爲組織内使用的郵箱地址的域名。">
+<!ENTITY setting.dialog.list.label "域名">
+<!ENTITY setting.dialog.button.add.label "追加">
+<!ENTITY setting.dialog.button.edit.label "編輯">
+<!ENTITY setting.dialog.button.remove.label "刪除">
+<!ENTITY setting.dialog.checkbox.notdisplay "向已登錄域名郵件送信時不會表示倒計時確認">
+<!ENTITY setting.dialog.exceptionalDomains.label    "組織外的郵箱地址的例外">
+<!ENTITY setting.dialog.exceptionalDomains.confirm  "收信方含這些域名時會再次警告。">
+<!ENTITY setting.dialog.exceptionalDomains.attachment "只有存在附件的情況才會再次進行警告">
+<!ENTITY setting.dialog.exceptionalSuffixes.label   "組織外郵件的附件的例外">
+<!ENTITY setting.dialog.exceptionalSuffixes.confirm "添加了含有这些扩张子的附件时会进行再次警告">
+<!ENTITY setting.dialog.checkbox.countdown "點擊[送信]按鈕後開始倒計時(1-3000秒)--&gt;">
+<!ENTITY setting.dialog.label.countdown "秒">
+<!ENTITY setting.sub-dialog.title "輸入域名">
+<!ENTITY setting.sub-dialog.message "请輸入域名(例：example.com)">
+<!ENTITY countdown.dialog.title "倒計時">
+<!ENTITY countdown.dialog.msg1 "之後">
+<!ENTITY countdown.dialog.msg2 "秒後送信。">
+<!ENTITY countdown.dialog.skip "送信">
