@@ -4,7 +4,7 @@
     <em:id>flexible-confirm-mail@clear-code.com</em:id>
     <em:type>2</em:type>
     <em:name>Flex Confirm Mail</em:name>
-    <em:version>1.5.2</em:version>
+    <em:version>1.5.3</em:version>
     <em:creator>ClearCode Inc.</em:creator>
     <em:contributor>tanabec (original author)</em:contributor>
     <em:description>Confirm mailaddress and attachments based on flexible rules.</em:description>
