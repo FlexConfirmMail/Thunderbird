@@ -28,8 +28,8 @@ try { // DEBUG
 	else if (typeof gMsgCompose.checkAndPopulateRecipients == 'function') // Thunderbird 24 -30
 		gMsgCompose.checkAndPopulateRecipients(true, false, {});
 	else
-		throw new Error('gMsgCompose has no method to expand mailing lists!¥n' +
-			'expandMailingLists: '+gMsgCompose.expandMailingLists+'¥n'+
+		throw new Error('gMsgCompose has no method to expand mailing lists!\n' +
+			'expandMailingLists: '+gMsgCompose.expandMailingLists+'\n'+
 			'checkAndPopulateRecipients: '+gMsgCompose.checkAndPopulateRecipients);
 
   	var toList = [];
