@@ -279,6 +279,12 @@ var ExceptionManager = {
 	PREF_DOMAINS : "net.nyail.tanabec.confirm-mail.exceptional-domains",
 	PREF_SUFFIXES : "net.nyail.tanabec.confirm-mail.exceptional-suffixes",
 
+	get prefs() {
+		delete this.prefs;
+		let { prefs } = Components.utils.import('resource://confirm-mail-modules/lib/prefs.js', {});
+		return this.prefs = prefs;
+	},
+
 	_splitToItems: function (list) {
 		return list.replace(/^\s+|\s+$/g, '').split(/[,\s\|;]+/).filter(function(item) {
 			return item;
@@ -289,7 +295,7 @@ var ExceptionManager = {
 
 	get domains () {
 		delete this.domains;
-		var domains = nsPreferences.copyUnicharPref(this.PREF_DOMAINS) || "";
+		var domains = this.prefs.getPref(this.PREF_DOMAINS) || "";
 		return this.domains = this._splitToItems(domains);
 	},
 
@@ -301,7 +307,7 @@ var ExceptionManager = {
 
 	get suffixes () {
 		delete this.suffixes;
-		var suffixes = nsPreferences.copyUnicharPref(this.PREF_SUFFIXES) || "";
+		var suffixes = this.prefs.getPref(this.PREF_SUFFIXES) || "";
 		return this.suffixes = this._splitToItems(suffixes).map(function(suffix) {
 			return suffix.replace(/^\*?\./g, '');
 		});
@@ -400,10 +406,16 @@ function updateCheckAllCheckBox(){
 }
 
 var ConfirmMailDialog = {
+	get prefs() {
+		delete this.prefs;
+		let { prefs } = Components.utils.import('resource://confirm-mail-modules/lib/prefs.js', {});
+		return this.prefs = prefs;
+	},
+
 	getExceptionalRecipients: function () {
-		if (!nsPreferences.getBoolPref("net.nyail.tanabec.confirm-mail.exceptional-domains.confirm"))
+		if (!this.prefs.getPref("net.nyail.tanabec.confirm-mail.exceptional-domains.confirm"))
 			return [];
-		if (nsPreferences.getBoolPref("net.nyail.tanabec.confirm-mail.exceptional-domains.onlyWithAttachment") &&
+		if (this.prefs.getPref("net.nyail.tanabec.confirm-mail.exceptional-domains.onlyWithAttachment") &&
 			!AttachmentManager.hasAttachments())
 			return [];
 
@@ -415,7 +427,7 @@ var ConfirmMailDialog = {
 	},
 
 	getExceptionalAttachments: function () {
-		if (!nsPreferences.getBoolPref("net.nyail.tanabec.confirm-mail.exceptional-suffixes.confirm") ||
+		if (!this.prefs.getBool("net.nyail.tanabec.confirm-mail.exceptional-suffixes.confirm") ||
 			!AttachmentManager.hasAttachments())
 			return [];
 
@@ -440,8 +452,8 @@ var ConfirmMailDialog = {
 		let flags = (promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0)
 			+ (promptService.BUTTON_TITLE_CANCEL * promptService.BUTTON_POS_1);
 		return promptService.confirmEx(window,
-			nsPreferences.getLocalizedUnicharPref("net.nyail.tanabec.confirm-mail." + messageType + ".title"),
-			nsPreferences.getLocalizedUnicharPref("net.nyail.tanabec.confirm-mail." + messageType + ".message")
+			this.prefs.getLocalizedPref("net.nyail.tanabec.confirm-mail." + messageType + ".title"),
+			this.prefs.getLocalizedPref("net.nyail.tanabec.confirm-mail." + messageType + ".message")
 				.replace(/\%s/i, exceptions),
 			flags,
 			getLocaleString("confirm.dialog.acceptbtn.label"),

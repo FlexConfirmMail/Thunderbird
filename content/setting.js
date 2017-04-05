@@ -20,6 +20,8 @@
 var Cc = Components.classes;
 var Ci = Components.interfaces;
 
+var { prefs } = Components.utils.import('resource://confirm-mail-modules/lib/prefs.js', {});
+
 var selectedItem;
 
 var CA_CONST = {
@@ -42,7 +44,7 @@ function startup(){
 	document.getElementById("remove").addEventListener('command', remove, true);
 	var groupList = document.getElementById("group-list");
 
-	var domains = nsPreferences.copyUnicharPref(CA_CONST.DOMAIN_LIST);
+	var domains = prefs.getPref(CA_CONST.DOMAIN_LIST);
 	dump("[registed domains] " + domains + "\n");
 
 
@@ -56,24 +58,24 @@ function startup(){
 			groupList.appendChild(listitem);
 		}
 	}else{
-		nsPreferences.setUnicharPref(CA_CONST.DOMAIN_LIST,"");
+		prefs.setPref(CA_CONST.DOMAIN_LIST,"");
 	}
 
 	//init checkbox [not dispaly when only my domain mail]
-	var isNotDisplay = nsPreferences.getBoolPref(CA_CONST.IS_NOT_DISPLAY, false);
+	var isNotDisplay = prefs.getPref(CA_CONST.IS_NOT_DISPLAY, false);
 	var noDisplayBox = document.getElementById("not-display");
 	noDisplayBox.checked=isNotDisplay;
 
-	document.getElementById("exceptional-domains-confirm").checked=nsPreferences.getBoolPref(CA_CONST.EXCEPTIONAL_DOMAINS_CONFIRM, false);
-	document.getElementById("exceptional-domains-attachment").checked=nsPreferences.getBoolPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT, false);
+	document.getElementById("exceptional-domains-confirm").checked=prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_CONFIRM, false);
+	document.getElementById("exceptional-domains-attachment").checked=prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT, false);
 	var exceptionalDomains = document.getElementById("exceptional-domains");
-	exceptionalDomains.value = nsPreferences.copyUnicharPref(CA_CONST.EXCEPTIONAL_DOMAINS)
+	exceptionalDomains.value = prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS)
 		.replace(/^\s+|\s+$/g, '')
 		.replace(/\s+/g, '\n');
 
-	document.getElementById("exceptional-suffixes-confirm").checked=nsPreferences.getBoolPref(CA_CONST.EXCEPTIONAL_SUFFIXES_CONFIRM, false);
+	document.getElementById("exceptional-suffixes-confirm").checked=prefs.getPref(CA_CONST.EXCEPTIONAL_SUFFIXES_CONFIRM, false);
 	var exceptionalSuffixes = document.getElementById("exceptional-suffixes");
-	exceptionalSuffixes.value = nsPreferences.copyUnicharPref(CA_CONST.EXCEPTIONAL_SUFFIXES)
+	exceptionalSuffixes.value = prefs.getPref(CA_CONST.EXCEPTIONAL_SUFFIXES)
 		.replace(/^\s+|\s+$/g, '')
 		.replace(/\s+/g, '\n');
 
@@ -87,7 +89,7 @@ function startup(){
 		},
 		true);
 
-	var isCountDown = nsPreferences.getBoolPref(CA_CONST.IS_COUNT_DOWN, false);
+	var isCountDown = prefs.getPref(CA_CONST.IS_COUNT_DOWN, false);
 	if(isCountDown == null || isCountDown == false){
 		cdBox.checked = false;
 		cdTimeBox.disabled = true;
@@ -96,7 +98,7 @@ function startup(){
 		cdTimeBox.disable = false;
 	}
 
-	var countDonwTime = nsPreferences.copyUnicharPref(CA_CONST.COUNT_DOWN_TIME);
+	var countDonwTime = prefs.getPref(CA_CONST.COUNT_DOWN_TIME);
 	cdTimeBox.value = countDonwTime;
 }
 
@@ -111,7 +113,7 @@ function add(event){
 		
 		// check duplication
 		if(domainName.length > 0  
-			&& nsPreferences.copyUnicharPref(CA_CONST.DOMAIN_LIST).indexOf(domainName) == -1){
+			&& prefs.getPref(CA_CONST.DOMAIN_LIST).indexOf(domainName) == -1){
 
 			dump("[add!] " + domainName + "\n");
 			var groupList = document.getElementById("group-list");
@@ -139,7 +141,7 @@ function edit(event){
 		//check duplication
 		if(selectedItem.label==domainName 
 			|| (domainName.length > 0 
-				&& nsPreferences.copyUnicharPref(CA_CONST.DOMAIN_LIST).indexOf(domainName) == -1)){
+				&& prefs.getPref(CA_CONST.DOMAIN_LIST).indexOf(domainName) == -1)){
 
 			dump("[edit!] " + domainName + "\n");
 			selectedItem.setAttribute("label", domainName);
@@ -169,7 +171,7 @@ function saveDomainName(){
 		return item.getAttribute('label');
 	});
 	var domainListStr = domainList.join(",");
-	nsPreferences.setUnicharPref(CA_CONST.DOMAIN_LIST, domainListStr);
+	prefs.setPref(CA_CONST.DOMAIN_LIST, domainListStr);
 }
 
 function doOK(){
@@ -178,19 +180,19 @@ function doOK(){
 	//チェックボックス設定保存
     
 	var notDisplay = document.getElementById("not-display").checked;
-	nsPreferences.setBoolPref(CA_CONST.IS_NOT_DISPLAY, notDisplay);
+	prefs.setPref(CA_CONST.IS_NOT_DISPLAY, notDisplay);
 
 	var isCountdown = document.getElementById("countdown").checked;
-	nsPreferences.setBoolPref(CA_CONST.IS_COUNT_DOWN, isCountdown);
+	prefs.setPref(CA_CONST.IS_COUNT_DOWN, isCountdown);
 
-	nsPreferences.setBoolPref(CA_CONST.EXCEPTIONAL_DOMAINS_CONFIRM, document.getElementById("exceptional-domains-confirm").checked);
-	nsPreferences.setBoolPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT, document.getElementById("exceptional-domains-attachment").checked);
+	prefs.setPref(CA_CONST.EXCEPTIONAL_DOMAINS_CONFIRM, document.getElementById("exceptional-domains-confirm").checked);
+	prefs.setPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT, document.getElementById("exceptional-domains-attachment").checked);
 	var exceptionalDomains = document.getElementById("exceptional-domains").value;
-	nsPreferences.setUnicharPref(CA_CONST.EXCEPTIONAL_DOMAINS, exceptionalDomains.replace(/\s+/g, ' '));
+	prefs.setPref(CA_CONST.EXCEPTIONAL_DOMAINS, exceptionalDomains.replace(/\s+/g, ' '));
 
-	nsPreferences.setBoolPref(CA_CONST.EXCEPTIONAL_SUFFIXES_CONFIRM, document.getElementById("exceptional-suffixes-confirm").checked);
+	prefs.setPref(CA_CONST.EXCEPTIONAL_SUFFIXES_CONFIRM, document.getElementById("exceptional-suffixes-confirm").checked);
 	var exceptionalSuffixes = document.getElementById("exceptional-suffixes").value;
-	nsPreferences.setUnicharPref(CA_CONST.EXCEPTIONAL_SUFFIXES, exceptionalSuffixes.replace(/\s+/g, ' '));
+	prefs.setPref(CA_CONST.EXCEPTIONAL_SUFFIXES, exceptionalSuffixes.replace(/\s+/g, ' '));
 
 	var cdTime = document.getElementById("countdown-time").value;
 	
@@ -205,7 +207,7 @@ function doOK(){
 		return false;
 	}
 
-	nsPreferences.setUnicharPref(CA_CONST.COUNT_DOWN_TIME, cdTime);
+	prefs.setPref(CA_CONST.COUNT_DOWN_TIME, cdTime);
 
 	return true;
 }

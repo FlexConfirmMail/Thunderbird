@@ -18,6 +18,12 @@
 * Contributor(s): tanabec
 */ 
 var ConfirmMail = {
+  get prefs() {
+    delete this.prefs;
+    let { prefs } = Components.utils.import('resource://confirm-mail-modules/lib/prefs.js', {});
+    return this.prefs = prefs;
+  },
+
 
   checkAddress: function(){
 try { // DEBUG
@@ -55,7 +61,7 @@ try { // DEBUG
     	this.collectFileName(msgCompFields,fileNamesList);
     	//dump("[FILENAME]" + fileNamesList + "\n");
 
-  	var isNotDisplay = nsPreferences.getBoolPref(CA_CONST.IS_NOT_DISPLAY, false);
+  	var isNotDisplay = this.prefs.getPref(CA_CONST.IS_NOT_DISPLAY, false);
 
 
   	if(isNotDisplay && externalList.length == 0 && internalList.length > 0){
@@ -68,10 +74,10 @@ try { // DEBUG
     	}
     
   	if(window.confmail_confirmOK){
-  		var isCountDown = nsPreferences.getBoolPref(CA_CONST.IS_COUNT_DOWN, false);
+  		var isCountDown = this.prefs.getPref(CA_CONST.IS_COUNT_DOWN, false);
   		
   		if(isCountDown){
-  			var countDownTime = nsPreferences.copyUnicharPref(CA_CONST.COUNT_DOWN_TIME);
+  			var countDownTime = this.prefs.getPref(CA_CONST.COUNT_DOWN_TIME);
   			var countDownComplete = { value : false };
   			
   			window.openDialog("chrome://confirm-mail/content/countdown.xul", "CountDown Dialog", 
@@ -201,7 +207,7 @@ judge : function(recipients, domainList, yourDomainRecipients, otherDomainRecipi
   },
 
   getDomainList : function(){
-  	var domains = nsPreferences.copyUnicharPref(CA_CONST.DOMAIN_LIST);
+  	var domains = this.prefs.getPref(CA_CONST.DOMAIN_LIST);
   	if(domains == null || domains.length == 0){
   		return new Array();
   	}
