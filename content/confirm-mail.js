@@ -89,7 +89,7 @@ try { // DEBUG
   	}else{
   		return false;
   	}
-} catch(error) { alert(e+'\n'+e.stack); } // DEBUG
+} catch(error) { alert(error+'\n'+error.stack); } // DEBUG
   },
 
   splitRecipients: function(addressesSource, type){
