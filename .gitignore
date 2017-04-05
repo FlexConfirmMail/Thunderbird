@@ -1,0 +1,4 @@
+sha1hash.txt
+*.xpi
+modules/lib/*
+node_modules
