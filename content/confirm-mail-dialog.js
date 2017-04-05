@@ -427,7 +427,7 @@ var ConfirmMailDialog = {
 	},
 
 	getExceptionalAttachments: function () {
-		if (!this.prefs.getBool("net.nyail.tanabec.confirm-mail.exceptional-suffixes.confirm") ||
+		if (!this.prefs.getPref("net.nyail.tanabec.confirm-mail.exceptional-suffixes.confirm") ||
 			!AttachmentManager.hasAttachments())
 			return [];
 
