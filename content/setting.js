@@ -207,7 +207,7 @@ function doOK(){
 		return false;
 	}
 
-	prefs.setPref(CA_CONST.COUNT_DOWN_TIME, cdTime);
+	prefs.setPref(CA_CONST.COUNT_DOWN_TIME, String(cdTime));
 
 	return true;
 }
