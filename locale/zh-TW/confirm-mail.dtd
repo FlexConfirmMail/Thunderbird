@@ -2,6 +2,7 @@
 <!ENTITY confirm.dialog.message "請確認收信方的郵箱地址。">
 <!ENTITY confirm.dialog.yourdomain.label "向已登錄域名發送的郵件">
 <!ENTITY confirm.dialog.otherdomain.label "向外部域名發送的郵件">
+<!ENTITY confirm.dialog.body.label "Body">
 <!ENTITY confirm.dialog.fileName.label "附件">
 <!ENTITY confirm.dialog.check.label "確認！">
 <!ENTITY setting.dialog.title "confirm-mail 設定">
