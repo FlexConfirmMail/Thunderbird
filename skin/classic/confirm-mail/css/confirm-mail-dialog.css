@@ -26,6 +26,12 @@
     color: red !important;
 }
 
+richlistitem {
+	-moz-box-orieng: horizontal;
+	-moz-box-align: center;
+	-moz-box-pack: stretch;
+}
+
 splitter {
     -moz-appearance: none;
     background: transparent;

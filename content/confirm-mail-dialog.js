@@ -147,7 +147,9 @@ function startup() {
 
 				// destinations in this group
 				for (let [, destination] in Iterator(destinationsForThisGroup)) {
-					let listitem = createListItemWithCheckbox(createRecipientLabel(destination), true);
+					let listitem = createListItemWithCheckbox(createRecipientLabel(destination), {
+						indented: true
+					});
 					if (shouldBeColored) {
 						listitem.setAttribute("data-exceptional", "true");
 					}
@@ -185,13 +187,16 @@ function startup() {
 
 	function setupAttachmentList(fileNames) {
 		//attachments list
-		var fileNamesList = document.getElementById("fileNames");
+		var fileNamesList = document.getElementById("fileNamesList");
 
 		var exceptionalItems = [];
 		var normalItems = [];
 		for (var i = 0; i < fileNames.length; i++) {
 			let fileName = fileNames[i];
-			let attachmentFileItem = createListItemWithCheckbox(fileName);
+			let attachmentFileItem = createListItemWithCheckbox(fileName, {
+				rich:           true,
+				requireReinput: ConfirmMailDialog.requireReinputAttachmentNames()
+			});
 			if (ExceptionManager.fileHasExceptionalSuffix(fileName)) {
 				attachmentFileItem.setAttribute("data-exceptional", "true");
 				exceptionalItems.push(attachmentFileItem);
@@ -345,29 +350,56 @@ function foldLongTooltipText(text) {
 	return folded.join("\n");
 }
 
-function createListItemWithCheckbox(itemLabel, onlyRightColumn) {
-	var listitem = document.createElement("listitem");
-	listitem.setAttribute("tooltiptext", foldLongTooltipText(itemLabel));
+function createListItemWithCheckbox(itemLabel, aOptions) {
+	aOptions = aOptions || {};
+	var listitem = document.createElement(aOptions.rich ? "richlistitem" : "listitem");
 
-	var cell1 = document.createElement("listcell");
+	var checkboxCell = document.createElement(aOptions.rich ? "hbox" : "listcell");
 	var checkbox = document.createElement("checkbox");
-	listitem.appendChild(cell1);
+	listitem.appendChild(checkboxCell);
 
-	listitem.onclick = function(event){
-		var checked = checkbox.checked;
-		checkbox.setAttribute("checked", !checked);
-		checkAllChecked();
-	};
 
-	var cell2 = document.createElement("listcell");
-	listitem.appendChild(cell2);
-
-	if (onlyRightColumn) {
-		cell2.appendChild(checkbox);
+	if (aOptions.indented) {
+		let labelCell = document.createElement(aOptions.rich ? "hbox" : "listcell");
+		listitem.appendChild(labelCell);
+		labelCell.appendChild(checkbox);
 		checkbox.setAttribute("label", itemLabel);
 	} else {
-		cell1.appendChild(checkbox);
-		cell2.setAttribute("label", itemLabel);
+		checkboxCell.appendChild(checkbox);
+		if (aOptions.rich) {
+			let label = document.createElement("label");
+			label.setAttribute("flex", 1);
+			label.setAttribute("crop", "end");
+			label.setAttribute("value", itemLabel);
+			label.setAttribute("tooltiptext", foldLongTooltipText(itemLabel));
+			listitem.appendChild(label);
+		} else {
+			let labelCell = document.createElement(aOptions.rich ? "hbox" : "listcell");
+			labelCell.setAttribute("label", itemLabel);
+		}
+	}
+
+	if (aOptions.rich && aOptions.requireReinput) {
+		checkbox.setAttribute("disabled", true);
+		let field = document.createElement("textbox");
+		field.setAttribute("placeholder", getLocaleString("confirm.dialog.attachmentName.reinput.placeholder"));
+		field.addEventListener("input", function(event) {
+			checkbox.setAttribute("checked", event.target.value == itemLabel);
+		}, false);
+		field.onresize = function() {
+			field.width = parseInt(window.outerWidth * 0.45);
+		};
+		window.addEventListener("resize", function() {
+			field.onresize();
+		});
+		listitem.appendChild(field);
+	} else {
+		listitem.setAttribute("tooltiptext", foldLongTooltipText(itemLabel));
+		listitem.onclick = function(event){
+			var checked = checkbox.checked;
+			checkbox.setAttribute("checked", !checked);
+			checkAllChecked();
+		};
 	}
 
 	return listitem;
@@ -455,6 +487,10 @@ var ConfirmMailDialog = {
 
 	requireCheckBody: function () {
 		return this.prefs.getPref("net.nyail.tanabec.confirm-mail.requireCheckBody");
+	},
+
+	requireReinputAttachmentNames: function () {
+		return this.prefs.getPref("net.nyail.tanabec.confirm-mail.requireReinputAttachmentNames");
 	},
 
 	confirmExceptionalDomains: function (exceptions) {
