@@ -172,7 +172,7 @@ function startup() {
 	}
 
 	function setupBodyField() {
-		if (ConfirmMailDialog.shouldCheckBody) {
+		if (ConfirmMailDialog.shouldCheckBody()) {
 			var body = window.arguments[4];
 			var field = document.getElementById("bodyField");
 			field.contentDocument.documentElement.appendChild(body);
@@ -180,7 +180,7 @@ function startup() {
 			var check = document.getElementById("checkbox_body");
 			check.setAttribute("disabled", true);
 			var box = document.getElementById("body");
-			body.hidden = body.previousSibling.hidden = true;
+			box.hidden = box.previousSibling.hidden = true;
 		}
 	}
 
