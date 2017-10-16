@@ -72,28 +72,20 @@ function startup() {
 
 	function setupExternalDomainList(externals) {
 		function createGroupHeader(domain) {
-			var headerItem = document.createElement("listitem");
+			var headerItem = document.createElement("richlistitem");
 			headerItem.setAttribute("class", "confirm-mail-list-separator");
 			headerItem.setAttribute("data-domain-name", domain);
-
-			var headerIconItem = document.createElement("listcell");
-			headerIconItem.setAttribute("class", "listcell-iconic");
-
-			var headerLabelItem = document.createElement("listcell");
-			headerLabelItem.setAttribute("label", "@" + domain);
-
-			headerItem.appendChild(headerIconItem);
+			var headerLabelItem = document.createElement("label");
+			headerLabelItem.setAttribute("value", "@" + domain);
 			headerItem.appendChild(headerLabelItem);
-
 			return headerItem;
 		}
 
 		function setHeaderStarIconVisible(groupHeaderItem, groupAllChecked) {
-			// TODO: Use CSS
-			var icon = groupAllChecked ?
-				"chrome://confirm-mail/skin/icon/star16.png" :
-				"chrome://confirm-mail/skin/icon/blank16.png"
-			groupHeaderItem.firstChild.setAttribute("image", icon);
+			if (groupAllChecked)
+				groupHeaderItem.classList.add("all-checked");
+			else
+				groupHeaderItem.classList.remove("all-checked");
 		}
 
 		let groupedExternalAddressItems = {};
@@ -118,12 +110,16 @@ function startup() {
 			return cursorItem;
 		}
 
-		var externalList = document.getElementById("otherDomains");
-		externalList.addEventListener("click", function (ev) {
-			let listitem = ev.originalTarget;
-			if (listitem.localName !== "listitem") return;
+		var externalList = document.getElementById("otherDomainsList");
+		externalList.addEventListener("click", function (event) {
+			let target = event.target;
+			while (target && target.localName !== "richlistitem") {
+				target = target.parentNode;
+			}
+			if (!target || target.classList.contains("confirm-mail-list-separator"))
+				return;
 
-			let groupHeaderItem = getGroupHeaderForItem(listitem);
+			let groupHeaderItem = getGroupHeaderForItem(target);
 			let groupDomain = groupHeaderItem.getAttribute("data-domain-name");
 			setHeaderStarIconVisible(
 				groupHeaderItem,
@@ -148,7 +144,7 @@ function startup() {
 				// destinations in this group
 				for (let [, destination] in Iterator(destinationsForThisGroup)) {
 					let listitem = createListItemWithCheckbox(createRecipientLabel(destination), {
-						indented: true
+						rich: true
 					});
 					if (shouldBeColored) {
 						listitem.setAttribute("data-exceptional", "true");
@@ -355,16 +351,10 @@ function createListItemWithCheckbox(itemLabel, aOptions) {
 	var listitem = document.createElement(aOptions.rich ? "richlistitem" : "listitem");
 
 	var checkboxCell = document.createElement(aOptions.rich ? "hbox" : "listcell");
+	checkboxCell.classList.add("checkbox");
 	var checkbox = document.createElement("checkbox");
 	listitem.appendChild(checkboxCell);
 
-
-	if (aOptions.indented) {
-		let labelCell = document.createElement(aOptions.rich ? "hbox" : "listcell");
-		listitem.appendChild(labelCell);
-		labelCell.appendChild(checkbox);
-		checkbox.setAttribute("label", itemLabel);
-	} else {
 		checkboxCell.appendChild(checkbox);
 		if (aOptions.rich) {
 			let label = document.createElement("label");
@@ -377,7 +367,6 @@ function createListItemWithCheckbox(itemLabel, aOptions) {
 			let labelCell = document.createElement(aOptions.rich ? "hbox" : "listcell");
 			labelCell.setAttribute("label", itemLabel);
 		}
-	}
 
 	if (aOptions.rich && aOptions.requireReinput) {
 		checkbox.setAttribute("disabled", true);

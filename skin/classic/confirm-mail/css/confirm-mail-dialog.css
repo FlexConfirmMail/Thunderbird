@@ -32,6 +32,27 @@ richlistitem {
 	-moz-box-pack: stretch;
 }
 
+richlistitem hbox.checkbox {
+	max-width: 20px;
+}
+richlistitem hbox.checkbox checkbox label {
+	display: none;
+}
+
+richlistbox#otherDomainsList richlistitem.confirm-mail-list-separator {
+	background-image: url("chrome://confirm-mail/skin/icon/blank16.png");
+	background-repeat: no-repeat;
+	background-position: 3px center;
+	padding-left: 18px;
+}
+richlistbox#otherDomainsList richlistitem.confirm-mail-list-separator.all-checked {
+	background-image: url("chrome://confirm-mail/skin/icon/star16.png");
+}
+
+richlistbox#otherDomainsList richlistitem:not(.confirm-mail-list-separator) {
+	padding-left: 32px;
+}
+
 splitter {
     -moz-appearance: none;
     background: transparent;

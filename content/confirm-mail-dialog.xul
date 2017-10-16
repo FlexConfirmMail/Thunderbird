@@ -53,16 +53,11 @@
 		</listcols>
 	</listbox>
 	<splitter/>
-	<listbox id="otherDomains" flex="2" height="250" persist="height">
-		<listhead>
-			<listheader/>
-			<listheader label="&confirm.dialog.otherdomain.label;"/>
-		</listhead>
-		<listcols>
-			<listcol/>
-			<listcol flex="1"/>
-		</listcols>
-	</listbox>
+	<groupbox id="otherDomains" flex="2" height="250" persist="height">
+		<caption label="&confirm.dialog.otherdomain.label;"/>
+		<richlistbox id="otherDomainsList" flex="1">
+		</richlistbox>
+	</groupbox>
 	<splitter/>
 	<groupbox id="body" flex="2" persist="height">
 		<caption><checkbox id="checkbox_body"
