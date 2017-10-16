@@ -3,25 +3,25 @@
 * Version 1.1 (the "License"); you may not use this file except in
 * compliance with the License. You may obtain a copy of the License at
 * http://www.mozilla.org/MPL/
-* 
+*
 * Software distributed under the License is distributed on an "AS IS"
 * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
 * License for the specific language governing rights and limitations
 * under the License.
-* 
+*
 * The Original Code is confirm-address.
-* 
+*
 * The Initial Developers of the Original Code are kentaro.matsumae and Meatian.
-* Portions created by Initial Developers are 
+* Portions created by Initial Developers are
 * Copyright (C) 2007-2011 the Initial Developer.All Rights Reserved.
-* 
+*
 * Contributor(s): tanabec
-*/ 
+*/
 var ConfirmMail = {
   get prefs() {
-    delete this.prefs;
-    let { prefs } = Components.utils.import('resource://confirm-mail-modules/lib/prefs.js', {});
-    return this.prefs = prefs;
+	delete this.prefs;
+	let { prefs } = Components.utils.import('resource://confirm-mail-modules/lib/prefs.js', {});
+	return this.prefs = prefs;
   },
 
 
@@ -45,8 +45,8 @@ try { // DEBUG
   	//dump("[TO] "+ toList + "\n");
   	//dump("[CC] "+ ccList + "\n");
   	//dump("[BCC] "+ bccList + "\n");
-  
-    var domainList = this.getDomainList();
+
+	var domainList = this.getDomainList();
   	//dump("[DOMAINLIST] "+ domainList + "\n");
 
   	var internalList = [];
@@ -56,10 +56,10 @@ try { // DEBUG
   	this.judge(bccList, domainList, internalList, externalList);
   	//dump("[INTERNAL] "+ internalList + "\n");
   	//dump("[EXTERNAL] "+ externalList + "\n");
-    
+
 	var fileNamesList = [];
-    	this.collectFileName(msgCompFields,fileNamesList);
-    	//dump("[FILENAME]" + fileNamesList + "\n");
+	this.collectFileName(msgCompFields,fileNamesList);
+	//dump("[FILENAME]" + fileNamesList + "\n");
 
   	var isNotDisplay = this.prefs.getPref(CA_CONST.IS_NOT_DISPLAY, false);
 
@@ -67,22 +67,21 @@ try { // DEBUG
   	if(isNotDisplay && externalList.length == 0 && internalList.length > 0){
   		window.confmail_confirmOK = true;
   	}else{
-      		window.confmail_confirmOK = false;
-      		window.openDialog("chrome://confirm-mail/content/confirm-mail-dialog.xul",
-    				"ConfirmAddressDialog", "resizable,chrome,modal,titlebar,centerscreen",
-    				window,
-    				internalList, externalList, fileNamesList,
-    				this.getBody());
-    	}
-    
+		window.confmail_confirmOK = false;
+		window.openDialog("chrome://confirm-mail/content/confirm-mail-dialog.xul",
+			"ConfirmAddressDialog", "resizable,chrome,modal,titlebar,centerscreen",
+			window,
+			internalList, externalList, fileNamesList,
+			this.getBody());
+	}
+	
   	if(window.confmail_confirmOK){
   		var isCountDown = this.prefs.getPref(CA_CONST.IS_COUNT_DOWN, false);
-  		
   		if(isCountDown){
   			var countDownTime = this.prefs.getPref(CA_CONST.COUNT_DOWN_TIME);
   			var countDownComplete = { value : false };
   			
-  			window.openDialog("chrome://confirm-mail/content/countdown.xul", "CountDown Dialog", 
+  			window.openDialog("chrome://confirm-mail/content/countdown.xul", "CountDown Dialog",
   			"resizable,chrome,modal,titlebar,centerscreen", countDownTime, countDownComplete);
 
   			if (countDownComplete.value){
@@ -106,14 +105,14 @@ try { // DEBUG
 	var names = {};
 	var fullNames = {};
 	var numAddresses = gMimeHeaderParser.parseHeadersWithArray(
-	                     addressesSource, addresses, names, fullNames);
+						 addressesSource, addresses, names, fullNames);
 	var recipients = [];
 	for (let i = 0; i < numAddresses; i++) {
 		recipients.push({
 			address:  addresses.value[i],
-			name:     names.value[i],
+			name:	 names.value[i],
 			fullName: fullNames.value[i],
-			type:     type
+			type:	 type
 		});
 	}
 	return recipients;
@@ -133,33 +132,27 @@ try { // DEBUG
 		bccList.push(recipient);
 	});
   },
-  
+
 collectFileName: function(msgCompFields,fileNamesList) {
 
-    if (msgCompFields == null) {
-        return;
-    }
+	if (msgCompFields == null) {
+		return;
+	}
 
-    try {
-        
-        var attachmentList = document.getElementById('attachmentBucket');
-        
-        for (var i = 0; i < attachmentList.getRowCount(); i++) {
-       
-
-            var attachmentItem = attachmentList.childNodes[i];
-            var fileName = attachmentItem.getAttribute("label") || attachmentItem.getAttribute("name");
-            fileNamesList.push(fileName);
-	
-        }
-      
-    } catch (e) {
-        //ignore
-        //dump(e);
-    }
-        
+	try {
+		var attachmentList = document.getElementById('attachmentBucket');
+		for (var i = 0; i < attachmentList.getRowCount(); i++) {
+			var attachmentItem = attachmentList.childNodes[i];
+			var fileName = attachmentItem.getAttribute("label") || attachmentItem.getAttribute("name");
+			fileNamesList.push(fileName);
+		}	
+	} catch (e) {
+		//ignore
+		//dump(e);
+	}
+		
 },
-    
+	
 /**
  * recipientsに含まれるアドレスを判定し、組織外、組織内に振り分けます
  */
@@ -188,9 +181,9 @@ judge : function(recipients, domainList, yourDomainRecipients, otherDomainRecipi
 		var match = false;
 
 		 if(domain.search(/>$/)!=-1){
-	            //address end with ">"
-	            domain = domain.substring(0,domain.length-1);
-	        }
+			//address end with ">"
+			domain = domain.substring(0,domain.length-1);
+		}
 
   		for(var j = 0; j < domainList.length; j++){
   			var insiderDomain = domainList[j].toLowerCase();

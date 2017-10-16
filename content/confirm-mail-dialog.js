@@ -234,7 +234,7 @@ var AddressUtil = {
 	},
 
 	groupDestinationsByDomain: function (recipients) {
-		var recipientGroups = {};               // domain -> [recipients]
+		var recipientGroups = {};			   // domain -> [recipients]
 
 		for (var i = 0, len = recipients.length; i < len; ++i) {
 			var recipient = recipients[i];
@@ -398,9 +398,9 @@ function switchInternalCheckBox(){
 	var isChecked = checkAll.checked;
 	var yourdomains = document.getElementById("yourDomains");
 	var checkboxes = yourdomains.getElementsByTagName("checkbox");
-    for(var i=0; i<checkboxes.length; i++){
-        // don't use element.checked=true, because hidden (out of screen) elements are not checked.
-        checkboxes[i].setAttribute("checked", isChecked);
+	for(var i=0; i<checkboxes.length; i++){
+		// don't use element.checked=true, because hidden (out of screen) elements are not checked.
+		checkboxes[i].setAttribute("checked", isChecked);
 	}
 
 }
