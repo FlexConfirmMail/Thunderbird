@@ -2,6 +2,7 @@
 <!ENTITY confirm.dialog.message "Please confirm the following E-mail Addresses">
 <!ENTITY confirm.dialog.yourdomain.label "Your domain addresses">
 <!ENTITY confirm.dialog.otherdomain.label "Other domain addresses">
+<!ENTITY confirm.dialog.body.label "Body">
 <!ENTITY confirm.dialog.fileName.label "attachments">
 <!ENTITY confirm.dialog.check.label "Check!">
 <!ENTITY setting.dialog.title "confirm-mail settings">

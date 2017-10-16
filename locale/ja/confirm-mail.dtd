@@ -2,6 +2,7 @@
 <!ENTITY confirm.dialog.message "あて先メールアドレスを確認してください。">
 <!ENTITY confirm.dialog.yourdomain.label "登録済みドメインへのメール">
 <!ENTITY confirm.dialog.otherdomain.label "外部ドメインへのメール">
+<!ENTITY confirm.dialog.body.label "本文">
 <!ENTITY confirm.dialog.fileName.label "添付ファイル">
 <!ENTITY confirm.dialog.check.label "確認！">
 <!ENTITY setting.dialog.title "confirm-mail 設定">

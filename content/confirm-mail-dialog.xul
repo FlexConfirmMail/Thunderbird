@@ -64,7 +64,16 @@
 		</listcols>
 	</listbox>
 	<splitter/>
-	<listbox id="fileNames" flex="1">
+	<groupbox id="body" flex="2" persist="height">
+		<caption><checkbox id="checkbox_body"
+					label="&confirm.dialog.body.label;"
+					oncommand="checkAllChecked()"/></caption>
+		<iframe id="bodyField"
+			flex="1"
+			src="data:text/html,&lt;!DOCTYPE html&gt;&lt;html style=&quot;padding: 0.3em; color: -moz-fieldtext; background: -moz-field;;&quot;&gt;&lt;style type=&quot;text/css&quot;&gt;* { font-size: medium !important; }&lt;/style&gt;&lt;/html&gt;"/>
+	</groupbox>
+	<splitter/>
+	<listbox id="fileNames" flex="1" persist="height">
 		<listhead>
 			<listheader/>
 			<listheader label="&confirm.dialog.fileName.label;"/>

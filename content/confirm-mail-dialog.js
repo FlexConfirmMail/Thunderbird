@@ -171,6 +171,12 @@ function startup() {
 		createExternalDomainsListItems(externals);
 	}
 
+	function setupBodyField() {
+		var body = window.arguments[4];
+		var field = document.getElementById("bodyField");
+		field.contentDocument.documentElement.appendChild(body);
+	}
+
 	function setupAttachmentList(fileNames) {
 		//attachments list
 		var fileNamesList = document.getElementById("fileNames");
@@ -195,6 +201,7 @@ function startup() {
 	setupOKButton();
 	setupInternalDestinationList(DestinationManager.getInternalDestinationList());
 	setupExternalDomainList(DestinationManager.getExternalDestinationList());
+	setupBodyField();
 	setupAttachmentList(AttachmentManager.getAttachmentList());
 }
 

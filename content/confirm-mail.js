@@ -69,8 +69,10 @@ try { // DEBUG
   	}else{
       		window.confmail_confirmOK = false;
       		window.openDialog("chrome://confirm-mail/content/confirm-mail-dialog.xul",
-        			"ConfirmAddressDialog", "resizable,chrome,modal,titlebar,centerscreen", 
-        			window, internalList, externalList,fileNamesList);
+    				"ConfirmAddressDialog", "resizable,chrome,modal,titlebar,centerscreen",
+    				window,
+    				internalList, externalList, fileNamesList,
+    				this.getBody());
     	}
     
   	if(window.confmail_confirmOK){
