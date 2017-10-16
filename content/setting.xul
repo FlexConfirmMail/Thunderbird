@@ -38,50 +38,50 @@
 		<tab label="&setting.dialog.tab.misc;"/>
 	</tabs>
 	<tabpanels flex="1">
-<vbox flex="1">
-<label value="&setting.dialog.message;"/>
-<listbox id="group-list" rows="6" onselect="selectList(this.selectedItem);"
-	style="width:500px">
-	<listhead>
-		<listheader label="&setting.dialog.list.label;"/>
-	</listhead>
-	<listcols>
-		<listcol flex="1"/>
-  	</listcols>
-</listbox>
-<hbox>
-	<button id="add" label="&setting.dialog.button.add.label;" flex="1"/>
-	<button id="edit" label="&setting.dialog.button.edit.label;" flex="1"/>
-	<button id="remove" label="&setting.dialog.button.remove.label;" flex="1"/>
-</hbox>
-<groupbox orient="vertical">
-	<caption label="&setting.dialog.exceptionalDomains.label;" control="exceptional-domains"/>
-	<checkbox id="exceptional-domains-confirm" label="&setting.dialog.exceptionalDomains.confirm;"/>
-	<hbox>
-		<spacer style="width:1em"/>
-		<checkbox id="exceptional-domains-attachment" label="&setting.dialog.exceptionalDomains.attachment;"/>
-	</hbox>
-	<textbox id="exceptional-domains" multiline="true" rows="4"/>
-</groupbox>
-<separator/>
-<checkbox id="not-display" label="&setting.dialog.checkbox.notdisplay;"/>
-</vbox>
-<vbox flex="1">
-<groupbox orient="vertical">
-	<caption label="&setting.dialog.exceptionalSuffixes.label;" control="exceptional-suffixes"/>
-	<checkbox id="exceptional-suffixes-confirm" label="&setting.dialog.exceptionalSuffixes.confirm;"/>
-	<textbox id="exceptional-suffixes" multiline="true" rows="4"/>
-</groupbox>
-<checkbox id="requireReinputAttachmentNames" label="&setting.dialog.checkbox.requireReinputAttachmentNames;"/>
-</vbox>
-<vbox flex="1">
-<hbox>
-	<checkbox id="countdown" label="&setting.dialog.checkbox.countdown;"/>
-	<textbox id="countdown-time" maxwidth="50"/>
-	<label value="&setting.dialog.label.countdown;" style="padding-top:5px; padding-bottom:5px;"/>
-</hbox>
-<checkbox id="requireCheckBody" label="&setting.dialog.checkbox.requireCheckBody;"/>
-</vbox>
+		<vbox flex="1">
+			<label value="&setting.dialog.message;"/>
+			<listbox id="group-list" rows="6" onselect="selectList(this.selectedItem);"
+				style="width:500px">
+				<listhead>
+					<listheader label="&setting.dialog.list.label;"/>
+				</listhead>
+				<listcols>
+					<listcol flex="1"/>
+			  	</listcols>
+			</listbox>
+			<hbox>
+				<button id="add" label="&setting.dialog.button.add.label;" flex="1"/>
+				<button id="edit" label="&setting.dialog.button.edit.label;" flex="1"/>
+				<button id="remove" label="&setting.dialog.button.remove.label;" flex="1"/>
+			</hbox>
+			<groupbox orient="vertical">
+				<caption label="&setting.dialog.exceptionalDomains.label;" control="exceptional-domains"/>
+				<checkbox id="exceptional-domains-confirm" label="&setting.dialog.exceptionalDomains.confirm;"/>
+				<hbox>
+					<spacer style="width:1em"/>
+					<checkbox id="exceptional-domains-attachment" label="&setting.dialog.exceptionalDomains.attachment;"/>
+				</hbox>
+				<textbox id="exceptional-domains" multiline="true" rows="4"/>
+			</groupbox>
+			<separator/>
+			<checkbox id="not-display" label="&setting.dialog.checkbox.notdisplay;"/>
+		</vbox>
+		<vbox flex="1">
+			<groupbox orient="vertical">
+				<caption label="&setting.dialog.exceptionalSuffixes.label;" control="exceptional-suffixes"/>
+				<checkbox id="exceptional-suffixes-confirm" label="&setting.dialog.exceptionalSuffixes.confirm;"/>
+				<textbox id="exceptional-suffixes" multiline="true" rows="4"/>
+			</groupbox>
+			<checkbox id="requireReinputAttachmentNames" label="&setting.dialog.checkbox.requireReinputAttachmentNames;"/>
+		</vbox>
+		<vbox flex="1">
+			<hbox>
+				<checkbox id="countdown" label="&setting.dialog.checkbox.countdown;"/>
+				<textbox id="countdown-time" maxwidth="50"/>
+				<label value="&setting.dialog.label.countdown;" style="padding-top:5px; padding-bottom:5px;"/>
+			</hbox>
+			<checkbox id="requireCheckBody" label="&setting.dialog.checkbox.requireCheckBody;"/>
+		</vbox>
 	</tabpanels>
 </tabbox>
 
