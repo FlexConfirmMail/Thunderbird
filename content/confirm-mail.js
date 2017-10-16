@@ -207,6 +207,12 @@ judge : function(recipients, domainList, yourDomainRecipients, otherDomainRecipi
   		return new Array();
   	}
   	return domains.split(",");
+  },
+
+  getBody : function(){
+  	var holderNode = gMsgCompose.editor.document.body ||
+  	             gMsgCompose.editor.document.documentElement;
+  	return holderNode.cloneNode(true);
   }
 }
 
