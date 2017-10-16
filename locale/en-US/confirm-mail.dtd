@@ -20,6 +20,8 @@
 <!ENTITY setting.dialog.exceptionalSuffixes.confirm "Confirm me again if there is any attachment with one of these extensions">
 <!ENTITY setting.dialog.checkbox.countdown "Countdown before sending mail(1-3000sec)">
 <!ENTITY setting.dialog.label.countdown "(s)">
+<!ENTITY setting.dialog.checkbox.requireCheckBody "Require to check the message body">
+<!ENTITY setting.dialog.checkbox.requireReinputAttachmentNames "Require to input file names of attachments">
 <!ENTITY setting.sub-dialog.title "Input domain name">
 <!ENTITY setting.sub-dialog.message "Input your group domain name.">
 <!ENTITY countdown.dialog.title "Countdown">

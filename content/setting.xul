@@ -72,4 +72,8 @@
 	<label value="&setting.dialog.label.countdown;" style="padding-top:5px; padding-bottom:5px;"/>
 </hbox>
 
+<separator/>
+<checkbox id="requireCheckBody" label="&setting.dialog.checkbox.requireCheckBody;"/>
+<checkbox id="requireReinputAttachmentNames" label="&setting.dialog.checkbox.requireReinputAttachmentNames;"/>
+
 </dialog>

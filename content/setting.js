@@ -33,7 +33,9 @@ var CA_CONST = {
 	EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT : "net.nyail.tanabec.confirm-mail.exceptional-domains.onlyWithAttachment",
 	EXCEPTIONAL_DOMAINS : "net.nyail.tanabec.confirm-mail.exceptional-domains",
 	EXCEPTIONAL_SUFFIXES_CONFIRM : "net.nyail.tanabec.confirm-mail.exceptional-suffixes.confirm",
-	EXCEPTIONAL_SUFFIXES : "net.nyail.tanabec.confirm-mail.exceptional-suffixes"
+	EXCEPTIONAL_SUFFIXES : "net.nyail.tanabec.confirm-mail.exceptional-suffixes",
+	REQUIRE_CHECK_BODY : "net.nyail.tanabec.confirm-mail.requireCheckBody",
+	REQUIRE_REINPUT_ATTACHMENT_NAMES : "net.nyail.tanabec.confirm-mail.requireReinputAttachmentNames"
 };
 
 function startup(){
@@ -100,6 +102,12 @@ function startup(){
 
 	var countDonwTime = prefs.getPref(CA_CONST.COUNT_DOWN_TIME);
 	cdTimeBox.value = countDonwTime;
+
+	var bodyBox = document.getElementById("requireCheckBody");
+	bodyBox.checked = prefs.getPref(CA_CONST.REQUIRE_CHECK_BODY, false);
+
+	var requireReinputAttachmentNamesBox = document.getElementById("requireReinputAttachmentNames");
+	requireReinputAttachmentNamesBox.checked = prefs.getPref(CA_CONST.REQUIRE_REINPUT_ATTACHMENT_NAMES, false);
 }
 
 function add(event){
@@ -208,6 +216,12 @@ function doOK(){
 	}
 
 	prefs.setPref(CA_CONST.COUNT_DOWN_TIME, String(cdTime));
+
+	var bodyBox = document.getElementById("requireCheckBody");
+	prefs.setPref(CA_CONST.REQUIRE_CHECK_BODY, bodyBox.checked);
+
+	var requireReinputAttachmentNamesBox = document.getElementById("requireReinputAttachmentNames");
+	prefs.setPref(CA_CONST.REQUIRE_REINPUT_ATTACHMENT_NAMES, requireReinputAttachmentNamesBox.checked);
 
 	return true;
 }
