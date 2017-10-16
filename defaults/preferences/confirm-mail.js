@@ -11,4 +11,4 @@ pref("net.nyail.tanabec.confirm-mail.exceptionalDomain.message", "chrome://confi
 pref("net.nyail.tanabec.confirm-mail.exceptionalSuffix.title", "chrome://confirm-mail/locale/confirm-mail.properties");
 pref("net.nyail.tanabec.confirm-mail.exceptionalSuffix.message", "chrome://confirm-mail/locale/confirm-mail.properties");
 
-pref("net.nyail.tanabec.confirm-mail.checkBody", false);
+pref("net.nyail.tanabec.confirm-mail.requireCheckBody", false);

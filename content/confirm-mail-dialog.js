@@ -172,7 +172,7 @@ function startup() {
 	}
 
 	function setupBodyField() {
-		if (ConfirmMailDialog.shouldCheckBody()) {
+		if (ConfirmMailDialog.requireCheckBody()) {
 			var body = window.arguments[4];
 			var field = document.getElementById("bodyField");
 			field.contentDocument.documentElement.appendChild(body);
@@ -454,8 +454,8 @@ var ConfirmMailDialog = {
 			});
 	},
 
-	shouldCheckBody: function () {
-		return this.prefs.getPref("net.nyail.tanabec.confirm-mail.checkBody");
+	requireCheckBody: function () {
+		return this.prefs.getPref("net.nyail.tanabec.confirm-mail.requireCheckBody");
 	},
 
 	confirmExceptionalDomains: function (exceptions) {
