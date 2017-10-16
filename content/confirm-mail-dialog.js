@@ -388,9 +388,9 @@ function createListItemWithCheckbox(itemLabel, aOptions) {
 			if (event.target.localName == "checkbox") {
 				setTimeout(checkAllChecked, 0);
 			} else {
-			var checked = checkbox.checked;
-			checkbox.setAttribute("checked", !checked);
-			checkAllChecked();
+				var checked = checkbox.checked;
+				checkbox.setAttribute("checked", !checked);
+				checkAllChecked();
 			}
 		};
 	}
