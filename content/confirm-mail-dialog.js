@@ -171,7 +171,7 @@ function startup() {
 		if (ConfirmMailDialog.requireCheckBody()) {
 			var body = window.arguments[4];
 			var field = document.getElementById("bodyField");
-			field.contentDocument.documentElement.appendChild(body);
+			(field.contentDocument.body || field.contentDocument.documentElement).appendChild(body);
 		} else {
 			var check = document.getElementById("checkbox_body");
 			var box = document.getElementById("body");

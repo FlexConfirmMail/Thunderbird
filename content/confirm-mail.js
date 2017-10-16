@@ -212,7 +212,11 @@ judge : function(recipients, domainList, yourDomainRecipients, otherDomainRecipi
   getBody : function(){
   	var holderNode = gMsgCompose.editor.document.body ||
   	             gMsgCompose.editor.document.documentElement;
-  	return holderNode.cloneNode(true);
+  	var range = document.createRange();
+  	range.selectNodeContents(holderNode);
+  	var contents = range.cloneContents();
+  	range.detach();
+  	return contents;
   }
 }
 
