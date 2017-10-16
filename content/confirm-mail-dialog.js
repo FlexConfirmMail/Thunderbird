@@ -355,18 +355,18 @@ function createListItemWithCheckbox(itemLabel, aOptions) {
 	var checkbox = document.createElement("checkbox");
 	listitem.appendChild(checkboxCell);
 
-		checkboxCell.appendChild(checkbox);
-		if (aOptions.rich) {
-			let label = document.createElement("label");
-			label.setAttribute("flex", 1);
-			label.setAttribute("crop", "end");
-			label.setAttribute("value", itemLabel);
-			label.setAttribute("tooltiptext", foldLongTooltipText(itemLabel));
-			listitem.appendChild(label);
-		} else {
-			let labelCell = document.createElement(aOptions.rich ? "hbox" : "listcell");
-			labelCell.setAttribute("label", itemLabel);
-		}
+	checkboxCell.appendChild(checkbox);
+	if (aOptions.rich) {
+		let label = document.createElement("label");
+		label.setAttribute("flex", 1);
+		label.setAttribute("crop", "end");
+		label.setAttribute("value", itemLabel);
+		label.setAttribute("tooltiptext", foldLongTooltipText(itemLabel));
+		listitem.appendChild(label);
+	} else {
+		let labelCell = document.createElement(aOptions.rich ? "hbox" : "listcell");
+		labelCell.setAttribute("label", itemLabel);
+	}
 
 	if (aOptions.rich && aOptions.requireReinput) {
 		checkbox.setAttribute("disabled", true);
