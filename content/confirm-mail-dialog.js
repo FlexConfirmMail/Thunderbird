@@ -385,9 +385,13 @@ function createListItemWithCheckbox(itemLabel, aOptions) {
 	} else {
 		listitem.setAttribute("tooltiptext", foldLongTooltipText(itemLabel));
 		listitem.onclick = function(event){
+			if (event.target.localName == "checkbox") {
+				setTimeout(checkAllChecked, 0);
+			} else {
 			var checked = checkbox.checked;
 			checkbox.setAttribute("checked", !checked);
 			checkAllChecked();
+			}
 		};
 	}
 
