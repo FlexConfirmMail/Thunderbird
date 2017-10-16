@@ -75,8 +75,8 @@
 	<splitter/>
 	<groupbox id="fileNames" flex="2" persist="height">
 		<caption label="&confirm.dialog.fileName.label;"/>
-	<richlistbox id="fileNamesList" flex="1">
-	</richlistbox>
+		<richlistbox id="fileNamesList" flex="1">
+		</richlistbox>
 	</groupbox>
 	</vbox>
 </dialog>
