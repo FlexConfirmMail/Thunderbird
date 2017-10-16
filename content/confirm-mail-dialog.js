@@ -172,9 +172,16 @@ function startup() {
 	}
 
 	function setupBodyField() {
-		var body = window.arguments[4];
-		var field = document.getElementById("bodyField");
-		field.contentDocument.documentElement.appendChild(body);
+		if (ConfirmMailDialog.shouldCheckBody) {
+			var body = window.arguments[4];
+			var field = document.getElementById("bodyField");
+			field.contentDocument.documentElement.appendChild(body);
+		} else {
+			var check = document.getElementById("checkbox_body");
+			check.setAttribute("disabled", true);
+			var box = document.getElementById("body");
+			body.hidden = body.previousSibling.hidden = true;
+		}
 	}
 
 	function setupAttachmentList(fileNames) {
@@ -373,7 +380,9 @@ function checkAllChecked(){
 	var checkboxes = document.getElementsByTagName("checkbox");
 	for(var i = 0; i < checkboxes.length; i++){
 		var cb = checkboxes[i];
-		if(cb.id == "check_all") continue;
+		if (cb.id == "check_all" ||
+			cb.getAttribute("disabled") == "true")
+			continue;
 		// don't use element.checked, because it doesn't work on hidden (out of screen) elements.
 		if(cb.getAttribute("checked") != "true"){
 			complete = false;
@@ -443,6 +452,10 @@ var ConfirmMailDialog = {
 				var suffix = FilenameUtil.extractSuffix(attachment);
 				return ExceptionManager.isExceptionalSuffix(suffix);
 			});
+	},
+
+	shouldCheckBody: function () {
+		return this.prefs.getPref("net.nyail.tanabec.confirm-mail.checkBody");
 	},
 
 	confirmExceptionalDomains: function (exceptions) {
