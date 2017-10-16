@@ -64,15 +64,15 @@
 		</listcols>
 	</listbox>
 	<splitter/>
-<listbox id="fileNames" flex="1">
-    	<listhead>
-	       <listheader/>
-	       <listheader label="&confirm.dialog.fileName.label;"/>
-     </listhead>
-     <listcols>
-    	  <listcol/>
-   	      <listcol flex="1"/>
-     </listcols>
-   </listbox>
+	<listbox id="fileNames" flex="1">
+		<listhead>
+			<listheader/>
+			<listheader label="&confirm.dialog.fileName.label;"/>
+		</listhead>
+		<listcols>
+			<listcol/>
+			<listcol flex="1"/>
+		</listcols>
+	</listbox>
 	</vbox>
 </dialog>
