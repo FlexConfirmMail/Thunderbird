@@ -31,6 +31,14 @@
 <script type="application/x-javascript" src="chrome://global/content/nsUserSettings.js"/>
 <script type="application/x-javascript" src="chrome://confirm-mail/content/setting.js"/>
 
+<tabbox flex="1">
+	<tabs flex="1">
+		<tab label="&setting.dialog.tab.recipients;"/>
+		<tab label="&setting.dialog.tab.attachments;"/>
+		<tab label="&setting.dialog.tab.misc;"/>
+	</tabs>
+	<tabpanels flex="1">
+<vbox flex="1">
 <label value="&setting.dialog.message;"/>
 <listbox id="group-list" rows="6" onselect="selectList(this.selectedItem);"
 	style="width:500px">
@@ -41,13 +49,11 @@
 		<listcol flex="1"/>
   	</listcols>
 </listbox>
-
 <hbox>
 	<button id="add" label="&setting.dialog.button.add.label;" flex="1"/>
 	<button id="edit" label="&setting.dialog.button.edit.label;" flex="1"/>
 	<button id="remove" label="&setting.dialog.button.remove.label;" flex="1"/>
 </hbox>
-
 <groupbox orient="vertical">
 	<caption label="&setting.dialog.exceptionalDomains.label;" control="exceptional-domains"/>
 	<checkbox id="exceptional-domains-confirm" label="&setting.dialog.exceptionalDomains.confirm;"/>
@@ -57,23 +63,26 @@
 	</hbox>
 	<textbox id="exceptional-domains" multiline="true" rows="4"/>
 </groupbox>
+<separator/>
+<checkbox id="not-display" label="&setting.dialog.checkbox.notdisplay;"/>
+</vbox>
+<vbox flex="1">
 <groupbox orient="vertical">
 	<caption label="&setting.dialog.exceptionalSuffixes.label;" control="exceptional-suffixes"/>
 	<checkbox id="exceptional-suffixes-confirm" label="&setting.dialog.exceptionalSuffixes.confirm;"/>
 	<textbox id="exceptional-suffixes" multiline="true" rows="4"/>
 </groupbox>
-
-<separator/>
-
-<checkbox id="not-display" label="&setting.dialog.checkbox.notdisplay;"/>
+<checkbox id="requireReinputAttachmentNames" label="&setting.dialog.checkbox.requireReinputAttachmentNames;"/>
+</vbox>
+<vbox flex="1">
 <hbox>
 	<checkbox id="countdown" label="&setting.dialog.checkbox.countdown;"/>
 	<textbox id="countdown-time" maxwidth="50"/>
 	<label value="&setting.dialog.label.countdown;" style="padding-top:5px; padding-bottom:5px;"/>
 </hbox>
-
-<separator/>
 <checkbox id="requireCheckBody" label="&setting.dialog.checkbox.requireCheckBody;"/>
-<checkbox id="requireReinputAttachmentNames" label="&setting.dialog.checkbox.requireReinputAttachmentNames;"/>
+</vbox>
+	</tabpanels>
+</tabbox>
 
 </dialog>

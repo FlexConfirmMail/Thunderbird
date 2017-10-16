@@ -6,6 +6,9 @@
 <!ENTITY confirm.dialog.fileName.label "添付ファイル">
 <!ENTITY confirm.dialog.check.label "確認！">
 <!ENTITY setting.dialog.title "confirm-mail 設定">
+<!ENTITY setting.dialog.tab.recipients "宛先">
+<!ENTITY setting.dialog.tab.attachments "添付ファイル">
+<!ENTITY setting.dialog.tab.misc "その他">
 <!ENTITY setting.dialog.message "組織内として扱うメールアドレスのドメイン名を登録してください。">
 <!ENTITY setting.dialog.list.label "ドメイン名">
 <!ENTITY setting.dialog.button.add.label "追加">

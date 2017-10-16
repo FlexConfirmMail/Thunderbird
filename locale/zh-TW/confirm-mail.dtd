@@ -6,6 +6,9 @@
 <!ENTITY confirm.dialog.fileName.label "附件">
 <!ENTITY confirm.dialog.check.label "確認！">
 <!ENTITY setting.dialog.title "confirm-mail 設定">
+<!ENTITY setting.dialog.tab.recipients "Recipients">
+<!ENTITY setting.dialog.tab.attachments "Attachments">
+<!ENTITY setting.dialog.tab.misc "Misc.">
 <!ENTITY setting.dialog.message "請登錄作爲組織内使用的郵箱地址的域名。">
 <!ENTITY setting.dialog.list.label "域名">
 <!ENTITY setting.dialog.button.add.label "追加">
