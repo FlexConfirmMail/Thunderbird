@@ -178,9 +178,8 @@ function startup() {
 			field.contentDocument.documentElement.appendChild(body);
 		} else {
 			var check = document.getElementById("checkbox_body");
-			check.setAttribute("disabled", true);
 			var box = document.getElementById("body");
-			box.hidden = box.previousSibling.hidden = true;
+			check.hidden = box.hidden = box.previousSibling.hidden = true;
 		}
 	}
 
@@ -381,9 +380,9 @@ function checkAllChecked(){
 	for(var i = 0; i < checkboxes.length; i++){
 		var cb = checkboxes[i];
 		if (cb.id == "check_all" ||
-			cb.getAttribute("disabled") == "true")
+			cb.hidden)
 			continue;
-		// don't use element.checked, because it doesn't work on hidden (out of screen) elements.
+		// don't use element.checked, because it doesn't work on out of screen elements.
 		if(cb.getAttribute("checked") != "true"){
 			complete = false;
 			break;
