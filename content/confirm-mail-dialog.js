@@ -104,7 +104,7 @@ function startup() {
 		function getGroupHeaderForItem(originItem) {
 			var cursorItem = originItem;
 			while (cursorItem &&
-				cursorItem.getAttribute("class") !== "confirm-mail-list-separator") {
+				!cursorItem.classList.contains("confirm-mail-list-separator")) {
 				cursorItem = cursorItem.previousSibling;
 			}
 			return cursorItem;
