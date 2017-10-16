@@ -1,9 +1,5 @@
 /* style */
 
-#otherDomains listitem:not(.confirm-mail-list-separator) checkbox {
-    padding-left: 21px;
-}
-
 .confirm-mail-list-separator {
     font-weight: bold;
 }
@@ -11,19 +7,23 @@
     background: #DEEFFF;
 }
 
-#otherDomains > listitem[data-exceptional]:not([selected="true"]),
-#otherDomains > listitem[data-exceptional][selected="true"],
-#otherDomains:focus > listitem[data-exceptional]:not([selected="true"]),
-#otherDomains:focus > listitem[data-exceptional][selected="true"],
-#otherDomains:not(:focus) > listitem[data-exceptional]:not([selected="true"]),
-#otherDomains:not(:focus) > listitem[data-exceptional][selected="true"],
-#fileNames > listitem[data-exceptional]:not([selected="true"]),
-#fileNames > listitem[data-exceptional][selected="true"],
-#fileNames:focus > listitem[data-exceptional]:not([selected="true"]),
-#fileNames:focus > listitem[data-exceptional][selected="true"],
-#fileNames:not(:focus) > listitem[data-exceptional]:not([selected="true"]),
-#fileNames:not(:focus) > listitem[data-exceptional][selected="true"] {
+#otherDomainsList > richlistitem[data-exceptional]:not([selected="true"]),
+#otherDomainsList > richlistitem[data-exceptional][selected="true"],
+#otherDomainsList:focus > richlistitem[data-exceptional]:not([selected="true"]),
+#otherDomainsList:focus > richlistitem[data-exceptional][selected="true"],
+#otherDomainsList:not(:focus) > richlistitem[data-exceptional]:not([selected="true"]),
+#otherDomainsList:not(:focus) > richlistitem[data-exceptional][selected="true"],
+#fileNamesList > richlistitem[data-exceptional]:not([selected="true"]),
+#fileNamesList > richlistitem[data-exceptional][selected="true"],
+#fileNamesList:focus > richlistitem[data-exceptional]:not([selected="true"]),
+#fileNamesList:focus > richlistitem[data-exceptional][selected="true"],
+#fileNamesList:not(:focus) > richlistitem[data-exceptional]:not([selected="true"]),
+#fileNamesList:not(:focus) > richlistitem[data-exceptional][selected="true"] {
     color: red !important;
+}
+
+richlistbox {
+	min-height: 1em;
 }
 
 richlistitem {

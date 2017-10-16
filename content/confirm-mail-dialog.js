@@ -47,7 +47,7 @@ function startup() {
 
 	function setupInternalDestinationList(internals) {
 		// create internal-domain list
-		var internalList = document.getElementById("yourDomains");
+		var internalList = document.getElementById("yourDomainsList");
 
 		for (var i = 0; i < internals.length; i++) {
 			var listitem = createListItemWithCheckbox(createRecipientLabel(internals[i]));
@@ -57,14 +57,14 @@ function startup() {
 
 		// if internal-domain was empty, "select all" checkbox set checked.
 		// when internalList is empty, internalList.length equals 0.
+		var checkAllCheckbox = document.getElementById("check_all");
 		if (internals.length == 0) {
-			document.getElementById("check_all").checked = true;
-			document.getElementById("check_all").disabled = true;
+			checkAllCheckbox.checked = true;
+			checkAllCheckbox.disabled = true;
 		}
 
 		// listheader for internal domains
-		var checkboxHeader = document.getElementById("checkbox_header");
-		checkboxHeader.addEventListener("click", function(event) {
+		checkAllCheckbox.addEventListener("command", function(event) {
 			switchInternalCheckBox();
 			checkAllChecked();
 		}, false);
@@ -143,9 +143,7 @@ function startup() {
 
 				// destinations in this group
 				for (let [, destination] in Iterator(destinationsForThisGroup)) {
-					let listitem = createListItemWithCheckbox(createRecipientLabel(destination), {
-						rich: true
-					});
+					let listitem = createListItemWithCheckbox(createRecipientLabel(destination));
 					if (shouldBeColored) {
 						listitem.setAttribute("data-exceptional", "true");
 					}
@@ -190,7 +188,6 @@ function startup() {
 		for (var i = 0; i < fileNames.length; i++) {
 			let fileName = fileNames[i];
 			let attachmentFileItem = createListItemWithCheckbox(fileName, {
-				rich:           true,
 				requireReinput: ConfirmMailDialog.requireReinputAttachmentNames()
 			});
 			if (ExceptionManager.fileHasExceptionalSuffix(fileName)) {
@@ -348,27 +345,22 @@ function foldLongTooltipText(text) {
 
 function createListItemWithCheckbox(itemLabel, aOptions) {
 	aOptions = aOptions || {};
-	var listitem = document.createElement(aOptions.rich ? "richlistitem" : "listitem");
+	var listitem = document.createElement("richlistitem");
 
-	var checkboxCell = document.createElement(aOptions.rich ? "hbox" : "listcell");
+	var checkboxCell = document.createElement("hbox");
 	checkboxCell.classList.add("checkbox");
 	var checkbox = document.createElement("checkbox");
 	listitem.appendChild(checkboxCell);
 
 	checkboxCell.appendChild(checkbox);
-	if (aOptions.rich) {
 		let label = document.createElement("label");
 		label.setAttribute("flex", 1);
 		label.setAttribute("crop", "end");
 		label.setAttribute("value", itemLabel);
 		label.setAttribute("tooltiptext", foldLongTooltipText(itemLabel));
 		listitem.appendChild(label);
-	} else {
-		let labelCell = document.createElement(aOptions.rich ? "hbox" : "listcell");
-		labelCell.setAttribute("label", itemLabel);
-	}
 
-	if (aOptions.rich && aOptions.requireReinput) {
+	if (aOptions.requireReinput) {
 		checkbox.setAttribute("disabled", true);
 		let field = document.createElement("textbox");
 		field.setAttribute("placeholder", getLocaleString("confirm.dialog.attachmentName.reinput.placeholder"));
@@ -429,7 +421,7 @@ function switchInternalCheckBox(){
 
 	var checkAll = document.getElementById("check_all");
 	var isChecked = checkAll.checked;
-	var yourdomains = document.getElementById("yourDomains");
+	var yourdomains = document.getElementById("yourDomainsList");
 	var checkboxes = yourdomains.getElementsByTagName("checkbox");
 	for(var i=0; i<checkboxes.length; i++){
 		// don't use element.checked=true, because hidden (out of screen) elements are not checked.
@@ -439,10 +431,12 @@ function switchInternalCheckBox(){
 }
 
 function updateCheckAllCheckBox(){
+	setTimeout(function() {
 	var checkAll = document.getElementById("check_all");
-	var allItems = document.querySelectorAll("#yourDomains listitem checkbox");
-	var checkedItems = document.querySelectorAll("#yourDomains listitem checkbox[checked='true']");
+	var allItems = document.querySelectorAll("#yourDomainsList checkbox");
+	var checkedItems = document.querySelectorAll("#yourDomainsList checkbox[checked='true']");
 	checkAll.setAttribute("checked", allItems.length === checkedItems.length);
+	}, 0);
 }
 
 var ConfirmMailDialog = {

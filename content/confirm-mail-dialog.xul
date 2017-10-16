@@ -40,18 +40,13 @@
 
 	<label value="&confirm.dialog.message;" style="padding-bottom:3px; font-size:1.3em;"/>
 	<vbox flex="1">
-	<listbox id="yourDomains" flex="1" height="150" persist="height">
-		<listhead>
-			<listheader id="checkbox_header">
-				<checkbox style="margin:0px;" id="check_all"/>
-			</listheader>
-			<listheader label="&confirm.dialog.yourdomain.label;"/>
-		</listhead>
-		<listcols>
-			<listcol/>
-			<listcol flex="1"/>
-		</listcols>
-	</listbox>
+	<groupbox id="yourDomains" flex="1" height="150" persist="height">
+		<caption><checkbox id="check_all"
+					label="&confirm.dialog.yourdomain.label;"
+					oncommand="checkAllChecked()"/></caption>
+		<richlistbox id="yourDomainsList" flex="1">
+		</richlistbox>
+	</groupbox>
 	<splitter/>
 	<groupbox id="otherDomains" flex="2" height="250" persist="height">
 		<caption label="&confirm.dialog.otherdomain.label;"/>
