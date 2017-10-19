@@ -24,21 +24,6 @@ var { prefs } = Components.utils.import('resource://confirm-mail-modules/lib/pre
 
 var selectedItem;
 
-var CA_CONST = {
-	DOMAIN_LIST : "net.nyail.tanabec.confirm-mail.domain-list",
-	IS_NOT_DISPLAY : "net.nyail.tanabec.confirm-mail.not-display",
-	IS_COUNT_DOWN : "net.nyail.tanabec.confirm-mail.is-countdown",
-	COUNT_DOWN_TIME : "net.nyail.tanabec.confirm-mail.cd-time",
-	EXCEPTIONAL_DOMAINS_CONFIRM : "net.nyail.tanabec.confirm-mail.exceptional-domains.confirm",
-	EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT : "net.nyail.tanabec.confirm-mail.exceptional-domains.onlyWithAttachment",
-	EXCEPTIONAL_DOMAINS : "net.nyail.tanabec.confirm-mail.exceptional-domains",
-	EXCEPTIONAL_SUFFIXES_CONFIRM : "net.nyail.tanabec.confirm-mail.exceptional-suffixes.confirm",
-	EXCEPTIONAL_SUFFIXES : "net.nyail.tanabec.confirm-mail.exceptional-suffixes",
-	REQUIRE_CHECK_BODY : "net.nyail.tanabec.confirm-mail.requireCheckBody",
-	REQUIRE_CHECK_BODY_ALWAYS : "net.nyail.tanabec.confirm-mail.requireCheckBodyAlways",
-	REQUIRE_REINPUT_ATTACHMENT_NAMES : "net.nyail.tanabec.confirm-mail.requireReinputAttachmentNames"
-};
-
 function startup(){
 
 	//init domain list.
