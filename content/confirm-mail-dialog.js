@@ -183,12 +183,14 @@ function startup() {
 		//attachments list
 		var fileNamesList = document.getElementById("fileNamesList");
 
+		var requireReinputFilename = DestinationManager.getExternalDestinationList().length > 0 &&
+										ConfirmMailDialog.requireReinputAttachmentNames();
 		var exceptionalItems = [];
 		var normalItems = [];
 		for (var i = 0; i < fileNames.length; i++) {
 			let fileName = fileNames[i];
 			let attachmentFileItem = createListItemWithCheckbox(fileName, {
-				requireReinput: ConfirmMailDialog.requireReinputAttachmentNames()
+				requireReinput: requireReinputFilename
 			});
 			if (ExceptionManager.fileHasExceptionalSuffix(fileName)) {
 				attachmentFileItem.setAttribute("data-exceptional", "true");
