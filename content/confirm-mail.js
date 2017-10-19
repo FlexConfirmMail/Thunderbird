@@ -76,27 +76,30 @@ try { // DEBUG
 	}
 	
   	if(window.confmail_confirmOK){
-  		var isCountDown = this.prefs.getPref(CA_CONST.IS_COUNT_DOWN, false);
-  		if(isCountDown){
-  			var countDownTime = this.prefs.getPref(CA_CONST.COUNT_DOWN_TIME);
-  			var countDownComplete = { value : false };
-  			
-  			window.openDialog("chrome://confirm-mail/content/countdown.xul", "CountDown Dialog",
-  			"resizable,chrome,modal,titlebar,centerscreen", countDownTime, countDownComplete);
-
-  			if (countDownComplete.value){
-  				return true;
-  			}else{
-  				//dump("cancel");
-  				return false;
-  			}
-  		}else{
-  			return true;
-  		}
+  		return this.showCountDownDialog();
   	}else{
   		return false;
   	}
 } catch(error) { alert(error+'\n'+error.stack); } // DEBUG
+  },
+
+  showCountDownDialog: function(){
+	var isCountDown = this.prefs.getPref(CA_CONST.IS_COUNT_DOWN, false);
+	if(!isCountDown)
+		return true;
+
+	var countDownTime = this.prefs.getPref(CA_CONST.COUNT_DOWN_TIME);
+	var countDownComplete = { value : false };
+
+	window.openDialog("chrome://confirm-mail/content/countdown.xul", "CountDown Dialog",
+	"resizable,chrome,modal,titlebar,centerscreen", countDownTime, countDownComplete);
+
+	if (countDownComplete.value){
+		return true;
+	}else{
+		//dump("cancel");
+		return false;
+	}
   },
 
   splitRecipients: function(addressesSource, type){
