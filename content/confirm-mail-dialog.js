@@ -130,7 +130,9 @@ function startup() {
 		// external domains
 		function createExternalDomainsListItems(externals) {
 			var groupedExternalRecipients = AddressUtil.groupDestinationsByDomain(externals);
+			var groupCount = 0;
 			for (let [domainForThisGroup, destinationsForThisGroup] in Iterator(groupedExternalRecipients)) {
+				groupCount++;
 				let shouldBeColored = ExceptionManager.isExceptionalDomain(domainForThisGroup) &&
 					AttachmentManager.hasAttachments();
 
@@ -142,11 +144,13 @@ function startup() {
 				externalList.appendChild(groupHeaderItem);
 
 				// destinations in this group
+				let domainClass = groupCount % 2 ? "domain-odd" : "domain-even";
 				for (let [, destination] in Iterator(destinationsForThisGroup)) {
 					let listitem = createListItemWithCheckbox(createRecipientLabel(destination));
 					if (shouldBeColored) {
 						listitem.setAttribute("data-exceptional", "true");
 					}
+					listitem.classList.add(domainClass);
 					externalList.appendChild(listitem);
 					recordItemInGroup(domainForThisGroup, listitem);
 				}
