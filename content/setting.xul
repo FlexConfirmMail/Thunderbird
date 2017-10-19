@@ -28,7 +28,7 @@
 	ondialogaccept="return doOK();"
 	ondialogcancel="return doCancel();">
 
-<script type="application/x-javascript" src="chrome://global/content/nsUserSettings.js"/>
+<script type="application/x-javascript" src="chrome://confirm-mail/content/constants.js"/>
 <script type="application/x-javascript" src="chrome://confirm-mail/content/setting.js"/>
 
 <tabbox flex="1">
