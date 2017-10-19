@@ -65,18 +65,19 @@ try { // DEBUG
 
 
   	if(isNotDisplay && externalList.length == 0 && internalList.length > 0){
-  		window.confmail_confirmOK = true;
+  		return this.showCountDownDialog();
   	}else{
 		window.confmail_confirmOK = false;
 		window.openDialog("chrome://confirm-mail/content/confirm-mail-dialog.xul",
 			"ConfirmAddressDialog", "resizable,chrome,modal,titlebar,centerscreen",
 			window,
 			internalList, externalList, fileNamesList,
-			this.getBody());
+			this.getBody(),
+			this.showCountDownDialog.bind(this));
 	}
 	
   	if(window.confmail_confirmOK){
-  		return this.showCountDownDialog();
+  		return true;
   	}else{
   		return false;
   	}

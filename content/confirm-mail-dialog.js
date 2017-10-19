@@ -525,9 +525,13 @@ function doOK(){
 		}
 	}
 
+	var extraChecker = window.arguments[5];
+	if (typeof extraChecker === 'function' &&
+		!extraChecker())
+		return true;
+
 	var parentWindow = window.arguments[0];
 	parentWindow.confmail_confirmOK = true;
-
 	return true;
 }
 
