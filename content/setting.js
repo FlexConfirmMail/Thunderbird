@@ -90,7 +90,7 @@ function startup(){
 	cdTimeBox.value = countDonwTime;
 
 	var bodyBox = document.getElementById("requireCheckBody");
-	if(prefs.getPref(CA_CONST.REQUIRE_CHECK_BODY_ALWASY)){
+	if(prefs.getPref(CA_CONST.REQUIRE_CHECK_BODY_ALWAYS)){
 		bodyBox.hidden = true;
 	}else{
 		bodyBox.checked = prefs.getPref(CA_CONST.REQUIRE_CHECK_BODY, false);
