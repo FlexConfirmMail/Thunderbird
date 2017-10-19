@@ -368,6 +368,7 @@ function createListItemWithCheckbox(itemLabel, aOptions) {
 		field.setAttribute("placeholder", getLocaleString("confirm.dialog.attachmentName.reinput.placeholder"));
 		field.addEventListener("input", function(event) {
 			checkbox.setAttribute("checked", event.target.value == itemLabel);
+			checkAllChecked();
 		}, false);
 		field.onresize = function() {
 			field.width = parseInt(window.outerWidth * 0.45);
