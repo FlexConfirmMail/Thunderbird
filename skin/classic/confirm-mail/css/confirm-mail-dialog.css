@@ -22,6 +22,10 @@
     color: red !important;
 }
 
+:root.highlight-domains #otherDomainsList richlistitem.confirm-mail-list-separator label {
+	font-size: 125%;
+}
+
 richlistbox {
 	min-height: 1em;
 }

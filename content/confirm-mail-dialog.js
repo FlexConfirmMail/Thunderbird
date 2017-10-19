@@ -209,6 +209,11 @@ function startup() {
 	setupExternalDomainList(DestinationManager.getExternalDestinationList());
 	setupBodyField();
 	setupAttachmentList(AttachmentManager.getAttachmentList());
+
+	if (ConfirmMailDialog.highlightUnmatchedDomains())
+		document.documentElement.classList.add("highlight-domains");
+	else
+		document.documentElement.classList.remove("highlight-domains");
 }
 
 // Util
@@ -482,6 +487,10 @@ var ConfirmMailDialog = {
 
 	requireReinputAttachmentNames: function () {
 		return this.prefs.getPref(CA_CONST.REQUIRE_REINPUT_ATTACHMENT_NAMES);
+	},
+
+	highlightUnmatchedDomains: function () {
+		return this.prefs.getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS);
 	},
 
 	confirmExceptionalDomains: function (exceptions) {

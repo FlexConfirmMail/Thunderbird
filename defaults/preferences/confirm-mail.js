@@ -14,3 +14,5 @@ pref("net.nyail.tanabec.confirm-mail.exceptionalSuffix.message", "chrome://confi
 pref("net.nyail.tanabec.confirm-mail.requireCheckBody", false);
 pref("net.nyail.tanabec.confirm-mail.requireCheckBodyAlways", false);
 pref("net.nyail.tanabec.confirm-mail.requireReinputAttachmentNames", false);
+pref("net.nyail.tanabec.confirm-mail.highlightUnmatchedDomains", false);
+
