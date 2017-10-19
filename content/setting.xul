@@ -81,6 +81,7 @@
 				<label value="&setting.dialog.label.countdown;" style="padding-top:5px; padding-bottom:5px;"/>
 			</hbox>
 			<checkbox id="requireCheckBody" label="&setting.dialog.checkbox.requireCheckBody;"/>
+			<checkbox id="highlightUnmatchedDomains" label="&setting.dialog.checkbox.highlightUnmatchedDomains;"/>
 		</vbox>
 	</tabpanels>
 </tabbox>

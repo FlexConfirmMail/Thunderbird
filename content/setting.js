@@ -96,6 +96,13 @@ function startup(){
 		bodyBox.checked = prefs.getPref(CA_CONST.REQUIRE_CHECK_BODY, false);
 	}
 
+	var highlightDomainsBox = document.getElementById("highlightUnmatchedDomains");
+	if(prefs.getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS_ALWAYS)){
+		highlightDomainsBox.hidden = true;
+	}else{
+		highlightDomainsBox.checked = prefs.getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS, false);
+	}
+
 	var requireReinputAttachmentNamesBox = document.getElementById("requireReinputAttachmentNames");
 	requireReinputAttachmentNamesBox.checked = prefs.getPref(CA_CONST.REQUIRE_REINPUT_ATTACHMENT_NAMES, false);
 }
@@ -210,6 +217,10 @@ function doOK(){
 	var bodyBox = document.getElementById("requireCheckBody");
 	if (!bodyBox.hidden)
 		prefs.setPref(CA_CONST.REQUIRE_CHECK_BODY, bodyBox.checked);
+
+	var highlightDomainsBox = document.getElementById("highlightUnmatchedDomains");
+	if (!highlightDomainsBox.hidden)
+		prefs.setPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS, highlightDomainsBox.checked);
 
 	var requireReinputAttachmentNamesBox = document.getElementById("requireReinputAttachmentNames");
 	prefs.setPref(CA_CONST.REQUIRE_REINPUT_ATTACHMENT_NAMES, requireReinputAttachmentNamesBox.checked);

@@ -15,4 +15,5 @@ pref("net.nyail.tanabec.confirm-mail.requireCheckBody", false);
 pref("net.nyail.tanabec.confirm-mail.requireCheckBodyAlways", false);
 pref("net.nyail.tanabec.confirm-mail.requireReinputAttachmentNames", false);
 pref("net.nyail.tanabec.confirm-mail.highlightUnmatchedDomains", false);
+pref("net.nyail.tanabec.confirm-mail.highlightUnmatchedDomainsAlways", false);
 

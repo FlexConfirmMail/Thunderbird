@@ -494,7 +494,8 @@ var ConfirmMailDialog = {
 	},
 
 	highlightUnmatchedDomains: function () {
-		return this.prefs.getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS);
+		return this.prefs.getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS) ||
+				this.prefs.getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS_ALWAYS);
 	},
 
 	confirmExceptionalDomains: function (exceptions) {
