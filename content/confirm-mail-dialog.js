@@ -476,7 +476,8 @@ var ConfirmMailDialog = {
 	},
 
 	requireCheckBody: function () {
-		return this.prefs.getPref("net.nyail.tanabec.confirm-mail.requireCheckBody");
+		return this.prefs.getPref("net.nyail.tanabec.confirm-mail.requireCheckBody") ||
+				this.prefs.getPref("net.nyail.tanabec.confirm-mail.requireCheckBodyAlways");
 	},
 
 	requireReinputAttachmentNames: function () {
