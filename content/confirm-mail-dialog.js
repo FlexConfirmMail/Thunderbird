@@ -476,12 +476,12 @@ var ConfirmMailDialog = {
 	},
 
 	requireCheckBody: function () {
-		return this.prefs.getPref("net.nyail.tanabec.confirm-mail.requireCheckBody") ||
-				this.prefs.getPref("net.nyail.tanabec.confirm-mail.requireCheckBodyAlways");
+		return this.prefs.getPref(CA_CONST.REQUIRE_CHECK_BODY) ||
+				this.prefs.getPref(CA_CONST.REQUIRE_CHECK_BODY_ALWAYS);
 	},
 
 	requireReinputAttachmentNames: function () {
-		return this.prefs.getPref("net.nyail.tanabec.confirm-mail.requireReinputAttachmentNames");
+		return this.prefs.getPref(CA_CONST.REQUIRE_REINPUT_ATTACHMENT_NAMES);
 	},
 
 	confirmExceptionalDomains: function (exceptions) {
