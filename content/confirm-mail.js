@@ -100,7 +100,7 @@ try { // DEBUG
   },
 
   splitRecipients: function(addressesSource, type){
-  	var gMimeHeaderParser = Components.classes["@mozilla.org/messenger/headerparser;1"].getService(Components.interfaces.nsIMsgHeaderParser);
+	var gMimeHeaderParser = Components.classes["@mozilla.org/messenger/headerparser;1"].getService(Components.interfaces.nsIMsgHeaderParser);
 	var addresses = {};
 	var names = {};
 	var fullNames = {};
