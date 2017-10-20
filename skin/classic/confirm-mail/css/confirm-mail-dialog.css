@@ -27,7 +27,7 @@
 }
 
 :root.highlight-domains #otherDomainsList richlistitem.domain-even:not([selected="true"]) label {
-	background: #FF8C8C;
+	background: #FFCD8C;
 }
 
 :root.highlight-domains #otherDomainsList richlistitem.domain-odd:not([selected="true"]) label {
