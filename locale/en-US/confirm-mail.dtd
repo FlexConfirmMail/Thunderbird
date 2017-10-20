@@ -26,6 +26,7 @@
 <!ENTITY setting.dialog.checkbox.requireCheckBody "Require to check the message body">
 <!ENTITY setting.dialog.checkbox.requireReinputAttachmentNames "Require to input file names of attachments, if there is any other domain recipient">
 <!ENTITY setting.dialog.checkbox.highlightUnmatchedDomains "Highlight other domains and addesses">
+<!ENTITY setting.dialog.checkbox.alwaysLargeDialog "Open confirmation dialog with large size always">
 <!ENTITY setting.sub-dialog.title "Input domain name">
 <!ENTITY setting.sub-dialog.message "Input your group domain name.">
 <!ENTITY countdown.dialog.title "Countdown">

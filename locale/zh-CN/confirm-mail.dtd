@@ -25,6 +25,7 @@
 <!ENTITY setting.dialog.checkbox.requireCheckBody "Require to check the message body">
 <!ENTITY setting.dialog.checkbox.requireReinputAttachmentNames "Require to input file names of attachments, if there is any other domain recipient">
 <!ENTITY setting.dialog.checkbox.highlightUnmatchedDomains "Highlight other domains and addesses">
+<!ENTITY setting.dialog.checkbox.alwaysLargeDialog "Open confirmation dialog with large size always">
 <!ENTITY setting.sub-dialog.title "输入域名">
 <!ENTITY setting.sub-dialog.message "请输入域名(例：example.com)">
 <!ENTITY countdown.dialog.title "倒计时">

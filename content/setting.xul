@@ -82,6 +82,7 @@
 			</hbox>
 			<checkbox id="requireCheckBody" label="&setting.dialog.checkbox.requireCheckBody;"/>
 			<checkbox id="highlightUnmatchedDomains" label="&setting.dialog.checkbox.highlightUnmatchedDomains;"/>
+			<checkbox id="alwaysLargeDialog" label="&setting.dialog.checkbox.alwaysLargeDialog;"/>
 		</vbox>
 	</tabpanels>
 </tabbox>

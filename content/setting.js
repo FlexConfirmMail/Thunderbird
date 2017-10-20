@@ -103,6 +103,13 @@ function startup(){
 		highlightDomainsBox.checked = prefs.getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS, false);
 	}
 
+	var alwaysLargeDialogBox = document.getElementById("alwaysLargeDialog");
+	if(prefs.getPref(CA_CONST.ALWAYS_LARGE_DIALOG)){
+		alwaysLargeDialogBox.hidden = true;
+	}else{
+		alwaysLargeDialogBox.checked = prefs.getPref(CA_CONST.ALWAYS_LARGE_DIALOG, false);
+	}
+
 	var requireReinputAttachmentNamesBox = document.getElementById("requireReinputAttachmentNames");
 	requireReinputAttachmentNamesBox.checked = prefs.getPref(CA_CONST.REQUIRE_REINPUT_ATTACHMENT_NAMES, false);
 }
@@ -221,6 +228,10 @@ function doOK(){
 	var highlightDomainsBox = document.getElementById("highlightUnmatchedDomains");
 	if (!highlightDomainsBox.hidden)
 		prefs.setPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS, highlightDomainsBox.checked);
+
+	var alwaysLargeDialogBox = document.getElementById("alwaysLargeDialog");
+	if (!alwaysLargeDialogBox.hidden)
+		prefs.setPref(CA_CONST.ALWAYS_LARGE_DIALOG, alwaysLargeDialogBox.checked);
 
 	var requireReinputAttachmentNamesBox = document.getElementById("requireReinputAttachmentNames");
 	prefs.setPref(CA_CONST.REQUIRE_REINPUT_ATTACHMENT_NAMES, requireReinputAttachmentNamesBox.checked);
