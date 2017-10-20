@@ -22,6 +22,7 @@ var CA_CONST = {
 	IS_NOT_DISPLAY : "net.nyail.tanabec.confirm-mail.not-display",
 	IS_COUNT_DOWN : "net.nyail.tanabec.confirm-mail.is-countdown",
 	COUNT_DOWN_TIME : "net.nyail.tanabec.confirm-mail.cd-time",
+	ALWAYS_LARGE_DIALOG : "net.nyail.tanabec.confirm-mail.alwaysLargeDialog",
 	HIGHLIGHT_UNMATCHED_DOMAINS : "net.nyail.tanabec.confirm-mail.highlightUnmatchedDomains",
 	HIGHLIGHT_UNMATCHED_DOMAINS_ALWAYS : "net.nyail.tanabec.confirm-mail.highlightUnmatchedDomainsAlways",
 	EXCEPTIONAL_DOMAINS_CONFIRM : "net.nyail.tanabec.confirm-mail.exceptional-domains.confirm",

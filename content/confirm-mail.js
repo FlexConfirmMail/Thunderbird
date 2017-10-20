@@ -68,8 +68,17 @@ try { // DEBUG
   		return this.showCountDownDialog();
   	}else{
 		window.confmail_confirmOK = false;
+		let extraFeatures = "";
+		if (prefs.getPref(CA_CONST.ALWAYS_LARGE_DIALOG)) {
+			let w = parseInt(screen.availWidth * 0.9);
+			let h = parseInt(screen.availHeight * 0.9);
+			let x = parseInt((screen.availWidth - w) / 2);
+			let y = parseInt((screen.availHeight - h) / 2);
+			extraFeatures = ",width=" + w + ",height=" + h;
+		}
 		window.openDialog("chrome://confirm-mail/content/confirm-mail-dialog.xul",
-			"ConfirmAddressDialog", "resizable,chrome,modal,titlebar,centerscreen",
+			"ConfirmAddressDialog",
+			"resizable,chrome,modal,titlebar,centerscreen" + extraFeatures,
 			window,
 			internalList, externalList, fileNamesList,
 			this.getBody(),
