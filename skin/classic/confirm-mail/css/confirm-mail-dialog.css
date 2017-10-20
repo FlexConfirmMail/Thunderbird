@@ -34,7 +34,7 @@
 	background: #9B9BFF;
 }
 
-richlistbox {
+richlistbox, iframe {
 	min-height: 4em;
 }
 
