@@ -7,6 +7,10 @@
     background: #DEEFFF;
 }
 
+richlistbox {
+	min-height: 2em;
+}
+
 #otherDomainsList > richlistitem[data-exceptional]:not([selected="true"]),
 #otherDomainsList > richlistitem[data-exceptional][selected="true"],
 #otherDomainsList:focus > richlistitem[data-exceptional]:not([selected="true"]),
