@@ -23,7 +23,12 @@ var CountDown = {
 	 */
 	onLoad : function(){
 		var time = window.arguments[0];
-		this.completeFlag = window.arguments[1];
+		this.allowSkip = window.arguments[1];
+		if (this.allowSkip)
+			document.documentElement.classList.add('allow-skip');
+		else
+			document.documentElement.classList.remove('allow-skip');
+		this.completeFlag = window.arguments[2];
 		var limit = time;
 		var label = document.getElementById("counter");
 		

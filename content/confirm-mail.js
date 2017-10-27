@@ -100,9 +100,10 @@ try { // DEBUG
 
 	var countDownTime = this.prefs.getPref(CA_CONST.COUNT_DOWN_TIME);
 	var countDownComplete = { value : false };
+	var allowSkip = this.prefs.getPref(CA_CONST.COUNT_DOWN_ALLOW_SKIP);
 
 	window.openDialog("chrome://confirm-mail/content/countdown.xul", "CountDown Dialog",
-	"resizable,chrome,modal,titlebar,centerscreen", countDownTime, countDownComplete);
+	"resizable,chrome,modal,titlebar,centerscreen", countDownTime, allowSkip, countDownComplete);
 
 	if (countDownComplete.value){
 		return true;

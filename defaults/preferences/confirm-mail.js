@@ -20,3 +20,6 @@ pref("net.nyail.tanabec.confirm-mail.largeFontSizeForAddresses", false);
 pref("net.nyail.tanabec.confirm-mail.largeFontSizeForAddresses.always", false);
 pref("net.nyail.tanabec.confirm-mail.alwaysLargeDialog", false);
 
+pref("net.nyail.tanabec.confirm-mail.countdown.allowSkip", true);
+pref("net.nyail.tanabec.confirm-mail.countdown.allowSkip.always", false);
+
