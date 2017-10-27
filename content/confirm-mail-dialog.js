@@ -218,6 +218,11 @@ function startup() {
 		document.documentElement.classList.add("highlight-domains");
 	else
 		document.documentElement.classList.remove("highlight-domains");
+
+	if (ConfirmMailDialog.largeFontSizeForAddresses())
+		document.documentElement.classList.add("large-font-size-for-addresses");
+	else
+		document.documentElement.classList.remove("large-font-size-for-addresses");
 }
 
 // Util
@@ -496,6 +501,10 @@ var ConfirmMailDialog = {
 	highlightUnmatchedDomains: function () {
 		return this.prefs.getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS) ||
 				this.prefs.getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS_ALWAYS);
+	},
+
+	largeFontSizeForAddresses: function() {
+		return this.prefs.getPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES);
 	},
 
 	confirmExceptionalDomains: function (exceptions) {

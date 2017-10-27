@@ -25,6 +25,7 @@ var CA_CONST = {
 	ALWAYS_LARGE_DIALOG : "net.nyail.tanabec.confirm-mail.alwaysLargeDialog",
 	HIGHLIGHT_UNMATCHED_DOMAINS : "net.nyail.tanabec.confirm-mail.highlightUnmatchedDomains",
 	HIGHLIGHT_UNMATCHED_DOMAINS_ALWAYS : "net.nyail.tanabec.confirm-mail.highlightUnmatchedDomainsAlways",
+	LARGE_FONT_SIZE_FOR_ADDRESSES : "net.nyail.tanabec.confirm-mail.largeFontSizeForAddresses",
 	EXCEPTIONAL_DOMAINS_CONFIRM : "net.nyail.tanabec.confirm-mail.exceptional-domains.confirm",
 	EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT : "net.nyail.tanabec.confirm-mail.exceptional-domains.onlyWithAttachment",
 	EXCEPTIONAL_DOMAINS : "net.nyail.tanabec.confirm-mail.exceptional-domains",

@@ -22,8 +22,16 @@
     color: red !important;
 }
 
+:root.large-font-size-for-addresses #yourDomainsList label,
+:root.large-font-size-for-addresses #otherDomainsList label {
+	font-size: 120%;
+}
+
 :root.highlight-domains #otherDomainsList richlistitem.confirm-mail-list-separator label {
 	font-size: 125%;
+}
+:root.large-font-size-for-addresses.highlight-domains #otherDomainsList richlistitem.confirm-mail-list-separator label {
+	font-size: 133%; /* 1.6 / 1.2 */
 }
 
 :root.highlight-domains #otherDomainsList richlistitem.domain-even:not([selected="true"]) label {
