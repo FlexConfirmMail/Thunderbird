@@ -134,7 +134,7 @@ function startup() {
 			for (let [domainForThisGroup, destinationsForThisGroup] in Iterator(groupedExternalRecipients)) {
 				groupCount++;
 				let shouldBeColored = ExceptionManager.isExceptionalDomain(domainForThisGroup) &&
-					AttachmentManager.hasAttachments();
+										ConfirmMailDialog.reconfirmForExceptionalOtherDomains();
 
 				// header for this group
 				let groupHeaderItem = createGroupHeader(domainForThisGroup);
@@ -469,8 +469,7 @@ var ConfirmMailDialog = {
 	getExceptionalRecipients: function () {
 		if (!this.prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_CONFIRM))
 			return [];
-		if (this.prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT) &&
-			!AttachmentManager.hasAttachments())
+		if (!this.reconfirmForExceptionalOtherDomains())
 			return [];
 
 		return DestinationManager.getExternalDomainList()
@@ -490,6 +489,11 @@ var ConfirmMailDialog = {
 				var suffix = FilenameUtil.extractSuffix(attachment);
 				return ExceptionManager.isExceptionalSuffix(suffix);
 			});
+	},
+
+	reconfirmForExceptionalOtherDomains: function () {
+		return this.prefs.getPref(CA_CONST.EXCEPTIONAL_SUFFIXES_CONFIRM) &&
+				AttachmentManager.hasAttachments();
 	},
 
 	requireCheckBody: function () {
