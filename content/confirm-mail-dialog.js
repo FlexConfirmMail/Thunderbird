@@ -369,12 +369,12 @@ function createListItemWithCheckbox(itemLabel, aOptions) {
 	listitem.appendChild(checkboxCell);
 
 	checkboxCell.appendChild(checkbox);
-		let label = document.createElement("label");
-		label.setAttribute("flex", 1);
-		label.setAttribute("crop", "end");
-		label.setAttribute("value", itemLabel);
-		label.setAttribute("tooltiptext", foldLongTooltipText(itemLabel));
-		listitem.appendChild(label);
+	let label = document.createElement("label");
+	label.setAttribute("flex", 1);
+	label.setAttribute("crop", "end");
+	label.setAttribute("value", itemLabel);
+	label.setAttribute("tooltiptext", foldLongTooltipText(itemLabel));
+	listitem.appendChild(label);
 
 	if (aOptions.requireReinput) {
 		checkbox.setAttribute("disabled", true);
