@@ -35,11 +35,11 @@
 }
 
 :root.highlight-domains #otherDomainsList richlistitem.domain-even:not([selected="true"]) label {
-	background: #FFCD8C;
+	background: rgb(255, 192, 0);
 }
 
 :root.highlight-domains #otherDomainsList richlistitem.domain-odd:not([selected="true"]) label {
-	background: #9B9BFF;
+	background: rgb(70, 170, 252);
 }
 
 richlistbox, iframe {
