@@ -390,7 +390,7 @@ function createListItemWithCheckbox(itemLabel, aOptions) {
 		window.addEventListener("resize", function() {
 			field.onresize();
 		});
-		listitem.appendChild(field);
+		listitem.insertBefore(field, label);
 	} else {
 		listitem.setAttribute("tooltiptext", foldLongTooltipText(itemLabel));
 		listitem.onclick = function(event){
