@@ -492,7 +492,7 @@ var ConfirmMailDialog = {
 	},
 
 	reconfirmForExceptionalOtherDomains: function () {
-		return this.prefs.getPref(CA_CONST.EXCEPTIONAL_SUFFIXES_CONFIRM) &&
+		return this.prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT) &&
 				AttachmentManager.hasAttachments();
 	},
 
