@@ -493,8 +493,7 @@ var ConfirmMailDialog = {
 	},
 
 	requireCheckBody: function () {
-		return this.prefs.getPref(CA_CONST.REQUIRE_CHECK_BODY) ||
-				this.prefs.getPref(CA_CONST.REQUIRE_CHECK_BODY_ALWAYS);
+		return this.prefs.getPref(CA_CONST.REQUIRE_CHECK_BODY);
 	},
 
 	requireReinputAttachmentNames: function () {
@@ -502,13 +501,11 @@ var ConfirmMailDialog = {
 	},
 
 	highlightUnmatchedDomains: function () {
-		return this.prefs.getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS) ||
-				this.prefs.getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS_ALWAYS);
+		return this.prefs.getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS);
 	},
 
 	largeFontSizeForAddresses: function() {
-		return this.prefs.getPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES) ||
-				this.prefs.getPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES_ALWAYS);
+		return this.prefs.getPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES);
 	},
 
 	confirmExceptionalDomains: function (exceptions) {
