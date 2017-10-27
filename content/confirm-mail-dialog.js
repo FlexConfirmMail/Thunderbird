@@ -467,9 +467,9 @@ var ConfirmMailDialog = {
 	},
 
 	getExceptionalRecipients: function () {
-		if (!this.prefs.getPref("net.nyail.tanabec.confirm-mail.exceptional-domains.confirm"))
+		if (!this.prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_CONFIRM))
 			return [];
-		if (this.prefs.getPref("net.nyail.tanabec.confirm-mail.exceptional-domains.onlyWithAttachment") &&
+		if (this.prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT) &&
 			!AttachmentManager.hasAttachments())
 			return [];
 
@@ -481,7 +481,7 @@ var ConfirmMailDialog = {
 	},
 
 	getExceptionalAttachments: function () {
-		if (!this.prefs.getPref("net.nyail.tanabec.confirm-mail.exceptional-suffixes.confirm") ||
+		if (!this.prefs.getPref(CA_CONST.EXCEPTIONAL_SUFFIXES_CONFIRM) ||
 			!AttachmentManager.hasAttachments())
 			return [];
 
