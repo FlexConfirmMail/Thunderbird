@@ -25,6 +25,7 @@
 <!ENTITY setting.dialog.checkbox.requireCheckBody "メール本文の確認を求める">
 <!ENTITY setting.dialog.checkbox.requireReinputAttachmentNames "宛先に外部ドメインのアドレスがある場合、添付ファイル名の手動での入力を求める">
 <!ENTITY setting.dialog.checkbox.highlightUnmatchedDomains "登録済みドメイン以外のドメイン名とアドレスを強調表示する">
+<!ENTITY setting.dialog.checkbox.largeFontSizeForAddresses "メールアドレスを大きなフォントサイズで表示する">
 <!ENTITY setting.dialog.checkbox.alwaysLargeDialog "確認のダイアログを常に大きなサイズで開く">
 <!ENTITY setting.sub-dialog.title "ドメイン名の入力">
 <!ENTITY setting.sub-dialog.message "ドメイン名を入力してください(例：example.com)">

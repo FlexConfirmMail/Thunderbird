@@ -507,7 +507,8 @@ var ConfirmMailDialog = {
 	},
 
 	largeFontSizeForAddresses: function() {
-		return this.prefs.getPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES);
+		return this.prefs.getPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES) ||
+				this.prefs.getPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES_ALWAYS);
 	},
 
 	confirmExceptionalDomains: function (exceptions) {

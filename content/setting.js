@@ -103,6 +103,13 @@ function startup(){
 		highlightDomainsBox.checked = prefs.getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS, false);
 	}
 
+	var largeFontSizeBox = document.getElementById("largeFontSizeForAddresses");
+	if(prefs.getPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES_ALWAYS)){
+		largeFontSizeBox.hidden = true;
+	}else{
+		largeFontSizeBox.checked = prefs.getPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES, false);
+	}
+
 	var alwaysLargeDialogBox = document.getElementById("alwaysLargeDialog");
 	if(prefs.getPref(CA_CONST.ALWAYS_LARGE_DIALOG)){
 		alwaysLargeDialogBox.hidden = true;
@@ -228,6 +235,10 @@ function doOK(){
 	var highlightDomainsBox = document.getElementById("highlightUnmatchedDomains");
 	if (!highlightDomainsBox.hidden)
 		prefs.setPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS, highlightDomainsBox.checked);
+
+	var largeFontSizeBox = document.getElementById("largeFontSizeForAddresses");
+	if (!largeFontSizeBox.hidden)
+		prefs.setPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES_ALWAYS, largeFontSizeBox.checked);
 
 	var alwaysLargeDialogBox = document.getElementById("alwaysLargeDialog");
 	if (!alwaysLargeDialogBox.hidden)
