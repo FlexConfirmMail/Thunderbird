@@ -111,7 +111,7 @@ function startup(){
 	}
 
 	var alwaysLargeDialogBox = document.getElementById("alwaysLargeDialog");
-	if(prefs.getPref(CA_CONST.ALWAYS_LARGE_DIALOG)){
+	if(prefs.getPref(CA_CONST.ALWAYS_LARGE_DIALOG_ALWAYS)){
 		alwaysLargeDialogBox.hidden = true;
 	}else{
 		alwaysLargeDialogBox.checked = prefs.getPref(CA_CONST.ALWAYS_LARGE_DIALOG, false);
