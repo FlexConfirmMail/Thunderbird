@@ -31,7 +31,7 @@ var CA_CONST = {
 	HIGHLIGHT_UNMATCHED_DOMAINS_ALWAYS : "net.nyail.tanabec.confirm-mail.highlightUnmatchedDomains.always",
 	LARGE_FONT_SIZE_FOR_ADDRESSES : "net.nyail.tanabec.confirm-mail.largeFontSizeForAddresses",
 	LARGE_FONT_SIZE_FOR_ADDRESSES_ALWAYS : "net.nyail.tanabec.confirm-mail.largeFontSizeForAddresses.always",
-	EXCEPTIONAL_DOMAINS_CONFIRM : "net.nyail.tanabec.confirm-mail.exceptional-domains.confirm",
+	EXCEPTIONAL_DOMAINS_HIGHLIGHT : "net.nyail.tanabec.confirm-mail.exceptional-domains.highlight",
 	EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT : "net.nyail.tanabec.confirm-mail.exceptional-domains.onlyWithAttachment",
 	EXCEPTIONAL_DOMAINS : "net.nyail.tanabec.confirm-mail.exceptional-domains",
 	EXCEPTIONAL_SUFFIXES_CONFIRM : "net.nyail.tanabec.confirm-mail.exceptional-suffixes.confirm",

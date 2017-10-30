@@ -54,7 +54,7 @@ function startup(){
 	var noDisplayBox = document.getElementById("not-display");
 	noDisplayBox.checked=isNotDisplay;
 
-	document.getElementById("exceptional-domains-confirm").checked=prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_CONFIRM, false);
+	document.getElementById("exceptional-domains-highlight").checked=prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_HIGHLIGHT, false);
 	document.getElementById("exceptional-domains-attachment").checked=prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT, false);
 	var exceptionalDomains = document.getElementById("exceptional-domains");
 	exceptionalDomains.value = prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS)
@@ -204,7 +204,7 @@ function doOK(){
 	var isCountdown = document.getElementById("countdown").checked;
 	prefs.setPref(CA_CONST.IS_COUNT_DOWN, isCountdown);
 
-	prefs.setPref(CA_CONST.EXCEPTIONAL_DOMAINS_CONFIRM, document.getElementById("exceptional-domains-confirm").checked);
+	prefs.setPref(CA_CONST.EXCEPTIONAL_DOMAINS_HIGHLIGHT, document.getElementById("exceptional-domains-highlight").checked);
 	prefs.setPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT, document.getElementById("exceptional-domains-attachment").checked);
 	var exceptionalDomains = document.getElementById("exceptional-domains").value;
 	prefs.setPref(CA_CONST.EXCEPTIONAL_DOMAINS, exceptionalDomains.replace(/\s+/g, ' '));

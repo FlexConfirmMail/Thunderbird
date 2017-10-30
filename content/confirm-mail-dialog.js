@@ -134,7 +134,7 @@ function startup() {
 			for (let [domainForThisGroup, destinationsForThisGroup] in Iterator(groupedExternalRecipients)) {
 				groupCount++;
 				let shouldBeColored = ExceptionManager.isExceptionalDomain(domainForThisGroup) &&
-										ConfirmMailDialog.reconfirmForExceptionalOtherDomains();
+										ConfirmMailDialog.highlightExceptionalOtherDomains();
 
 				// header for this group
 				let groupHeaderItem = createGroupHeader(domainForThisGroup);
@@ -467,8 +467,6 @@ var ConfirmMailDialog = {
 	},
 
 	getExceptionalRecipients: function () {
-		if (!this.prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_CONFIRM))
-			return [];
 		if (!this.reconfirmForExceptionalOtherDomains())
 			return [];
 
@@ -494,6 +492,11 @@ var ConfirmMailDialog = {
 	reconfirmForExceptionalOtherDomains: function () {
 		return !this.prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT) ||
 				AttachmentManager.hasAttachments();
+	},
+
+	highlightExceptionalOtherDomains: function () {
+		return this.prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_HIGHLIGHT) ||
+				this.reconfirmForExceptionalOtherDomains();
 	},
 
 	requireCheckBody: function () {

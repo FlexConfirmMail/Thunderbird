@@ -1,6 +1,6 @@
 
 
-pref("net.nyail.tanabec.confirm-mail.exceptional-domains.confirm", true);
+pref("net.nyail.tanabec.confirm-mail.exceptional-domains.highlight", true);
 pref("net.nyail.tanabec.confirm-mail.exceptional-domains.onlyWithAttachment", false);
 pref("net.nyail.tanabec.confirm-mail.exceptional-domains", "");
 pref("net.nyail.tanabec.confirm-mail.exceptional-suffixes.confirm", true);

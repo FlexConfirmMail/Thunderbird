@@ -16,8 +16,10 @@
 <!ENTITY setting.dialog.button.remove.label "删除">
 <!ENTITY setting.dialog.checkbox.notdisplay "向已登录域名邮件送信时不会显示确认画面">
 <!ENTITY setting.dialog.exceptionalDomains.label    "组织外的邮箱地址的例外">
-<!ENTITY setting.dialog.exceptionalDomains.confirm  "收信方含这些域名时会再次警告">
-<!ENTITY setting.dialog.exceptionalDomains.attachment "只有存在附件的情况才会再次进行警告">
+<!ENTITY setting.dialog.exceptionalDomains.highlight  "Highlight recipients of these domains always">
+<!--ENTITY setting.dialog.exceptionalDomains.confirm  "收信方含这些域名时会再次警告"-->
+<!ENTITY setting.dialog.exceptionalDomains.attachment "Confirm me again for attachments if there is any recipient with one of these domains">
+<!--ENTITY setting.dialog.exceptionalDomains.attachment "只有存在附件的情况才会再次进行警告"-->
 <!ENTITY setting.dialog.exceptionalSuffixes.label   "组织外邮件的附件的例外">
 <!ENTITY setting.dialog.exceptionalSuffixes.confirm "添加了含有这些扩展名的附件时会进行再次警告">
 <!ENTITY setting.dialog.checkbox.countdown "点击[送信]按钮后开始倒计时(1-3000秒)--&gt;">

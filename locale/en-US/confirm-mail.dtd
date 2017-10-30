@@ -17,8 +17,8 @@
 <!ENTITY setting.dialog.button.remove.label "remove">
 <!ENTITY setting.dialog.checkbox.notdisplay "Not display a message for my domain emails">
 <!ENTITY setting.dialog.exceptionalDomains.label    "Exceptional domains of foreign groups">
-<!ENTITY setting.dialog.exceptionalDomains.confirm  "Confirm me again if there is any recipient with one of these domains">
-<!ENTITY setting.dialog.exceptionalDomains.attachment "Confirm me again only when there is any attachment">
+<!ENTITY setting.dialog.exceptionalDomains.highlight  "Highlight recipients of these domains always">
+<!ENTITY setting.dialog.exceptionalDomains.attachment "Confirm me again for attachments if there is any recipient with one of these domains">
 <!ENTITY setting.dialog.exceptionalSuffixes.label   "Exceptional file extensions of attachments for foreign groups">
 <!ENTITY setting.dialog.exceptionalSuffixes.confirm "Confirm me again if there is any attachment with one of these extensions">
 <!ENTITY setting.dialog.checkbox.countdown "Countdown before sending mail(1-3000sec)">

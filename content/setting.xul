@@ -56,11 +56,8 @@
 			</hbox>
 			<groupbox orient="vertical">
 				<caption label="&setting.dialog.exceptionalDomains.label;" control="exceptional-domains"/>
-				<checkbox id="exceptional-domains-confirm" label="&setting.dialog.exceptionalDomains.confirm;"/>
-				<hbox>
-					<spacer style="width:1em"/>
-					<checkbox id="exceptional-domains-attachment" label="&setting.dialog.exceptionalDomains.attachment;"/>
-				</hbox>
+				<checkbox id="exceptional-domains-highlight" label="&setting.dialog.exceptionalDomains.highlight;"/>
+				<checkbox id="exceptional-domains-attachment" label="&setting.dialog.exceptionalDomains.attachment;"/>
 				<textbox id="exceptional-domains" multiline="true" rows="4"/>
 			</groupbox>
 			<separator/>
