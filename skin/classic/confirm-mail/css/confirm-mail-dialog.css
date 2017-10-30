@@ -31,7 +31,7 @@
 	font-size: 125%;
 }
 :root.large-font-size-for-addresses.highlight-domains #otherDomainsList richlistitem.confirm-mail-list-separator label {
-	font-size: 133%; /* 1.6 / 1.2 */
+	font-size: 160%;
 }
 
 :root.highlight-domains #otherDomainsList richlistitem.domain-even:not([selected="true"]) label {
