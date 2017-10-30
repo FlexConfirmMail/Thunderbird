@@ -72,7 +72,8 @@ try { // DEBUG
 		if (prefs.getPref(CA_CONST.ALWAYS_LARGE_DIALOG)) {
 			let w = parseInt(screen.availWidth * 0.9);
 			let h = parseInt(screen.availHeight * 0.9);
-			w = Math.min(w, h);
+			let minW = this.prefs.getPref(CA_CONST.ALWAYS_LARGE_DIALOG_MIN_WIDTH, 0);
+			w = Math.max(minW, Math.ceil(w / 2));
 			let x = parseInt((screen.availWidth - w) / 2);
 			let y = parseInt((screen.availHeight - h) / 2);
 			sizeAndPosition = ",width=" + w + ",height=" + h + ",screenX=" + x + ",screenY=" + y;

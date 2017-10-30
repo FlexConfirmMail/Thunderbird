@@ -25,6 +25,7 @@ var CA_CONST = {
 	COUNT_DOWN_ALLOW_SKIP : "net.nyail.tanabec.confirm-mail.countdown.allowSkip",
 	COUNT_DOWN_ALLOW_SKIP_ALWAYS : "net.nyail.tanabec.confirm-mail.countdown.allowSkip.always",
 	ALWAYS_LARGE_DIALOG : "net.nyail.tanabec.confirm-mail.alwaysLargeDialog",
+	ALWAYS_LARGE_DIALOG_MIN_WIDTH : "net.nyail.tanabec.confirm-mail.alwaysLargeDialog.minWidth",
 	ALWAYS_LARGE_DIALOG_ALWAYS : "net.nyail.tanabec.confirm-mail.alwaysLargeDialog.always",
 	HIGHLIGHT_UNMATCHED_DOMAINS : "net.nyail.tanabec.confirm-mail.highlightUnmatchedDomains",
 	HIGHLIGHT_UNMATCHED_DOMAINS_ALWAYS : "net.nyail.tanabec.confirm-mail.highlightUnmatchedDomains.always",

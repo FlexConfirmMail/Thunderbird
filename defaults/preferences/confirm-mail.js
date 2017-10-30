@@ -19,6 +19,7 @@ pref("net.nyail.tanabec.confirm-mail.highlightUnmatchedDomains.always", false);
 pref("net.nyail.tanabec.confirm-mail.largeFontSizeForAddresses", false);
 pref("net.nyail.tanabec.confirm-mail.largeFontSizeForAddresses.always", false);
 pref("net.nyail.tanabec.confirm-mail.alwaysLargeDialog", false);
+pref("net.nyail.tanabec.confirm-mail.alwaysLargeDialog.minWidth", 680);
 pref("net.nyail.tanabec.confirm-mail.alwaysLargeDialog.always", false);
 
 pref("net.nyail.tanabec.confirm-mail.countdown.allowSkip", true);
