@@ -131,14 +131,15 @@ function startup() {
 		function createExternalDomainsListItems(externals) {
 			var groupedExternalRecipients = AddressUtil.groupDestinationsByDomain(externals);
 			var groupCount = 0;
+			var shouldHighlightExceptionalDomains = ConfirmMailDialog.highlightExceptionalOtherDomains();
 			for (let [domainForThisGroup, destinationsForThisGroup] in Iterator(groupedExternalRecipients)) {
 				groupCount++;
-				let shouldBeColored = ExceptionManager.isExceptionalDomain(domainForThisGroup) &&
-										ConfirmMailDialog.highlightExceptionalOtherDomains();
+				let shouldHighlight = ExceptionManager.isExceptionalDomain(domainForThisGroup) &&
+										shouldHighlightExceptionalDomains;
 
 				// header for this group
 				let groupHeaderItem = createGroupHeader(domainForThisGroup);
-				if (shouldBeColored)
+				if (shouldHighlight)
 					groupHeaderItem.setAttribute("data-exceptional", "true");
 				setHeaderStarIconVisible(groupHeaderItem, false);
 				externalList.appendChild(groupHeaderItem);
@@ -147,7 +148,7 @@ function startup() {
 				let domainClass = groupCount % 2 ? "domain-odd" : "domain-even";
 				for (let [, destination] in Iterator(destinationsForThisGroup)) {
 					let listitem = createListItemWithCheckbox(createRecipientLabel(destination));
-					if (shouldBeColored) {
+					if (shouldHighlight) {
 						listitem.setAttribute("data-exceptional", "true");
 					}
 					listitem.classList.add(domainClass);
