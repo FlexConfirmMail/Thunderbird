@@ -238,7 +238,7 @@ function doOK(){
 
 	var largeFontSizeBox = document.getElementById("largeFontSizeForAddresses");
 	if (!largeFontSizeBox.hidden)
-		prefs.setPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES_ALWAYS, largeFontSizeBox.checked);
+		prefs.setPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES, largeFontSizeBox.checked);
 
 	var alwaysLargeDialogBox = document.getElementById("alwaysLargeDialog");
 	if (!alwaysLargeDialogBox.hidden)
