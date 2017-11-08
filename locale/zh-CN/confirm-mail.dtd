@@ -24,6 +24,7 @@
 <!ENTITY setting.dialog.exceptionalSuffixes.confirm "添加了含有这些扩展名的附件时会进行再次警告">
 <!ENTITY setting.dialog.checkbox.countdown "点击[送信]按钮后开始倒计时(1-3000秒)--&gt;">
 <!ENTITY setting.dialog.label.countdown "秒">
+<!ENTITY setting.dialog.checkbox.countdown.allowSkip "Allow to skip countdown to send the mail immediately">
 <!ENTITY setting.dialog.checkbox.requireCheckBody "Require to check the message body">
 <!ENTITY setting.dialog.checkbox.requireReinputAttachmentNames "Require to input file names of attachments, if there is any other domain recipient">
 <!ENTITY setting.dialog.checkbox.highlightUnmatchedDomains "Highlight other domains and addesses">
