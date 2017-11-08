@@ -89,6 +89,13 @@ function startup(){
 	var countDonwTime = prefs.getPref(CA_CONST.COUNT_DOWN_TIME);
 	cdTimeBox.value = countDonwTime;
 
+	var countdownAllowSkipBox = document.getElementById("countdownAllowSkip");
+	if(prefs.getPref(CA_CONST.COUNT_DOWN_ALLOW_SKIP_ALWAYS)){
+		countdownAllowSkipBox.hidden = true;
+	}else{
+		countdownAllowSkipBox.checked = prefs.getPref(CA_CONST.COUNT_DOWN_ALLOW_SKIP, false);
+	}
+
 	var bodyBox = document.getElementById("requireCheckBody");
 	if(prefs.getPref(CA_CONST.REQUIRE_CHECK_BODY_ALWAYS)){
 		bodyBox.hidden = true;
@@ -227,6 +234,10 @@ function doOK(){
 	}
 
 	prefs.setPref(CA_CONST.COUNT_DOWN_TIME, String(cdTime));
+
+	var countdownAllowSkipBox = document.getElementById("countdownAllowSkip");
+	if (!countdownAllowSkipBox.hidden)
+		prefs.setPref(CA_CONST.COUNT_DOWN_ALLOW_SKIP, countdownAllowSkipBox.checked);
 
 	var bodyBox = document.getElementById("requireCheckBody");
 	if (!bodyBox.hidden)

@@ -77,6 +77,8 @@
 				<textbox id="countdown-time" maxwidth="50"/>
 				<label value="&setting.dialog.label.countdown;" style="padding-top:5px; padding-bottom:5px;"/>
 			</hbox>
+			<checkbox id="countdownAllowSkip" label="&setting.dialog.checkbox.countdown.allowSkip;"/>
+			<separator/>
 			<checkbox id="requireCheckBody" label="&setting.dialog.checkbox.requireCheckBody;"/>
 			<checkbox id="highlightUnmatchedDomains" label="&setting.dialog.checkbox.highlightUnmatchedDomains;"/>
 			<checkbox id="largeFontSizeForAddresses" label="&setting.dialog.checkbox.largeFontSizeForAddresses;"/>
