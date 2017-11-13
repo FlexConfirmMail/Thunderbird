@@ -34,14 +34,18 @@
 	font-size: 160%;
 }
 
-:root.highlight-domains #otherDomainsList richlistitem.domain-even:not([selected="true"]) label,
-:root.highlight-domains #otherDomainsList:not(:focus) richlistitem.domain-even[selected="true"] label {
+:root.highlight-domains #otherDomainsList richlistitem.domain-even:not([selected="true"]) label {
 	background: rgb(255, 192, 0);
 }
+:root.highlight-domains #otherDomainsList:not(:focus) richlistitem.domain-even[selected="true"] label {
+	background: rgb(198, 156, 27);
+}
 
-:root.highlight-domains #otherDomainsList richlistitem.domain-odd:not([selected="true"]) label,
-:root.highlight-domains #otherDomainsList:not(:focus) richlistitem.domain-odd[selected="true"] label {
+:root.highlight-domains #otherDomainsList richlistitem.domain-odd:not([selected="true"]) label {
 	background: rgb(70, 170, 252);
+}
+:root.highlight-domains #otherDomainsList:not(:focus) richlistitem.domain-odd[selected="true"] label {
+	background: rgb(72, 146, 206);
 }
 
 richlistbox, iframe {
