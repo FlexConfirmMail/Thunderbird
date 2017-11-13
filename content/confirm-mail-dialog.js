@@ -128,9 +128,9 @@ function startup() {
 		}, false);
 
 		// external domains
+		var groupCount = 0;
 		function createExternalDomainsListItems(externals) {
 			var groupedExternalRecipients = AddressUtil.groupDestinationsByDomain(externals);
-			var groupCount = 0;
 			var shouldHighlightExceptionalDomains = ConfirmMailDialog.highlightExceptionalOtherDomains();
 			for (let [domainForThisGroup, destinationsForThisGroup] in Iterator(groupedExternalRecipients)) {
 				groupCount++;
