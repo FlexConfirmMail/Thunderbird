@@ -95,7 +95,7 @@ try { // DEBUG
 } catch(error) { alert(error+'\n'+error.stack); } // DEBUG
   },
 
-  showCountDownDialog: function(){
+  showCountDownDialog: function(aOpenerWindow){
 	var isCountDown = this.prefs.getPref(CA_CONST.IS_COUNT_DOWN, false);
 	if(!isCountDown)
 		return true;
@@ -104,7 +104,8 @@ try { // DEBUG
 	var countDownComplete = { value : false };
 	var allowSkip = this.prefs.getPref(CA_CONST.COUNT_DOWN_ALLOW_SKIP);
 
-	window.openDialog("chrome://confirm-mail/content/countdown.xul", "CountDown Dialog",
+	var opener = aOpenerWindow || window;
+	opener.openDialog("chrome://confirm-mail/content/countdown.xul", "CountDown Dialog",
 	"resizable,chrome,modal,titlebar,centerscreen", countDownTime, allowSkip, countDownComplete);
 
 	if (countDownComplete.value){
