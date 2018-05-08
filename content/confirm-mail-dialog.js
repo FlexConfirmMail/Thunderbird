@@ -132,7 +132,7 @@ function startup() {
 		function createExternalDomainsListItems(externals) {
 			var groupedExternalRecipients = AddressUtil.groupDestinationsByDomain(externals);
 			var shouldHighlightExceptionalDomains = ConfirmMailDialog.highlightExceptionalOtherDomains();
-			for (let domainForThisGroup of groupedExternalRecipients) {
+			for (let domainForThisGroup in groupedExternalRecipients) {
 				let destinationsForThisGroup = groupedExternalRecipients[domainForThisGroup];
 				groupCount++;
 				let shouldHighlight = ExceptionManager.isExceptionalDomain(domainForThisGroup) &&
