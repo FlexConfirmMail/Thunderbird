@@ -132,7 +132,8 @@ function startup() {
 		function createExternalDomainsListItems(externals) {
 			var groupedExternalRecipients = AddressUtil.groupDestinationsByDomain(externals);
 			var shouldHighlightExceptionalDomains = ConfirmMailDialog.highlightExceptionalOtherDomains();
-			for (let [domainForThisGroup, destinationsForThisGroup] in Iterator(groupedExternalRecipients)) {
+			for (let domainForThisGroup of groupedExternalRecipients) {
+				let destinationsForThisGroup = groupedExternalRecipients[domainForThisGroup];
 				groupCount++;
 				let shouldHighlight = ExceptionManager.isExceptionalDomain(domainForThisGroup) &&
 										shouldHighlightExceptionalDomains;
@@ -146,7 +147,7 @@ function startup() {
 
 				// destinations in this group
 				let domainClass = groupCount % 2 ? "domain-odd" : "domain-even";
-				for (let [, destination] in Iterator(destinationsForThisGroup)) {
+				for (let destination of destinationsForThisGroup) {
 					let listitem = createListItemWithCheckbox(createRecipientLabel(destination));
 					if (shouldHighlight) {
 						listitem.setAttribute("data-exceptional", "true");
