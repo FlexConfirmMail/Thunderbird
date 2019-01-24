@@ -5,6 +5,7 @@ pref("net.nyail.tanabec.confirm-mail.exceptional-domains.onlyWithAttachment", fa
 pref("net.nyail.tanabec.confirm-mail.exceptional-domains", "");
 pref("net.nyail.tanabec.confirm-mail.exceptional-suffixes.confirm", true);
 pref("net.nyail.tanabec.confirm-mail.exceptional-suffixes", "");
+pref("net.nyail.tanabec.confirm-mail.not-display", false);
 
 pref("net.nyail.tanabec.confirm-mail.exceptionalDomain.title", "chrome://confirm-mail/locale/confirm-mail.properties");
 pref("net.nyail.tanabec.confirm-mail.exceptionalDomain.message", "chrome://confirm-mail/locale/confirm-mail.properties");
@@ -22,6 +23,8 @@ pref("net.nyail.tanabec.confirm-mail.alwaysLargeDialog", false);
 pref("net.nyail.tanabec.confirm-mail.alwaysLargeDialog.minWidth", 680);
 pref("net.nyail.tanabec.confirm-mail.alwaysLargeDialog.always", false);
 
+pref("net.nyail.tanabec.confirm-mail.is-countdown", false);
+pref("net.nyail.tanabec.confirm-mail.cd-time", 5);
 pref("net.nyail.tanabec.confirm-mail.countdown.allowSkip", true);
 pref("net.nyail.tanabec.confirm-mail.countdown.allowSkip.always", false);
 
