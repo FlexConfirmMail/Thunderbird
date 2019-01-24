@@ -6,6 +6,7 @@ pref("net.nyail.tanabec.confirm-mail.exceptional-domains", "");
 pref("net.nyail.tanabec.confirm-mail.exceptional-suffixes.confirm", true);
 pref("net.nyail.tanabec.confirm-mail.exceptional-suffixes", "");
 pref("net.nyail.tanabec.confirm-mail.not-display", false);
+pref("net.nyail.tanabec.confirm-mail.min-recipients-count", 0);
 
 pref("net.nyail.tanabec.confirm-mail.exceptionalDomain.title", "chrome://confirm-mail/locale/confirm-mail.properties");
 pref("net.nyail.tanabec.confirm-mail.exceptionalDomain.message", "chrome://confirm-mail/locale/confirm-mail.properties");

@@ -15,7 +15,9 @@
 <!ENTITY setting.dialog.button.add.label "add">
 <!ENTITY setting.dialog.button.edit.label "edit">
 <!ENTITY setting.dialog.button.remove.label "remove">
-<!ENTITY setting.dialog.checkbox.notdisplay "Not display a message for my domain emails">
+<!ENTITY setting.dialog.checkbox.notdisplay "Skip confirmation if all recipients are your (group) domain">
+<!ENTITY setting.dialog.label.minRecipientsCount.before "Skip confirmation if there are/is only">
+<!ENTITY setting.dialog.label.minRecipientsCount.after "or fewer recipient(s) (*0 means &quote;always confirm&quote;)">
 <!ENTITY setting.dialog.exceptionalDomains.label    "Exceptional domains of foreign groups">
 <!ENTITY setting.dialog.exceptionalDomains.highlight  "Highlight recipients of these domains always">
 <!ENTITY setting.dialog.exceptionalDomains.attachment "Confirm me again for attachments if there is any recipient with one of these domains">

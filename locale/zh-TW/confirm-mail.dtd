@@ -15,6 +15,8 @@
 <!ENTITY setting.dialog.button.edit.label "編輯">
 <!ENTITY setting.dialog.button.remove.label "刪除">
 <!ENTITY setting.dialog.checkbox.notdisplay "向已登錄域名郵件送信時不會顯示確認畫麵">
+<!ENTITY setting.dialog.label.minRecipientsCount.before "Skip confirmation if there are/is only">
+<!ENTITY setting.dialog.label.minRecipientsCount.after "or fewer recipient(s) (*0 means &quote;always confirm&quote;)">
 <!ENTITY setting.dialog.exceptionalDomains.label    "組織外的郵箱地址的例外">
 <!ENTITY setting.dialog.exceptionalDomains.highlight  "Highlight recipients of these domains always">
 <!--ENTITY setting.dialog.exceptionalDomains.confirm  "收信方含這些域名時會再次警告"-->

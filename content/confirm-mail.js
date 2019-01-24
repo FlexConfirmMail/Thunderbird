@@ -62,9 +62,14 @@ try { // DEBUG
 	//dump("[FILENAME]" + fileNamesList + "\n");
 
   	var isNotDisplay = this.prefs.getPref(CA_CONST.IS_NOT_DISPLAY, false);
+  	var minConfimationCount = this.prefs.getInt(CA_CONST.MIN_RECIPIENTS_COUNT, 0);
 
 
-  	if(isNotDisplay && externalList.length == 0 && internalList.length > 0){
+  	if ((isNotDisplay &&
+  			externalList.length == 0 &&
+  			internalList.length > 0) ||
+  		(minConfimationCount > 0 &&
+  			(externalList.length + internalList.length <= minConfimationCount))){
   		return this.showCountDownDialog();
   	}else{
 		window.confmail_confirmOK = false;

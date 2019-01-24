@@ -62,6 +62,12 @@
 			</groupbox>
 			<separator/>
 			<checkbox id="not-display" label="&setting.dialog.checkbox.notdisplay;"/>
+			<checkbox id="min-recipients-count" label="&setting.dialog.checkbox.notdisplay;"/>
+			<hbox align="center">
+				<label value="&setting.dialog.label.minRecipientsCount.before;" control="min-recipients-count"/>
+				<textbox id="min-recipients-count" size="10" type="number"/>
+				<label value="&setting.dialog.label.minRecipientsCount.after;" control="min-recipients-count"/>
+			</hbox>
 		</vbox>
 		<vbox flex="1">
 			<groupbox orient="vertical">
@@ -72,10 +78,10 @@
 			<checkbox id="requireReinputAttachmentNames" label="&setting.dialog.checkbox.requireReinputAttachmentNames;"/>
 		</vbox>
 		<vbox flex="1">
-			<hbox>
+			<hbox align="center">
 				<checkbox id="countdown" label="&setting.dialog.checkbox.countdown;"/>
 				<textbox id="countdown-time" maxwidth="50"/>
-				<label value="&setting.dialog.label.countdown;" style="padding-top:5px; padding-bottom:5px;"/>
+				<label value="&setting.dialog.label.countdown;" control="countdown-time"/>
 			</hbox>
 			<checkbox id="countdownAllowSkip" label="&setting.dialog.checkbox.countdown.allowSkip;"/>
 			<separator/>
