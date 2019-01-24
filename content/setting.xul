@@ -62,10 +62,9 @@
 			</groupbox>
 			<separator/>
 			<checkbox id="not-display" label="&setting.dialog.checkbox.notdisplay;"/>
-			<checkbox id="min-recipients-count" label="&setting.dialog.checkbox.notdisplay;"/>
 			<hbox align="center">
 				<label value="&setting.dialog.label.minRecipientsCount.before;" control="min-recipients-count"/>
-				<textbox id="min-recipients-count" size="10" type="number"/>
+				<textbox id="min-recipients-count" style="width:10ch" type="number"/>
 				<label value="&setting.dialog.label.minRecipientsCount.after;" control="min-recipients-count"/>
 			</hbox>
 		</vbox>

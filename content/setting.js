@@ -54,6 +54,10 @@ function startup(){
 	var noDisplayBox = document.getElementById("not-display");
 	noDisplayBox.checked=isNotDisplay;
 
+	var minRecipientsCount = prefs.getPref(CA_CONST.MIN_RECIPIENTS_COUNT, 0);
+	var minRecipientsCountBox = document.getElementById("min-recipients-count");
+	minRecipientsCountBox.value = minRecipientsCount;
+
 	document.getElementById("exceptional-domains-highlight").checked=prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_HIGHLIGHT, false);
 	document.getElementById("exceptional-domains-attachment").checked=prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT, false);
 	var exceptionalDomains = document.getElementById("exceptional-domains");
@@ -207,6 +211,11 @@ function doOK(){
     
 	var notDisplay = document.getElementById("not-display").checked;
 	prefs.setPref(CA_CONST.IS_NOT_DISPLAY, notDisplay);
+
+	var minRecipientsCount = parseInt(document.getElementById("min-recipients-count").value);
+	if (isNaN(minRecipientsCount))
+		minRecipientsCount = 0;
+	prefs.setPref(CA_CONST.MIN_RECIPIENTS_COUNT, minRecipientsCount);
 
 	var isCountdown = document.getElementById("countdown").checked;
 	prefs.setPref(CA_CONST.IS_COUNT_DOWN, isCountdown);
