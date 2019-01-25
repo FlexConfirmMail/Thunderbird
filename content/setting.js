@@ -91,6 +91,11 @@ function startup(){
 	}
 
 	var countDonwTime = prefs.getPref(CA_CONST.COUNT_DOWN_TIME);
+	var oldCountDownTime = prefs.getPref(CA_CONST.COUNT_DOWN_TIME_OLD);
+	if (oldCountDownTime) {
+		countDonwTime = oldCountDownTime;
+		prefs.clearPref(CA_CONST.COUNT_DOWN_TIME_OLD);
+	}
 	cdTimeBox.value = countDonwTime;
 
 	var countdownAllowSkipBox = document.getElementById("countdownAllowSkip");

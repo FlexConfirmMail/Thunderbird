@@ -106,6 +106,11 @@ try { // DEBUG
 		return true;
 
 	var countDownTime = this.prefs.getPref(CA_CONST.COUNT_DOWN_TIME);
+	var oldCountDownTime = this.prefs.getPref(CA_CONST.COUNT_DOWN_TIME_OLD);
+	if (oldCountDownTime) {
+		countDownTime = oldCountDownTime;
+		this.prefs.clearPref(CA_CONST.COUNT_DOWN_TIME_OLD);
+	}
 	var countDownComplete = { value : false };
 	var allowSkip = this.prefs.getPref(CA_CONST.COUNT_DOWN_ALLOW_SKIP);
 
