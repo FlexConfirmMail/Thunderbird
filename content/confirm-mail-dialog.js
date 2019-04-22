@@ -70,7 +70,7 @@ function startup() {
 
 		for (var i = 0; i < internals.length; i++) {
 			var listitem = createListItemWithCheckbox(createRecipientLabel(internals[i]));
-			listitem.addEventListener("click", () => updateCheckAllCheckBox(internalList), false);
+			listitem.addEventListener("click", function() { updateCheckAllCheckBox(internalList); }, false);
 			internalList.appendChild(listitem);
 		}
 
@@ -160,7 +160,7 @@ function startup() {
 						listitem.setAttribute("data-exceptional", "true");
 					}
 					listitem.classList.add(domainClass);
-					listitem.addEventListener("click", () => updateCheckAllCheckBox(externalList), false);
+					listitem.addEventListener("click", function() { updateCheckAllCheckBox(externalList); }, false);
 					externalList.appendChild(listitem);
 					recordItemInGroup(domainForThisGroup, listitem);
 				}
@@ -208,7 +208,7 @@ function startup() {
 			let attachmentFileItem = createListItemWithCheckbox(fileName, {
 				requireReinput: requireReinputFilename
 			});
-			attachmentFileItem.addEventListener("click", () => updateCheckAllCheckBox(fileNamesList), false);
+			attachmentFileItem.addEventListener("click", function() { updateCheckAllCheckBox(fileNamesList); }, false);
 			if (ExceptionManager.fileHasExceptionalSuffix(fileName)) {
 				attachmentFileItem.setAttribute("data-exceptional", "true");
 				exceptionalItems.push(attachmentFileItem);
