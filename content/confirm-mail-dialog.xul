@@ -41,15 +41,17 @@
 	<label value="&confirm.dialog.message;" style="padding-bottom:3px; font-size:1.3em;"/>
 	<vbox flex="1">
 	<groupbox id="yourDomains" flex="1" height="150" persist="height">
-		<caption><checkbox id="check_all"
-					label="&confirm.dialog.yourdomain.label;"
-					oncommand="checkAllChecked()"/></caption>
+		<caption class="check_each" value="&confirm.dialog.yourdomain.label;"/>
+		<caption class="check_all"><checkbox label="&confirm.dialog.yourdomain.label;"
+					oncommand="checkAllChecked(this)"/></caption>
 		<richlistbox id="yourDomainsList" flex="1">
 		</richlistbox>
 	</groupbox>
 	<splitter/>
 	<groupbox id="otherDomains" flex="2" height="250" persist="height">
-		<caption label="&confirm.dialog.otherdomain.label;"/>
+		<caption class="check_each" value="&confirm.dialog.otherdomain.label;"/>
+		<caption class="check_all"><checkbox label="&confirm.dialog.otherdomain.label;"
+					oncommand="checkAllChecked(this)"/></caption>
 		<richlistbox id="otherDomainsList" flex="1">
 		</richlistbox>
 	</groupbox>
@@ -64,7 +66,9 @@
 	</groupbox>
 	<splitter/>
 	<groupbox id="fileNames" flex="2" persist="height">
-		<caption label="&confirm.dialog.fileName.label;"/>
+		<caption class="check_each" value="&confirm.dialog.fileName.label;"/>
+		<caption class="check_all"><checkbox label="&confirm.dialog.fileName.label;"
+					oncommand="checkAllChecked(this)"/></caption>
 		<richlistbox id="fileNamesList" flex="1">
 		</richlistbox>
 	</groupbox>

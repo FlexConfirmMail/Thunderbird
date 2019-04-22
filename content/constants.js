@@ -40,5 +40,11 @@ var CA_CONST = {
 	EXCEPTIONAL_SUFFIXES : "net.nyail.tanabec.confirm-mail.exceptional-suffixes",
 	REQUIRE_CHECK_BODY : "net.nyail.tanabec.confirm-mail.requireCheckBody",
 	REQUIRE_CHECK_BODY_ALWAYS : "net.nyail.tanabec.confirm-mail.requireCheckBody.always",
-	REQUIRE_REINPUT_ATTACHMENT_NAMES : "net.nyail.tanabec.confirm-mail.requireReinputAttachmentNames"
+	REQUIRE_REINPUT_ATTACHMENT_NAMES : "net.nyail.tanabec.confirm-mail.requireReinputAttachmentNames",
+	ALLOW_CHECK_ALL_INTERNALS : "net.nyail.tanabec.confirm-mail.allowCheckAll.yourDomains",
+	ALLOW_CHECK_ALL_INTERNALS_ALWAYS : "net.nyail.tanabec.confirm-mail.allowCheckAll.yourDomains.always",
+	ALLOW_CHECK_ALL_EXTERNALS : "net.nyail.tanabec.confirm-mail.allowCheckAll.otherDomains",
+	ALLOW_CHECK_ALL_EXTERNALS_ALWAYS : "net.nyail.tanabec.confirm-mail.allowCheckAll.otherDomains.always",
+	ALLOW_CHECK_ALL_ATTACHMENTS : "net.nyail.tanabec.confirm-mail.allowCheckAll.fileNames",
+	ALLOW_CHECK_ALL_ATTACHMENTS_ALWAYS : "net.nyail.tanabec.confirm-mail.allowCheckAll.fileNames.always"
 };

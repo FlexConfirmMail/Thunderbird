@@ -105,6 +105,25 @@ function startup(){
 		countdownAllowSkipBox.checked = prefs.getPref(CA_CONST.COUNT_DOWN_ALLOW_SKIP, false);
 	}
 
+	var allCheckInternals = document.getElementById("allowCheckAll.yourDomains");
+	if(prefs.getPref(CA_CONST.ALLOW_CHECK_ALL_INTERNALS_ALWAYS)){
+		allCheckInternals.hidden = true;
+	}else{
+		allCheckInternals.checked = prefs.getPref(CA_CONST.ALLOW_CHECK_ALL_INTERNALS, false);
+	}
+	var allCheckExternals = document.getElementById("allowCheckAll.otherDomains");
+	if(prefs.getPref(CA_CONST.ALLOW_CHECK_ALL_EXTERNALS_ALWAYS)){
+		allCheckExternals.hidden = true;
+	}else{
+		allCheckExternals.checked = prefs.getPref(CA_CONST.ALLOW_CHECK_ALL_EXTERNALS, false);
+	}
+	var allCheckAttachments = document.getElementById("allowCheckAll.fileNames");
+	if(prefs.getPref(CA_CONST.ALLOW_CHECK_ALL_ATTACHMENTS_ALWAYS)){
+		allCheckAttachments.hidden = true;
+	}else{
+		allCheckAttachments.checked = prefs.getPref(CA_CONST.ALLOW_CHECK_ALL_ATTACHMENTS, false);
+	}
+
 	var bodyBox = document.getElementById("requireCheckBody");
 	if(prefs.getPref(CA_CONST.REQUIRE_CHECK_BODY_ALWAYS)){
 		bodyBox.hidden = true;
@@ -252,6 +271,16 @@ function doOK(){
 	var countdownAllowSkipBox = document.getElementById("countdownAllowSkip");
 	if (!countdownAllowSkipBox.hidden)
 		prefs.setPref(CA_CONST.COUNT_DOWN_ALLOW_SKIP, countdownAllowSkipBox.checked);
+
+	var allCheckInternals = document.getElementById("allowCheckAll.yourDomains");
+	if (!allCheckInternals.hidden)
+		prefs.setPref(CA_CONST.ALLOW_CHECK_ALL_INTERNALS, allCheckInternals.checked);
+	var allCheckExternals = document.getElementById("allowCheckAll.otherDomains");
+	if (!allCheckExternals.hidden)
+		prefs.setPref(CA_CONST.ALLOW_CHECK_ALL_EXTERNALS, allCheckExternals.checked);
+	var allCheckAttachments = document.getElementById("allowCheckAll.fileNames");
+	if (!allCheckAttachments.hidden)
+		prefs.setPref(CA_CONST.ALLOW_CHECK_ALL_ATTACHMENTS, allCheckAttachments.checked);
 
 	var bodyBox = document.getElementById("requireCheckBody");
 	if (!bodyBox.hidden)

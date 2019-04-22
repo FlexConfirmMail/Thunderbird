@@ -45,29 +45,36 @@ function startup() {
 		return typePrefix + (recipient.fullName || recipient.address);
 	}
 
+	function initCheckAllCheckboxFor(list) {
+		var checkAllCaption = list.parentNode.querySelector('caption.check_all');
+		var checkEachCaption = list.parentNode.querySelector('caption.check_each');
+		var key = 'net.nyail.tanabec.confirm-mail.allowCheckAll.' + list.parentNode.id;
+		checkAllCaption.hidden = !ConfirmMailDialog.prefs.getPref(key) && !ConfirmMailDialog.prefs.getPref(key + '.always');
+		checkEachCaption.hidden = !checkAllCaption.hidden;
+		if (checkAllCaption.hidden)
+			return;
+		var checkAllCheckbox = checkAllCaption.querySelector('checkbox');
+		if (!list.querySelector('checkbox')) {
+			checkAllCheckbox.checked = true;
+			checkAllCheckbox.disabled = true;
+		}
+		checkAllCheckbox.addEventListener("command", function(event) {
+			switchCheckAllCheckBox(list);
+			checkAllChecked();
+		}, false);
+	}
+
 	function setupInternalDestinationList(internals) {
 		// create internal-domain list
 		var internalList = document.getElementById("yourDomainsList");
 
 		for (var i = 0; i < internals.length; i++) {
 			var listitem = createListItemWithCheckbox(createRecipientLabel(internals[i]));
-			listitem.addEventListener("click", updateCheckAllCheckBox, false);
+			listitem.addEventListener("click", () => updateCheckAllCheckBox(internalList), false);
 			internalList.appendChild(listitem);
 		}
 
-		// if internal-domain was empty, "select all" checkbox set checked.
-		// when internalList is empty, internalList.length equals 0.
-		var checkAllCheckbox = document.getElementById("check_all");
-		if (internals.length == 0) {
-			checkAllCheckbox.checked = true;
-			checkAllCheckbox.disabled = true;
-		}
-
-		// listheader for internal domains
-		checkAllCheckbox.addEventListener("command", function(event) {
-			switchInternalCheckBox();
-			checkAllChecked();
-		}, false);
+		initCheckAllCheckboxFor(internalList);
 	}
 
 	function setupExternalDomainList(externals) {
@@ -153,6 +160,7 @@ function startup() {
 						listitem.setAttribute("data-exceptional", "true");
 					}
 					listitem.classList.add(domainClass);
+					listitem.addEventListener("click", () => updateCheckAllCheckBox(externalList), false);
 					externalList.appendChild(listitem);
 					recordItemInGroup(domainForThisGroup, listitem);
 				}
@@ -171,6 +179,8 @@ function startup() {
 		if (exceptionalExternals.length)
 			createExternalDomainsListItems(exceptionalExternals);
 		createExternalDomainsListItems(externals);
+
+		initCheckAllCheckboxFor(externalList);
 	}
 
 	function setupBodyField() {
@@ -198,6 +208,7 @@ function startup() {
 			let attachmentFileItem = createListItemWithCheckbox(fileName, {
 				requireReinput: requireReinputFilename
 			});
+			attachmentFileItem.addEventListener("click", () => updateCheckAllCheckBox(fileNamesList), false);
 			if (ExceptionManager.fileHasExceptionalSuffix(fileName)) {
 				attachmentFileItem.setAttribute("data-exceptional", "true");
 				exceptionalItems.push(attachmentFileItem);
@@ -208,6 +219,8 @@ function startup() {
 		exceptionalItems.concat(normalItems).forEach(function(attachmentFileItem) {
 			fileNamesList.appendChild(attachmentFileItem);
 		});
+
+		initCheckAllCheckboxFor(fileNamesList);
 	}
 
 	setupOKButton();
@@ -418,7 +431,7 @@ function checkAllChecked(){
 	var checkboxes = document.getElementsByTagName("checkbox");
 	for(var i = 0; i < checkboxes.length; i++){
 		var cb = checkboxes[i];
-		if (cb.id == "check_all" ||
+		if (cb.parentNode.classList.contains("check_all") ||
 			cb.hidden)
 			continue;
 		// don't use element.checked, because it doesn't work on out of screen elements.
@@ -437,14 +450,15 @@ function checkAllChecked(){
 	}
 }
 
-//[すべて確認]チェックボックスがONなら、すべての自ドメインアドレスの確認ボックスをONにする。
+//[すべて確認]チェックボックスがONなら、すべての確認ボックスをONにする。
 
-function switchInternalCheckBox(){
-
-	var checkAll = document.getElementById("check_all");
+function switchCheckAllCheckBox(list){
+	var caption = list.parentNode.querySelector("caption.check_all");
+	if (caption.hidden)
+		return;
+	var checkAll = caption.querySelector("checkbox");
 	var isChecked = checkAll.checked;
-	var yourdomains = document.getElementById("yourDomainsList");
-	var checkboxes = yourdomains.getElementsByTagName("checkbox");
+	var checkboxes = list.getElementsByTagName("checkbox");
 	for(var i=0; i<checkboxes.length; i++){
 		// don't use element.checked=true, because hidden (out of screen) elements are not checked.
 		checkboxes[i].setAttribute("checked", isChecked);
@@ -452,12 +466,15 @@ function switchInternalCheckBox(){
 
 }
 
-function updateCheckAllCheckBox(){
+function updateCheckAllCheckBox(list){
+	var caption = list.parentNode.querySelector("caption.check_all");
+	if (caption.hidden)
+		return;
 	setTimeout(function() {
-	var checkAll = document.getElementById("check_all");
-	var allItems = document.querySelectorAll("#yourDomainsList checkbox");
-	var checkedItems = document.querySelectorAll("#yourDomainsList checkbox[checked='true']");
-	checkAll.setAttribute("checked", allItems.length === checkedItems.length);
+		var checkAll = caption.querySelector("checkbox");
+		var allItems = list.querySelectorAll("checkbox");
+		var checkedItems = list.querySelectorAll("checkbox[checked='true']");
+		checkAll.setAttribute("checked", allItems.length === checkedItems.length);
 	}, 0);
 }
 

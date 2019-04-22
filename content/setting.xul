@@ -84,6 +84,9 @@
 			</hbox>
 			<checkbox id="countdownAllowSkip" label="&setting.dialog.checkbox.countdown.allowSkip;"/>
 			<separator/>
+			<checkbox id="allowCheckAll.yourDomains" label="&setting.dialog.checkbox.allowCheckAll.yourDomains;"/>
+			<checkbox id="allowCheckAll.otherDomains" label="&setting.dialog.checkbox.allowCheckAll.otherDomains;"/>
+			<checkbox id="allowCheckAll.fileNames" label="&setting.dialog.checkbox.allowCheckAll.fileNames;"/>
 			<checkbox id="requireCheckBody" label="&setting.dialog.checkbox.requireCheckBody;"/>
 			<checkbox id="highlightUnmatchedDomains" label="&setting.dialog.checkbox.highlightUnmatchedDomains;"/>
 			<checkbox id="largeFontSizeForAddresses" label="&setting.dialog.checkbox.largeFontSizeForAddresses;"/>

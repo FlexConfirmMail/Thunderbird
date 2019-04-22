@@ -27,6 +27,9 @@
 <!ENTITY setting.dialog.checkbox.countdown "點擊[送信]按鈕後開始倒計時(1-3000秒)--&gt;">
 <!ENTITY setting.dialog.label.countdown "秒">
 <!ENTITY setting.dialog.checkbox.countdown.allowSkip "Allow to skip countdown to send the mail immediately">
+<!ENTITY setting.dialog.checkbox.allowCheckAll.yourDomains  "All to control checkboxes under the &quot;&confirm.dialog.yourdomain.label;&quot; section">
+<!ENTITY setting.dialog.checkbox.allowCheckAll.otherDomains "All to control checkboxes under the &quot;&confirm.dialog.otherdomain.label;&quot; section">
+<!ENTITY setting.dialog.checkbox.allowCheckAll.fileNames    "All to control checkboxes under the &quot;&confirm.dialog.fileName.label;&quot; section">
 <!ENTITY setting.dialog.checkbox.requireCheckBody "Require to check the message body">
 <!ENTITY setting.dialog.checkbox.requireReinputAttachmentNames "Require to input file names of attachments, if there is any other domain recipient">
 <!ENTITY setting.dialog.checkbox.highlightUnmatchedDomains "Highlight other domains and addesses">
