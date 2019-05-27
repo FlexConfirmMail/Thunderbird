@@ -20,6 +20,8 @@
 
 (function() {
 
+var override = function() {
+
 //overlay
 //C:\Program Files\Mozilla Thunderbird\chrome\messenger\content\messenger\messengercompose\MsgComposeCommands.js
 var originalSendMessage = window.SendMessage;
@@ -49,5 +51,13 @@ window.SendMessageLater = function SendMessageLater() {
 	}
 	originalSendMessageLater.apply(this, arguments);
 }
+
+};
+
+const delay = ConfirmMail.prefs.getPref(CA_CONST.OVERRIDE_DELAY, 0);
+if (delay <= 0)
+	override();
+else
+	setTimeout(override, delay);
 
 })();
