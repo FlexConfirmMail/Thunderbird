@@ -61,11 +61,11 @@ try { // DEBUG
 	this.collectFileName(msgCompFields,fileNamesList);
 	//dump("[FILENAME]" + fileNamesList + "\n");
 
-  	var isNotDisplay = this.prefs.getPref(CA_CONST.IS_NOT_DISPLAY, false);
+  	var allowSkipConfirmation = this.prefs.getPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, false);
   	var minConfimationCount = this.prefs.getPref(CA_CONST.MIN_RECIPIENTS_COUNT, 0);
 
 
-  	if ((isNotDisplay &&
+  	if ((allowSkipConfirmation &&
   			externalList.length == 0 &&
   			internalList.length > 0) ||
   		(minConfimationCount > 0 &&
@@ -101,8 +101,8 @@ try { // DEBUG
   },
 
   showCountDownDialog: function(aOpenerWindow){
-	var isCountDown = this.prefs.getPref(CA_CONST.IS_COUNT_DOWN, false);
-	if(!isCountDown)
+	var enableCountDown = this.prefs.getPref(CA_CONST.ENABLE_COUNTDOWN, false);
+	if(!enableCountDown)
 		return true;
 
 	var countDownTime = this.prefs.getPref(CA_CONST.COUNT_DOWN_TIME);
@@ -229,7 +229,7 @@ judge : function(recipients, domainList, yourDomainRecipients, otherDomainRecipi
   },
 
   getDomainList : function(){
-  	var domains = this.prefs.getPref(CA_CONST.DOMAIN_LIST);
+  	var domains = this.prefs.getPref(CA_CONST.INTERNAL_DOMAINS);
   	if(domains == null || domains.length == 0){
   		return new Array();
   	}

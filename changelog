@@ -22,7 +22,7 @@
 	* uniitest/confirm-mail-test.js
 		: testJudge_InSiderDomainName_SubDomain() : Add.
 	* setting.js : change domain name in 
-		DOMAIN_LIST, IS_NOT_DISPLAY, IS_COUNT_DOWN, COUNT_DOWN_TIME  
+		INTERNAL_DOMAINS, ALLOW_SKIP_CONFIRMATION, ENABLE_COUNTDOWN, COUNT_DOWN_TIME  
 	* setting.js : Remove comments about "tree style"
 	* setting.js : Fixed missing variable declaration 
 	* setting.js : Change window size.

@@ -32,7 +32,7 @@ function startup(){
 	document.getElementById("remove").addEventListener('command', remove, true);
 	var groupList = document.getElementById("group-list");
 
-	var domains = prefs.getPref(CA_CONST.DOMAIN_LIST);
+	var domains = prefs.getPref(CA_CONST.INTERNAL_DOMAINS);
 	dump("[registed domains] " + domains + "\n");
 
 
@@ -46,11 +46,11 @@ function startup(){
 			groupList.appendChild(listitem);
 		}
 	}else{
-		prefs.setPref(CA_CONST.DOMAIN_LIST,"");
+		prefs.setPref(CA_CONST.INTERNAL_DOMAINS,"");
 	}
 
 	//init checkbox [not dispaly when only my domain mail]
-	var isNotDisplay = prefs.getPref(CA_CONST.IS_NOT_DISPLAY, false);
+	var isNotDisplay = prefs.getPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, false);
 	var noDisplayBox = document.getElementById("not-display");
 	noDisplayBox.checked=isNotDisplay;
 
@@ -81,7 +81,7 @@ function startup(){
 		},
 		true);
 
-	var isCountDown = prefs.getPref(CA_CONST.IS_COUNT_DOWN, false);
+	var isCountDown = prefs.getPref(CA_CONST.ENABLE_COUNTDOWN, false);
 	if(isCountDown == null || isCountDown == false){
 		cdBox.checked = false;
 		cdTimeBox.disabled = true;
@@ -167,7 +167,7 @@ function add(event){
 		
 		// check duplication
 		if(domainName.length > 0  
-			&& prefs.getPref(CA_CONST.DOMAIN_LIST).indexOf(domainName) == -1){
+			&& prefs.getPref(CA_CONST.INTERNAL_DOMAINS).indexOf(domainName) == -1){
 
 			dump("[add!] " + domainName + "\n");
 			var groupList = document.getElementById("group-list");
@@ -195,7 +195,7 @@ function edit(event){
 		//check duplication
 		if(selectedItem.label==domainName 
 			|| (domainName.length > 0 
-				&& prefs.getPref(CA_CONST.DOMAIN_LIST).indexOf(domainName) == -1)){
+				&& prefs.getPref(CA_CONST.INTERNAL_DOMAINS).indexOf(domainName) == -1)){
 
 			dump("[edit!] " + domainName + "\n");
 			selectedItem.setAttribute("label", domainName);
@@ -225,7 +225,7 @@ function saveDomainName(){
 		return item.getAttribute('label');
 	});
 	var domainListStr = domainList.join(",");
-	prefs.setPref(CA_CONST.DOMAIN_LIST, domainListStr);
+	prefs.setPref(CA_CONST.INTERNAL_DOMAINS, domainListStr);
 }
 
 function doOK(){
@@ -234,7 +234,7 @@ function doOK(){
 	//チェックボックス設定保存
     
 	var notDisplay = document.getElementById("not-display").checked;
-	prefs.setPref(CA_CONST.IS_NOT_DISPLAY, notDisplay);
+	prefs.setPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, notDisplay);
 
 	var minRecipientsCount = parseInt(document.getElementById("min-recipients-count").value);
 	if (isNaN(minRecipientsCount))
@@ -242,7 +242,7 @@ function doOK(){
 	prefs.setPref(CA_CONST.MIN_RECIPIENTS_COUNT, minRecipientsCount);
 
 	var isCountdown = document.getElementById("countdown").checked;
-	prefs.setPref(CA_CONST.IS_COUNT_DOWN, isCountdown);
+	prefs.setPref(CA_CONST.ENABLE_COUNTDOWN, isCountdown);
 
 	prefs.setPref(CA_CONST.EXCEPTIONAL_DOMAINS_HIGHLIGHT, document.getElementById("exceptional-domains-highlight").checked);
 	prefs.setPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT, document.getElementById("exceptional-domains-attachment").checked);

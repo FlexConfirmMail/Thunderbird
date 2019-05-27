@@ -18,9 +18,9 @@
 */ 
 
 var CA_CONST = {
-	DOMAIN_LIST : "net.nyail.tanabec.confirm-mail.domain-list",
-	IS_NOT_DISPLAY : "net.nyail.tanabec.confirm-mail.not-display",
-	IS_COUNT_DOWN : "net.nyail.tanabec.confirm-mail.is-countdown",
+	INTERNAL_DOMAINS : "net.nyail.tanabec.confirm-mail.domain-list",
+	ALLOW_SKIP_CONFIRMATION : "net.nyail.tanabec.confirm-mail.not-display",
+	ENABLE_COUNTDOWN : "net.nyail.tanabec.confirm-mail.is-countdown",
 	COUNT_DOWN_TIME : "net.nyail.tanabec.confirm-mail.countdown.time",
 	COUNT_DOWN_TIME_OLD : "net.nyail.tanabec.confirm-mail.cd-time",
 	MIN_RECIPIENTS_COUNT : "net.nyail.tanabec.confirm-mail.min-recipients-count",

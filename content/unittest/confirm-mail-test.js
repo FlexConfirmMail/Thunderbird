@@ -112,7 +112,7 @@ function testJudge_InSiderDomainName_SubDomain2() {
  */
 function testGetDomainList(){
 	CA_CONST = {
-		DOMAIN_LIST : 0
+		INTERNAL_DOMAINS : 0
 	};
 	nsPreferences = {
 		copyUnicharPref : function(arg){
@@ -129,7 +129,7 @@ function testGetDomainList(){
  */
 function testGetDomainList_listInEmpty(){
 	CA_CONST = {
-		DOMAIN_LIST : 0
+		INTERNAL_DOMAINS : 0
 	};
 	nsPreferences = {
 		copyUnicharPref : function(arg){
@@ -147,7 +147,7 @@ function testGetDomainList_listInEmpty(){
  */
 function testGetDomainList_listInNull(){
 	CA_CONST = {
-		DOMAIN_LIST : 0
+		INTERNAL_DOMAINS : 0
 	};
 	nsPreferences = {
 		copyUnicharPref : function(arg){
