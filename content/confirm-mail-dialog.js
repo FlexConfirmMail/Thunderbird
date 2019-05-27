@@ -49,7 +49,7 @@ function startup() {
 		var checkAllCaption = list.parentNode.querySelector('caption.check_all');
 		var checkEachCaption = list.parentNode.querySelector('caption.check_each');
 		var key = 'net.nyail.tanabec.confirm-mail.allowCheckAll.' + list.parentNode.id;
-		checkAllCaption.hidden = !ConfirmMailDialog.prefs.getPref(key) && !ConfirmMailDialog.prefs.getPref(key + '.always');
+		checkAllCaption.hidden = !ConfirmMailDialog.getPref(key) && !ConfirmMailDialog.getPref(key + '.always');
 		checkEachCaption.hidden = !checkAllCaption.hidden;
 		if (checkAllCaption.hidden)
 			return;
@@ -326,6 +326,10 @@ var ExceptionManager = {
 		let { prefs } = Components.utils.import('resource://confirm-mail-modules/lib/prefs.js', {});
 		return this.prefs = prefs;
 	},
+	getPref: function(name, defaultValue) {
+		var value = this.prefs.getPref(name);
+		return value === null ? defaultValue : value;
+	},
 
 	_splitToItems: function (list) {
 		return list.replace(/^\s+|\s+$/g, '').split(/[,\s\|;]+/).filter(function(item) {
@@ -337,7 +341,7 @@ var ExceptionManager = {
 
 	get domains () {
 		delete this.domains;
-		var domains = this.prefs.getPref(this.PREF_DOMAINS) || "";
+		var domains = this.getPref(this.PREF_DOMAINS) || "";
 		return this.domains = this._splitToItems(domains);
 	},
 
@@ -349,7 +353,7 @@ var ExceptionManager = {
 
 	get suffixes () {
 		delete this.suffixes;
-		var suffixes = this.prefs.getPref(this.PREF_SUFFIXES) || "";
+		var suffixes = this.getPref(this.PREF_SUFFIXES) || "";
 		return this.suffixes = this._splitToItems(suffixes).map(function(suffix) {
 			return suffix.replace(/^\*?\./g, '');
 		});
@@ -484,6 +488,10 @@ var ConfirmMailDialog = {
 		let { prefs } = Components.utils.import('resource://confirm-mail-modules/lib/prefs.js', {});
 		return this.prefs = prefs;
 	},
+	getPref: function(name, defaultValue) {
+		var value = this.prefs.getPref(name);
+		return value === null ? defaultValue : value;
+	},
 
 	getExceptionalRecipients: function () {
 		if (!this.reconfirmForExceptionalOtherDomains())
@@ -497,7 +505,7 @@ var ConfirmMailDialog = {
 	},
 
 	getExceptionalAttachments: function () {
-		if (!this.prefs.getPref(CA_CONST.EXCEPTIONAL_SUFFIXES_CONFIRM) ||
+		if (!this.getPref(CA_CONST.EXCEPTIONAL_SUFFIXES_CONFIRM) ||
 			!AttachmentManager.hasAttachments())
 			return [];
 
@@ -509,29 +517,29 @@ var ConfirmMailDialog = {
 	},
 
 	reconfirmForExceptionalOtherDomains: function () {
-		return this.prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT) &&
+		return this.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT) &&
 				AttachmentManager.hasAttachments();
 	},
 
 	highlightExceptionalOtherDomains: function () {
-		return this.prefs.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_HIGHLIGHT) ||
+		return this.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_HIGHLIGHT) ||
 				this.reconfirmForExceptionalOtherDomains();
 	},
 
 	requireCheckBody: function () {
-		return this.prefs.getPref(CA_CONST.REQUIRE_CHECK_BODY);
+		return this.getPref(CA_CONST.REQUIRE_CHECK_BODY);
 	},
 
 	requireReinputAttachmentNames: function () {
-		return this.prefs.getPref(CA_CONST.REQUIRE_REINPUT_ATTACHMENT_NAMES);
+		return this.getPref(CA_CONST.REQUIRE_REINPUT_ATTACHMENT_NAMES);
 	},
 
 	highlightUnmatchedDomains: function () {
-		return this.prefs.getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS);
+		return this.getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS);
 	},
 
 	largeFontSizeForAddresses: function() {
-		return this.prefs.getPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES);
+		return this.getPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES);
 	},
 
 	confirmExceptionalDomains: function (exceptions) {

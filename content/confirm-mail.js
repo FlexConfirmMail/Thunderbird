@@ -23,6 +23,10 @@ var ConfirmMail = {
 	let { prefs } = Components.utils.import('resource://confirm-mail-modules/lib/prefs.js', {});
 	return this.prefs = prefs;
   },
+  getPref: function(name, defaultValue) {
+    var value = this.prefs.getPref(name);
+    return value === null ? defaultValue : value;
+  },
 
 
   checkAddress: function(){
@@ -61,9 +65,9 @@ try { // DEBUG
 	this.collectFileName(msgCompFields,fileNamesList);
 	//dump("[FILENAME]" + fileNamesList + "\n");
 
-  	var enableConfirmation = this.prefs.getPref(CA_CONST.ENABLE_CONFIRMATION, true);
-  	var allowSkipConfirmation = this.prefs.getPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, false);
-  	var minConfimationCount = this.prefs.getPref(CA_CONST.MIN_RECIPIENTS_COUNT, 0);
+  	var enableConfirmation = this.getPref(CA_CONST.ENABLE_CONFIRMATION, true);
+  	var allowSkipConfirmation = this.getPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, false);
+  	var minConfimationCount = this.getPref(CA_CONST.MIN_RECIPIENTS_COUNT, 0);
 
 
   	if (!enableConfirmation ||
@@ -76,10 +80,10 @@ try { // DEBUG
   	}else{
 		window.confmail_confirmOK = false;
 		let sizeAndPosition = ",centerscreen";
-		if (prefs.getPref(CA_CONST.ALWAYS_LARGE_DIALOG)) {
+		if (this.getPref(CA_CONST.ALWAYS_LARGE_DIALOG)) {
 			let w = parseInt(screen.availWidth * 0.9);
 			let h = parseInt(screen.availHeight * 0.9);
-			let minW = this.prefs.getPref(CA_CONST.ALWAYS_LARGE_DIALOG_MIN_WIDTH, 0);
+			let minW = this.getPref(CA_CONST.ALWAYS_LARGE_DIALOG_MIN_WIDTH, 0);
 			w = Math.max(minW, Math.ceil(w / 2));
 			let x = parseInt((screen.availWidth - w) / 2);
 			let y = parseInt((screen.availHeight - h) / 2);
@@ -103,18 +107,18 @@ try { // DEBUG
   },
 
   showCountDownDialog: function(aOpenerWindow){
-	var enableCountDown = this.prefs.getPref(CA_CONST.ENABLE_COUNTDOWN, false);
+	var enableCountDown = this.getPref(CA_CONST.ENABLE_COUNTDOWN, false);
 	if(!enableCountDown)
 		return true;
 
-	var countDownTime = this.prefs.getPref(CA_CONST.COUNT_DOWN_TIME);
-	var oldCountDownTime = this.prefs.getPref(CA_CONST.COUNT_DOWN_TIME_OLD);
+	var countDownTime = this.getPref(CA_CONST.COUNT_DOWN_TIME);
+	var oldCountDownTime = this.getPref(CA_CONST.COUNT_DOWN_TIME_OLD);
 	if (oldCountDownTime) {
 		countDownTime = oldCountDownTime;
 		this.prefs.clearPref(CA_CONST.COUNT_DOWN_TIME_OLD);
 	}
 	var countDownComplete = { value : false };
-	var allowSkip = this.prefs.getPref(CA_CONST.COUNT_DOWN_ALLOW_SKIP);
+	var allowSkip = this.getPref(CA_CONST.COUNT_DOWN_ALLOW_SKIP);
 
 	var opener = aOpenerWindow || window;
 	opener.openDialog("chrome://confirm-mail/content/countdown.xul", "CountDown Dialog",
@@ -231,7 +235,7 @@ judge : function(recipients, domainList, yourDomainRecipients, otherDomainRecipi
   },
 
   getDomainList : function(){
-  	var domains = this.prefs.getPref(CA_CONST.INTERNAL_DOMAINS);
+  	var domains = this.getPref(CA_CONST.INTERNAL_DOMAINS);
   	if(domains == null || domains.length == 0){
   		return new Array();
   	}
