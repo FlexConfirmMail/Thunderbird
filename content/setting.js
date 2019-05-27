@@ -50,9 +50,8 @@ function startup(){
 	}
 
 	//init checkbox [not dispaly when only my domain mail]
-	var isNotDisplay = prefs.getPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, false);
-	var noDisplayBox = document.getElementById("not-display");
-	noDisplayBox.checked=isNotDisplay;
+	document.getElementById("enable-confirmation").value = prefs.getPref(CA_CONST.ENABLE_CONFIRMATION, true);
+	document.getElementById("not-display").checked = prefs.getPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, false);
 
 	var minRecipientsCount = prefs.getPref(CA_CONST.MIN_RECIPIENTS_COUNT, 0);
 	var minRecipientsCountBox = document.getElementById("min-recipients-count");
@@ -232,9 +231,8 @@ function doOK(){
 	dump("[OK]\n");
 
 	//チェックボックス設定保存
-    
-	var notDisplay = document.getElementById("not-display").checked;
-	prefs.setPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, notDisplay);
+	prefs.setPref(CA_CONST.ENABLE_CONFIRMATION, document.getElementById("enable-confirmation").value);
+	prefs.setPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, document.getElementById("not-display").checked);
 
 	var minRecipientsCount = parseInt(document.getElementById("min-recipients-count").value);
 	if (isNaN(minRecipientsCount))

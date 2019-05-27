@@ -39,6 +39,7 @@
 	</tabs>
 	<tabpanels flex="1">
 		<vbox flex="1">
+			<checkbox id="enable-confirmation" label="&setting.dialog.enableConfirmation.label;"/>
 			<label value="&setting.dialog.message;"/>
 			<listbox id="group-list" rows="6" onselect="selectList(this.selectedItem);"
 				style="width:500px">

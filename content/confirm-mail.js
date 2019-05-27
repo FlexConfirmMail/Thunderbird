@@ -61,11 +61,13 @@ try { // DEBUG
 	this.collectFileName(msgCompFields,fileNamesList);
 	//dump("[FILENAME]" + fileNamesList + "\n");
 
+  	var enableConfirmation = this.prefs.getPref(CA_CONST.ENABLE_CONFIRMATION, true);
   	var allowSkipConfirmation = this.prefs.getPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, false);
   	var minConfimationCount = this.prefs.getPref(CA_CONST.MIN_RECIPIENTS_COUNT, 0);
 
 
-  	if ((allowSkipConfirmation &&
+  	if (!enableConfirmation ||
+  		(allowSkipConfirmation &&
   			externalList.length == 0 &&
   			internalList.length > 0) ||
   		(minConfimationCount > 0 &&
