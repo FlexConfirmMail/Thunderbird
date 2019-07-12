@@ -342,11 +342,11 @@ var ExceptionManager = {
 	get domains () {
 		delete this.domains;
 		var domains = this.getPref(this.PREF_DOMAINS) || "";
-		return this.domains = this._splitToItems(domains);
+		return this.domains = this._splitToItems(domains.toLowerCase());
 	},
 
 	isExceptionalDomain: function (domain) {
-		return this.domains.indexOf(domain) >= 0;
+		return this.domains.indexOf(domain.toLowerCase()) >= 0;
 	},
 
 	// Exceptional Suffix
@@ -354,13 +354,13 @@ var ExceptionManager = {
 	get suffixes () {
 		delete this.suffixes;
 		var suffixes = this.getPref(this.PREF_SUFFIXES) || "";
-		return this.suffixes = this._splitToItems(suffixes).map(function(suffix) {
+		return this.suffixes = this._splitToItems(suffixes.toLowerCase()).map(function(suffix) {
 			return suffix.replace(/^\*?\./g, '');
 		});
 	},
 
 	isExceptionalSuffix: function (suffix) {
-		return this.suffixes.indexOf(suffix) >= 0;
+		return this.suffixes.indexOf(suffix.toLowerCase()) >= 0;
 	},
 
 	fileHasExceptionalSuffix: function (fileName) {
