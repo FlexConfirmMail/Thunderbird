@@ -48,5 +48,6 @@ var CA_CONST = {
 	ALLOW_CHECK_ALL_EXTERNALS_ALWAYS : "net.nyail.tanabec.confirm-mail.allowCheckAll.otherDomains.always",
 	ALLOW_CHECK_ALL_ATTACHMENTS : "net.nyail.tanabec.confirm-mail.allowCheckAll.fileNames",
 	ALLOW_CHECK_ALL_ATTACHMENTS_ALWAYS : "net.nyail.tanabec.confirm-mail.allowCheckAll.fileNames.always",
-	OVERRIDE_DELAY : "net.nyail.tanabec.confirm-mail.overrideDelay"
+	OVERRIDE_DELAY : "net.nyail.tanabec.confirm-mail.overrideDelay",
+	OVERRIDE_DELAY_TIMES : "net.nyail.tanabec.confirm-mail.overrideDelayTimes"
 };

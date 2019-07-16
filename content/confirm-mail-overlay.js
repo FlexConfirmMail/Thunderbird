@@ -55,9 +55,20 @@ window.SendMessageLater = function SendMessageLater() {
 };
 
 const delay = ConfirmMail.prefs.getPref(CA_CONST.OVERRIDE_DELAY, 0);
-if (delay <= 0)
-	override();
-else
-	setTimeout(override, delay);
+let toBeDelayedTimes = ConfirmMail.prefs.getPref(CA_CONST.OVERRIDE_DELAY_TIMES, 0);
+
+const tryOverride = function() {
+	if (toBeDelayedTimes > 0) {
+		toBeDelayedTimes--;
+		setTimeout(tryOverride, delay);
+		return;
+	}
+
+	if (delay <= 0)
+		override();
+	else
+		setTimeout(override, delay);
+};
+tryOverride();
 
 })();
