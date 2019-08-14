@@ -24,10 +24,9 @@
 -->
 <dialog id="setting" title="&setting.dialog.title;"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	buttons="accept,cancel"
 	onload="startup()"
-	ondialogaccept="return doOK();"
-	ondialogcancel="return doCancel();">
+	buttons="accept"
+	onbuttonaccept="window.close()">
 
 <script type="application/x-javascript" src="chrome://confirm-mail/content/constants.js"/>
 <script type="application/x-javascript" src="chrome://confirm-mail/content/setting.js"/>
@@ -40,7 +39,8 @@
 	</tabs>
 	<tabpanels flex="1">
 		<vbox flex="1">
-			<checkbox id="enable-confirmation" label="&setting.dialog.enableConfirmation.label;"/>
+			<checkbox id="enable-confirmation" label="&setting.dialog.enableConfirmation.label;"
+				preference="net.nyail.tanabec.confirm-mail.confirmation.enabled"/>
 			<label value="&setting.dialog.message;"/>
 			<richlistbox id="group-list"
 				style="height: 8em; max-height: 8em">
@@ -56,8 +56,10 @@
 			<separator/>
 
 			<label value="&setting.dialog.exceptionalDomains.label;" control="exceptional-domains"/>
-			<checkbox id="exceptional-domains-highlight" label="&setting.dialog.exceptionalDomains.highlight;"/>
-			<checkbox id="exceptional-domains-attachment" label="&setting.dialog.exceptionalDomains.attachment;"/>
+			<checkbox id="exceptional-domains-highlight" label="&setting.dialog.exceptionalDomains.highlight;"
+				preference="net.nyail.tanabec.confirm-mail.exceptional-domains.highlight"/>
+			<checkbox id="exceptional-domains-attachment" label="&setting.dialog.exceptionalDomains.attachment;"
+				preference="net.nyail.tanabec.confirm-mail.exceptional-domains.onlyWithAttachment"/>
 			<richlistbox id="exceptional-domains"
 				style="height: 6em; max-height: 6em">
 			</richlistbox>
@@ -71,16 +73,19 @@
 
 			<separator/>
 
-			<checkbox id="not-display" label="&setting.dialog.checkbox.notdisplay;"/>
+			<checkbox id="not-display" label="&setting.dialog.checkbox.notdisplay;"
+				preference="net.nyail.tanabec.confirm-mail.not-display"/>
 			<hbox align="center">
 				<label value="&setting.dialog.label.minRecipientsCount.before;" control="min-recipients-count"/>
-				<textbox id="min-recipients-count" style="width:10ch" type="number"/>
+				<textbox id="min-recipients-count" style="width:10ch" type="number"
+					preference="net.nyail.tanabec.confirm-mail.min-recipients-count"/>
 				<label value="&setting.dialog.label.minRecipientsCount.after;" control="min-recipients-count"/>
 			</hbox>
 		</vbox>
 		<vbox flex="1">
 			<label value="&setting.dialog.exceptionalSuffixes.label;" control="exceptional-suffixes"/>
-			<checkbox id="exceptional-suffixes-confirm" label="&setting.dialog.exceptionalSuffixes.confirm;"/>
+			<checkbox id="exceptional-suffixes-confirm" label="&setting.dialog.exceptionalSuffixes.confirm;"
+				preference="net.nyail.tanabec.confirm-mail.requireReinputAttachmentNames"/>
 			<richlistbox id="exceptional-suffixes"
 				style="height: 6em; max-height: 6em">
 			</richlistbox>
@@ -91,23 +96,34 @@
 					oncommand="exceptionalSuffixes.edit(event)"/>
 				<spacer flex="1"/>
 			</hbox>
-			<checkbox id="requireReinputAttachmentNames" label="&setting.dialog.checkbox.requireReinputAttachmentNames;"/>
+			<checkbox id="requireReinputAttachmentNames" label="&setting.dialog.checkbox.requireReinputAttachmentNames;"
+				preference=""/>
 		</vbox>
 		<vbox flex="1">
 			<hbox align="center">
-				<checkbox id="countdown" label="&setting.dialog.checkbox.countdown;"/>
-				<textbox id="countdown-time" maxwidth="50"/>
+				<checkbox id="countdown" label="&setting.dialog.checkbox.countdown;"
+					preference="net.nyail.tanabec.confirm-mail.is-countdown"/>
+				<textbox id="countdown-time" maxwidth="50" type="number"
+					preference="net.nyail.tanabec.confirm-mail.countdown.time"/>
 				<label value="&setting.dialog.label.countdown;" control="countdown-time"/>
 			</hbox>
-			<checkbox id="countdownAllowSkip" label="&setting.dialog.checkbox.countdown.allowSkip;"/>
+			<checkbox id="countdownAllowSkip" label="&setting.dialog.checkbox.countdown.allowSkip;"
+				preference="net.nyail.tanabec.confirm-mail.countdown.allowSkip"/>
 			<separator/>
-			<checkbox id="allowCheckAll.yourDomains" label="&setting.dialog.checkbox.allowCheckAll.yourDomains;"/>
-			<checkbox id="allowCheckAll.otherDomains" label="&setting.dialog.checkbox.allowCheckAll.otherDomains;"/>
-			<checkbox id="allowCheckAll.fileNames" label="&setting.dialog.checkbox.allowCheckAll.fileNames;"/>
-			<checkbox id="requireCheckBody" label="&setting.dialog.checkbox.requireCheckBody;"/>
-			<checkbox id="highlightUnmatchedDomains" label="&setting.dialog.checkbox.highlightUnmatchedDomains;"/>
-			<checkbox id="largeFontSizeForAddresses" label="&setting.dialog.checkbox.largeFontSizeForAddresses;"/>
-			<checkbox id="alwaysLargeDialog" label="&setting.dialog.checkbox.alwaysLargeDialog;"/>
+			<checkbox id="allowCheckAll.yourDomains" label="&setting.dialog.checkbox.allowCheckAll.yourDomains;"
+				preference="net.nyail.tanabec.confirm-mail.allowCheckAll.yourDomains"/>
+			<checkbox id="allowCheckAll.otherDomains" label="&setting.dialog.checkbox.allowCheckAll.otherDomains;"
+				preference="net.nyail.tanabec.confirm-mail.allowCheckAll.otherDomains"/>
+			<checkbox id="allowCheckAll.fileNames" label="&setting.dialog.checkbox.allowCheckAll.fileNames;"
+				preference="net.nyail.tanabec.confirm-mail.allowCheckAll.fileNames"/>
+			<checkbox id="requireCheckBody" label="&setting.dialog.checkbox.requireCheckBody;"
+				preference="net.nyail.tanabec.confirm-mail.requireCheckBody"/>
+			<checkbox id="highlightUnmatchedDomains" label="&setting.dialog.checkbox.highlightUnmatchedDomains;"
+				preference="net.nyail.tanabec.confirm-mail.highlightUnmatchedDomains"/>
+			<checkbox id="largeFontSizeForAddresses" label="&setting.dialog.checkbox.largeFontSizeForAddresses;"
+				preference="net.nyail.tanabec.confirm-mail.largeFontSizeForAddresses"/>
+			<checkbox id="alwaysLargeDialog" label="&setting.dialog.checkbox.alwaysLargeDialog;"
+				preference="net.nyail.tanabec.confirm-mail.alwaysLargeDialog"/>
 		</vbox>
 	</tabpanels>
 </tabbox>

@@ -130,6 +130,7 @@ class ListBox {
 
 	get values() {
 		return getPref(this.prefKey, "")
+			.trim()
 			.split(/[,\s\|;]+/)
 			.filter(value => !!value);
 	}
@@ -161,23 +162,27 @@ var internalDomains;
 var exceptionalDomains;
 var exceptionalSuffixes;
 
-function startup(){
+function startup() {
 	internalDomains = new ListBox(document.getElementById("group-list"), CA_CONST.INTERNAL_DOMAINS);
 	exceptionalDomains = new ListBox(document.getElementById("exceptional-domains"), CA_CONST.EXCEPTIONAL_DOMAINS);
 	exceptionalSuffixes = new ListBox(document.getElementById("exceptional-suffixes"), CA_CONST.EXCEPTIONAL_SUFFIXES);
 
-	//init checkbox [not dispaly when only my domain mail]
-	document.getElementById("enable-confirmation").checked = getPref(CA_CONST.ENABLE_CONFIRMATION, true);
-	document.getElementById("not-display").checked = getPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, false);
-
-	var minRecipientsCount = getPref(CA_CONST.MIN_RECIPIENTS_COUNT, 0);
-	var minRecipientsCountBox = document.getElementById("min-recipients-count");
-	minRecipientsCountBox.value = minRecipientsCount;
-
-	document.getElementById("exceptional-domains-highlight").checked=getPref(CA_CONST.EXCEPTIONAL_DOMAINS_HIGHLIGHT, false);
-	document.getElementById("exceptional-domains-attachment").checked=getPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT, false);
-
-	document.getElementById("exceptional-suffixes-confirm").checked=getPref(CA_CONST.EXCEPTIONAL_SUFFIXES_CONFIRM, false);
+	for (const element of document.querySelectorAll("[preference]")) {
+		const key = element.getAttribute("preference");
+		const value = getPref(key);
+		if (element.localName == "checkbox") {
+			element.checked = !!value;
+			element.addEventListener("command", () => {
+				prefs.setPref(key, element.checked);
+			});
+		}
+		else {
+			element.value = value;
+			element.addEventListener("change", () => {
+				prefs.setPref(key, typeof value == "number" ? parseInt(element.value) : String(element.value));
+			});
+		}
+	}
 
 	//init checkbox [countdown]
 	var cdBox = document.getElementById("countdown");
@@ -189,7 +194,7 @@ function startup(){
 		},
 		true);
 
-	var isCountDown = getPref(CA_CONST.ENABLE_COUNTDOWN, false);
+	var isCountDown = getPref(CA_CONST.ENABLE_COUNTDOWN);
 	if(isCountDown == null || isCountDown == false){
 		cdBox.checked = false;
 		cdTimeBox.disabled = true;
@@ -198,144 +203,27 @@ function startup(){
 		cdTimeBox.disable = false;
 	}
 
-	var countDonwTime = getPref(CA_CONST.COUNT_DOWN_TIME);
-	var oldCountDownTime = getPref(CA_CONST.COUNT_DOWN_TIME_OLD);
-	if (oldCountDownTime) {
-		countDonwTime = oldCountDownTime;
-		prefs.clearPref(CA_CONST.COUNT_DOWN_TIME_OLD);
-	}
-	cdTimeBox.value = countDonwTime;
+	if (getPref(CA_CONST.COUNT_DOWN_ALLOW_SKIP_ALWAYS))
+		document.getElementById("countdownAllowSkip").hidden = true;
 
-	var countdownAllowSkipBox = document.getElementById("countdownAllowSkip");
-	if(getPref(CA_CONST.COUNT_DOWN_ALLOW_SKIP_ALWAYS)){
-		countdownAllowSkipBox.hidden = true;
-	}else{
-		countdownAllowSkipBox.checked = getPref(CA_CONST.COUNT_DOWN_ALLOW_SKIP, false);
-	}
+	if (getPref(CA_CONST.ALLOW_CHECK_ALL_INTERNALS_ALWAYS))
+		document.getElementById("allowCheckAll.yourDomains").hidden = true;
 
-	var allCheckInternals = document.getElementById("allowCheckAll.yourDomains");
-	if(getPref(CA_CONST.ALLOW_CHECK_ALL_INTERNALS_ALWAYS)){
-		allCheckInternals.hidden = true;
-	}else{
-		allCheckInternals.checked = getPref(CA_CONST.ALLOW_CHECK_ALL_INTERNALS, false);
-	}
-	var allCheckExternals = document.getElementById("allowCheckAll.otherDomains");
-	if(getPref(CA_CONST.ALLOW_CHECK_ALL_EXTERNALS_ALWAYS)){
-		allCheckExternals.hidden = true;
-	}else{
-		allCheckExternals.checked = getPref(CA_CONST.ALLOW_CHECK_ALL_EXTERNALS, false);
-	}
-	var allCheckAttachments = document.getElementById("allowCheckAll.fileNames");
-	if(getPref(CA_CONST.ALLOW_CHECK_ALL_ATTACHMENTS_ALWAYS)){
-		allCheckAttachments.hidden = true;
-	}else{
-		allCheckAttachments.checked = getPref(CA_CONST.ALLOW_CHECK_ALL_ATTACHMENTS, false);
-	}
+	if (getPref(CA_CONST.ALLOW_CHECK_ALL_EXTERNALS_ALWAYS))
+		document.getElementById("allowCheckAll.otherDomains").hidden = true;
 
-	var bodyBox = document.getElementById("requireCheckBody");
-	if(getPref(CA_CONST.REQUIRE_CHECK_BODY_ALWAYS)){
-		bodyBox.hidden = true;
-	}else{
-		bodyBox.checked = getPref(CA_CONST.REQUIRE_CHECK_BODY, false);
-	}
+	if (getPref(CA_CONST.ALLOW_CHECK_ALL_ATTACHMENTS_ALWAYS))
+		document.getElementById("allowCheckAll.fileNames").hidden = true;
 
-	var highlightDomainsBox = document.getElementById("highlightUnmatchedDomains");
-	if(getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS_ALWAYS)){
-		highlightDomainsBox.hidden = true;
-	}else{
-		highlightDomainsBox.checked = getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS, false);
-	}
+	if (getPref(CA_CONST.REQUIRE_CHECK_BODY_ALWAYS))
+		document.getElementById("requireCheckBody").hidden = true;
 
-	var largeFontSizeBox = document.getElementById("largeFontSizeForAddresses");
-	if(getPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES_ALWAYS)){
-		largeFontSizeBox.hidden = true;
-	}else{
-		largeFontSizeBox.checked = getPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES, false);
-	}
+	if (getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS_ALWAYS))
+		document.getElementById("highlightUnmatchedDomains").hidden = true;
 
-	var alwaysLargeDialogBox = document.getElementById("alwaysLargeDialog");
-	if(getPref(CA_CONST.ALWAYS_LARGE_DIALOG_ALWAYS)){
-		alwaysLargeDialogBox.hidden = true;
-	}else{
-		alwaysLargeDialogBox.checked = getPref(CA_CONST.ALWAYS_LARGE_DIALOG, false);
-	}
+	if (getPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES_ALWAYS))
+		document.getElementById("largeFontSizeForAddresses").hidden = true;
 
-	var requireReinputAttachmentNamesBox = document.getElementById("requireReinputAttachmentNames");
-	requireReinputAttachmentNamesBox.checked = getPref(CA_CONST.REQUIRE_REINPUT_ATTACHMENT_NAMES, false);
-}
-
-function doOK(){
-	console.log("[OK]\n");
-
-	//チェックボックス設定保存
-	prefs.setPref(CA_CONST.ENABLE_CONFIRMATION, document.getElementById("enable-confirmation").checked);
-	prefs.setPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, document.getElementById("not-display").checked);
-
-	var minRecipientsCount = parseInt(document.getElementById("min-recipients-count").value);
-	if (isNaN(minRecipientsCount))
-		minRecipientsCount = 0;
-	prefs.setPref(CA_CONST.MIN_RECIPIENTS_COUNT, minRecipientsCount);
-
-	var isCountdown = document.getElementById("countdown").checked;
-	prefs.setPref(CA_CONST.ENABLE_COUNTDOWN, isCountdown);
-
-	prefs.setPref(CA_CONST.EXCEPTIONAL_DOMAINS_HIGHLIGHT, document.getElementById("exceptional-domains-highlight").checked);
-	prefs.setPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT, document.getElementById("exceptional-domains-attachment").checked);
-
-	prefs.setPref(CA_CONST.EXCEPTIONAL_SUFFIXES_CONFIRM, document.getElementById("exceptional-suffixes-confirm").checked);
-
-	var cdTime = document.getElementById("countdown-time").value;
-	
-	//Error check 
-	if(/^(?:0|[1-9][0-9]*)$/.test(cdTime.toString())==false && isCountdown){
-		alert("カウントダウン時間には整数を入力してください。\nPlease input integer.");
-		return false;
-	}
-	
-	if((Number(cdTime) < 1 || Number(cdTime) >= 3000) && isCountdown){
-		alert("カウントダウン時間には1から3000までの範囲で整数を入力してください。\nplease input integer 1 to 3000.");
-		return false;
-	}
-
-	prefs.setPref(CA_CONST.COUNT_DOWN_TIME, String(cdTime));
-
-	var countdownAllowSkipBox = document.getElementById("countdownAllowSkip");
-	if (!countdownAllowSkipBox.hidden)
-		prefs.setPref(CA_CONST.COUNT_DOWN_ALLOW_SKIP, countdownAllowSkipBox.checked);
-
-	var allCheckInternals = document.getElementById("allowCheckAll.yourDomains");
-	if (!allCheckInternals.hidden)
-		prefs.setPref(CA_CONST.ALLOW_CHECK_ALL_INTERNALS, allCheckInternals.checked);
-	var allCheckExternals = document.getElementById("allowCheckAll.otherDomains");
-	if (!allCheckExternals.hidden)
-		prefs.setPref(CA_CONST.ALLOW_CHECK_ALL_EXTERNALS, allCheckExternals.checked);
-	var allCheckAttachments = document.getElementById("allowCheckAll.fileNames");
-	if (!allCheckAttachments.hidden)
-		prefs.setPref(CA_CONST.ALLOW_CHECK_ALL_ATTACHMENTS, allCheckAttachments.checked);
-
-	var bodyBox = document.getElementById("requireCheckBody");
-	if (!bodyBox.hidden)
-		prefs.setPref(CA_CONST.REQUIRE_CHECK_BODY, bodyBox.checked);
-
-	var highlightDomainsBox = document.getElementById("highlightUnmatchedDomains");
-	if (!highlightDomainsBox.hidden)
-		prefs.setPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS, highlightDomainsBox.checked);
-
-	var largeFontSizeBox = document.getElementById("largeFontSizeForAddresses");
-	if (!largeFontSizeBox.hidden)
-		prefs.setPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES, largeFontSizeBox.checked);
-
-	var alwaysLargeDialogBox = document.getElementById("alwaysLargeDialog");
-	if (!alwaysLargeDialogBox.hidden)
-		prefs.setPref(CA_CONST.ALWAYS_LARGE_DIALOG, alwaysLargeDialogBox.checked);
-
-	var requireReinputAttachmentNamesBox = document.getElementById("requireReinputAttachmentNames");
-	prefs.setPref(CA_CONST.REQUIRE_REINPUT_ATTACHMENT_NAMES, requireReinputAttachmentNamesBox.checked);
-
-	return true;
-}
-
-function doCancel(){
-	console.log("[cancel]\n");
-	return true;
+	if(getPref(CA_CONST.ALWAYS_LARGE_DIALOG_ALWAYS))
+		document.getElementById("alwaysLargeDialog").hidden = true;
 }
