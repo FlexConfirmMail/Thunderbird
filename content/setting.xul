@@ -85,7 +85,7 @@
 		<vbox flex="1">
 			<label value="&setting.dialog.exceptionalSuffixes.label;" control="exceptional-suffixes"/>
 			<checkbox id="exceptional-suffixes-confirm" label="&setting.dialog.exceptionalSuffixes.confirm;"
-				preference="net.nyail.tanabec.confirm-mail.requireReinputAttachmentNames"/>
+				preference="net.nyail.tanabec.confirm-mail.exceptional-suffixes.confirm"/>
 			<richlistbox id="exceptional-suffixes"
 				style="height: 6em; max-height: 6em">
 			</richlistbox>
@@ -97,7 +97,7 @@
 				<spacer flex="1"/>
 			</hbox>
 			<checkbox id="requireReinputAttachmentNames" label="&setting.dialog.checkbox.requireReinputAttachmentNames;"
-				preference=""/>
+				preference="net.nyail.tanabec.confirm-mail.requireReinputAttachmentNames"/>
 		</vbox>
 		<vbox flex="1">
 			<hbox align="center">
