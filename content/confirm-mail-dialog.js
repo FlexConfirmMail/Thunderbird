@@ -380,15 +380,15 @@ function foldLongTooltipText(text) {
 
 function createListItemWithCheckbox(itemLabel, aOptions) {
 	aOptions = aOptions || {};
-	var listitem = document.createElement("richlistitem");
+	var listitem = document.createXULElement("richlistitem");
 
-	var checkboxCell = document.createElement("hbox");
+	var checkboxCell = document.createXULElement("hbox");
 	checkboxCell.classList.add("checkbox");
-	var checkbox = document.createElement("checkbox");
+	var checkbox = document.createXULElement("checkbox");
 	listitem.appendChild(checkboxCell);
 
 	checkboxCell.appendChild(checkbox);
-	let label = document.createElement("label");
+	let label = document.createXULElement("label");
 	label.setAttribute("flex", 1);
 	label.setAttribute("crop", "end");
 	label.setAttribute("value", itemLabel);
@@ -397,7 +397,7 @@ function createListItemWithCheckbox(itemLabel, aOptions) {
 
 	if (aOptions.requireReinput) {
 		checkbox.setAttribute("disabled", true);
-		let field = document.createElement("textbox");
+		let field = document.createXULElement("textbox");
 		field.setAttribute("placeholder", getLocaleString("confirm.dialog.attachmentName.reinput.placeholder"));
 		field.addEventListener("input", function(event) {
 			checkbox.setAttribute("checked", event.target.value == itemLabel);
