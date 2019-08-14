@@ -58,7 +58,7 @@ class ListBox {
 			return;
 		switch (event.key) {
 			case "Escape":
-				item.field.setAttribute("value", item.getAttribute("value"));
+				item.field.setAttribute("value", item.field.value = item.getAttribute("value"));
 			case "Enter":
 				if (!item.classList.contains("editing")) {
 					this.edit(event);
