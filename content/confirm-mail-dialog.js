@@ -79,10 +79,10 @@ function startup() {
 
 	function setupExternalDomainList(externals) {
 		function createGroupHeader(domain) {
-			var headerItem = document.createElement("richlistitem");
+			var headerItem = document.createXULElement("richlistitem");
 			headerItem.setAttribute("class", "confirm-mail-list-separator");
 			headerItem.setAttribute("data-domain-name", domain);
-			var headerLabelItem = document.createElement("label");
+			var headerLabelItem = document.createXULElement("label");
 			headerLabelItem.setAttribute("value", "@" + domain);
 			headerItem.appendChild(headerLabelItem);
 			return headerItem;
