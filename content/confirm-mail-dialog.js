@@ -359,7 +359,7 @@ var ExceptionManager = {
 	},
 
 	isExceptionalDomain: function (domain) {
-		return this.domains.indexOf(domain.toLowerCase()) >= 0;
+		return domain && this.domains.indexOf(domain.toLowerCase()) >= 0;
 	},
 
 	// Exceptional Suffix
@@ -373,7 +373,7 @@ var ExceptionManager = {
 	},
 
 	isExceptionalSuffix: function (suffix) {
-		return this.suffixes.indexOf(suffix.toLowerCase()) >= 0;
+		return suffix && this.suffixes.indexOf(suffix.toLowerCase()) >= 0;
 	},
 
 	fileHasExceptionalSuffix: function (fileName) {
@@ -510,11 +510,12 @@ var ConfirmMailDialog = {
 		if (!this.reconfirmForExceptionalOtherDomains())
 			return [];
 
-		return DestinationManager.getExternalDomainList()
+		return DestinationManager.getExternalDestinationList()
 			.filter(function (recipient) {
 				var domain = AddressUtil.extractDomainFromAddress(recipient);
 				return ExceptionManager.isExceptionalDomain(domain);
-			});
+			})
+			.map(address => address.address || address);
 	},
 
 	getExceptionalAttachments: function () {
