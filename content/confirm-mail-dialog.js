@@ -46,14 +46,14 @@ function startup() {
 	}
 
 	function initCheckAllCheckboxFor(list) {
-		var checkAllCaption = list.parentNode.querySelector('caption.check_all');
-		var checkEachCaption = list.parentNode.querySelector('caption.check_each');
+		var checkAllCaption = list.parentNode.querySelector('.check_all');
+		var checkEachCaption = list.parentNode.querySelector('.check_each');
 		var key = 'net.nyail.tanabec.confirm-mail.allowCheckAll.' + list.parentNode.id;
 		checkAllCaption.hidden = !ConfirmMailDialog.getPref(key) && !ConfirmMailDialog.getPref(key + '.always');
 		checkEachCaption.hidden = !checkAllCaption.hidden;
 		if (checkAllCaption.hidden)
 			return;
-		var checkAllCheckbox = checkAllCaption.querySelector('checkbox');
+		var checkAllCheckbox = checkAllCaption;
 		if (!list.querySelector('checkbox')) {
 			checkAllCheckbox.checked = true;
 			checkAllCheckbox.disabled = true;
@@ -134,7 +134,7 @@ function startup() {
 			);
 		}, false);
 
-		const externalGroupAllCheck = document.querySelector("#otherDomains .check_all checkbox");
+		const externalGroupAllCheck = document.querySelector("#otherDomains .check_all");
 		externalGroupAllCheck.addEventListener("command", function (event) {
 			setTimeout(() => {
 				for (const groupHeaderItem of document.querySelectorAll("#otherDomains .confirm-mail-list-separator")) {
@@ -448,7 +448,7 @@ function checkAllChecked(){
 	var checkboxes = document.getElementsByTagName("checkbox");
 	for(var i = 0; i < checkboxes.length; i++){
 		var cb = checkboxes[i];
-		if (cb.parentNode.classList.contains("check_all") ||
+		if (cb.closest(".check_all") ||
 			cb.hidden)
 			continue;
 		// don't use element.checked, because it doesn't work on out of screen elements.
@@ -470,10 +470,10 @@ function checkAllChecked(){
 //[すべて確認]チェックボックスがONなら、すべての確認ボックスをONにする。
 
 function switchCheckAllCheckBox(list){
-	var caption = list.parentNode.querySelector("caption.check_all");
+	var caption = list.parentNode.querySelector(".check_all");
 	if (caption.hidden)
 		return;
-	var checkAll = caption.querySelector("checkbox");
+	var checkAll = caption;
 	var isChecked = checkAll.checked;
 	var checkboxes = list.getElementsByTagName("checkbox");
 	for(var i=0; i<checkboxes.length; i++){
@@ -484,11 +484,11 @@ function switchCheckAllCheckBox(list){
 }
 
 function updateCheckAllCheckBox(list){
-	var caption = list.parentNode.querySelector("caption.check_all");
+	var caption = list.parentNode.querySelector(".check_all");
 	if (caption.hidden)
 		return;
 	setTimeout(function() {
-		var checkAll = caption.querySelector("checkbox");
+		var checkAll = caption;
 		var allItems = list.querySelectorAll("checkbox");
 		var checkedItems = list.querySelectorAll("checkbox[checked='true']");
 		checkAll.setAttribute("checked", allItems.length === checkedItems.length);
