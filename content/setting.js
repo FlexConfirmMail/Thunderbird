@@ -53,7 +53,6 @@ class ListBox {
 
 	onKeyDown(event) {
 		const item = this.listbox.selectedItem || this.listbox.querySelector("richlistitem.editing");
-		console.log({ key: event.key, item });
 		if (!item)
 			return;
 		switch (event.key) {
