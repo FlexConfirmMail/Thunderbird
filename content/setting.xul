@@ -42,7 +42,8 @@
 		<vbox flex="1">
 			<checkbox id="enable-confirmation" label="&setting.dialog.enableConfirmation.label;"/>
 			<label value="&setting.dialog.message;"/>
-			<richlistbox id="group-list" rows="6">
+			<richlistbox id="group-list"
+				style="height: 8em; max-height: 8em">
 			</richlistbox>
 			<hbox>
 				<button id="add" label="&setting.dialog.button.add.label;"
@@ -51,21 +52,25 @@
 					oncommand="internalDomains.edit(event)"/>
 				<spacer flex="1"/>
 			</hbox>
-			<groupbox orient="vertical">
-				<caption label="&setting.dialog.exceptionalDomains.label;" control="exceptional-domains"/>
-				<checkbox id="exceptional-domains-highlight" label="&setting.dialog.exceptionalDomains.highlight;"/>
-				<checkbox id="exceptional-domains-attachment" label="&setting.dialog.exceptionalDomains.attachment;"/>
-				<richlistbox id="exceptional-domains" rows="4">
-				</richlistbox>
-				<hbox>
-					<button label="&setting.dialog.button.add.label;"
-						oncommand="exceptionalDomains.add(event)"/>
-					<button label="&setting.dialog.button.edit.label;"
-						oncommand="exceptionalDomains.edit(event)"/>
-					<spacer flex="1"/>
-				</hbox>
-			</groupbox>
+
 			<separator/>
+
+			<label value="&setting.dialog.exceptionalDomains.label;" control="exceptional-domains"/>
+			<checkbox id="exceptional-domains-highlight" label="&setting.dialog.exceptionalDomains.highlight;"/>
+			<checkbox id="exceptional-domains-attachment" label="&setting.dialog.exceptionalDomains.attachment;"/>
+			<richlistbox id="exceptional-domains"
+				style="height: 6em; max-height: 6em">
+			</richlistbox>
+			<hbox>
+				<button label="&setting.dialog.button.add.label;"
+					oncommand="exceptionalDomains.add(event)"/>
+				<button label="&setting.dialog.button.edit.label;"
+					oncommand="exceptionalDomains.edit(event)"/>
+				<spacer flex="1"/>
+			</hbox>
+
+			<separator/>
+
 			<checkbox id="not-display" label="&setting.dialog.checkbox.notdisplay;"/>
 			<hbox align="center">
 				<label value="&setting.dialog.label.minRecipientsCount.before;" control="min-recipients-count"/>
@@ -74,19 +79,18 @@
 			</hbox>
 		</vbox>
 		<vbox flex="1">
-			<groupbox orient="vertical">
-				<caption label="&setting.dialog.exceptionalSuffixes.label;" control="exceptional-suffixes"/>
-				<checkbox id="exceptional-suffixes-confirm" label="&setting.dialog.exceptionalSuffixes.confirm;"/>
-				<richlistbox id="exceptional-suffixes" rows="4">
-				</richlistbox>
-				<hbox>
-					<button label="&setting.dialog.button.add.label;"
-						oncommand="exceptionalSuffixes.add(event)"/>
-					<button label="&setting.dialog.button.edit.label;"
-						oncommand="exceptionalSuffixes.edit(event)"/>
-					<spacer flex="1"/>
-				</hbox>
-			</groupbox>
+			<label value="&setting.dialog.exceptionalSuffixes.label;" control="exceptional-suffixes"/>
+			<checkbox id="exceptional-suffixes-confirm" label="&setting.dialog.exceptionalSuffixes.confirm;"/>
+			<richlistbox id="exceptional-suffixes"
+				style="height: 6em; max-height: 6em">
+			</richlistbox>
+			<hbox>
+				<button label="&setting.dialog.button.add.label;"
+					oncommand="exceptionalSuffixes.add(event)"/>
+				<button label="&setting.dialog.button.edit.label;"
+					oncommand="exceptionalSuffixes.edit(event)"/>
+				<spacer flex="1"/>
+			</hbox>
 			<checkbox id="requireReinputAttachmentNames" label="&setting.dialog.checkbox.requireReinputAttachmentNames;"/>
 		</vbox>
 		<vbox flex="1">
