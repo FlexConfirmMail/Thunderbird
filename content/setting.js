@@ -60,6 +60,7 @@ class ListBox {
 			case "Escape":
 				item.field.setAttribute("value", item.field.value = item.getAttribute("value"));
 			case "Enter":
+			case "F2":
 				if (!item.classList.contains("editing")) {
 					this.edit(event);
 				}
