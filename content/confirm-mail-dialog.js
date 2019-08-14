@@ -602,14 +602,14 @@ function doOK(){
 		!extraChecker(window))
 		return true;
 
-	var parentWindow = window.arguments[0];
-	parentWindow.confmail_confirmOK = true;
+	const onConfirmed = window.arguments[0];
+	onConfirmed();
 	return true;
 }
 
 function doCancel(){
-
-	var parentWindow = window.arguments[0];
-	parentWindow.confmail_confirmOK = false;
 	return true;
 }
+
+document.documentElement.addEventListener("dialogaccept", doOK);
+document.documentElement.addEventListener("dialogcancel", doCancel);

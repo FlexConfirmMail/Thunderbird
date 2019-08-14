@@ -70,6 +70,7 @@ try { // DEBUG
   	var minConfimationCount = this.getPref(CA_CONST.MIN_RECIPIENTS_COUNT, 0);
 
 
+	let confirmed = false;
   	if (!enableConfirmation ||
   		(allowSkipConfirmation &&
   			externalList.length == 0 &&
@@ -78,7 +79,6 @@ try { // DEBUG
   			(externalList.length + internalList.length <= minConfimationCount))){
   		return this.showCountDownDialog();
   	}else{
-		window.confmail_confirmOK = false;
 		let sizeAndPosition = ",centerscreen";
 		if (this.getPref(CA_CONST.ALWAYS_LARGE_DIALOG)) {
 			let w = parseInt(screen.availWidth * 0.9);
@@ -92,17 +92,14 @@ try { // DEBUG
 		window.openDialog("chrome://confirm-mail/content/confirm-mail-dialog.xul",
 			"ConfirmAddressDialog",
 			"resizable,chrome,modal,titlebar" + sizeAndPosition,
-			window,
+			() => {
+				confirmed = true;
+			},
 			internalList, externalList, fileNamesList,
 			this.getBody(),
 			this.showCountDownDialog.bind(this));
 	}
-	
-  	if(window.confmail_confirmOK){
-  		return true;
-  	}else{
-  		return false;
-  	}
+ 	return confirmed;
 } catch(error) { alert(error+'\n'+error.stack); } // DEBUG
   },
 

@@ -26,8 +26,6 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	buttons="accept,cancel"
 	onload="startup()"
-	ondialogaccept="return doOK();"
-	ondialogcancel="return doCancel();"
 	width="680" height="600"
 	persist="width height screenX screenY">
 
