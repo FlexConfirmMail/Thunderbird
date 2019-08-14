@@ -134,6 +134,19 @@ function startup() {
 			);
 		}, false);
 
+		const externalGroupAllCheck = document.querySelector("#otherDomains .check_all checkbox");
+		externalGroupAllCheck.addEventListener("command", function (event) {
+			setTimeout(() => {
+				for (const groupHeaderItem of document.querySelectorAll("#otherDomains .confirm-mail-list-separator")) {
+					const groupDomain = groupHeaderItem.getAttribute("data-domain-name");
+					setHeaderStarIconVisible(
+						groupHeaderItem,
+						isGroupAllChecked(groupDomain)
+					);
+				}
+			}, 100);
+		}, false);
+
 		// external domains
 		var groupCount = 0;
 		function createExternalDomainsListItems(externals) {
