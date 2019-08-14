@@ -26,32 +26,145 @@ function getPref(name, defaultValue) {
 	return value === null ? defaultValue : value;
 }
 
-var selectedItem;
+class ListBox {
+	constructor(listbox, prefKey) {
+		this.listbox = listbox;
+		this.prefKey = prefKey;
+
+		const values = this.values;
+		if (values.length > 0) {
+			for (let value of values) {
+				value = value.trim();
+				if (!value)
+					continue;
+				this.addItem(value);
+			}
+		}
+		else {
+			prefs.setPref(this.prefKey, "");
+			this.addItem("");
+		}
+
+		this.onKeyDown = this.onKeyDown.bind(this);
+
+		listbox.addEventListener("keydown", this.onKeyDown, true);
+		listbox.addEventListener("dblclick", event => this.edit(event));
+	}
+
+	onKeyDown(event) {
+		const item = this.listbox.selectedItem || this.listbox.querySelector("richlistitem.editing");
+		console.log({ key: event.key, item });
+		if (!item)
+			return;
+		switch (event.key) {
+			case "Escape":
+				item.field.setAttribute("value", item.getAttribute("value"));
+			case "Enter":
+				if (!item.classList.contains("editing")) {
+					this.edit(event);
+				}
+				else {
+					item.field.onDetermined();
+				}
+				event.stopImmediatePropagation();
+				event.preventDefault();
+				return false;
+			case "Delete":
+				item.clear();
+				return false;
+		}
+	}
+
+	addItem(value) {
+		const item = this.listbox.appendItem(value || "", value || "");
+
+		item.field = item.appendChild(document.createXULElement("textbox"));
+		item.field.setAttribute("flex", 1);
+		item.field.setAttribute("value", item.field.value = value || "");
+		item.field.onDetermined = () => {
+			let value = item.field.value.trim();
+			console.log("[add/edit?] " + value + "\n");
+			if (!value) {
+				item.clear();
+				return;
+			}
+			if (value != item.getAttribute("value")) {
+				const values = this.values;
+				console.log("[add/edit?] check duplication: ", values, values.indexOf(value));
+				if (values.includes(value)) {
+					item.clear();
+					return;
+				}
+				console.log("[add/edit!] " + value + "\n");
+				item.setAttribute("value", value);
+				item.firstChild.setAttribute("value", value);
+			}
+			item.classList.remove("editing");
+			this.save();
+		};
+		item.field.addEventListener("blur", item.field.onDetermined, true);
+
+		item.deleteButton = item.appendChild(document.createXULElement("toolbarbutton"));
+		item.deleteButton.setAttribute("label", "×");
+
+		item.clear = () => {
+			item.setAttribute("value", "");
+			item.firstChild.setAttribute("value", "");
+			item.classList.remove("editing");
+			if (this.listbox.childNodes.length > 1)
+				this.removeItem(item);
+			this.save();
+		};
+		item.deleteButton.addEventListener("command", () => {
+			item.clear();
+		});
+
+		return item;
+	}
+
+	removeItem(item) {
+		item.field.removeEventListener("blur", item.field.onDetermined, true);
+		this.listbox.selectedItem = item.nextSibling || item.previousSibling;
+		this.listbox.removeChild(item);
+	}
+
+	get values() {
+		return getPref(this.prefKey, "")
+			.split(/[,\s\|;]+/)
+			.filter(value => !!value);
+	}
+
+	save() {
+		const values = Array.from(this.listbox.childNodes, item => item.getAttribute("value").trim());
+		prefs.setPref(this.prefKey, values.filter(value => !!value).join(" "));
+	}
+
+	enterEdit(item) {
+		item.classList.add("editing");
+		item.field.setAttribute("value", item.field.value = item.getAttribute("value"));
+		item.field.select();
+		item.field.focus();
+	}
+
+	add(event) {
+		if (this.listbox.lastChild.getAttribute("value") != "")
+			this.listbox.selectedItem = this.addItem("");
+		this.enterEdit(this.listbox.selectedItem);
+	}
+
+	edit(event) {
+		this.enterEdit(this.listbox.selectedItem);
+	}
+}
+
+var internalDomains;
+var exceptionalDomains;
+var exceptionalSuffixes;
 
 function startup(){
-
-	//init domain list.
-	document.getElementById("add").addEventListener('command', add, true);
-	document.getElementById("edit").addEventListener('command', edit, true);
-	document.getElementById("remove").addEventListener('command', remove, true);
-	var groupList = document.getElementById("group-list");
-
-	var domains = getPref(CA_CONST.INTERNAL_DOMAINS);
-	dump("[registed domains] " + domains + "\n");
-
-
-	if(domains != null && domains != "" ){
-		var domainList = domains.split(",");
-
-		for(var i=0; i < domainList.length; i++){
-			var listitem = document.createElement("listitem");
-			listitem.setAttribute("label", domainList[i]);
-			listitem.setAttribute("id", Math.random());
-			groupList.appendChild(listitem);
-		}
-	}else{
-		prefs.setPref(CA_CONST.INTERNAL_DOMAINS,"");
-	}
+	internalDomains = new ListBox(document.getElementById("group-list"), CA_CONST.INTERNAL_DOMAINS);
+	exceptionalDomains = new ListBox(document.getElementById("exceptional-domains"), CA_CONST.EXCEPTIONAL_DOMAINS);
+	exceptionalSuffixes = new ListBox(document.getElementById("exceptional-suffixes"), CA_CONST.EXCEPTIONAL_SUFFIXES);
 
 	//init checkbox [not dispaly when only my domain mail]
 	document.getElementById("enable-confirmation").checked = getPref(CA_CONST.ENABLE_CONFIRMATION, true);
@@ -63,16 +176,8 @@ function startup(){
 
 	document.getElementById("exceptional-domains-highlight").checked=getPref(CA_CONST.EXCEPTIONAL_DOMAINS_HIGHLIGHT, false);
 	document.getElementById("exceptional-domains-attachment").checked=getPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT, false);
-	var exceptionalDomains = document.getElementById("exceptional-domains");
-	exceptionalDomains.value = getPref(CA_CONST.EXCEPTIONAL_DOMAINS)
-		.replace(/^\s+|\s+$/g, '')
-		.replace(/\s+/g, '\n');
 
 	document.getElementById("exceptional-suffixes-confirm").checked=getPref(CA_CONST.EXCEPTIONAL_SUFFIXES_CONFIRM, false);
-	var exceptionalSuffixes = document.getElementById("exceptional-suffixes");
-	exceptionalSuffixes.value = getPref(CA_CONST.EXCEPTIONAL_SUFFIXES)
-		.replace(/^\s+|\s+$/g, '')
-		.replace(/\s+/g, '\n');
 
 	//init checkbox [countdown]
 	var cdBox = document.getElementById("countdown");
@@ -159,80 +264,8 @@ function startup(){
 	requireReinputAttachmentNamesBox.checked = getPref(CA_CONST.REQUIRE_REINPUT_ATTACHMENT_NAMES, false);
 }
 
-function add(event){
-	window.confmail_confirmOK = false;
-	window.domainName = null;
-	window.openDialog("chrome://confirm-mail/content/setting-add-domain.xul",
-		"ConfirmAddressDialog", "chrome,modal,titlebar,centerscreen", window);
-
-	if(window.confmail_confirmOK){
-		var domainName = window.domainName;
-		
-		// check duplication
-		if(domainName.length > 0  
-			&& getPref(CA_CONST.INTERNAL_DOMAINS).indexOf(domainName) == -1){
-
-			dump("[add!] " + domainName + "\n");
-			var groupList = document.getElementById("group-list");
-			var listitem = document.createElement("listitem");
-			listitem.setAttribute("label", domainName);
-			listitem.setAttribute("id", Math.random());
-			groupList.appendChild(listitem);
-		
-			saveDomainName();	
-		
-		}else{
-			alert("入力されたドメイン名は既に登録されています。\nThe domain name already registered.");
-		}
-	}
-}
-function edit(event){
-	window.confmail_confirmOK = false;
-	window.domainName = selectedItem.label;
-	window.openDialog("chrome://confirm-mail/content/setting-add-domain.xul",
-		"ConfirmAddressDialog", "chrome,modal,titlebar,centerscreen", window);
-		
-	if(window.confmail_confirmOK){
-		var domainName = window.domainName;
-		
-		//check duplication
-		if(selectedItem.label==domainName 
-			|| (domainName.length > 0 
-				&& getPref(CA_CONST.INTERNAL_DOMAINS).indexOf(domainName) == -1)){
-
-			dump("[edit!] " + domainName + "\n");
-			selectedItem.setAttribute("label", domainName);
-			saveDomainName();	
-
-		}else{
-			alert("入力されたドメイン名は既に登録されています。\nThe domain name already registered.");
-		}
-	}
-}
-function remove(event){
-	var groupList = document.getElementById("group-list");
-	dump("[remove] "+selectedItem + "\n");
-	groupList.removeChild(selectedItem);
-	saveDomainName();
-}
-
-function selectList(item){
-	selectedItem = item;
-}
-
-function saveDomainName(){
-	
-	//ドメイン設定保存
-	var groupList = document.querySelectorAll("#group-list listitem");
-	var domainList = Array.map(groupList, function(item) {
-		return item.getAttribute('label');
-	});
-	var domainListStr = domainList.join(",");
-	prefs.setPref(CA_CONST.INTERNAL_DOMAINS, domainListStr);
-}
-
 function doOK(){
-	dump("[OK]\n");
+	console.log("[OK]\n");
 
 	//チェックボックス設定保存
 	prefs.setPref(CA_CONST.ENABLE_CONFIRMATION, document.getElementById("enable-confirmation").checked);
@@ -248,12 +281,8 @@ function doOK(){
 
 	prefs.setPref(CA_CONST.EXCEPTIONAL_DOMAINS_HIGHLIGHT, document.getElementById("exceptional-domains-highlight").checked);
 	prefs.setPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT, document.getElementById("exceptional-domains-attachment").checked);
-	var exceptionalDomains = document.getElementById("exceptional-domains").value;
-	prefs.setPref(CA_CONST.EXCEPTIONAL_DOMAINS, exceptionalDomains.replace(/\s+/g, ' '));
 
 	prefs.setPref(CA_CONST.EXCEPTIONAL_SUFFIXES_CONFIRM, document.getElementById("exceptional-suffixes-confirm").checked);
-	var exceptionalSuffixes = document.getElementById("exceptional-suffixes").value;
-	prefs.setPref(CA_CONST.EXCEPTIONAL_SUFFIXES, exceptionalSuffixes.replace(/\s+/g, ' '));
 
 	var cdTime = document.getElementById("countdown-time").value;
 	
@@ -307,6 +336,6 @@ function doOK(){
 }
 
 function doCancel(){
-	dump("[cancel]\n");
+	console.log("[cancel]\n");
 	return true;
 }

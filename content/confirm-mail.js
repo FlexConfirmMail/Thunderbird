@@ -239,7 +239,7 @@ judge : function(recipients, domainList, yourDomainRecipients, otherDomainRecipi
   	if(domains == null || domains.length == 0){
   		return new Array();
   	}
-  	return domains.split(",");
+  	return domains.split(/[,\s\|;]+/);
   },
 
   getBody : function(){
