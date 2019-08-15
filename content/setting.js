@@ -22,7 +22,7 @@ var Ci = Components.interfaces;
 
 var { prefs } = Components.utils.import('resource://confirm-mail-modules/lib/prefs.js', {});
 function getPref(name, defaultValue) {
-	var value = prefs.getPref(name);
+	const value = prefs.getPref(name);
 	return value === null ? defaultValue : value;
 }
 
@@ -185,8 +185,8 @@ function startup() {
 	}
 
 	//init checkbox [countdown]
-	var cdBox = document.getElementById('countdown');
-	var cdTimeBox = document.getElementById('countdown-time');
+	const cdBox = document.getElementById('countdown');
+	const cdTimeBox = document.getElementById('countdown-time');
 
 	cdBox.addEventListener('command',
 		function(event){
@@ -194,11 +194,12 @@ function startup() {
 		},
 		true);
 
-	var isCountDown = getPref(CA_CONST.ENABLE_COUNTDOWN);
-	if(isCountDown == null || isCountDown == false){
+	const isCountDown = getPref(CA_CONST.ENABLE_COUNTDOWN);
+	if (isCountDown == null || isCountDown == false) {
 		cdBox.checked = false;
 		cdTimeBox.disabled = true;
-	}else{
+	}
+	else {
 		cdBox.checked = true;
 		cdTimeBox.disable = false;
 	}
