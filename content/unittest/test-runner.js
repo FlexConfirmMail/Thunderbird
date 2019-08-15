@@ -6,32 +6,32 @@ function TestRunner() {
 
 TestRunner.prototype.execute = function () {};
 
-TestRunner.prototype.assertEquals = function (exp, act) {
-	exp = JSON.stringify(exp);
-	act = JSON.stringify(act);
-	if (exp === act) {
+TestRunner.prototype.assertEquals = function (expected, actual) {
+	expected = JSON.stringify(expected);
+	actual = JSON.stringify(actual);
+	if (expected === actual) {
 		this.pass++;
 	} else {
-		throw new Error("FAIL exp=" + exp + ", but act=" + act);
+		throw new Error("FAIL expected=" + expected + ", but actual=" + actual);
 	}
 };
 
-TestRunner.prototype.assertSame = function (exp, act) {
-	if (exp === act) {
+TestRunner.prototype.assertSame = function (expected, actual) {
+	if (expected === actual) {
 		this.pass++;
 	} else {
-		throw new Error("FAIL exp=" + exp + ", but act=" + act);
+		throw new Error("FAIL expected=" + expected + ", but actual=" + actual);
 	}
 };
 
 var runner = new TestRunner();
 
-function assertEquals(exp, act) {
-	runner.assertEquals(exp, act);
+function assertEquals(expected, actual) {
+	runner.assertEquals(expected, actual);
 }
 
-function assertSame(exp, act) {
-	runner.assertSame(exp, act);
+function assertSame(expected, actual) {
+	runner.assertSame(expected, actual);
 }
 
 function dump(obj) {}
