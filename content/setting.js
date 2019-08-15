@@ -1,9 +1,9 @@
-/* "The contents of this file are subject to the Mozilla Public Licenske
-* Version 1.1 (the "License"); you may not use this file except in
+/* 'The contents of this file are subject to the Mozilla Public Licenske
+* Version 1.1 (the 'License'); you may not use this file except in
 * compliance with the License. You may obtain a copy of the License at
 * http://www.mozilla.org/MPL/
 * 
-* Software distributed under the License is distributed on an "AS IS"
+* Software distributed under the License is distributed on an 'AS IS'
 * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
 * License for the specific language governing rights and limitations
 * under the License.
@@ -41,26 +41,26 @@ class ListBox {
 			}
 		}
 		else {
-			prefs.setPref(this.prefKey, "");
-			this.addItem("");
+			prefs.setPref(this.prefKey, '');
+			this.addItem('');
 		}
 
 		this.onKeyDown = this.onKeyDown.bind(this);
 
-		listbox.addEventListener("keydown", this.onKeyDown, true);
-		listbox.addEventListener("dblclick", event => this.edit(event));
+		listbox.addEventListener('keydown', this.onKeyDown, true);
+		listbox.addEventListener('dblclick', event => this.edit(event));
 	}
 
 	onKeyDown(event) {
-		const item = this.listbox.selectedItem || this.listbox.querySelector("richlistitem.editing");
+		const item = this.listbox.selectedItem || this.listbox.querySelector('richlistitem.editing');
 		if (!item)
 			return;
 		switch (event.key) {
-			case "Escape":
-				item.field.setAttribute("value", item.field.value = item.getAttribute("value"));
-			case "Enter":
-			case "F2":
-				if (!item.classList.contains("editing")) {
+			case 'Escape':
+				item.field.setAttribute('value', item.field.value = item.getAttribute('value'));
+			case 'Enter':
+			case 'F2':
+				if (!item.classList.contains('editing')) {
 					this.edit(event);
 				}
 				else {
@@ -69,53 +69,53 @@ class ListBox {
 				event.stopImmediatePropagation();
 				event.preventDefault();
 				return false;
-			case "Delete":
+			case 'Delete':
 				item.clear();
 				return false;
 		}
 	}
 
 	addItem(value) {
-		const item = this.listbox.appendItem(value || "", value || "");
+		const item = this.listbox.appendItem(value || '', value || '');
 
-		item.field = item.appendChild(document.createXULElement("textbox"));
-		item.field.setAttribute("flex", 1);
-		item.field.setAttribute("value", item.field.value = value || "");
+		item.field = item.appendChild(document.createXULElement('textbox'));
+		item.field.setAttribute('flex', 1);
+		item.field.setAttribute('value', item.field.value = value || '');
 		item.field.onDetermined = () => {
 			let value = item.field.value.trim();
-			console.log("[add/edit?] " + value);
+			console.log('[add/edit?] ' + value);
 			if (!value) {
 				item.clear();
 				return;
 			}
-			if (value != item.getAttribute("value")) {
+			if (value != item.getAttribute('value')) {
 				const values = this.values;
-				console.log("[add/edit?] check duplication: ", values, values.indexOf(value));
+				console.log('[add/edit?] check duplication: ', values, values.indexOf(value));
 				if (values.includes(value)) {
 					item.clear();
 					return;
 				}
 				console.log(`[add/edit!] ${value}`);
-				item.setAttribute("value", value);
-				item.firstChild.setAttribute("value", value);
+				item.setAttribute('value', value);
+				item.firstChild.setAttribute('value', value);
 			}
-			item.classList.remove("editing");
+			item.classList.remove('editing');
 			this.save();
 		};
-		item.field.addEventListener("blur", item.field.onDetermined, true);
+		item.field.addEventListener('blur', item.field.onDetermined, true);
 
-		item.deleteButton = item.appendChild(document.createXULElement("toolbarbutton"));
-		item.deleteButton.setAttribute("label", "×");
+		item.deleteButton = item.appendChild(document.createXULElement('toolbarbutton'));
+		item.deleteButton.setAttribute('label', '×');
 
 		item.clear = () => {
-			item.setAttribute("value", "");
-			item.firstChild.setAttribute("value", "");
-			item.classList.remove("editing");
+			item.setAttribute('value', '');
+			item.firstChild.setAttribute('value', '');
+			item.classList.remove('editing');
 			if (this.listbox.childNodes.length > 1)
 				this.removeItem(item);
 			this.save();
 		};
-		item.deleteButton.addEventListener("command", () => {
+		item.deleteButton.addEventListener('command', () => {
 			item.clear();
 		});
 
@@ -123,33 +123,33 @@ class ListBox {
 	}
 
 	removeItem(item) {
-		item.field.removeEventListener("blur", item.field.onDetermined, true);
+		item.field.removeEventListener('blur', item.field.onDetermined, true);
 		this.listbox.selectedItem = item.nextSibling || item.previousSibling;
 		this.listbox.removeChild(item);
 	}
 
 	get values() {
-		return getPref(this.prefKey, "")
+		return getPref(this.prefKey, '')
 			.trim()
 			.split(/[,\s\|;]+/)
 			.filter(value => !!value);
 	}
 
 	save() {
-		const values = Array.from(this.listbox.childNodes, item => item.getAttribute("value").trim());
-		prefs.setPref(this.prefKey, values.filter(value => !!value).join(" "));
+		const values = Array.from(this.listbox.childNodes, item => item.getAttribute('value').trim());
+		prefs.setPref(this.prefKey, values.filter(value => !!value).join(' '));
 	}
 
 	enterEdit(item) {
-		item.classList.add("editing");
-		item.field.setAttribute("value", item.field.value = item.getAttribute("value"));
+		item.classList.add('editing');
+		item.field.setAttribute('value', item.field.value = item.getAttribute('value'));
 		item.field.select();
 		item.field.focus();
 	}
 
 	add(event) {
-		if (this.listbox.lastChild.getAttribute("value") != "")
-			this.listbox.selectedItem = this.addItem("");
+		if (this.listbox.lastChild.getAttribute('value') != '')
+			this.listbox.selectedItem = this.addItem('');
 		this.enterEdit(this.listbox.selectedItem);
 	}
 
@@ -163,30 +163,30 @@ var exceptionalDomains;
 var exceptionalSuffixes;
 
 function startup() {
-	internalDomains = new ListBox(document.getElementById("group-list"), CA_CONST.INTERNAL_DOMAINS);
-	exceptionalDomains = new ListBox(document.getElementById("exceptional-domains"), CA_CONST.EXCEPTIONAL_DOMAINS);
-	exceptionalSuffixes = new ListBox(document.getElementById("exceptional-suffixes"), CA_CONST.EXCEPTIONAL_SUFFIXES);
+	internalDomains = new ListBox(document.getElementById('group-list'), CA_CONST.INTERNAL_DOMAINS);
+	exceptionalDomains = new ListBox(document.getElementById('exceptional-domains'), CA_CONST.EXCEPTIONAL_DOMAINS);
+	exceptionalSuffixes = new ListBox(document.getElementById('exceptional-suffixes'), CA_CONST.EXCEPTIONAL_SUFFIXES);
 
-	for (const element of document.querySelectorAll("[preference]")) {
-		const key = element.getAttribute("preference");
+	for (const element of document.querySelectorAll('[preference]')) {
+		const key = element.getAttribute('preference');
 		const value = getPref(key);
-		if (element.localName == "checkbox") {
+		if (element.localName == 'checkbox') {
 			element.checked = !!value;
-			element.addEventListener("command", () => {
+			element.addEventListener('command', () => {
 				prefs.setPref(key, element.checked);
 			});
 		}
 		else {
 			element.value = value;
-			element.addEventListener("change", () => {
-				prefs.setPref(key, typeof value == "number" ? parseInt(element.value) : String(element.value));
+			element.addEventListener('change', () => {
+				prefs.setPref(key, typeof value == 'number' ? parseInt(element.value) : String(element.value));
 			});
 		}
 	}
 
 	//init checkbox [countdown]
-	var cdBox = document.getElementById("countdown");
-	var cdTimeBox = document.getElementById("countdown-time");
+	var cdBox = document.getElementById('countdown');
+	var cdTimeBox = document.getElementById('countdown-time');
 
 	cdBox.addEventListener('command',
 		function(event){
@@ -204,26 +204,26 @@ function startup() {
 	}
 
 	if (getPref(CA_CONST.COUNT_DOWN_ALLOW_SKIP_ALWAYS))
-		document.getElementById("countdownAllowSkip").hidden = true;
+		document.getElementById('countdownAllowSkip').hidden = true;
 
 	if (getPref(CA_CONST.ALLOW_CHECK_ALL_INTERNALS_ALWAYS))
-		document.getElementById("allowCheckAll.yourDomains").hidden = true;
+		document.getElementById('allowCheckAll.yourDomains').hidden = true;
 
 	if (getPref(CA_CONST.ALLOW_CHECK_ALL_EXTERNALS_ALWAYS))
-		document.getElementById("allowCheckAll.otherDomains").hidden = true;
+		document.getElementById('allowCheckAll.otherDomains').hidden = true;
 
 	if (getPref(CA_CONST.ALLOW_CHECK_ALL_ATTACHMENTS_ALWAYS))
-		document.getElementById("allowCheckAll.fileNames").hidden = true;
+		document.getElementById('allowCheckAll.fileNames').hidden = true;
 
 	if (getPref(CA_CONST.REQUIRE_CHECK_BODY_ALWAYS))
-		document.getElementById("requireCheckBody").hidden = true;
+		document.getElementById('requireCheckBody').hidden = true;
 
 	if (getPref(CA_CONST.HIGHLIGHT_UNMATCHED_DOMAINS_ALWAYS))
-		document.getElementById("highlightUnmatchedDomains").hidden = true;
+		document.getElementById('highlightUnmatchedDomains').hidden = true;
 
 	if (getPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES_ALWAYS))
-		document.getElementById("largeFontSizeForAddresses").hidden = true;
+		document.getElementById('largeFontSizeForAddresses').hidden = true;
 
 	if(getPref(CA_CONST.ALWAYS_LARGE_DIALOG_ALWAYS))
-		document.getElementById("alwaysLargeDialog").hidden = true;
+		document.getElementById('alwaysLargeDialog').hidden = true;
 }
