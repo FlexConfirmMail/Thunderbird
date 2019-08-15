@@ -114,13 +114,17 @@ function testGetDomainList(){
 	CA_CONST = {
 		INTERNAL_DOMAINS : 0
 	};
-	nsPreferences = {
-		copyUnicharPref : function(arg){
+	var origGetPref = ConfirmMail.getPref;
+	try {
+		ConfirmMail.getPref = function(arg){
 			return "gmail.com,me.com";
-		}
-	};
-	list = ConfirmMail.getDomainList();
-	assertEquals(2, list.length);
+		};
+		list = ConfirmMail.getDomainList();
+		assertEquals(2, list.length);
+	}
+	finally {
+		ConfirmMail.getPref = origGetPref;
+	}
 }
 
 /*
@@ -131,14 +135,17 @@ function testGetDomainList_listInEmpty(){
 	CA_CONST = {
 		INTERNAL_DOMAINS : 0
 	};
-	nsPreferences = {
-		copyUnicharPref : function(arg){
+	var origGetPref = ConfirmMail.getPref;
+	try {
+		ConfirmMail.getPref = function(arg){
 			return "";
-		}
-	};
-
-	list = ConfirmMail.getDomainList();
-	assertEquals(0, list.length);
+		};
+		list = ConfirmMail.getDomainList();
+		assertEquals(0, list.length);
+	}
+	finally {
+		ConfirmMail.getPref = origGetPref;
+	}
 }
 
 /*
@@ -149,12 +156,15 @@ function testGetDomainList_listInNull(){
 	CA_CONST = {
 		INTERNAL_DOMAINS : 0
 	};
-	nsPreferences = {
-		copyUnicharPref : function(arg){
+	var origGetPref = ConfirmMail.getPref;
+	try {
+		ConfirmMail.getPref = function(arg){
 			return null;
-		}
-	};
-
-	list = ConfirmMail.getDomainList();
-	assertEquals(0, list.length);
+		};
+		list = ConfirmMail.getDomainList();
+		assertEquals(0, list.length);
+	}
+	finally {
+		ConfirmMail.getPref = origGetPref;
+	}
 }
