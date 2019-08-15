@@ -9,3 +9,10 @@ You can define exceptions of "foreign" domains, via the configuration dialog or 
 ## Exceptional Suffixes
 
 You can define exceptions of attachments, via the configuration dialog or the preference `net.nyail.tanabec.confirm-mail.exceptional-suffixes`. If you put some "extension"s to the list and you try to send a mail with an attachment including a suffix listed in the preference, then an extra confirmation dialog will be shown. The message of the confirmation dialog can be customized via two preferences: `net.nyail.tanabec.confirm-mail.exceptionalSuffix.title` and `net.nyail.tanabec.confirm-mail.exceptionalSuffix.message`. It will be useful in a case like: your SMTP server always encrypts attachments but there are some exceptions.
+
+## How to run automated unittest?
+
+1. Create an XPI including unittest, with the command `make unittest`.
+2. Install the built XPI.
+3. Open the browser console or the developer tool for the Thunderbird itself.
+4. Run `openDialog('chrome://confirm-mail/content/unittest/testRunner.html', '_blank', 'chrome,all')`.

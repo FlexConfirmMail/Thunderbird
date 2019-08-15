@@ -7,6 +7,9 @@ xpi: makexpi/makexpi.sh copy-extlib
 	makexpi/makexpi.sh -n $(PACKAGE_NAME) -o
 	git checkout content/unittest/
 
+unittest: makexpi/makexpi.sh copy-extlib
+	makexpi/makexpi.sh -n $(PACKAGE_NAME) -o
+
 makexpi/makexpi.sh:
 	git submodule update --init
 
