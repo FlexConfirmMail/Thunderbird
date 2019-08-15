@@ -16,3 +16,9 @@ You can define exceptions of attachments, via the configuration dialog or the pr
 2. Install the built XPI.
 3. Open the browser console or the developer tool for the Thunderbird itself.
 4. Run `openDialog('chrome://confirm-mail/content/unittest/testRunner.html', '_blank', 'chrome,all')`.
+
+## How to do manual test?
+
+1. Open `sample.eml` with Thunderbird.
+2. Hit Ctrl-E to edit the mail as a new message.
+3. Try to send it.
