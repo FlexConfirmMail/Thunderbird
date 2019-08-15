@@ -3,9 +3,11 @@ PACKAGE_NAME = flex-confirm-mail
 all: xpi
 
 xpi: makexpi/makexpi.sh copy-extlib
-	rm -r content/unittest/
+	git stash
+	rm -rf content/unittest/
 	makexpi/makexpi.sh -n $(PACKAGE_NAME) -o
 	git checkout content/unittest/
+	git stash pop
 
 unittest: makexpi/makexpi.sh copy-extlib
 	makexpi/makexpi.sh -n $(PACKAGE_NAME) -o
