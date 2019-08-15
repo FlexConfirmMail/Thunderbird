@@ -83,7 +83,7 @@ class ListBox {
 		item.field.setAttribute("value", item.field.value = value || "");
 		item.field.onDetermined = () => {
 			let value = item.field.value.trim();
-			console.log("[add/edit?] " + value + "\n");
+			console.log("[add/edit?] " + value);
 			if (!value) {
 				item.clear();
 				return;
@@ -95,7 +95,7 @@ class ListBox {
 					item.clear();
 					return;
 				}
-				console.log("[add/edit!] " + value + "\n");
+				console.log(`[add/edit!] ${value}`);
 				item.setAttribute("value", value);
 				item.firstChild.setAttribute("value", value);
 			}
