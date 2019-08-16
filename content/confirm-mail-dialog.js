@@ -22,7 +22,7 @@ var Cc = Components.classes;
 var Ci = Components.interfaces;
 
 function getLocaleString(id, parameters) {
-	var bundle = document.getElementById("strings");
+	var bundle = document.getElementById("confirm-mail-strbundle");
 	if (arguments.length > 1 && parameters.length)
 		return bundle.getFormattedString(id, parameters);
 	return bundle.getString(id);
@@ -33,7 +33,7 @@ function startup() {
 		var okBtn = document.documentElement.getButton("accept");
 		okBtn.disabled = true;
 		// set button label
-		var strbundle = document.getElementById("strings");
+		var strbundle = document.getElementById("confirm-mail-strbundle");
 		var BtnLabel = strbundle.getString("confirm.dialog.acceptbtn.label");
 		okBtn.label = BtnLabel;
 	}

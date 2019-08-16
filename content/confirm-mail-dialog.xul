@@ -35,7 +35,7 @@
 	<script type="application/x-javascript" src="chrome://confirm-mail/content/confirm-mail-dialog.js"/>
 
 	<stringbundleset>
-		<stringbundle id="strings" src="chrome://confirm-mail/locale/confirm-mail.properties"/>
+		<stringbundle id="confirm-mail-strbundle" src="chrome://confirm-mail/locale/confirm-mail.properties"/>
 	</stringbundleset>
 
 	<label value="&confirm.dialog.message;" style="padding-bottom:3px; font-size:1.3em;"/>
