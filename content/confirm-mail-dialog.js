@@ -561,7 +561,6 @@ var ConfirmMailDialog = {
 			.getService(Components.interfaces.nsIWindowWatcher);
 		const listener = {
 			observe(subject, topic, data) {
-				console.log([subject, topic, data]);
 				if (topic != "domwindowopened")
 					return;
 				const window = subject.QueryInterface(Components.interfaces.nsIDOMWindow);
