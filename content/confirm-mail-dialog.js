@@ -555,6 +555,31 @@ var ConfirmMailDialog = {
 			.getService(Components.interfaces.nsIPromptService);
 		let flags = (promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0)
 			+ (promptService.BUTTON_TITLE_CANCEL * promptService.BUTTON_POS_1);
+
+		// force resize to contents, because window can be smaller than contents with too long CJK text.
+		const WW = Components.classes["@mozilla.org/embedcomp/window-watcher;1"]
+			.getService(Components.interfaces.nsIWindowWatcher);
+		const listener = {
+			observe(subject, topic, data) {
+				console.log([subject, topic, data]);
+				if (topic != "domwindowopened")
+					return;
+				const window = subject.QueryInterface(Components.interfaces.nsIDOMWindow);
+				window.addEventListener("load", function onLoad() {
+					window.removeEventListener("load", onLoad, false);
+					if (window.location.href != "chrome://global/content/commonDialog.xul")
+						return;
+					WW.unregisterNotification(listener);
+					window.setTimeout(function() {
+						const newHeight = window.document.documentElement.boxObject.height + (window.outerHeight - window.innerHeight);
+						if (newHeight > window.outerHeight * 1.05)
+							window.resizeTo(window.outerWidth, newHeight);
+					}, 150);
+				}, false);
+			}
+		};
+		WW.registerNotification(listener);
+
 		return promptService.confirmEx(window,
 			this.prefs.getLocalizedPref("net.nyail.tanabec.confirm-mail." + messageType + ".title"),
 			this.prefs.getLocalizedPref("net.nyail.tanabec.confirm-mail." + messageType + ".message")
