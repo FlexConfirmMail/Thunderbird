@@ -39,8 +39,15 @@
 	</tabs>
 	<tabpanels flex="1">
 		<vbox flex="1">
-			<checkbox id="enable-confirmation" label="&setting.dialog.enableConfirmation.label;"
-				preference="net.nyail.tanabec.confirm-mail.confirmation.enabled"/>
+			<vbox>
+				<label value="&setting.dialog.enableConfirmation.caption;"/>
+				<radiogroup id="enable-confirmation" orient="vertical" style="margin-left: 1em"
+					preference="net.nyail.tanabec.confirm-mail.confirmation.mode">
+					<radio label="&setting.dialog.enableConfirmation.always.label;" value="1"/>
+					<radio label="&setting.dialog.enableConfirmation.onModified.label;" value="2"/>
+					<radio label="&setting.dialog.enableConfirmation.never.label;" value="0"/>
+				</radiogroup>
+			</vbox>
 			<label value="&setting.dialog.message;"/>
 			<richlistbox id="group-list"
 				style="height: 8em; max-height: 8em">
