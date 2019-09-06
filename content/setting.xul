@@ -39,7 +39,14 @@
 	</tabs>
 	<tabpanels flex="1">
 		<vbox flex="1">
-			<checkbox id="enable-confirmation" label="&setting.dialog.enableConfirmation.label;"/>
+			<vbox>
+				<label value="&setting.dialog.enableConfirmation.caption;"/>
+				<radiogroup id="enable-confirmation" orient="vertical" style="margin-left: 1em">
+					<radio label="&setting.dialog.enableConfirmation.always.label;" value="1"/>
+					<radio label="&setting.dialog.enableConfirmation.onModified.label;" value="2"/>
+					<radio label="&setting.dialog.enableConfirmation.never.label;" value="0"/>
+				</radiogroup>
+			</vbox>
 			<label value="&setting.dialog.message;"/>
 			<listbox id="group-list" rows="6" onselect="selectList(this.selectedItem);"
 				style="width:500px">

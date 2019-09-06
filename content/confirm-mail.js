@@ -29,6 +29,32 @@ var ConfirmMail = {
   },
 
 
+  get recipientsModified() {
+	return this.originalRecipients != JSON.stringify(this.getRecipients());
+  },
+
+  prepare: function() {
+	this.originalRecipients = JSON.stringify(this.getRecipients());
+  },
+
+  getRecipients: function() {
+  	var msgCompFields = gMsgCompose.compFields;
+
+  	var toList = [];
+  	var ccList = [];
+  	var bccList = [];
+  	this.collectAddress(msgCompFields, toList, ccList, bccList)
+  	//dump("[TO] "+ toList + "\n");
+  	//dump("[CC] "+ ccList + "\n");
+  	//dump("[BCC] "+ bccList + "\n");
+  	return {
+		to:  toList,
+		cc:  ccList,
+		bcc: bccList
+	};
+  },
+
+
   checkAddress: function(){
 try { // DEBUG
   	var msgCompFields = gMsgCompose.compFields;
@@ -42,13 +68,10 @@ try { // DEBUG
 			'expandMailingLists: '+gMsgCompose.expandMailingLists+'\n'+
 			'checkAndPopulateRecipients: '+gMsgCompose.checkAndPopulateRecipients);
 
-  	var toList = [];
-  	var ccList = [];
-  	var bccList = [];
-  	this.collectAddress(msgCompFields, toList, ccList, bccList)
-  	//dump("[TO] "+ toList + "\n");
-  	//dump("[CC] "+ ccList + "\n");
-  	//dump("[BCC] "+ bccList + "\n");
+	var recipients = this.getRecipients();
+  	var toList = recipients.to;
+  	var ccList = recipients.cc;
+  	var bccList = recipients.bcc;
 
 	var domainList = this.getDomainList();
   	//dump("[DOMAINLIST] "+ domainList + "\n");
@@ -65,11 +88,11 @@ try { // DEBUG
 	this.collectFileName(msgCompFields,fileNamesList);
 	//dump("[FILENAME]" + fileNamesList + "\n");
 
-  	var enableConfirmation = this.getPref(CA_CONST.ENABLE_CONFIRMATION, true);
+  	var enableConfirmationMode = this.getPref(CA_CONST.ENABLE_CONFIRMATION, 1);
   	var allowSkipConfirmation = this.getPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, false);
   	var minConfimationCount = this.getPref(CA_CONST.MIN_RECIPIENTS_COUNT, 0);
 
-
+  	var enableConfirmation = enableConfirmationMode == 1 || (enableConfirmationMode == 2 && this.recipientsModified);
   	if (!enableConfirmation ||
   		(allowSkipConfirmation &&
   			externalList.length == 0 &&

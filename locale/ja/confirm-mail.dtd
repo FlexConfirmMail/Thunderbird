@@ -6,7 +6,10 @@
 <!ENTITY confirm.dialog.fileName.label "添付ファイル">
 <!ENTITY confirm.dialog.check.label "確認！">
 <!ENTITY setting.dialog.title "confirm-mail 設定">
-<!ENTITY setting.dialog.enableConfirmation.label "送信前に宛先を確認する">
+<!ENTITY setting.dialog.enableConfirmation.caption "送信前の宛先確認:">
+<!ENTITY setting.dialog.enableConfirmation.always.label "常に確認">
+<!ENTITY setting.dialog.enableConfirmation.onModified.label "宛先が変更された時だけ確認">
+<!ENTITY setting.dialog.enableConfirmation.never.label "確認しない">
 <!ENTITY setting.dialog.tab.recipients "宛先">
 <!ENTITY setting.dialog.tab.attachments "添付ファイル">
 <!ENTITY setting.dialog.tab.misc "その他">

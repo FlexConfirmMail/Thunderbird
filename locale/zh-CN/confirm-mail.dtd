@@ -6,7 +6,10 @@
 <!ENTITY confirm.dialog.fileName.label "附件">
 <!ENTITY confirm.dialog.check.label "确认！">
 <!ENTITY setting.dialog.title "confirm-mail 设定">
-<!ENTITY setting.dialog.enableConfirmation.label "Confirm Recipients before Sending">
+<!ENTITY setting.dialog.enableConfirmation.caption "Confirm Recipients before Sending:">
+<!ENTITY setting.dialog.enableConfirmation.always.label "Always">
+<!ENTITY setting.dialog.enableConfirmation.onModified.label "Only when recipients are modified">
+<!ENTITY setting.dialog.enableConfirmation.never.label "Never">
 <!ENTITY setting.dialog.tab.recipients "Recipients">
 <!ENTITY setting.dialog.tab.attachments "Attachments">
 <!ENTITY setting.dialog.tab.misc "Misc.">

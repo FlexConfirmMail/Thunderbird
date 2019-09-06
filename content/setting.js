@@ -54,7 +54,7 @@ function startup(){
 	}
 
 	//init checkbox [not dispaly when only my domain mail]
-	document.getElementById("enable-confirmation").checked = getPref(CA_CONST.ENABLE_CONFIRMATION, true);
+	document.getElementById("enable-confirmation").value = getPref(CA_CONST.ENABLE_CONFIRMATION, 1);
 	document.getElementById("not-display").checked = getPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, false);
 
 	var minRecipientsCount = getPref(CA_CONST.MIN_RECIPIENTS_COUNT, 0);
@@ -235,7 +235,7 @@ function doOK(){
 	dump("[OK]\n");
 
 	//チェックボックス設定保存
-	prefs.setPref(CA_CONST.ENABLE_CONFIRMATION, document.getElementById("enable-confirmation").checked);
+	prefs.setPref(CA_CONST.ENABLE_CONFIRMATION, parseInt(document.getElementById("enable-confirmation").value));
 	prefs.setPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, document.getElementById("not-display").checked);
 
 	var minRecipientsCount = parseInt(document.getElementById("min-recipients-count").value);

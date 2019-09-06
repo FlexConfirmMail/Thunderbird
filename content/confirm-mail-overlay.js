@@ -71,4 +71,21 @@ const tryOverride = function() {
 };
 tryOverride();
 
+
+var stateListener = {
+	NotifyComposeFieldsReady: function() {
+		ConfirmMail.prepare();
+	},
+	NotifyComposeBodyReady: function() {},
+	ComposeProcessDone: function(result) {},
+	SaveInFolderDone: function(folderURI) {}
+};
+
+window.addEventListener("load", function init() {
+	ConfirmMail.prepare();
+	if (gMsgCompose) gMsgCompose.RegisterStateListener(stateListener);
+	window.removeEventListener("load", init, false);
+	//document.getElementById("msgcomposeWindow").addEventListener("compose-window-reopen", init, false);
+}, false);
+
 })();

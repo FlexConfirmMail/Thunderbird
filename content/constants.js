@@ -19,7 +19,7 @@
 
 var CA_CONST = {
 	INTERNAL_DOMAINS : "net.nyail.tanabec.confirm-mail.domain-list",
-	ENABLE_CONFIRMATION : "net.nyail.tanabec.confirm-mail.confirmation.enabled",
+	ENABLE_CONFIRMATION : "net.nyail.tanabec.confirm-mail.confirmation.mode",
 	ALLOW_SKIP_CONFIRMATION : "net.nyail.tanabec.confirm-mail.not-display",
 	ENABLE_COUNTDOWN : "net.nyail.tanabec.confirm-mail.is-countdown",
 	COUNT_DOWN_TIME : "net.nyail.tanabec.confirm-mail.countdown.time",
