@@ -7,7 +7,7 @@ xpi: makexpi/makexpi.sh copy-extlib
 	rm -rf content/unittest/
 	makexpi/makexpi.sh -n $(PACKAGE_NAME) -o
 	git checkout content/unittest/
-	git stash pop
+	git stash pop || true
 
 unittest: makexpi/makexpi.sh copy-extlib
 	makexpi/makexpi.sh -n $(PACKAGE_NAME) -o
