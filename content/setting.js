@@ -228,3 +228,74 @@ function startup() {
 	if(getPref(CA_CONST.ALWAYS_LARGE_DIALOG_ALWAYS))
 		document.getElementById('alwaysLargeDialog').hidden = true;
 }
+
+function chooseFile(button) {
+	const field = button.previousSibling;
+	asyncPickDirectory(
+		button.getAttribute('chooser-title'),
+		field.value,
+		function(folder) {
+			if (folder)
+				field.value = folder.path;
+		}
+	);
+}
+
+function asyncPickDirectory(aTitle, aDefault, aCallback) {
+	const WindowManager = Cc['@mozilla.org/appshell/window-mediator;1']
+			.getService(Ci.nsIWindowMediator);
+
+	var filePicker = Cc['@mozilla.org/filepicker;1']
+			.createInstance(Ci.nsIFilePicker);
+
+	var displayDirectory = Cc['@mozilla.org/file/local;1'].createInstance();
+	if (aDefault && displayDirectory instanceof Ci.nsIFile) {
+		try {
+			displayDirectory.initWithPath(aDefault);
+			filePicker.displayDirectory = displayDirectory;
+		}
+		catch(e) {
+		}
+	}
+
+	filePicker.init(
+		WindowManager.getMostRecentWindow(null),
+		aTitle,
+		filePicker.modeGetFolder
+	);
+
+	function findExistingFolder(aFile) {
+		// Windows's file picker sometimes returns wrong path like
+		// "c:\folder\folder" even if I actually selected "c:\folder".
+		// However, when the "OK" button is chosen, any existing folder
+		// must be selected. So, I find existing ancestor folder from
+		// the path.
+		while (aFile && !aFile.exists() && aFile.parent)
+		{
+			aFile = aFile.parent;
+		}
+		return aFile;
+	}
+
+	if (typeof filePicker.open != 'function') { // Gecko 18 and olders
+		let folder = (filePicker.show() == filePicker.returnOK) ?
+						filePicker.file.QueryInterface(Ci.nsIFile) : null ;
+		folder = findExistingFolder(folder);
+		setTimeout(function() {
+		  aCallback(folder);
+		}, 0);
+		return;
+	}
+
+	var folder;
+	filePicker.open({ done: function(aResult) {
+		if (aResult == filePicker.returnOK) {
+			folder = filePicker.file.QueryInterface(Ci.nsIFile);
+		}
+		else {
+			folder = null;
+		}
+		folder = findExistingFolder(folder);
+		aCallback(folder);
+	}});
+}
