@@ -179,7 +179,7 @@ function startup() {
 		else {
 			element.value = value;
 			const type = element.localName == 'radiogroup' ? 'select' : 'change';
-			element.addEventListener(type, () => {
+			element.addEventListener(type, element._onChange = () => {
 				prefs.setPref(key, typeof value == 'number' ? parseInt(element.value) : String(element.value));
 			});
 		}
@@ -232,15 +232,15 @@ function startup() {
 
 function chooseFile(button) {
 	const field = button.previousSibling;
-	field.focus();
 	asyncPickFile(
 		button.getAttribute('chooser-title'),
 		field.value,
 		function(file) {
-			if (file) {
-				field.value = file.path;
-				button.focus(); // required to fire "change" event
-			}
+			if (!file)
+				return;
+			field.value = file.path;
+			if (field._onChange)
+				field._onChange();
 		}
 	);
 }
