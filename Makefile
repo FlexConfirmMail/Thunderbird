@@ -3,11 +3,13 @@ PACKAGE_NAME = flex-confirm-mail
 all: xpi
 
 xpi: makexpi/makexpi.sh copy-extlib
-	git stash
+	rm -f .need-stash-pop
+	git stash | grep 'No local changes to save' || touch .need-stash-pop
 	rm -rf content/unittest/
 	makexpi/makexpi.sh -n $(PACKAGE_NAME) -o
 	git checkout content/unittest/
-	git stash pop || true
+	[ -f .need-stash-pop ] && git stash pop || true
+	rm -f .need-stash-pop
 
 unittest: makexpi/makexpi.sh copy-extlib
 	makexpi/makexpi.sh -n $(PACKAGE_NAME) -o
