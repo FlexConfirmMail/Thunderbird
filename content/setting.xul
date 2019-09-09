@@ -88,31 +88,63 @@
 				preference="net.nyail.tanabec.confirm-mail.exceptional-domains.highlight"/>
 			<checkbox id="exceptional-domains-attachment" label="&setting.dialog.exceptionalDomains.attachment;"
 				preference="net.nyail.tanabec.confirm-mail.exceptional-domains.onlyWithAttachment"/>
-			<richlistbox id="exceptional-domains"
-				style="height: 6em; max-height: 6em">
-			</richlistbox>
-			<hbox>
-				<button label="&setting.dialog.button.add.label;"
-					oncommand="exceptionalDomains.add(event)"/>
-				<button label="&setting.dialog.button.edit.label;"
-					oncommand="exceptionalDomains.edit(event)"/>
-				<spacer flex="1"/>
-			</hbox>
+			<radiogroup id="exceptional-domains-source" orient="vertical"
+				preference="net.nyail.tanabec.confirm-mail.exceptional-domains.source">
+				<radio label="&setting.dialog.exceptionalDomains.source.pref.label;" value="pref"/>
+				<vbox style="margin-left: 1em">
+					<richlistbox id="exceptional-domains"
+						style="height: 6em; max-height: 6em">
+					</richlistbox>
+					<hbox>
+						<button label="&setting.dialog.button.add.label;"
+							oncommand="exceptionalDomains.add(event)"/>
+						<button label="&setting.dialog.button.edit.label;"
+							oncommand="exceptionalDomains.edit(event)"/>
+						<spacer flex="1"/>
+					</hbox>
+				</vbox>
+				<radio label="&setting.dialog.exceptionalDomains.source.file.label;" value="file"/>
+				<hbox align="center">
+					<textbox id="exceptional-domains-file"
+						type="filefield"
+						preference="net.nyail.tanabec.confirm-mail.exceptional-domains.source.file"
+						flex="1"/>
+					<button label="&setting.dialog.exceptionalDomains.source.file.button.label;"
+						chooser-title="&setting.dialog.exceptionalDomains.source.file.button.choose;"
+						oncommand="chooseFile(this);"/>
+				</hbox>
+			</radiogroup>
 		</vbox>
 		<vbox flex="1">
 			<label value="&setting.dialog.exceptionalSuffixes.label;" control="exceptional-suffixes"/>
 			<checkbox id="exceptional-suffixes-confirm" label="&setting.dialog.exceptionalSuffixes.confirm;"
 				preference="net.nyail.tanabec.confirm-mail.exceptional-suffixes.confirm"/>
-			<richlistbox id="exceptional-suffixes"
-				style="height: 6em; max-height: 6em">
-			</richlistbox>
-			<hbox>
-				<button label="&setting.dialog.button.add.label;"
-					oncommand="exceptionalSuffixes.add(event)"/>
-				<button label="&setting.dialog.button.edit.label;"
-					oncommand="exceptionalSuffixes.edit(event)"/>
-				<spacer flex="1"/>
-			</hbox>
+			<radiogroup id="exceptional-suffixes-source" orient="vertical"
+				preference="net.nyail.tanabec.confirm-mail.exceptional-suffixes.source">
+				<radio label="&setting.dialog.exceptionalSuffixes.source.pref.label;" value="pref"/>
+				<vbox style="margin-left: 1em">
+					<richlistbox id="exceptional-suffixes"
+						style="height: 6em; max-height: 6em">
+					</richlistbox>
+					<hbox>
+						<button label="&setting.dialog.button.add.label;"
+							oncommand="exceptionalSuffixes.add(event)"/>
+						<button label="&setting.dialog.button.edit.label;"
+							oncommand="exceptionalSuffixes.edit(event)"/>
+						<spacer flex="1"/>
+					</hbox>
+				</vbox>
+				<radio label="&setting.dialog.exceptionalSuffixes.source.file.label;" value="file"/>
+				<hbox align="center">
+					<textbox id="exceptional-suffixes-file"
+						type="filefield"
+						preference="net.nyail.tanabec.confirm-mail.exceptional-suffixes.source.file"
+						flex="1"/>
+					<button label="&setting.dialog.exceptionalSuffixes.source.file.button.label;"
+						chooser-title="&setting.dialog.exceptionalSuffixes.source.file.button.choose;"
+						oncommand="chooseFile(this);"/>
+				</hbox>
+			</radiogroup>
 			<checkbox id="requireReinputAttachmentNames" label="&setting.dialog.checkbox.requireReinputAttachmentNames;"
 				preference="net.nyail.tanabec.confirm-mail.requireReinputAttachmentNames"/>
 			<separator/>
