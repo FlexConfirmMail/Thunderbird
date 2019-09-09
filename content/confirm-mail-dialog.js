@@ -424,7 +424,7 @@ var ExceptionManager = {
 				domains = this.readFile(this.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_FILE)) || "";
 			}
 			catch(e) {
-				domain = "";
+				domains = "";
 			}
 		}
 		else {
@@ -447,7 +447,7 @@ var ExceptionManager = {
 				suffixes = this.readFile(this.getPref(CA_CONST.EXCEPTIONAL_SUFFIXES_FILE)) || "";
 			}
 			catch(e) {
-				domain = "";
+				suffixes = "";
 			}
 		}
 		else {
