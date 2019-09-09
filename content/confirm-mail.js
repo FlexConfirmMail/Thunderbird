@@ -120,6 +120,7 @@ try { // DEBUG
 			},
 			internalList, externalList, fileNamesList,
 			this.getBody(),
+			this.getSubject(),
 			this.showCountDownDialog.bind(this));
 	}
  	return confirmed;
@@ -260,6 +261,10 @@ judge : function(recipients, domainList, yourDomainRecipients, otherDomainRecipi
   		return new Array();
   	}
   	return domains.split(/[,\s\|;]+/);
+  },
+
+  getSubject : function(){
+  	return document.getElementById("msgSubject").value;
   },
 
   getBody : function(){

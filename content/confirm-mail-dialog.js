@@ -652,7 +652,7 @@ function doOK(){
 		}
 	}
 
-	var extraChecker = window.arguments[5];
+	var extraChecker = window.arguments[6];
 	if (typeof extraChecker === 'function' &&
 		!extraChecker(window))
 		return true;
