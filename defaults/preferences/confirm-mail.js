@@ -33,6 +33,8 @@ pref("net.nyail.tanabec.confirm-mail.largeFontSizeForAddresses.always", false);
 pref("net.nyail.tanabec.confirm-mail.alwaysLargeDialog", false);
 pref("net.nyail.tanabec.confirm-mail.alwaysLargeDialog.minWidth", 680);
 pref("net.nyail.tanabec.confirm-mail.alwaysLargeDialog.always", false);
+pref("net.nyail.tanabec.confirm-mail.emphasizeTopMessage", false);
+pref("net.nyail.tanabec.confirm-mail.emphasizeTopMessage.always", false);
 
 pref("net.nyail.tanabec.confirm-mail.is-countdown", false);
 pref("net.nyail.tanabec.confirm-mail.countdown.time", "5");

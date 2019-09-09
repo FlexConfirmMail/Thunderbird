@@ -1,5 +1,15 @@
 /* style */
 
+#top-message {
+    font-size: 1.3em;
+    padding-bottom: 3px;
+}
+
+:root.emphasize-top-message #top-message {
+    color: red;
+    font-size: 1.6em;
+}
+
 .confirm-mail-list-separator {
     font-weight: bold;
 }

@@ -131,6 +131,8 @@
 				preference="net.nyail.tanabec.confirm-mail.largeFontSizeForAddresses"/>
 			<checkbox id="alwaysLargeDialog" label="&setting.dialog.checkbox.alwaysLargeDialog;"
 				preference="net.nyail.tanabec.confirm-mail.alwaysLargeDialog"/>
+			<checkbox id="emphasizeTopMessage" label="&setting.dialog.checkbox.emphasizeTopMessage;"
+				preference="net.nyail.tanabec.confirm-mail.emphasizeTopMessage"/>
 		</vbox>
 	</tabpanels>
 </tabbox>
