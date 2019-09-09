@@ -71,6 +71,13 @@
 					preference="net.nyail.tanabec.confirm-mail.min-recipients-count"/>
 				<label value="&setting.dialog.label.minRecipientsCount.after;" control="min-recipients-count"/>
 			</hbox>
+
+			<separator/>
+
+			<checkbox id="allowCheckAll.yourDomains" label="&setting.dialog.checkbox.allowCheckAll.yourDomains;"
+				preference="net.nyail.tanabec.confirm-mail.allowCheckAll.yourDomains"/>
+			<checkbox id="allowCheckAll.otherDomains" label="&setting.dialog.checkbox.allowCheckAll.otherDomains;"
+				preference="net.nyail.tanabec.confirm-mail.allowCheckAll.otherDomains"/>
 		</vbox>
 		<vbox flex="1">
 			<label value="&setting.dialog.exceptionalDomains.label;" control="exceptional-domains"/>
@@ -105,6 +112,9 @@
 			</hbox>
 			<checkbox id="requireReinputAttachmentNames" label="&setting.dialog.checkbox.requireReinputAttachmentNames;"
 				preference="net.nyail.tanabec.confirm-mail.requireReinputAttachmentNames"/>
+			<separator/>
+			<checkbox id="allowCheckAll.fileNames" label="&setting.dialog.checkbox.allowCheckAll.fileNames;"
+				preference="net.nyail.tanabec.confirm-mail.allowCheckAll.fileNames"/>
 		</vbox>
 		<vbox flex="1">
 			<hbox align="center">
@@ -117,12 +127,6 @@
 			<checkbox id="countdownAllowSkip" label="&setting.dialog.checkbox.countdown.allowSkip;"
 				preference="net.nyail.tanabec.confirm-mail.countdown.allowSkip"/>
 			<separator/>
-			<checkbox id="allowCheckAll.yourDomains" label="&setting.dialog.checkbox.allowCheckAll.yourDomains;"
-				preference="net.nyail.tanabec.confirm-mail.allowCheckAll.yourDomains"/>
-			<checkbox id="allowCheckAll.otherDomains" label="&setting.dialog.checkbox.allowCheckAll.otherDomains;"
-				preference="net.nyail.tanabec.confirm-mail.allowCheckAll.otherDomains"/>
-			<checkbox id="allowCheckAll.fileNames" label="&setting.dialog.checkbox.allowCheckAll.fileNames;"
-				preference="net.nyail.tanabec.confirm-mail.allowCheckAll.fileNames"/>
 			<checkbox id="requireCheckSubject" label="&setting.dialog.checkbox.requireCheckSubject;"
 				preference="net.nyail.tanabec.confirm-mail.requireCheckSubject"/>
 			<checkbox id="requireCheckBody" label="&setting.dialog.checkbox.requireCheckBody;"
