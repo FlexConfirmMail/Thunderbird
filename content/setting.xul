@@ -34,6 +34,7 @@
 <tabbox flex="1">
 	<tabs>
 		<tab label="&setting.dialog.tab.recipients;"/>
+		<tab label="&setting.dialog.tab.exceptionalDomains;"/>
 		<tab label="&setting.dialog.tab.attachments;"/>
 		<tab label="&setting.dialog.tab.misc;"/>
 	</tabs>
@@ -62,6 +63,16 @@
 
 			<separator/>
 
+			<checkbox id="not-display" label="&setting.dialog.checkbox.notdisplay;"
+				preference="net.nyail.tanabec.confirm-mail.not-display"/>
+			<hbox align="center">
+				<label value="&setting.dialog.label.minRecipientsCount.before;" control="min-recipients-count"/>
+				<textbox id="min-recipients-count" style="width:10ch" type="number"
+					preference="net.nyail.tanabec.confirm-mail.min-recipients-count"/>
+				<label value="&setting.dialog.label.minRecipientsCount.after;" control="min-recipients-count"/>
+			</hbox>
+		</vbox>
+		<vbox flex="1">
 			<label value="&setting.dialog.exceptionalDomains.label;" control="exceptional-domains"/>
 			<checkbox id="exceptional-domains-highlight" label="&setting.dialog.exceptionalDomains.highlight;"
 				preference="net.nyail.tanabec.confirm-mail.exceptional-domains.highlight"/>
@@ -76,17 +87,6 @@
 				<button label="&setting.dialog.button.edit.label;"
 					oncommand="exceptionalDomains.edit(event)"/>
 				<spacer flex="1"/>
-			</hbox>
-
-			<separator/>
-
-			<checkbox id="not-display" label="&setting.dialog.checkbox.notdisplay;"
-				preference="net.nyail.tanabec.confirm-mail.not-display"/>
-			<hbox align="center">
-				<label value="&setting.dialog.label.minRecipientsCount.before;" control="min-recipients-count"/>
-				<textbox id="min-recipients-count" style="width:10ch" type="number"
-					preference="net.nyail.tanabec.confirm-mail.min-recipients-count"/>
-				<label value="&setting.dialog.label.minRecipientsCount.after;" control="min-recipients-count"/>
 			</hbox>
 		</vbox>
 		<vbox flex="1">

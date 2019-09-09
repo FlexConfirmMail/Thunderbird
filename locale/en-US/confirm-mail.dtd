@@ -10,6 +10,7 @@
 <!ENTITY setting.dialog.enableConfirmation.onModified.label "Only when recipients are modified">
 <!ENTITY setting.dialog.enableConfirmation.never.label "Never">
 <!ENTITY setting.dialog.tab.recipients "Recipients">
+<!ENTITY setting.dialog.tab.exceptionalDomains "Special Recipients">
 <!ENTITY setting.dialog.tab.attachments "Attachments">
 <!ENTITY setting.dialog.tab.misc "Misc.">
 <!ENTITY setting.dialog.message "Add your group domain name.">
@@ -20,10 +21,10 @@
 <!ENTITY setting.dialog.checkbox.notdisplay "Skip confirmation if all recipients are your (group) domain">
 <!ENTITY setting.dialog.label.minRecipientsCount.before "Skip confirmation if there are/is only">
 <!ENTITY setting.dialog.label.minRecipientsCount.after "or fewer recipient(s) (*0 means &quot;always confirm&quot;)">
-<!ENTITY setting.dialog.exceptionalDomains.label    "Exceptional domains of foreign groups">
+<!ENTITY setting.dialog.exceptionalDomains.label      "Specially alerted foreign domains in recipients">
 <!ENTITY setting.dialog.exceptionalDomains.highlight  "Highlight recipients of these domains always">
 <!ENTITY setting.dialog.exceptionalDomains.attachment "Confirm me again for attachments if there is any recipient with one of these domains">
-<!ENTITY setting.dialog.exceptionalSuffixes.label   "Exceptional file extensions of attachments for foreign groups">
+<!ENTITY setting.dialog.exceptionalSuffixes.label   "Specially alerted file extensions of attachments on messages to foreign domains">
 <!ENTITY setting.dialog.exceptionalSuffixes.confirm "Confirm me again if there is any attachment with one of these extensions">
 <!ENTITY setting.dialog.checkbox.countdown "Countdown before sending mail(1-3000sec)">
 <!ENTITY setting.dialog.label.countdown "(s)">
