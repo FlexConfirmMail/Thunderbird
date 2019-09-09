@@ -420,7 +420,12 @@ var ExceptionManager = {
 		delete this.domains;
 		let domains;
 		if (this.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_SOURCE) == "file") {
-			domains = this.readFile(this.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_FILE)) || "";
+			try {
+				domains = this.readFile(this.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_FILE)) || "";
+			}
+			catch(e) {
+				domain = "";
+			}
 		}
 		else {
 			domains = this.getPref(CA_CONST.EXCEPTIONAL_DOMAINS) || "";
@@ -438,7 +443,12 @@ var ExceptionManager = {
 		delete this.suffixes;
 		let suffixes;
 		if (this.getPref(CA_CONST.EXCEPTIONAL_SUFFIXES_SOURCE) == "file") {
-			suffixes = this.readFile(this.getPref(CA_CONST.EXCEPTIONAL_SUFFIXES_FILE)) || "";
+			try {
+				suffixes = this.readFile(this.getPref(CA_CONST.EXCEPTIONAL_SUFFIXES_FILE)) || "";
+			}
+			catch(e) {
+				domain = "";
+			}
 		}
 		else {
 			suffixes = this.getPref(CA_CONST.EXCEPTIONAL_SUFFIXES) || "";
