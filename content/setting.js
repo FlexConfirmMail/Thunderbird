@@ -180,7 +180,6 @@ function startup() {
 			element.value = value;
 			const type = element.localName == 'radiogroup' ? 'select' : 'change';
 			element.addEventListener(type, () => {
-				console.log(key, element);
 				prefs.setPref(key, typeof value == 'number' ? parseInt(element.value) : String(element.value));
 			});
 		}
@@ -233,12 +232,15 @@ function startup() {
 
 function chooseFile(button) {
 	const field = button.previousSibling;
+	field.focus();
 	asyncPickFile(
 		button.getAttribute('chooser-title'),
 		field.value,
 		function(file) {
-			if (file)
+			if (file) {
 				field.value = file.path;
+				button.focus(); // required to fire "change" event
+			}
 		}
 	);
 }
