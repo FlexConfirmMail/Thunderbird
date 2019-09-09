@@ -123,6 +123,8 @@
 				preference="net.nyail.tanabec.confirm-mail.allowCheckAll.otherDomains"/>
 			<checkbox id="allowCheckAll.fileNames" label="&setting.dialog.checkbox.allowCheckAll.fileNames;"
 				preference="net.nyail.tanabec.confirm-mail.allowCheckAll.fileNames"/>
+			<checkbox id="requireCheckSubject" label="&setting.dialog.checkbox.requireCheckSubject;"
+				preference="net.nyail.tanabec.confirm-mail.requireCheckSubject"/>
 			<checkbox id="requireCheckBody" label="&setting.dialog.checkbox.requireCheckBody;"
 				preference="net.nyail.tanabec.confirm-mail.requireCheckBody"/>
 			<checkbox id="highlightUnmatchedDomains" label="&setting.dialog.checkbox.highlightUnmatchedDomains;"

@@ -44,7 +44,7 @@
 		<label class="check_each" value="&confirm.dialog.yourdomain.label;"/>
 		<checkbox label="&confirm.dialog.yourdomain.label;"
 					class="check_all"
-					oncommand="checkAllChecked(this)"/>
+					oncommand="checkAllChecked()"/>
 		<richlistbox id="yourDomainsList" flex="1">
 		</richlistbox>
 	</groupbox>
@@ -53,11 +53,13 @@
 		<label class="check_each" value="&confirm.dialog.otherdomain.label;"/>
 		<checkbox label="&confirm.dialog.otherdomain.label;"
 					class="check_all"
-					oncommand="checkAllChecked(this)"/>
+					oncommand="checkAllChecked()"/>
 		<richlistbox id="otherDomainsList" flex="1">
 		</richlistbox>
 	</groupbox>
 	<splitter/>
+	<checkbox id="subjectCheck"
+	          oncommand="checkAllChecked();"/>
 	<groupbox id="body" flex="2" persist="height">
 		<checkbox id="checkbox_body"
 					label="&confirm.dialog.body.label;"
@@ -71,7 +73,7 @@
 		<label class="check_each" value="&confirm.dialog.fileName.label;"/>
 		<checkbox label="&confirm.dialog.fileName.label;"
 					class="check_all"
-					oncommand="checkAllChecked(this)"/>
+					oncommand="checkAllChecked()"/>
 		<richlistbox id="fileNamesList" flex="1">
 		</richlistbox>
 	</groupbox>

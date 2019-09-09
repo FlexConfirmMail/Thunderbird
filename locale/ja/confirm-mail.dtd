@@ -31,6 +31,7 @@
 <!ENTITY setting.dialog.checkbox.allowCheckAll.yourDomains  "「&confirm.dialog.yourdomain.label;」セクションのチェックボックスの一括制御を許可">
 <!ENTITY setting.dialog.checkbox.allowCheckAll.otherDomains "「&confirm.dialog.otherdomain.label;」セクションのチェックボックスの一括制御を許可">
 <!ENTITY setting.dialog.checkbox.allowCheckAll.fileNames    "「&confirm.dialog.fileName.label;」セクションのチェックボックスの一括制御を許可">
+<!ENTITY setting.dialog.checkbox.requireCheckSubject "件名の確認を求める">
 <!ENTITY setting.dialog.checkbox.requireCheckBody "メール本文の確認を求める">
 <!ENTITY setting.dialog.checkbox.requireReinputAttachmentNames "宛先に外部ドメインのアドレスがある場合、添付ファイル名の手動での入力を求める">
 <!ENTITY setting.dialog.checkbox.highlightUnmatchedDomains "登録済みドメイン以外のドメイン名とアドレスを強調表示する">

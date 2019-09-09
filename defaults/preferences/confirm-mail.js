@@ -23,6 +23,8 @@ pref("net.nyail.tanabec.confirm-mail.allowCheckAll.otherDomains", false);
 pref("net.nyail.tanabec.confirm-mail.allowCheckAll.otherDomains.always", false);
 pref("net.nyail.tanabec.confirm-mail.allowCheckAll.fileNames", false);
 pref("net.nyail.tanabec.confirm-mail.allowCheckAll.fileNames.always", false);
+pref("net.nyail.tanabec.confirm-mail.requireCheckSubject", false);
+pref("net.nyail.tanabec.confirm-mail.requireCheckSubject.always", false);
 pref("net.nyail.tanabec.confirm-mail.requireCheckBody", false);
 pref("net.nyail.tanabec.confirm-mail.requireCheckBody.always", false);
 pref("net.nyail.tanabec.confirm-mail.requireReinputAttachmentNames", false);

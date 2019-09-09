@@ -196,6 +196,20 @@ function startup() {
 		initCheckAllCheckboxFor(externalList);
 	}
 
+    function setupSubject() {
+		var checkbox = document.getElementById("subjectCheck");
+		if (ConfirmMailDialog.requireCheckSubject()) {
+			var subject = window.arguments[5];
+			var strbundle = document.getElementById("strings");
+			var label = strbundle.getFormattedString("confirm.dialog.subject.label", [subject]);
+			checkbox.setAttribute("label", label);
+			checkbox.hidden = false;
+		}
+		else {
+			checkbox.hidden = true;
+		}
+	}
+
 	function setupBodyField() {
 		if (ConfirmMailDialog.requireCheckBody()) {
 			var body = window.arguments[4];
@@ -239,6 +253,7 @@ function startup() {
 	setupOKButton();
 	setupInternalDestinationList(DestinationManager.getInternalDestinationList());
 	setupExternalDomainList(DestinationManager.getExternalDestinationList());
+	setupSubject();
 	setupBodyField();
 	setupAttachmentList(AttachmentManager.getAttachmentList());
 
@@ -545,6 +560,10 @@ var ConfirmMailDialog = {
 	highlightExceptionalOtherDomains: function () {
 		return this.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_HIGHLIGHT) ||
 				this.reconfirmForExceptionalOtherDomains();
+	},
+
+	requireCheckSubject: function () {
+		return this.getPref(CA_CONST.REQUIRE_CHECK_SUBJECT);
 	},
 
 	requireCheckBody: function () {
