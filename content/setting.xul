@@ -107,7 +107,7 @@
 					<radio label="&setting.dialog.exceptionalDomains.source.file.label;" value="file"/>
 					<textbox id="exceptional-domains-file"
 						type="filefield"
-						preference="net.nyail.tanabec.confirm-mail.exceptional-domains.source.file"
+						preference="net.nyail.tanabec.confirm-mail.exceptional-domains.file"
 						flex="1"/>
 					<button label="&setting.dialog.exceptionalDomains.source.file.button.label;"
 						chooser-title="&setting.dialog.exceptionalDomains.source.file.button.choose;"
@@ -138,7 +138,7 @@
 					<radio label="&setting.dialog.exceptionalSuffixes.source.file.label;" value="file"/>
 					<textbox id="exceptional-suffixes-file"
 						type="filefield"
-						preference="net.nyail.tanabec.confirm-mail.exceptional-suffixes.source.file"
+						preference="net.nyail.tanabec.confirm-mail.exceptional-suffixes.file"
 						flex="1"/>
 					<button label="&setting.dialog.exceptionalSuffixes.source.file.button.label;"
 						chooser-title="&setting.dialog.exceptionalSuffixes.source.file.button.choose;"

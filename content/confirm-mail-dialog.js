@@ -353,9 +353,6 @@ var DestinationManager = {
 };
 
 var ExceptionManager = {
-	PREF_DOMAINS : "net.nyail.tanabec.confirm-mail.exceptional-domains",
-	PREF_SUFFIXES : "net.nyail.tanabec.confirm-mail.exceptional-suffixes",
-
 	get prefs() {
 		delete this.prefs;
 		let { prefs } = Components.utils.import('resource://confirm-mail-modules/lib/prefs.js', {});
@@ -372,11 +369,63 @@ var ExceptionManager = {
 		});
 	},
 
+	readFile: function(path, encoding) {
+		if (path in this.cachedFileContents)
+			return this.cachedFileContents[path];
+
+		const path = this.prefs.getPref(key);
+		const file = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsIFile);
+		file.initWithPath(path);
+		if (!file.exists())
+			throw new Error(file.path + ' does not exist.');
+
+		const stream = Cc['@mozilla.org/network/file-input-stream;1']
+				.createInstance(Ci.nsIFileInputStream);
+		stream.init(file, 1, 0, false); // open as "read only"
+
+		let fileContents = null;
+		try {
+			if (encoding) {
+				const converterStream = Cc['@mozilla.org/intl/converter-input-stream;1']
+						.createInstance(Ci.nsIConverterInputStream);
+				const buffer = stream.available();
+				converterStream.init(stream, encoding, buffer,
+					converterStream.DEFAULT_REPLACEMENT_CHARACTER);
+				const out = { value : null };
+				converterStream.readString(stream.available(), out);
+				converterStream.close();
+				fileContents = out.value;
+			}
+			else {
+				const scriptableStream = Cc['@mozilla.org/scriptableinputstream;1']
+						.createInstance(Ci.nsIScriptableInputStream);
+				scriptableStream.init(stream);
+				fileContents = scriptableStream.read(scriptableStream.available());
+				scriptableStream.close();
+			}
+		}
+		catch (error) {
+			throw error;
+		}
+		finally {
+			stream.close();
+		}
+
+		return this.cachedFileContents[path] = fileContents;
+	},
+	cachedFileContents: {},
+
 	// Exceptional Domain
 
 	get domains () {
 		delete this.domains;
-		var domains = this.getPref(this.PREF_DOMAINS) || "";
+		let domains;
+		if (this.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_SOURCE) == "file") {
+			domains = this.readFile(this.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_FILE)) || "";
+		}
+		else {
+			domains = this.getPref(CA_CONST.EXCEPTIONAL_DOMAINS) || "";
+		}
 		return this.domains = this._splitToItems(domains.toLowerCase());
 	},
 
@@ -388,7 +437,13 @@ var ExceptionManager = {
 
 	get suffixes () {
 		delete this.suffixes;
-		var suffixes = this.getPref(this.PREF_SUFFIXES) || "";
+		let suffixes;
+		if (this.getPref(CA_CONST.EXCEPTIONAL_SUFFIXES_SOURCE) == "file") {
+			suffixes = this.readFile(this.getPref(CA_CONST.EXCEPTIONAL_SUFFIXES_FILE)) || "";
+		}
+		else {
+			suffixes = this.getPref(CA_CONST.EXCEPTIONAL_SUFFIXES) || "";
+		}
 		return this.suffixes = this._splitToItems(suffixes.toLowerCase()).map(function(suffix) {
 			return suffix.replace(/^\*?\./g, '');
 		});
