@@ -256,6 +256,8 @@ function startup() {
 		document.documentElement.classList.add("emphasize-top-message");
 	else
 		document.documentElement.classList.remove("emphasize-top-message");
+
+	document.getElementById("top-message").textContent = ConfirmMailDialog.prefs.getLocalizedPref("net.nyail.tanabec.confirm-mail.topMessage");
 }
 
 // Util

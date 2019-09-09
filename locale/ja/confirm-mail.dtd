@@ -1,5 +1,4 @@
 <!ENTITY confirm.dialog.title "あて先メールアドレスの確認">
-<!ENTITY confirm.dialog.message "あて先メールアドレスを確認してください。">
 <!ENTITY confirm.dialog.yourdomain.label "登録済みドメインへのメール">
 <!ENTITY confirm.dialog.otherdomain.label "外部ドメインへのメール">
 <!ENTITY confirm.dialog.body.label "本文">
@@ -37,7 +36,8 @@
 <!ENTITY setting.dialog.checkbox.highlightUnmatchedDomains "登録済みドメイン以外のドメイン名とアドレスを強調表示する">
 <!ENTITY setting.dialog.checkbox.largeFontSizeForAddresses "メールアドレスを大きなフォントサイズで表示する">
 <!ENTITY setting.dialog.checkbox.alwaysLargeDialog "確認のダイアログを常に大きなサイズで開く">
-<!ENTITY setting.dialog.checkbox.emphasizeTopMessage "確認のダイアログの冒頭メッセージを強調表示する">
+<!ENTITY setting.dialog.checkbox.emphasizeTopMessage "メッセージを強調表示する">
+<!ENTITY setting.dialog.label.topMessage "確認のダイアログの冒頭メッセージ:">
 <!ENTITY setting.sub-dialog.title "ドメイン名の入力">
 <!ENTITY setting.sub-dialog.message "ドメイン名を入力してください(例：example.com)">
 <!ENTITY countdown.dialog.title "カウントダウン">

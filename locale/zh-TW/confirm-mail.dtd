@@ -1,5 +1,4 @@
 <!ENTITY confirm.dialog.title "確認收信方的郵箱地址">
-<!ENTITY confirm.dialog.message "請確認收信方的郵箱地址。">
 <!ENTITY confirm.dialog.yourdomain.label "向已登錄域名發送的郵件">
 <!ENTITY confirm.dialog.otherdomain.label "向外部域名發送的郵件">
 <!ENTITY confirm.dialog.body.label "Body">
@@ -39,7 +38,8 @@
 <!ENTITY setting.dialog.checkbox.highlightUnmatchedDomains "Highlight other domains and addesses">
 <!ENTITY setting.dialog.checkbox.largeFontSizeForAddresses "Show addresses with larget font size">
 <!ENTITY setting.dialog.checkbox.alwaysLargeDialog "Open confirmation dialog with large size always">
-<!ENTITY setting.dialog.checkbox.emphasizeTopMessage "Empasize top message of the confirmation dialog">
+<!ENTITY setting.dialog.checkbox.emphasizeTopMessage "Empasize the top message">
+<!ENTITY setting.dialog.label.topMessage "Top Message of the confirmation dialog:">
 <!ENTITY setting.sub-dialog.title "輸入域名">
 <!ENTITY setting.sub-dialog.message "請輸入域名(例：example.com)">
 <!ENTITY countdown.dialog.title "倒計時">

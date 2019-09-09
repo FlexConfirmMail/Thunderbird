@@ -22,7 +22,7 @@ var Ci = Components.interfaces;
 
 var { prefs } = Components.utils.import('resource://confirm-mail-modules/lib/prefs.js', {});
 function getPref(name, defaultValue) {
-	const value = prefs.getPref(name);
+	const value = prefs.getLocalizedPref(name);
 	return value === null ? defaultValue : value;
 }
 

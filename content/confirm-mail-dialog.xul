@@ -36,8 +36,9 @@
 		<stringbundle id="strings" src="chrome://confirm-mail/locale/confirm-mail.properties"/>
 	</stringbundleset>
 
-	<label id="top-message"
-		value="&confirm.dialog.message;"/>
+	<hbox>
+		<description id="top-message" flex="1"/>
+	</hbox>
 	<vbox flex="1">
 	<groupbox id="yourDomains" flex="1" height="150" persist="height">
 		<label class="check_each" value="&confirm.dialog.yourdomain.label;"/>
