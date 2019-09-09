@@ -49,6 +49,9 @@
 					<radio label="&setting.dialog.enableConfirmation.never.label;" value="0"/>
 				</radiogroup>
 			</vbox>
+
+			<separator/>
+
 			<label value="&setting.dialog.message;"/>
 			<richlistbox id="group-list"
 				style="height: 8em; max-height: 8em">
