@@ -231,28 +231,28 @@ function startup() {
 
 function chooseFile(button) {
 	const field = button.previousSibling;
-	asyncPickDirectory(
+	asyncPickFile(
 		button.getAttribute('chooser-title'),
 		field.value,
-		function(folder) {
-			if (folder)
-				field.value = folder.path;
+		function(file) {
+			if (file)
+				field.value = file.path;
 		}
 	);
 }
 
-function asyncPickDirectory(aTitle, aDefault, aCallback) {
+function asyncPickFile(title, defaultValue, callback) {
 	const WindowManager = Cc['@mozilla.org/appshell/window-mediator;1']
 			.getService(Ci.nsIWindowMediator);
 
-	var filePicker = Cc['@mozilla.org/filepicker;1']
+	const filePicker = Cc['@mozilla.org/filepicker;1']
 			.createInstance(Ci.nsIFilePicker);
 
-	var displayDirectory = Cc['@mozilla.org/file/local;1'].createInstance();
+	const displayDirectory = Cc['@mozilla.org/file/local;1'].createInstance();
 	if (aDefault && displayDirectory instanceof Ci.nsIFile) {
 		try {
-			displayDirectory.initWithPath(aDefault);
-			filePicker.displayDirectory = displayDirectory;
+			displayDirectory.initWithPath(defaultValue);
+			filePicker.displayDirectory = displayDirectory.parent;
 		}
 		catch(e) {
 		}
@@ -260,42 +260,18 @@ function asyncPickDirectory(aTitle, aDefault, aCallback) {
 
 	filePicker.init(
 		WindowManager.getMostRecentWindow(null),
-		aTitle,
-		filePicker.modeGetFolder
+		title,
+		filePicker.modeGetFile
 	);
 
-	function findExistingFolder(aFile) {
-		// Windows's file picker sometimes returns wrong path like
-		// "c:\folder\folder" even if I actually selected "c:\folder".
-		// However, when the "OK" button is chosen, any existing folder
-		// must be selected. So, I find existing ancestor folder from
-		// the path.
-		while (aFile && !aFile.exists() && aFile.parent)
-		{
-			aFile = aFile.parent;
-		}
-		return aFile;
-	}
-
-	if (typeof filePicker.open != 'function') { // Gecko 18 and olders
-		let folder = (filePicker.show() == filePicker.returnOK) ?
-						filePicker.file.QueryInterface(Ci.nsIFile) : null ;
-		folder = findExistingFolder(folder);
-		setTimeout(function() {
-		  aCallback(folder);
-		}, 0);
-		return;
-	}
-
-	var folder;
-	filePicker.open({ done: function(aResult) {
-		if (aResult == filePicker.returnOK) {
-			folder = filePicker.file.QueryInterface(Ci.nsIFile);
+	filePicker.open({ done: function(result) {
+		let file;
+		if (result == filePicker.returnOK) {
+			file = filePicker.file.QueryInterface(Ci.nsIFile);
 		}
 		else {
-			folder = null;
+			file = null;
 		}
-		folder = findExistingFolder(folder);
-		aCallback(folder);
+		callback(file);
 	}});
 }
