@@ -103,8 +103,8 @@
 						<spacer flex="1"/>
 					</hbox>
 				</vbox>
-				<radio label="&setting.dialog.exceptionalDomains.source.file.label;" value="file"/>
 				<hbox align="center">
+					<radio label="&setting.dialog.exceptionalDomains.source.file.label;" value="file"/>
 					<textbox id="exceptional-domains-file"
 						type="filefield"
 						preference="net.nyail.tanabec.confirm-mail.exceptional-domains.source.file"
@@ -134,8 +134,8 @@
 						<spacer flex="1"/>
 					</hbox>
 				</vbox>
-				<radio label="&setting.dialog.exceptionalSuffixes.source.file.label;" value="file"/>
 				<hbox align="center">
+					<radio label="&setting.dialog.exceptionalSuffixes.source.file.label;" value="file"/>
 					<textbox id="exceptional-suffixes-file"
 						type="filefield"
 						preference="net.nyail.tanabec.confirm-mail.exceptional-suffixes.source.file"
