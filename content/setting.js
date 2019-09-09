@@ -178,7 +178,9 @@ function startup() {
 		}
 		else {
 			element.value = value;
-			element.addEventListener('change', () => {
+			const type = element.localName == 'radiogroup' ? 'select' : 'change';
+			element.addEventListener(type, () => {
+				console.log(key, element);
 				prefs.setPref(key, typeof value == 'number' ? parseInt(element.value) : String(element.value));
 			});
 		}
