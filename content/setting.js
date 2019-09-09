@@ -249,7 +249,7 @@ function asyncPickFile(title, defaultValue, callback) {
 			.createInstance(Ci.nsIFilePicker);
 
 	const displayDirectory = Cc['@mozilla.org/file/local;1'].createInstance();
-	if (aDefault && displayDirectory instanceof Ci.nsIFile) {
+	if (defaultValue) {
 		try {
 			displayDirectory.initWithPath(defaultValue);
 			filePicker.displayDirectory = displayDirectory.parent;
