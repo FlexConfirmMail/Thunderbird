@@ -373,7 +373,6 @@ var ExceptionManager = {
 		if (path in this.cachedFileContents)
 			return this.cachedFileContents[path];
 
-		const path = this.prefs.getPref(key);
 		const file = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsIFile);
 		file.initWithPath(path);
 		if (!file.exists())
