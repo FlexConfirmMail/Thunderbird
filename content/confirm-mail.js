@@ -138,14 +138,17 @@ try { // DEBUG
 		countDownTime = oldCountDownTime;
 		this.prefs.clearPref(CA_CONST.COUNT_DOWN_TIME_OLD);
 	}
-	var countDownComplete = { value : false };
+	var countDownComplete = false;
+	var onCountDownComplete = () => {
+		countDownComplete = true;
+	};
 	var allowSkip = this.getPref(CA_CONST.COUNT_DOWN_ALLOW_SKIP);
 
 	var opener = aOpenerWindow || window;
 	opener.openDialog("chrome://confirm-mail/content/countdown.xul", "CountDown Dialog",
-	"resizable,chrome,modal,titlebar,centerscreen", countDownTime, allowSkip, countDownComplete);
+	"resizable,chrome,modal,titlebar,centerscreen", countDownTime, allowSkip, onCountDownComplete);
 
-	if (countDownComplete.value){
+	if (countDownComplete){
 		return true;
 	}else{
 		//dump("cancel");

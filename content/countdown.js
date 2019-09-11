@@ -28,7 +28,7 @@ var CountDown = {
 			document.documentElement.classList.add('allow-skip');
 		else
 			document.documentElement.classList.remove('allow-skip');
-		this.completeFlag = window.arguments[2];
+		this.onCountDownComplete = window.arguments[2];
 		var limit = time;
 		var label = document.getElementById("counter");
 		
@@ -52,7 +52,7 @@ var CountDown = {
 	},
 
 	complete : function(){
-		this.completeFlag.value = true;
+		this.onCountDownComplete();
 		window.close();
 	}
  	   
