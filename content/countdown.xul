@@ -25,7 +25,6 @@
 <dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         onload="CountDown.onLoad();"
         onunload="CountDown.onUnload();"
-        ondialogaccept="if (CountDown.allowSkip) CountDown.complete(); else window.close();"
         buttons="accept,cancel"
         width="300" height="130"
         title="&countdown.dialog.title;">
@@ -40,7 +39,8 @@
 	
 	<hbox>
 		<spacer flex="1"/>
-		<button label="skip" id="ok" dlgtype="accept"/>
+		<button label="skip" id="ok" dlgtype="accept"
+			oncommand="if (CountDown.allowSkip) CountDown.complete(); else window.close();"/>
 		<button dlgtype="cancel" />
 	</hbox>
 </dialog>
