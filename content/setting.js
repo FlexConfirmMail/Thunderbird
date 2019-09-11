@@ -26,6 +26,17 @@ function getPref(name, defaultValue) {
 	return value === null ? defaultValue : value;
 }
 
+function isLocked(name) {
+	if (getPref(name + '.always'))
+		return true;
+	try {
+		return prefs.Prefs.prefIsLocked(name);
+	}
+	catch(e) {
+	}
+	return false;
+}
+
 class ListBox {
 	constructor(listbox, prefKey) {
 		this.listbox = listbox;
@@ -170,18 +181,32 @@ function startup() {
 	for (const element of document.querySelectorAll('[preference]')) {
 		const key = element.getAttribute('preference');
 		const value = getPref(key);
+		const locked = isLocked(key);
+		if (locked) {
+			element.setAttribute('disabled', true);
+			if (element.parentNode.localName == 'label')
+				element.parentNode.setAttribute('disabled', true);
+			if (element.localName == 'radiogroup') {
+				for (const radio of element.querySelectorAll('radio')) {
+					radio.setAttribute('disabled', true);
+				}
+			}
+		}
 		if (element.localName == 'checkbox') {
 			element.checked = !!value;
-			element.addEventListener('command', () => {
-				prefs.setPref(key, element.checked);
-			});
+			if (!locked)
+				element.addEventListener('command', () => {
+					prefs.setPref(key, element.checked);
+				});
 		}
 		else {
 			element.value = value;
-			const type = element.localName == 'radiogroup' ? 'select' : 'change';
-			element.addEventListener(type, element._onChange = () => {
-				prefs.setPref(key, typeof value == 'number' ? parseInt(element.value) : String(element.value));
-			});
+			if (!locked) {
+				const type = element.localName == 'radiogroup' ? 'select' : 'change';
+				element.addEventListener(type, element._onChange = () => {
+					prefs.setPref(key, typeof value == 'number' ? parseInt(element.value) : String(element.value));
+				});
+			}
 		}
 	}
 
