@@ -58,9 +58,10 @@
 		</richlistbox>
 	</groupbox>
 	<splitter/>
+	<vbox flex="2" id="bodyContainer" persist="height">
 	<checkbox id="subjectCheck"
 	          oncommand="checkAllChecked();"/>
-	<groupbox id="body" flex="2" persist="height">
+	<groupbox id="body" flex="1">
 		<checkbox id="checkbox_body"
 					label="&confirm.dialog.body.label;"
 					oncommand="checkAllChecked()"/>
@@ -68,6 +69,7 @@
 			flex="1"
 			src="data:text/html,&lt;!DOCTYPE html&gt;&lt;html style=&quot;margin: 0; padding: 0.3em; color: -moz-fieldtext; background: -moz-field;;&quot;&gt;&lt;style type=&quot;text/css&quot;&gt;* { font-size: medium !important; } body { margin: 0; } body &gt; *:first-child { margin-top: 0 !important; } &lt;/style&gt;&lt;/html&gt;"/>
 	</groupbox>
+	</vbox>
 	<splitter/>
 	<groupbox id="fileNames" flex="2" persist="height">
 		<label class="check_each" value="&confirm.dialog.fileName.label;"/>
