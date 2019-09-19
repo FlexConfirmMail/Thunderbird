@@ -27,7 +27,8 @@ function getPref(name, defaultValue) {
 }
 
 function isLocked(name) {
-	if (getPref(name + '.always'))
+	if (getPref(name + '.always') ||
+		getPref(name + '.hidden'))
 		return true;
 	try {
 		return prefs.Prefs.prefIsLocked(name);
