@@ -57,6 +57,14 @@ class ListBox {
 			this.addItem('');
 		}
 
+		this.locked = isLocked(prefKey);
+		if (this.locked) {
+			this.listbox.setAttribute('disabled', true);
+			for (const node of document.querySelectorAll('[control="' + this.listbox.id + '"]')) {
+				node.setAttribute('disabled', true);
+			}
+		}
+
 		this.onKeyDown = this.onKeyDown.bind(this);
 
 		listbox.addEventListener('keydown', this.onKeyDown, true);
@@ -64,6 +72,8 @@ class ListBox {
 	}
 
 	onKeyDown(event) {
+		if (this.locked)
+			return;
 		const item = this.listbox.selectedItem || this.listbox.querySelector('richlistitem.editing');
 		if (!item)
 			return;
@@ -88,6 +98,8 @@ class ListBox {
 	}
 
 	addItem(value) {
+		if (this.locked)
+			return;
 		const item = this.listbox.appendItem(value || '', value || '');
 
 		item.field = item.appendChild(document.createXULElement('textbox'));
@@ -135,6 +147,8 @@ class ListBox {
 	}
 
 	removeItem(item) {
+		if (this.locked)
+			return;
 		item.field.removeEventListener('blur', item.field.onDetermined, true);
 		this.listbox.selectedItem = item.nextSibling || item.previousSibling;
 		this.listbox.removeChild(item);
@@ -148,11 +162,15 @@ class ListBox {
 	}
 
 	save() {
+		if (this.locked)
+			return;
 		const values = Array.from(this.listbox.childNodes, item => item.getAttribute('value').trim());
 		prefs.setPref(this.prefKey, values.filter(value => !!value).join(' '));
 	}
 
 	enterEdit(item) {
+		if (this.locked)
+			return;
 		item.classList.add('editing');
 		item.field.setAttribute('value', item.field.value = item.getAttribute('value'));
 		item.field.select();
@@ -160,12 +178,16 @@ class ListBox {
 	}
 
 	add(event) {
+		if (this.locked)
+			return;
 		if (this.listbox.lastChild.getAttribute('value') != '')
 			this.listbox.selectedItem = this.addItem('');
 		this.enterEdit(this.listbox.selectedItem);
 	}
 
 	edit(event) {
+		if (this.locked)
+			return;
 		this.enterEdit(this.listbox.selectedItem);
 	}
 }

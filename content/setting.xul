@@ -58,8 +58,10 @@
 			</richlistbox>
 			<hbox>
 				<button id="add" label="&setting.dialog.button.add.label;"
+					control="group-list"
 					oncommand="internalDomains.add(event)"/>
 				<button id="edit" label="&setting.dialog.button.edit.label;"
+					control="group-list"
 					oncommand="internalDomains.edit(event)"/>
 				<spacer flex="1"/>
 			</hbox>
@@ -97,8 +99,10 @@
 					</richlistbox>
 					<hbox>
 						<button label="&setting.dialog.button.add.label;"
+							control="exceptional-domains"
 							oncommand="exceptionalDomains.add(event)"/>
 						<button label="&setting.dialog.button.edit.label;"
+							control="exceptional-domains"
 							oncommand="exceptionalDomains.edit(event)"/>
 						<spacer flex="1"/>
 					</hbox>
@@ -127,8 +131,10 @@
 					</richlistbox>
 					<hbox>
 						<button label="&setting.dialog.button.add.label;"
+							control="exceptional-suffixes"
 							oncommand="exceptionalSuffixes.add(event)"/>
 						<button label="&setting.dialog.button.edit.label;"
+							control="exceptional-suffixes"
 							oncommand="exceptionalSuffixes.edit(event)"/>
 						<spacer flex="1"/>
 					</hbox>
