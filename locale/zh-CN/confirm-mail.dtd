@@ -22,9 +22,15 @@
 <!ENTITY setting.dialog.label.minRecipientsCount.after "or fewer recipient(s) (*0 means &quot;always confirm&quot;)">
 <!ENTITY setting.dialog.exceptionalDomains.label      "Specially alerted foreign domains in recipients">
 <!--ENTITY setting.dialog.exceptionalDomains.label    "组织外的邮箱地址的例外"-->
-<!ENTITY setting.dialog.exceptionalDomains.highlight  "Highlight recipients of these domains always">
+<!ENTITY setting.dialog.exceptionalDomains.highlight  "Highlight recipients of these domains">
+<!ENTITY setting.dialog.exceptionalDomains.highlight.always.label "Always">
+<!ENTITY setting.dialog.exceptionalDomains.highlight.withAttachments.label "Only when there is any attachment">
+<!ENTITY setting.dialog.exceptionalDomains.highlight.never.label "Never">
+<!ENTITY setting.dialog.exceptionalDomains.confirmation "Re-confirmation when there is any recipient with one of these domains">
+<!ENTITY setting.dialog.exceptionalDomains.confirmation.always.label "Always">
+<!ENTITY setting.dialog.exceptionalDomains.confirmation.withAttachments.label "Only when there is any attachment">
+<!ENTITY setting.dialog.exceptionalDomains.confirmation.never.label "Never">
 <!--ENTITY setting.dialog.exceptionalDomains.confirm  "收信方含这些域名时会再次警告"-->
-<!ENTITY setting.dialog.exceptionalDomains.attachment "Confirm me again for attachments if there is any recipient with one of these domains">
 <!--ENTITY setting.dialog.exceptionalDomains.attachment "只有存在附件的情况才会再次进行警告"-->
 <!ENTITY setting.dialog.exceptionalDomains.source.pref.label "Use the manually managed list">
 <!ENTITY setting.dialog.exceptionalDomains.source.file.label "Use a list given as a file">

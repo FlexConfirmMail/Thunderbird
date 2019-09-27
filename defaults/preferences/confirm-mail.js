@@ -1,9 +1,9 @@
 
 
 pref("net.nyail.tanabec.confirm-mail.domain-list", "");
-pref("net.nyail.tanabec.confirm-mail.confirmation.mode", 1);
-pref("net.nyail.tanabec.confirm-mail.exceptional-domains.highlight", true);
-pref("net.nyail.tanabec.confirm-mail.exceptional-domains.onlyWithAttachment", false);
+pref("net.nyail.tanabec.confirm-mail.confirmation.mode", 1); // 0=never, 1=always, 2=only when recipients are modified
+pref("net.nyail.tanabec.confirm-mail.exceptional-domains.highlight.mode", 1); // 0=never, 1=always, 2=only with attachments
+pref("net.nyail.tanabec.confirm-mail.exceptional-domains.confirmation.mode", 1); // 0=never, 1=always, 2=only with attachments
 pref("net.nyail.tanabec.confirm-mail.exceptional-domains", "");
 pref("net.nyail.tanabec.confirm-mail.exceptional-domains.source", "pref");
 pref("net.nyail.tanabec.confirm-mail.exceptional-domains.file", "");

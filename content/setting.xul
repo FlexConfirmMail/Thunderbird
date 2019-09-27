@@ -86,10 +86,24 @@
 		</vbox>
 		<vbox flex="1">
 			<label value="&setting.dialog.exceptionalDomains.label;" control="exceptional-domains"/>
-			<checkbox id="exceptional-domains-highlight" label="&setting.dialog.exceptionalDomains.highlight;"
-				preference="net.nyail.tanabec.confirm-mail.exceptional-domains.highlight"/>
-			<checkbox id="exceptional-domains-attachment" label="&setting.dialog.exceptionalDomains.attachment;"
-				preference="net.nyail.tanabec.confirm-mail.exceptional-domains.onlyWithAttachment"/>
+			<vbox>
+				<label value="&setting.dialog.exceptionalDomains.highlight;"/>
+				<radiogroup id="exceptional-domains-highlight" orient="vertical" style="margin-left: 1em"
+					preference="net.nyail.tanabec.confirm-mail.highlight.mode">
+					<radio label="&setting.dialog.exceptionalDomains.highlight.always.label;" value="1"/>
+					<radio label="&setting.dialog.exceptionalDomains.highlight.withAttachments.label;" value="2"/>
+					<radio label="&setting.dialog.exceptionalDomains.highlight.never.label;" value="0"/>
+				</radiogroup>
+			</vbox>
+			<vbox>
+				<label value="&setting.dialog.exceptionalDomains.confirmation;"/>
+				<radiogroup id="exceptional-domains-confirmation" orient="vertical" style="margin-left: 1em"
+					preference="net.nyail.tanabec.confirm-mail.confirmation.mode">
+					<radio label="&setting.dialog.exceptionalDomains.confirmation.always.label;" value="1"/>
+					<radio label="&setting.dialog.exceptionalDomains.confirmation.withAttachments.label;" value="2"/>
+					<radio label="&setting.dialog.exceptionalDomains.confirmation.never.label;" value="0"/>
+				</radiogroup>
+			</vbox>
 			<radiogroup id="exceptional-domains-source" orient="vertical"
 				preference="net.nyail.tanabec.confirm-mail.exceptional-domains.source">
 				<radio label="&setting.dialog.exceptionalDomains.source.pref.label;" value="pref"/>

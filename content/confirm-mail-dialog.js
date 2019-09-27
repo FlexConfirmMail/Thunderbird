@@ -617,13 +617,15 @@ var ConfirmMailDialog = {
 	},
 
 	reconfirmForExceptionalOtherDomains: function () {
-		return this.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT) &&
-				AttachmentManager.hasAttachments();
+		const confirmationMode = this.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_CONFIRM);
+		return confirmationMode == 1 ||
+				(confirmationMode == 2 && AttachmentManager.hasAttachments());
 	},
 
 	highlightExceptionalOtherDomains: function () {
-		return this.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_HIGHLIGHT) ||
-				this.reconfirmForExceptionalOtherDomains();
+		const highlightMode = this.getPref(CA_CONST.EXCEPTIONAL_DOMAINS_HIGHLIGHT);
+		return highlightMode == 1 ||
+				(highlightMode == 2 && AttachmentManager.hasAttachments());
 	},
 
 	requireCheckSubject: function () {
