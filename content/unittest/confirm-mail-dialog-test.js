@@ -128,25 +128,25 @@ function test_ConfirmMailDialog_confirm_exceptionalDomains_highlight_always() {
 	// has attachments && danger domain -> highlight
 	setExternalDestinations([recipient("foo@safe.example.com"), recipient("bar@danger.example.com")]);
 	setAttachments(["some.txt"]);
-	assertEquals(true, ConfirmMailDialog.highlightForExceptionalOtherDomains());
+	assertEquals(true, ConfirmMailDialog.highlightExceptionalOtherDomains());
 	assertEquals(["bar@danger.example.com"], ConfirmMailDialog.getExceptionalRecipients());
 
 	// has no attachments && danger domain -> highlight
 	setExternalDestinations([recipient("foo@safe.example.com"), recipient("bar@danger.example.com")]);
 	setAttachments([]);
-	assertEquals(true, ConfirmMailDialog.highlightForExceptionalOtherDomains());
+	assertEquals(true, ConfirmMailDialog.highlightExceptionalOtherDomains());
 	assertEquals(["bar@danger.example.com"], ConfirmMailDialog.getExceptionalRecipients());
 
 	// has attachments && not danger domain -> don't highlight
 	setExternalDestinations([recipient("foo@safe.example.com"), recipient("bar@safe.example.com")]);
 	setAttachments(["some.txt"]);
-	assertEquals(false, ConfirmMailDialog.highlightForExceptionalOtherDomains());
+	assertEquals(false, ConfirmMailDialog.highlightExceptionalOtherDomains());
 	assertEquals([], ConfirmMailDialog.getExceptionalRecipients());
 
 	// has no attachments && not danger domain -> don't highlight
 	setExternalDestinations([recipient("foo@safe.example.com"), recipient("bar@safe.example.com")]);
 	setAttachments([]);
-	assertEquals(false, ConfirmMailDialog.highlightForExceptionalOtherDomains());
+	assertEquals(false, ConfirmMailDialog.highlightExceptionalOtherDomains());
 	assertEquals([], ConfirmMailDialog.getExceptionalRecipients());
 }
 
@@ -158,25 +158,25 @@ function test_ConfirmMailDialog_confirm_exceptionalDomains_highlight_onlyWithAtt
 	// has attachments && danger domain -> highlight
 	setExternalDestinations([recipient("foo@safe.example.com"), recipient("bar@danger.example.com")]);
 	setAttachments(["some.txt"]);
-	assertEquals(true, ConfirmMailDialog.highlightForExceptionalOtherDomains());
+	assertEquals(true, ConfirmMailDialog.highlightExceptionalOtherDomains());
 	assertEquals(["bar@danger.example.com"], ConfirmMailDialog.getExceptionalRecipients());
 
 	// has no attachments && danger domain -> don't highlight
 	setExternalDestinations([recipient("foo@safe.example.com"), recipient("bar@danger.example.com")]);
 	setAttachments([]);
-	assertEquals(false, ConfirmMailDialog.highlightForExceptionalOtherDomains());
+	assertEquals(false, ConfirmMailDialog.highlightExceptionalOtherDomains());
 	assertEquals([], ConfirmMailDialog.getExceptionalRecipients());
 
 	// has attachments && not danger domain -> don't highlight
 	setExternalDestinations([recipient("foo@safe.example.com"), recipient("bar@safe.example.com")]);
 	setAttachments(["some.txt"]);
-	assertEquals(false, ConfirmMailDialog.highlightForExceptionalOtherDomains());
+	assertEquals(false, ConfirmMailDialog.highlightExceptionalOtherDomains());
 	assertEquals([], ConfirmMailDialog.getExceptionalRecipients());
 
 	// has no attachments && not danger domain -> don't highlight
 	setExternalDestinations([recipient("foo@safe.example.com"), recipient("bar@safe.example.com")]);
 	setAttachments([]);
-	assertEquals(false, ConfirmMailDialog.highlightForExceptionalOtherDomains());
+	assertEquals(false, ConfirmMailDialog.highlightExceptionalOtherDomains());
 	assertEquals([], ConfirmMailDialog.getExceptionalRecipients());
 }
 
