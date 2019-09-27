@@ -89,7 +89,7 @@
 			<vbox>
 				<label value="&setting.dialog.exceptionalDomains.highlight;"/>
 				<radiogroup id="exceptional-domains-highlight" orient="vertical" style="margin-left: 1em"
-					preference="net.nyail.tanabec.confirm-mail.highlight.mode">
+					preference="net.nyail.tanabec.confirm-mail.exceptional-domains.highlight.mode">
 					<radio label="&setting.dialog.exceptionalDomains.highlight.always.label;" value="1"/>
 					<radio label="&setting.dialog.exceptionalDomains.highlight.withAttachments.label;" value="2"/>
 					<radio label="&setting.dialog.exceptionalDomains.highlight.never.label;" value="0"/>
@@ -98,7 +98,7 @@
 			<vbox>
 				<label value="&setting.dialog.exceptionalDomains.confirmation;"/>
 				<radiogroup id="exceptional-domains-confirmation" orient="vertical" style="margin-left: 1em"
-					preference="net.nyail.tanabec.confirm-mail.confirmation.mode">
+					preference="net.nyail.tanabec.confirm-mail.exceptional-domains.confirmation.mode">
 					<radio label="&setting.dialog.exceptionalDomains.confirmation.always.label;" value="1"/>
 					<radio label="&setting.dialog.exceptionalDomains.confirmation.withAttachments.label;" value="2"/>
 					<radio label="&setting.dialog.exceptionalDomains.confirmation.never.label;" value="0"/>
