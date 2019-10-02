@@ -96,3 +96,13 @@ splitter {
     margin: -2px 0;
 }
 
+iframe {
+    /*
+    See also:
+    https://searchfox.org/mozilla-esr68/rev/6411a94b91c47361af35cdee913f9838e868a392/toolkit/themes/linux/global/richlistbox.css#7
+    https://searchfox.org/mozilla-esr68/rev/6411a94b91c47361af35cdee913f9838e868a392/toolkit/themes/osx/global/richlistbox.css#7
+    https://searchfox.org/mozilla-esr68/rev/6411a94b91c47361af35cdee913f9838e868a392/toolkit/themes/windows/global/richlistbox.css#7
+   */
+    -moz-appearance: listbox;
+    margin: 2px 4px;
+}
