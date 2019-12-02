@@ -197,9 +197,11 @@ function startup() {
 			var label = strbundle.getFormattedString("confirm.dialog.subject.label", [subject]);
 			checkbox.setAttribute("label", label);
 			checkbox.hidden = false;
+			return true;
 		}
 		else {
 			checkbox.hidden = true;
+			return false;
 		}
 	}
 
@@ -208,10 +210,12 @@ function startup() {
 			var body = window.arguments[4];
 			var field = document.getElementById("bodyField");
 			(field.contentDocument.body || field.contentDocument.documentElement).appendChild(body);
+			return true;
 		} else {
 			var check = document.getElementById("checkbox_body");
 			var box = document.getElementById("body");
 			check.hidden = box.hidden = box.previousSibling.hidden = true;
+			return false;
 		}
 	}
 
@@ -246,8 +250,12 @@ function startup() {
 	setupOKButton();
 	setupInternalDestinationList(DestinationManager.getInternalDestinationList());
 	setupExternalDomainList(DestinationManager.getExternalDestinationList());
-	setupSubject();
-	setupBodyField();
+
+	let subjectIsVisible = setupSubject();
+	let bodyIsVisible = setupBodyField();
+	document.getElementById('bodySeparator').setAttribute('hidden', !subjectIsVisible && !bodyIsVisible);
+	docuent.getElementById('bodyContainer').setAttribute('hidden', !subjectIsVisible && !bodyIsVisible);
+
 	setupAttachmentList(AttachmentManager.getAttachmentList());
 
 	if (ConfirmMailDialog.highlightUnmatchedDomains())

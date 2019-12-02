@@ -57,7 +57,7 @@
 		<richlistbox id="otherDomainsList" flex="1">
 		</richlistbox>
 	</groupbox>
-	<splitter/>
+	<splitter id="bodySeparator"/>
 	<vbox flex="2" id="bodyContainer" persist="height">
 	<checkbox id="subjectCheck"
 	          oncommand="checkAllChecked();"/>
