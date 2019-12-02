@@ -206,14 +206,15 @@ function startup() {
 	}
 
 	function setupBodyField() {
+		var check = document.getElementById("checkbox_body");
+		var box = document.getElementById("body");
 		if (ConfirmMailDialog.requireCheckBody()) {
 			var body = window.arguments[4];
 			var field = document.getElementById("bodyField");
 			(field.contentDocument.body || field.contentDocument.documentElement).appendChild(body);
+			check.hidden = box.hidden = box.previousSibling.hidden = false;
 			return true;
 		} else {
-			var check = document.getElementById("checkbox_body");
-			var box = document.getElementById("body");
 			check.hidden = box.hidden = box.previousSibling.hidden = true;
 			return false;
 		}
@@ -254,7 +255,7 @@ function startup() {
 	let subjectIsVisible = setupSubject();
 	let bodyIsVisible = setupBodyField();
 	document.getElementById('bodySeparator').setAttribute('hidden', !subjectIsVisible && !bodyIsVisible);
-	docuent.getElementById('bodyContainer').setAttribute('hidden', !subjectIsVisible && !bodyIsVisible);
+	document.getElementById('bodyContainer').setAttribute('hidden', !subjectIsVisible && !bodyIsVisible);
 
 	setupAttachmentList(AttachmentManager.getAttachmentList());
 
