@@ -41,34 +41,34 @@
 	<label value="&confirm.dialog.message;" style="padding-bottom:3px; font-size:1.3em;"/>
 	<vbox flex="1">
 	<groupbox id="yourDomains" flex="1" height="150" persist="height">
-		<caption class="check_each" value="&confirm.dialog.yourdomain.label;"/>
-		<caption class="check_all"><checkbox label="&confirm.dialog.yourdomain.label;"
-					oncommand="checkAllChecked(this)"/></caption>
+		<label class="check_each" value="&confirm.dialog.yourdomain.label;"/>
+		<label class="check_all"><checkbox label="&confirm.dialog.yourdomain.label;"
+					oncommand="checkAllChecked(this)"/></label>
 		<richlistbox id="yourDomainsList" flex="1">
 		</richlistbox>
 	</groupbox>
 	<splitter/>
 	<groupbox id="otherDomains" flex="2" height="250" persist="height">
-		<caption class="check_each" value="&confirm.dialog.otherdomain.label;"/>
-		<caption class="check_all"><checkbox label="&confirm.dialog.otherdomain.label;"
-					oncommand="checkAllChecked(this)"/></caption>
+		<label class="check_each" value="&confirm.dialog.otherdomain.label;"/>
+		<label class="check_all"><checkbox label="&confirm.dialog.otherdomain.label;"
+					oncommand="checkAllChecked(this)"/></label>
 		<richlistbox id="otherDomainsList" flex="1">
 		</richlistbox>
 	</groupbox>
 	<splitter/>
 	<groupbox id="body" flex="2" persist="height">
-		<caption><checkbox id="checkbox_body"
+		<label><checkbox id="checkbox_body"
 					label="&confirm.dialog.body.label;"
-					oncommand="checkAllChecked()"/></caption>
+					oncommand="checkAllChecked()"/></label>
 		<iframe id="bodyField"
 			flex="1"
 			src="data:text/html,&lt;!DOCTYPE html&gt;&lt;html style=&quot;margin: 0; padding: 0.3em; color: -moz-fieldtext; background: -moz-field;;&quot;&gt;&lt;style type=&quot;text/css&quot;&gt;* { font-size: medium !important; } body { margin: 0; } body &gt; *:first-child { margin-top: 0 !important; } &lt;/style&gt;&lt;/html&gt;"/>
 	</groupbox>
 	<splitter/>
 	<groupbox id="fileNames" flex="2" persist="height">
-		<caption class="check_each" value="&confirm.dialog.fileName.label;"/>
-		<caption class="check_all"><checkbox label="&confirm.dialog.fileName.label;"
-					oncommand="checkAllChecked(this)"/></caption>
+		<label class="check_each" value="&confirm.dialog.fileName.label;"/>
+		<label class="check_all"><checkbox label="&confirm.dialog.fileName.label;"
+					oncommand="checkAllChecked(this)"/></label>
 		<richlistbox id="fileNamesList" flex="1">
 		</richlistbox>
 	</groupbox>

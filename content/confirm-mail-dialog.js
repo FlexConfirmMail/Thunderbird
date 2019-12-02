@@ -46,8 +46,8 @@ function startup() {
 	}
 
 	function initCheckAllCheckboxFor(list) {
-		var checkAllCaption = list.parentNode.querySelector('caption.check_all');
-		var checkEachCaption = list.parentNode.querySelector('caption.check_each');
+		var checkAllCaption = list.parentNode.querySelector('label.check_all');
+		var checkEachCaption = list.parentNode.querySelector('label.check_each');
 		var key = 'net.nyail.tanabec.confirm-mail.allowCheckAll.' + list.parentNode.id;
 		checkAllCaption.hidden = !ConfirmMailDialog.getPref(key) && !ConfirmMailDialog.getPref(key + '.always');
 		checkEachCaption.hidden = !checkAllCaption.hidden;
@@ -457,7 +457,7 @@ function checkAllChecked(){
 //[すべて確認]チェックボックスがONなら、すべての確認ボックスをONにする。
 
 function switchCheckAllCheckBox(list){
-	var caption = list.parentNode.querySelector("caption.check_all");
+	var caption = list.parentNode.querySelector("label.check_all");
 	if (caption.hidden)
 		return;
 	var checkAll = caption.querySelector("checkbox");
@@ -471,7 +471,7 @@ function switchCheckAllCheckBox(list){
 }
 
 function updateCheckAllCheckBox(list){
-	var caption = list.parentNode.querySelector("caption.check_all");
+	var caption = list.parentNode.querySelector("label.check_all");
 	if (caption.hidden)
 		return;
 	setTimeout(function() {
