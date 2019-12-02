@@ -38,13 +38,6 @@ function startup() {
 		okBtn.label = BtnLabel;
 	}
 
-	function createRecipientLabel(recipient) {
-		var typePrefix = recipient.type + ": ";
-		if (recipient.name && recipient.name != recipient.address)
-			return typePrefix + recipient.name + " <" + recipient.address + ">";
-		return typePrefix + (recipient.fullName || recipient.address);
-	}
-
 	function initCheckAllCheckboxFor(list) {
 		var checkAllCaption = list.parentNode.querySelector('label.check_all');
 		var checkEachCaption = list.parentNode.querySelector('label.check_each');
@@ -69,7 +62,7 @@ function startup() {
 		var internalList = document.getElementById("yourDomainsList");
 
 		for (var i = 0; i < internals.length; i++) {
-			var listitem = createListItemWithCheckbox(createRecipientLabel(internals[i]));
+			var listitem = createListItemWithCheckbox(internals[i]);
 			listitem.addEventListener("click", function() { updateCheckAllCheckBox(internalList); }, false);
 			internalList.appendChild(listitem);
 		}
@@ -155,7 +148,7 @@ function startup() {
 				// destinations in this group
 				let domainClass = groupCount % 2 ? "domain-odd" : "domain-even";
 				for (let destination of destinationsForThisGroup) {
-					let listitem = createListItemWithCheckbox(createRecipientLabel(destination));
+					let listitem = createListItemWithCheckbox(destination);
 					if (shouldHighlight) {
 						listitem.setAttribute("data-exceptional", "true");
 					}
@@ -378,7 +371,7 @@ function foldLongTooltipText(text) {
 	return folded.join("\n");
 }
 
-function createListItemWithCheckbox(itemLabel, aOptions) {
+function createListItemWithCheckbox(recipientOrLabel, aOptions) {
 	aOptions = aOptions || {};
 	var listitem = document.createElement("richlistitem");
 
@@ -388,11 +381,33 @@ function createListItemWithCheckbox(itemLabel, aOptions) {
 	listitem.appendChild(checkboxCell);
 
 	checkboxCell.appendChild(checkbox);
+
+	var itemLabel = recipientOrLabel;
+	var itemTooltip = itemLabel;
+	if (typeof itemLabel != 'string') {
+		const recipient = recipientOrLabel;
+		if (recipient.name && recipient.name != recipient.address)
+			itemLabel = recipient.name + " <" + recipient.address + ">";
+		else
+			itemLabel = recipient.fullName || recipient.address;
+
+		itemTooltip = recipient.type + ": " + itemLabel;
+
+		let typeCell = document.createElement("label");
+		typeCell.classList.add("type");
+		typeCell.setAttribute("value", recipient.type + ":");
+		typeCell.setAttribute("tooltiptext", itemTooltip);
+		listitem.appendChild(typeCell);
+	}
+
+	itemTooltip = foldLongTooltipText(itemTooltip);
+
 	let label = document.createElement("label");
+	label.classList.add("address");
 	label.setAttribute("flex", 1);
 	label.setAttribute("crop", "end");
 	label.setAttribute("value", itemLabel);
-	label.setAttribute("tooltiptext", foldLongTooltipText(itemLabel));
+	label.setAttribute("tooltiptext", itemTooltip);
 	listitem.appendChild(label);
 
 	if (aOptions.requireReinput) {
@@ -414,7 +429,7 @@ function createListItemWithCheckbox(itemLabel, aOptions) {
 		}, 0);
 		listitem.insertBefore(field, label);
 	} else {
-		listitem.setAttribute("tooltiptext", foldLongTooltipText(itemLabel));
+		listitem.setAttribute("tooltiptext", itemTooltip);
 		listitem.onclick = function(event){
 			if (event.target.localName == "checkbox") {
 				setTimeout(checkAllChecked, 0);
