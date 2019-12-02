@@ -624,3 +624,12 @@ function doCancel(){
 	parentWindow.confmail_confirmOK = false;
 	return true;
 }
+
+
+// Workaround for an odd bug: Thunderbird fails to load splitter.css on the initial loading, so we need to load it manually with delay.
+window.addEventListener('load', () => {
+	window.setTimeout(() => {
+		const pi = document.createProcessingInstruction('xml-stylesheet', 'href="chrome://global/skin/splitter.css" type="text/css"');
+		document.insertBefore(pi, document.firstChild);
+	}, 100);
+}, { once: true });
