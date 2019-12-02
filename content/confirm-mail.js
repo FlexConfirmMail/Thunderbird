@@ -92,7 +92,7 @@ try { // DEBUG
   	var allowSkipConfirmation = this.getPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, false);
   	var minConfimationCount = this.getPref(CA_CONST.MIN_RECIPIENTS_COUNT, 0);
 
-  	var enableConfirmation = enableConfirmationMode == 1 || (enableConfirmationMode == 2 && this.recipientsModified);
+  	var enableConfirmation = enableConfirmationMode == 1 || (enableConfirmationMode == 2 && (this.recipientsModified || window.arguments[0].type == Components.interfaces.nsIMsgCompType.Draft));
   	if (!enableConfirmation ||
   		(allowSkipConfirmation &&
   			externalList.length == 0 &&
