@@ -57,6 +57,13 @@ function startup(){
 	document.getElementById("enable-confirmation").value = getPref(CA_CONST.ENABLE_CONFIRMATION, 1);
 	document.getElementById("not-display").checked = getPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, false);
 
+	var confirmMultipleRecipientDomainsBox = document.getElementById("confirmMultipleRecipientDomains");
+	if(getPref(CA_CONST.CONFIRM_MULTIPLE_RECIPIENT_DOMAINS_ALWAYS)){
+		confirmMultipleRecipientDomainsBox.hidden = true;
+	}else{
+		confirmMultipleRecipientDomainsBox.checked = getPref(CA_CONST.CONFIRM_MULTIPLE_RECIPIENT_DOMAINS, false);
+	}
+
 	var minRecipientsCount = getPref(CA_CONST.MIN_RECIPIENTS_COUNT, 0);
 	var minRecipientsCountBox = document.getElementById("min-recipients-count");
 	minRecipientsCountBox.value = minRecipientsCount;
@@ -244,6 +251,10 @@ function doOK(){
 	//チェックボックス設定保存
 	prefs.setPref(CA_CONST.ENABLE_CONFIRMATION, parseInt(document.getElementById("enable-confirmation").value));
 	prefs.setPref(CA_CONST.ALLOW_SKIP_CONFIRMATION, document.getElementById("not-display").checked);
+
+	var confirmMultipleRecipientDomainsBox = document.getElementById("confirmMultipleRecipientDomains");
+	if (!confirmMultipleRecipientDomainsBox.hidden)
+		prefs.setPref(CA_CONST.CONFIRM_MULTIPLE_RECIPIENT_DOMAINS, confirmMultipleRecipientDomainsBox.checked);
 
 	var minRecipientsCount = parseInt(document.getElementById("min-recipients-count").value);
 	if (isNaN(minRecipientsCount))
