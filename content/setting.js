@@ -156,7 +156,7 @@ function startup(){
 	}
 
 	var emphasizeRecipientTypeBox = document.getElementById("emphasizeRecipientType");
-	if(getPref(CA_CONST.EMPHASIZE_RECIPIENT_TYPE)){
+	if(getPref(CA_CONST.EMPHASIZE_RECIPIENT_TYPE_ALWAYS)){
 		emphasizeRecipientTypeBox.hidden = true;
 	}else{
 		emphasizeRecipientTypeBox.checked = getPref(CA_CONST.EMPHASIZE_RECIPIENT_TYPE, false);
