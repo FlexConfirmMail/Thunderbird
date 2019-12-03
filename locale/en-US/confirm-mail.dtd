@@ -53,6 +53,7 @@
 <!ENTITY setting.dialog.checkbox.largeFontSizeForAddresses "Show addresses with larget font size">
 <!ENTITY setting.dialog.checkbox.alwaysLargeDialog "Open confirmation dialog with large size always">
 <!ENTITY setting.dialog.checkbox.emphasizeTopMessage "Empasize the top message">
+<!ENTITY setting.dialog.checkbox.emphasizeRecipientType "Emphasize recipient types (To/Cc/Bcc)">
 <!ENTITY setting.dialog.label.topMessage "Top Message of the confirmation dialog:">
 <!ENTITY setting.sub-dialog.title "Input domain name">
 <!ENTITY setting.sub-dialog.message "Input your group domain name.">

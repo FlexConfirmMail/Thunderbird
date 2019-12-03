@@ -53,6 +53,7 @@
 <!ENTITY setting.dialog.checkbox.largeFontSizeForAddresses "メールアドレスを大きなフォントサイズで表示する">
 <!ENTITY setting.dialog.checkbox.alwaysLargeDialog "確認のダイアログを常に大きなサイズで開く">
 <!ENTITY setting.dialog.checkbox.emphasizeTopMessage "メッセージを強調表示する">
+<!ENTITY setting.dialog.checkbox.emphasizeRecipientType "宛先の種別（To/Cc/Bcc）を強調表示する">
 <!ENTITY setting.dialog.label.topMessage "確認のダイアログの冒頭メッセージ:">
 <!ENTITY setting.sub-dialog.title "ドメイン名の入力">
 <!ENTITY setting.sub-dialog.message "ドメイン名を入力してください(例：example.com)">

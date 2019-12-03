@@ -274,6 +274,11 @@ function startup() {
 	else
 		document.documentElement.classList.remove("emphasize-top-message");
 
+	if (ConfirmMailDialog.emphasizeRecipientType())
+		document.documentElement.classList.add("emphasize-recipient-type");
+	else
+		document.documentElement.classList.remove("emphasize-recipient-type");
+
 	document.getElementById("top-message").textContent = ConfirmMailDialog.prefs.getLocalizedPref("net.nyail.tanabec.confirm-mail.topMessage");
 }
 
@@ -674,6 +679,10 @@ var ConfirmMailDialog = {
 
 	emphasizeTopMessage: function() {
 		return this.getPref(CA_CONST.EMPHASIZE_TOP_MESSAGE);
+	},
+
+	emphasizeRecipientType: function() {
+		return this.getPref(CA_CONST.EMPHASIZE_RECIPIENT_TYPE);
 	},
 
 	confirmExceptionalDomains: function (exceptions) {

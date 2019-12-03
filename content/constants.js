@@ -37,6 +37,8 @@ var CA_CONST = {
 	EMPHASIZE_TOP_MESSAGE: "net.nyail.tanabec.confirm-mail.emphasizeTopMessage",
 	EMPHASIZE_TOP_MESSAGE_ALWAYS : "net.nyail.tanabec.confirm-mail.emphasizeTopMessage.always",
 	TOP_MESSAGE : "net.nyail.tanabec.confirm-mail.topMessage",
+	EMPHASIZE_RECIPIENT_TYPE: "net.nyail.tanabec.confirm-mail.emphasizeRecipientType",
+	EMPHASIZE_RECIPIENT_TYPE_ALWAYS : "net.nyail.tanabec.confirm-mail.emphasizeRecipientType.always",
 	EXCEPTIONAL_DOMAINS_HIGHLIGHT : "net.nyail.tanabec.confirm-mail.exceptional-domains.highlight.mode",
 	EXCEPTIONAL_DOMAINS_CONFIRM : "net.nyail.tanabec.confirm-mail.exceptional-domains.confirmation.mode",
 	EXCEPTIONAL_DOMAINS : "net.nyail.tanabec.confirm-mail.exceptional-domains",

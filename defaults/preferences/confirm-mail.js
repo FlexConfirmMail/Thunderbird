@@ -42,6 +42,8 @@ pref("net.nyail.tanabec.confirm-mail.alwaysLargeDialog.always", false);
 pref("net.nyail.tanabec.confirm-mail.emphasizeTopMessage", false);
 pref("net.nyail.tanabec.confirm-mail.emphasizeTopMessage.always", false);
 pref("net.nyail.tanabec.confirm-mail.topMessage", "chrome://confirm-mail/locale/confirm-mail.properties");
+pref("net.nyail.tanabec.confirm-mail.emphasizeRecipientType", false);
+pref("net.nyail.tanabec.confirm-mail.emphasizeRecipientType.always", false);
 
 pref("net.nyail.tanabec.confirm-mail.is-countdown", false);
 pref("net.nyail.tanabec.confirm-mail.countdown.time", "5");

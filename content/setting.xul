@@ -200,6 +200,8 @@
 				<checkbox id="emphasizeTopMessage" label="&setting.dialog.checkbox.emphasizeTopMessage;"
 					preference="net.nyail.tanabec.confirm-mail.emphasizeTopMessage"/>
 			</hbox>
+			<checkbox id="emphasizeRecipientType" label="&setting.dialog.checkbox.emphasizeRecipientType;"
+				preference="net.nyail.tanabec.confirm-mail.emphasizeRecipientType"/>
 		</vbox>
 	</tabpanels>
 </tabbox>
