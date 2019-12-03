@@ -85,7 +85,7 @@ richlistitem label.type {
 
 :root.emphasize-recipient-type label.type {
     font-weight:  bold;
-    font-size: 125%;
+    font-size: 150%;
 }
 
 splitter {
