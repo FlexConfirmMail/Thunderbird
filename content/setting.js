@@ -155,6 +155,13 @@ function startup(){
 		alwaysLargeDialogBox.checked = getPref(CA_CONST.ALWAYS_LARGE_DIALOG, false);
 	}
 
+	var emphasizeRecipientTypeBox = document.getElementById("emphasizeRecipientType");
+	if(getPref(CA_CONST.EMPHASIZE_RECIPIENT_TYPE)){
+		emphasizeRecipientTypeBox.hidden = true;
+	}else{
+		emphasizeRecipientTypeBox.checked = getPref(CA_CONST.EMPHASIZE_RECIPIENT_TYPE, false);
+	}
+
 	var requireReinputAttachmentNamesBox = document.getElementById("requireReinputAttachmentNames");
 	requireReinputAttachmentNamesBox.checked = getPref(CA_CONST.REQUIRE_REINPUT_ATTACHMENT_NAMES, false);
 }
@@ -299,6 +306,10 @@ function doOK(){
 	var alwaysLargeDialogBox = document.getElementById("alwaysLargeDialog");
 	if (!alwaysLargeDialogBox.hidden)
 		prefs.setPref(CA_CONST.ALWAYS_LARGE_DIALOG, alwaysLargeDialogBox.checked);
+
+	var emphasizeRecipientTypeBox = document.getElementById("emphasizeRecipientType");
+	if (!emphasizeRecipientTypeBox.hidden)
+		prefs.setPref(CA_CONST.EMPHASIZE_RECIPIENT_TYPE, emphasizeRecipientTypeBox.checked);
 
 	var requireReinputAttachmentNamesBox = document.getElementById("requireReinputAttachmentNames");
 	prefs.setPref(CA_CONST.REQUIRE_REINPUT_ATTACHMENT_NAMES, requireReinputAttachmentNamesBox.checked);
