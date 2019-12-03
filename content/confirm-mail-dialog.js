@@ -360,7 +360,7 @@ var DestinationManager = {
 
 	getMultipleRecipientDomains: function () {
 		var domains = new Set();
-		for (const recipient of this.getInternalDestinationList().concat(this.getExternalDestinationList())) {
+		for (const recipient of this.getExternalDestinationList()) {
 			if (recipient.type != 'Bcc')
 				domains.add(AddressUtil.extractDomainFromAddress(recipient.address));
 		}
