@@ -23,6 +23,7 @@
 <!ENTITY setting.dialog.label.minRecipientsCount.after "or fewer recipient(s) (*0 means &quot;always confirm&quot;)">
 <!ENTITY setting.dialog.exceptionalDomains.label    "组织外的邮箱地址的例外">
 <!ENTITY setting.dialog.exceptionalDomains.highlight  "Highlight recipients of these domains always">
+<!ENTITY setting.dialog.confirmMultipleRecipientDomains.label "Confirm when there are multiple domains in To/Cc recipients">
 <!--ENTITY setting.dialog.exceptionalDomains.confirm  "收信方含这些域名时会再次警告"-->
 <!ENTITY setting.dialog.exceptionalDomains.attachment "Confirm me again for attachments if there is any recipient with one of these domains">
 <!--ENTITY setting.dialog.exceptionalDomains.attachment "只有存在附件的情况才会再次进行警告"-->

@@ -75,6 +75,7 @@
 				<textbox id="min-recipients-count" style="width:10ch" type="number"/>
 				<label value="&setting.dialog.label.minRecipientsCount.after;" control="min-recipients-count"/>
 			</hbox>
+			<checkbox id="confirmMultipleRecipientDomains" label="&setting.dialog.confirmMultipleRecipientDomains.label;"/>
 		</vbox>
 		<vbox flex="1">
 			<groupbox orient="vertical">

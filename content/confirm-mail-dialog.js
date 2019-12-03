@@ -312,6 +312,15 @@ var DestinationManager = {
 		return AddressUtil.destinationListToDomains(
 			DestinationManager.getExternalDestinationList()
 		);
+	},
+
+	getMultipleRecipientDomains: function () {
+		var domains = new Set();
+		for (const recipient of this.getInternalDestinationList().concat(this.getExternalDestinationList())) {
+			if (recipient.type != 'Bcc')
+				domains.add(AddressUtil.extractDomainFromAddress(recipient.address));
+		}
+		return Array.from(domains);
 	}
 };
 
@@ -574,7 +583,19 @@ var ConfirmMailDialog = {
 		return this.confirm("exceptionalSuffix", exceptions);
 	},
 
-	confirm: function (messageType, exceptions) {
+	confirmMultipleRecipientDomains: function () {
+		const shouldConfirm = this.getPref(CA_CONST.CONFIRM_MULTIPLE_RECIPIENT_DOMAINS);
+		if (!shouldConfirm)
+			return true;
+		let domains = DestinationManager.getMultipleRecipientDomains();
+		if (domains.length <= 1)
+			return true;
+		if (domains.length > 11)
+			domains = [...domains.slice(0, 5), '...', ...domains.slice(-5)];
+		return this.confirm("confirmMultipleRecipientDomains", domains.join('\n'));
+	},
+
+	confirm: function (messageType, params) {
 		let promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
 			.getService(Components.interfaces.nsIPromptService);
 		let flags = (promptService.BUTTON_TITLE_IS_STRING * promptService.BUTTON_POS_0)
@@ -603,10 +624,13 @@ var ConfirmMailDialog = {
 		};
 		WW.registerNotification(listener);
 
+		let  message = this.prefs.getLocalizedPref("net.nyail.tanabec.confirm-mail." + messageType + ".message");
+		if (typeof params != 'undefined')
+			message = message.replace(/\%s/i, params);
+
 		return promptService.confirmEx(window,
 			this.prefs.getLocalizedPref("net.nyail.tanabec.confirm-mail." + messageType + ".title"),
-			this.prefs.getLocalizedPref("net.nyail.tanabec.confirm-mail." + messageType + ".message")
-				.replace(/\%s/i, exceptions),
+			message,
 			flags,
 			getLocaleString("confirm.dialog.acceptbtn.label"),
 			"",
@@ -618,6 +642,10 @@ var ConfirmMailDialog = {
 };
 
 function doOK(){
+	if (!ConfirmMailDialog.confirmMultipleRecipientDomains()) {
+		return false;
+	}
+
 	let recipients = ConfirmMailDialog.getExceptionalRecipients();
 	if (recipients.length > 0) {
 		if (!ConfirmMailDialog.confirmExceptionalDomains(recipients.join('\n'))) {
