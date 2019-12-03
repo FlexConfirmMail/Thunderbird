@@ -99,6 +99,8 @@
 			<checkbox id="highlightUnmatchedDomains" label="&setting.dialog.checkbox.highlightUnmatchedDomains;"/>
 			<checkbox id="largeFontSizeForAddresses" label="&setting.dialog.checkbox.largeFontSizeForAddresses;"/>
 			<checkbox id="alwaysLargeDialog" label="&setting.dialog.checkbox.alwaysLargeDialog;"/>
+			<checkbox id="emphasizeRecipientType" label="&setting.dialog.checkbox.emphasizeRecipientType;"
+				preference="net.nyail.tanabec.confirm-mail.emphasizeRecipientType"/>
 		</vbox>
 	</tabpanels>
 </tabbox>

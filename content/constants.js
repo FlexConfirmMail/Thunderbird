@@ -36,6 +36,8 @@ var CA_CONST = {
 	LARGE_FONT_SIZE_FOR_ADDRESSES_ALWAYS : "net.nyail.tanabec.confirm-mail.largeFontSizeForAddresses.always",
 	EXCEPTIONAL_DOMAINS_HIGHLIGHT : "net.nyail.tanabec.confirm-mail.exceptional-domains.highlight",
 	EXCEPTIONAL_DOMAINS_ONLY_WITH_ATTACHMENT : "net.nyail.tanabec.confirm-mail.exceptional-domains.onlyWithAttachment",
+	EMPHASIZE_RECIPIENT_TYPE: "net.nyail.tanabec.confirm-mail.emphasizeRecipientType",
+	EMPHASIZE_RECIPIENT_TYPE_ALWAYS : "net.nyail.tanabec.confirm-mail.emphasizeRecipientType.always",
 	EXCEPTIONAL_DOMAINS : "net.nyail.tanabec.confirm-mail.exceptional-domains",
 	EXCEPTIONAL_SUFFIXES_CONFIRM : "net.nyail.tanabec.confirm-mail.exceptional-suffixes.confirm",
 	EXCEPTIONAL_SUFFIXES : "net.nyail.tanabec.confirm-mail.exceptional-suffixes",

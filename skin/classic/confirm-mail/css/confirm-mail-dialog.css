@@ -83,6 +83,11 @@ richlistitem label.type {
     margin-right: 0;
 }
 
+:root.emphasize-recipient-type label.type {
+    font-weight:  bold;
+    font-size: 125%;
+}
+
 splitter {
     -moz-appearance: none;
     background: transparent;

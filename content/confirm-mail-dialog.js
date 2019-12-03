@@ -231,6 +231,11 @@ function startup() {
 		document.documentElement.classList.add("large-font-size-for-addresses");
 	else
 		document.documentElement.classList.remove("large-font-size-for-addresses");
+
+	if (ConfirmMailDialog.emphasizeRecipientType())
+		document.documentElement.classList.add("emphasize-recipient-type");
+	else
+		document.documentElement.classList.remove("emphasize-recipient-type");
 }
 
 // Util
@@ -555,6 +560,10 @@ var ConfirmMailDialog = {
 
 	largeFontSizeForAddresses: function() {
 		return this.getPref(CA_CONST.LARGE_FONT_SIZE_FOR_ADDRESSES);
+	},
+
+	emphasizeRecipientType: function() {
+		return this.getPref(CA_CONST.EMPHASIZE_RECIPIENT_TYPE);
 	},
 
 	confirmExceptionalDomains: function (exceptions) {
