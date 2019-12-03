@@ -27,6 +27,8 @@ var CA_CONST = {
 	MIN_RECIPIENTS_COUNT : "net.nyail.tanabec.confirm-mail.min-recipients-count",
 	COUNT_DOWN_ALLOW_SKIP : "net.nyail.tanabec.confirm-mail.countdown.allowSkip",
 	COUNT_DOWN_ALLOW_SKIP_ALWAYS : "net.nyail.tanabec.confirm-mail.countdown.allowSkip.always",
+	CONFIRM_MULTIPLE_RECIPIENT_DOMAINS: "net.nyail.tanabec.confirm-mail.confirmMultipleRecipientDomains",
+	CONFIRM_MULTIPLE_RECIPIENT_DOMAINS_ALWAYS: "net.nyail.tanabec.confirm-mail.confirmMultipleRecipientDomains.always",
 	ALWAYS_LARGE_DIALOG : "net.nyail.tanabec.confirm-mail.alwaysLargeDialog",
 	ALWAYS_LARGE_DIALOG_MIN_WIDTH : "net.nyail.tanabec.confirm-mail.alwaysLargeDialog.minWidth",
 	ALWAYS_LARGE_DIALOG_ALWAYS : "net.nyail.tanabec.confirm-mail.alwaysLargeDialog.always",

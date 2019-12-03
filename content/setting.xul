@@ -76,6 +76,8 @@
 					preference="net.nyail.tanabec.confirm-mail.min-recipients-count"/>
 				<label value="&setting.dialog.label.minRecipientsCount.after;" control="min-recipients-count"/>
 			</hbox>
+			<checkbox id="confirmMultipleRecipientDomains" label="&setting.dialog.confirmMultipleRecipientDomains.label;"
+				preference="net.nyail.tanabec.confirm-mail.confirmMultipleRecipientDomains"/>
 
 			<separator/>
 

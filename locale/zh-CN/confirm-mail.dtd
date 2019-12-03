@@ -20,6 +20,7 @@
 <!ENTITY setting.dialog.checkbox.notdisplay "向已登录域名邮件送信时不会显示确认画面">
 <!ENTITY setting.dialog.label.minRecipientsCount.before "Skip confirmation if there are/is only">
 <!ENTITY setting.dialog.label.minRecipientsCount.after "or fewer recipient(s) (*0 means &quot;always confirm&quot;)">
+<!ENTITY setting.dialog.confirmMultipleRecipientDomains.label "Confirm when there are multiple domains in To/Cc recipients">
 <!ENTITY setting.dialog.exceptionalDomains.label      "Specially alerted foreign domains in recipients">
 <!--ENTITY setting.dialog.exceptionalDomains.label    "组织外的邮箱地址的例外"-->
 <!ENTITY setting.dialog.exceptionalDomains.highlight  "Highlight recipients of these domains">

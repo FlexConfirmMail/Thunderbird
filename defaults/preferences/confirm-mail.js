@@ -12,6 +12,8 @@ pref("net.nyail.tanabec.confirm-mail.exceptional-suffixes", "");
 pref("net.nyail.tanabec.confirm-mail.exceptional-suffixes.source", "pref");
 pref("net.nyail.tanabec.confirm-mail.exceptional-suffixes.file", "");
 pref("net.nyail.tanabec.confirm-mail.not-display", false);
+pref("net.nyail.tanabec.confirm-mail.confirmMultipleRecipientDomains", false);
+pref("net.nyail.tanabec.confirm-mail.confirmMultipleRecipientDomains.always", false);
 pref("net.nyail.tanabec.confirm-mail.min-recipients-count", 0);
 pref("net.nyail.tanabec.confirm-mail.overrideDelay", 0);
 pref("net.nyail.tanabec.confirm-mail.overrideDelayTimes", 0);
@@ -20,6 +22,8 @@ pref("net.nyail.tanabec.confirm-mail.exceptionalDomain.title", "chrome://confirm
 pref("net.nyail.tanabec.confirm-mail.exceptionalDomain.message", "chrome://confirm-mail/locale/confirm-mail.properties");
 pref("net.nyail.tanabec.confirm-mail.exceptionalSuffix.title", "chrome://confirm-mail/locale/confirm-mail.properties");
 pref("net.nyail.tanabec.confirm-mail.exceptionalSuffix.message", "chrome://confirm-mail/locale/confirm-mail.properties");
+pref("net.nyail.tanabec.confirm-mail.confirmMultipleRecipientDomains.title", "chrome://confirm-mail/locale/confirm-mail.properties");
+pref("net.nyail.tanabec.confirm-mail.confirmMultipleRecipientDomains.message", "chrome://confirm-mail/locale/confirm-mail.properties");
 
 pref("net.nyail.tanabec.confirm-mail.allowCheckAll.yourDomains", true);
 pref("net.nyail.tanabec.confirm-mail.allowCheckAll.yourDomains.always", false);

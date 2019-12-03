@@ -21,6 +21,7 @@
 <!ENTITY setting.dialog.checkbox.notdisplay "すべての宛先が登録済みドメインのメール送信時は確認ダイアログを表示しない">
 <!ENTITY setting.dialog.label.minRecipientsCount.before "宛先が">
 <!ENTITY setting.dialog.label.minRecipientsCount.after "件以下の場合は確認ダイアログを表示しない（※0で常に確認）">
+<!ENTITY setting.dialog.confirmMultipleRecipientDomains.label "ToまたはCcの宛先に複数のドメインが含まれる場合に警告する">
 <!ENTITY setting.dialog.exceptionalDomains.label    "特別に警告する外部ドメインの宛先">
 <!ENTITY setting.dialog.exceptionalDomains.highlight  "これらのドメインに該当する宛先の強調表示">
 <!ENTITY setting.dialog.exceptionalDomains.highlight.always.label "常に強調表示">
