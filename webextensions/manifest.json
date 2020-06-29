@@ -1,14 +1,15 @@
 {
   "manifest_version": 2,
-  "name": "Flex Confirm Mail",
+  "name": "__MSG_extensionName__",
   "version": "3.0.0",
   "author": "ClearCode Inc.",
-  "description": "Confirm mailaddress and attachments based on flexible rules.",
+  "description": "__MSG_extensionDescription__",
   "permissions": [
   ],
   "background": {
     "page": "/background/background.html"
   },
+  "default_locale": "en",
   "applications": {
     "gecko": {
       "id": "flexible-confirm-mail@clear-code.com",
