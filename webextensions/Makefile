@@ -1,7 +1,7 @@
 NPM_MOD_DIR := $(CURDIR)/node_modules
 NPM_BIN_DIR := $(NPM_MOD_DIR)/.bin
 
-.PHONY: xpi install_dependency install_hook lint format update_extlib test
+.PHONY: xpi install_dependency install_hook lint format update_extlib install_extlib test
 
 all: xpi
 
@@ -18,12 +18,17 @@ lint: install_dependency
 format: install_dependency
 	"$(NPM_BIN_DIR)/eslint" . --ext=.js --report-unused-disable-directives --fix
 
-xpi: update_extlib lint
+xpi: update_extlib install_extlib lint
 	rm -f ./*.xpi
-	zip -r -9 flex-confirm-mail-we.xpi manifest.json -x '*/.*' >/dev/null 2>/dev/null
+	zip -r -9 flex-confirm-mail-we.xpi manifest.json common extlib _locales -x '*/.*' >/dev/null 2>/dev/null
 
 update_extlib:
 	git submodule update --init
+
+install_extlib:
+	rm -f extlib/*.js
+	cp ../submodules/webextensions-lib-configs/Configs.js extlib/; echo 'export default Configs;' >> extlib/Configs.js
+	cp ../submodules/webextensions-lib-l10n/l10n.js extlib/; echo 'export default l10n;' >> extlib/l10n.js
 
 test:
 	npm run test
