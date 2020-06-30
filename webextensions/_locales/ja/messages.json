@@ -7,5 +7,5 @@
   "countdownDialogMessage_before": { "message": "あと" },
   "countdownDialogMessage_after": { "message": "秒で送信します" },
   "countdownDialogSkip": { "message": "今すぐ送信" },
-  "countdownDialogCancel": { "message": "編集画面に戻る" }
+  "countdownDialogCancel": { "message": "キャンセル" }
 }

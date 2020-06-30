@@ -5,9 +5,17 @@
 */
 'use strict';
 
+import '/extlib/l10n.js';
+
 import {
   configs
 } from '/common/common.js';
-import '/extlib/l10n.js';
 
+import * as Dialog from '/common/dialog.js';
 
+const mCounter = document.getElementById('count');
+
+configs.$loaded.then(() => {
+  mCounter.textContent = configs.countdownSeconds;
+  Dialog.notifyReady();
+});

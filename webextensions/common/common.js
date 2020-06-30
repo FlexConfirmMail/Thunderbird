@@ -51,7 +51,7 @@ export const configs = new Configs({
   emphasizeRecipientType: false,
 
   showCountdown: false,
-  countdownTime: 5,
+  countdownSeconds: 5,
   countdownAllowSkip: true,
 
   configsVersion: 0,

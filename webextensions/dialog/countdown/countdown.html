@@ -2,21 +2,24 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<html>
+<html class="dialog">
   <head>
     <meta charset="UTF-8">
     <script type="module" src="./countdown.js"></script>
+    <link rel="stylesheet" href="./countdown.css">
     <title>__MSG_countdownDialogTitle__</title>
   </head>
   <body>
-    <div>
-      __MSG_countdownDialogMessage_before__
-      <span id="count"></span>
-      __MSG_countdownDialogMessage_after__
-    </div>
-    <div>
-      <button id="skip">__MSG_countdownDialogSkip__</button>
-      <button id="cancel">__MSG_countdownDialogCancel__</button>
+    <div class="dialog-content">
+      <div>
+        __MSG_countdownDialogMessage_before__
+        <span id="count"></span>
+        __MSG_countdownDialogMessage_after__
+      </div>
+      <div>
+        <button id="skip">__MSG_countdownDialogSkip__</button>
+        <button id="cancel">__MSG_countdownDialogCancel__</button>
+      </div>
     </div>
   </body>
 </html>

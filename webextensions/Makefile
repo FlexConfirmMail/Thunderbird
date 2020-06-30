@@ -20,7 +20,7 @@ format: install_dependency
 
 xpi: update_extlib install_extlib lint
 	rm -f ./*.xpi
-	zip -r -9 flex-confirm-mail-we.xpi manifest.json common extlib _locales -x '*/.*' >/dev/null 2>/dev/null
+	zip -r -9 flex-confirm-mail-we.xpi manifest.json common dialog background resources extlib _locales -x '*/.*' >/dev/null 2>/dev/null
 
 update_extlib:
 	git submodule update --init

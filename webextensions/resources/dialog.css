@@ -1,0 +1,38 @@
+/*
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+*/
+
+@import url(/resources/dialog.css);
+
+* {
+  box-sizing: border-box;
+}
+
+:root,
+body {
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+:root.dialog > body {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.dialog-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.5em;
+}
+
+
+:root.offscreen .dialog-content {
+  border: 1px solid;
+}
