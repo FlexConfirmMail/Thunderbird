@@ -30,4 +30,12 @@ configs.$loaded.then(() => {
   Dialog.initCancelButton(mCancelButton);
 
   Dialog.notifyReady();
+
+  const start = Date.now();
+  window.setInterval(() => {
+    const rest = Math.ceil(configs.countdownSeconds - ((Date.now() - start) / 1000));
+    mCounter.textContent = rest;
+    if (rest <= 0)
+      Dialog.accept();
+  }, 250);
 });

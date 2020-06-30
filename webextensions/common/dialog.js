@@ -153,6 +153,21 @@ export function notifyReady() {
     });
 }
 
+export function accept(detail = null) {
+  browser.runtime.sendMessage({
+    type: TYPE_ACCEPT,
+    id:   getCurrentId(),
+    detail
+  });
+}
+
+export function cancel() {
+  browser.runtime.sendMessage({
+    type: TYPE_CANCEL,
+    id:   getCurrentId()
+  });
+}
+
 function initButton(button, onCommand) {
   button.addEventListener('click', event => {
     if (event.button == 0 &&
@@ -174,20 +189,12 @@ function initButton(button, onCommand) {
 
 export function initAcceptButton(button, onCommand) {
   initButton(button, async event => {
-    const detail = typeof onCommand == 'function' ? (await onCommand(event)) : null;
-    browser.runtime.sendMessage({
-      type: TYPE_ACCEPT,
-      id:   getCurrentId(),
-      detail
-    });
+    accept(typeof onCommand == 'function' ? (await onCommand(event)) : null);
   });
 }
 
 export function initCancelButton(button) {
   initButton(button, _event => {
-    browser.runtime.sendMessage({
-      type: TYPE_CANCEL,
-      id:   getCurrentId()
-    });
+    cancel();
   });
 }
