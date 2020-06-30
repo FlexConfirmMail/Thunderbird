@@ -5,6 +5,8 @@
   "author": "ClearCode Inc.",
   "description": "__MSG_extensionDescription__",
   "permissions": [
+    "compose",
+    "storage"
   ],
   "background": {
     "page": "/background/background.html"

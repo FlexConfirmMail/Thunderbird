@@ -9,3 +9,9 @@ import {
   configs
 } from '/common/common.js';
 
+browser.compose.onBeforeSend.addListener((tab, details) => {
+  console.log({ tab, details });
+  return Promise.resolve({
+    cancel: true
+  });
+});
