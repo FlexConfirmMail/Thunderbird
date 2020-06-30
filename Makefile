@@ -1,5 +1,7 @@
 PACKAGE_NAME = flex-confirm-mail
 
+.PHONY: xpi lint
+
 all: xpi
 
 xpi: makexpi/makexpi.sh copy-extlib
@@ -24,3 +26,6 @@ copy-extlib:
 
 signed: xpi
 	makexpi/sign_xpi.sh -k $(JWT_KEY) -s $(JWT_SECRET) -p ./$(PACKAGE_NAME)_noupdate.xpi
+
+lint:
+	cd webextensions && make lint
