@@ -9,8 +9,18 @@ import {
   configs
 } from '/common/common.js';
 
-browser.compose.onBeforeSend.addListener((tab, details) => {
+browser.compose.onBeforeSend.addListener(async (tab, details) => {
   console.log({ tab, details });
+
+  if (!configs.showCountdown)
+    return;
+
+  const win = await browser.windows.create({
+    type: 'popup',
+    url: '/dialog/countdown/countdown.html'
+  });
+  const activeTab = win.tabs[0];
+
   return Promise.resolve({
     cancel: true
   });

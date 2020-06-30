@@ -1,4 +1,11 @@
 {
   "extensionName": { "message": "Flex Confirm Mail" },
-  "extensionDescription": { "message": "Confirm mailaddress and attachments based on flexible rules." }
+  "extensionDescription": { "message": "Confirm mailaddress and attachments based on flexible rules." },
+
+
+  "countdownDialogTitle": { "message": "Countdown" },
+  "countdownDialogMessage_before": { "message": "\u200b" },
+  "countdownDialogMessage_after": { "message": " seconds left to send." },
+  "countdownDialogSkip": { "message": "Send Now" },
+  "countdownDialogCancel": { "message": "Back to Composition" }
 }

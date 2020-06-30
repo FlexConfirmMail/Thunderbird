@@ -1,4 +1,11 @@
 {
   "extensionName": { "message": "Flex Confirm Mail" },
-  "extensionDescription": { "message": "柔軟なルールに基づいて、送信前に宛先のアドレスや添付ファイルの確認を行うようにします。" }
+  "extensionDescription": { "message": "柔軟なルールに基づいて、送信前に宛先のアドレスや添付ファイルの確認を行うようにします。" },
+
+
+  "countdownDialogTitle": { "message": "カウントダウン" },
+  "countdownDialogMessage_before": { "message": "あと" },
+  "countdownDialogMessage_after": { "message": "秒で送信します" },
+  "countdownDialogSkip": { "message": "今すぐ送信" },
+  "countdownDialogCancel": { "message": "編集画面に戻る" }
 }
