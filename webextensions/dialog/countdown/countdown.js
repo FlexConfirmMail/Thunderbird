@@ -14,8 +14,20 @@ import {
 import * as Dialog from '/common/dialog.js';
 
 const mCounter = document.getElementById('count');
+const mSkipButton = document.getElementById('skip');
+const mCancelButton = document.getElementById('cancel');
 
 configs.$loaded.then(() => {
   mCounter.textContent = configs.countdownSeconds;
+
+  if (configs.countdownAllowSkip) {
+    Dialog.initAcceptButton(mSkipButton);
+  }
+  else {
+    mSkipButton.style.display = 'none';
+  }
+
+  Dialog.initCancelButton(mCancelButton);
+
   Dialog.notifyReady();
 });

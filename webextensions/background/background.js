@@ -17,10 +17,11 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
   if (!configs.showCountdown)
     return;
 
-  const win = await Dialog.open('/dialog/countdown/countdown.html');
-  const activeTab = win.tabs[0];
-
-  return Promise.resolve({
-    cancel: true
-  });
+  try {
+    await Dialog.open('/dialog/countdown/countdown.html');
+    return;
+  }
+  catch(_error) {
+    return { cancel: true };
+  }
 });

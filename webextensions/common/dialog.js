@@ -6,6 +6,8 @@
 'use strict';
 
 export const TYPE_READY = 'dialog-ready';
+export const TYPE_ACCEPT = 'dialog-accept';
+export const TYPE_CANCEL = 'dialog-cancel';
 
 function generateId() {
   return `${Date.now()}-${Math.round(Math.random() * 65000)}`;
@@ -31,7 +33,8 @@ export async function open(url) {
   // step 1: render dialog in a hidden iframe to determine its content size
   const dialogContentSize = await new Promise((resolve, _reject) => {
     const loader = document.body.appendChild(document.createElement('iframe'));
-    loader.addEventListener('load',
+    loader.addEventListener(
+      'load',
       async () => {
         loader.contentDocument.documentElement.classList.add('offscreen');
         const [readyEvent, ] = await Promise.all([
@@ -58,44 +61,74 @@ export async function open(url) {
   const widthOffset  = lastWidthOffset === null ? DEFAULT_WIDTH_OFFSET : lastWidthOffset;
   const heightOffset = lastHeightOffset === null ? DEFAULT_HEIGHT_OFFSET : lastHeightOffset;
 
-  const win = new Promise(async (resolve, _reject) => {
+  return new Promise(async (resolve, reject) => {
+    let win; // eslint-disable-line prefer-const
+
+    const onMessage = async (message, _sender) => {
+      if (!message || message.id != id)
+        return;
+
+      switch (message.type) {
+        case TYPE_READY: {
+          // step 3: shrink or expand the dialog window if the offset is changed
+          lastWidthOffset  = message.windowWidthOffset;
+          lastHeightOffset = message.windowHeightOffset;
+          if (lastWidthOffset != widthOffset ||
+              lastHeightOffset != heightOffset) {
+            browser.windows.update(win.id, {
+              width:  Math.ceil(dialogContentSize.width + lastWidthOffset),
+              height: Math.ceil(dialogContentSize.height + lastHeightOffset)
+            });
+          }
+        }; break;
+
+        case TYPE_ACCEPT:
+          browser.runtime.onMessage.removeListener(onMessage);
+          browser.windows.onRemoved.removeListener(onClosed); // eslint-disable-line no-use-before-define
+          browser.windows.remove(win.id);
+          resolve(message);
+          break;
+
+        case TYPE_CANCEL:
+          browser.runtime.onMessage.removeListener(onMessage);
+          browser.windows.onRemoved.removeListener(onClosed); // eslint-disable-line no-use-before-define
+          browser.windows.remove(win.id);
+          reject(message);
+          break;
+      }
+    };
+    browser.runtime.onMessage.addListener(onMessage);
+
+    const onClosed = windowId => {
+      if (windowId != win.id)
+        return;
+      browser.runtime.onMessage.removeListener(onMessage);
+      browser.windows.onRemoved.removeListener(onClosed);
+      browser.windows.remove(win.id);
+      reject();
+    };
+    browser.windows.onRemoved.addListener(onClosed);
+
     // step 2: open real dialog window
-    const promisedWin = browser.windows.create({
+    win = await browser.windows.create({
       type:   'popup',
       url:    url.replace(/(dialog-offscreen)=true/, '$1=false'),
       width:  Math.ceil(dialogContentSize.width + widthOffset),
       height: Math.ceil(dialogContentSize.height + heightOffset),
       allowScriptsToClose: true
     });
-    const onReady = async (message, sender) => {
-      if (!message || message.type != TYPE_READY || message.id != id)
-        return;
-
-      browser.runtime.onMessage.removeListener(onReady);
-
-      const win = await promisedWin;
-
-      // step 3: shrink or expand the dialog window if the offset is changed
-      lastWidthOffset  = message.windowWidthOffset;
-      lastHeightOffset = message.windowHeightOffset;
-      if (lastWidthOffset != widthOffset ||
-          lastHeightOffset != heightOffset) {
-        browser.windows.update(win.id, {
-          width:  Math.ceil(dialogContentSize.width + lastWidthOffset),
-          height: Math.ceil(dialogContentSize.height + lastHeightOffset)
-        });
-      }
-
-      resolve(win);
-    };
-    browser.runtime.onMessage.addListener(onReady);
   });
-
-  return win;
 }
 
 
-// this must be called in the dialog itself
+
+// utilities for dialog itself
+
+function getCurrentId() {
+  const params = new URLSearchParams(location.search);
+  return params.get('dialog-id');
+}
+
 export function notifyReady() {
   const params = new URLSearchParams(location.search);
   const id = params.get('dialog-id');
@@ -118,4 +151,43 @@ export function notifyReady() {
       type: TYPE_READY,
       ...detail
     });
+}
+
+function initButton(button, onCommand) {
+  button.addEventListener('click', event => {
+    if (event.button == 0 &&
+        !event.altKey &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        !event.shiftKey)
+      onCommand(event);
+  });
+  button.addEventListener('keyup', event => {
+    if (event.key == 'Enter' &&
+        !event.altKey &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        !event.shiftKey)
+      onCommand(event);
+  });
+}
+
+export function initAcceptButton(button, onCommand) {
+  initButton(button, async event => {
+    const detail = typeof onCommand == 'function' ? (await onCommand(event)) : null;
+    browser.runtime.sendMessage({
+      type: TYPE_ACCEPT,
+      id:   getCurrentId(),
+      detail
+    });
+  });
+}
+
+export function initCancelButton(button) {
+  initButton(button, _event => {
+    browser.runtime.sendMessage({
+      type: TYPE_CANCEL,
+      id:   getCurrentId()
+    });
+  });
 }
