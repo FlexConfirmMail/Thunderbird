@@ -7,5 +7,9 @@
   "countdownDialogMessage_before": { "message": "\u200b" },
   "countdownDialogMessage_after": { "message": " seconds left to send." },
   "countdownDialogSkip": { "message": "Send Now" },
-  "countdownDialogCancel": { "message": "Cancel" }
+  "countdownDialogCancel": { "message": "Cancel" },
+
+
+  "config_debug_label": { "message": "Debug mode" },
+  "config_all_caption": { "message": "All Configs" }
 }

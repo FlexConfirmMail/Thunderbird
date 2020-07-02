@@ -7,5 +7,9 @@
   "countdownDialogMessage_before": { "message": "あと" },
   "countdownDialogMessage_after": { "message": "秒で送信します" },
   "countdownDialogSkip": { "message": "今すぐ送信" },
-  "countdownDialogCancel": { "message": "キャンセル" }
+  "countdownDialogCancel": { "message": "キャンセル" },
+
+
+  "config_debug_label": { "message": "デバッグモード" },
+  "config_all_caption": { "message": "すべての設定" }
 }

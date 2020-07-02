@@ -20,7 +20,7 @@ format: install_dependency
 
 xpi: update_extlib install_extlib lint
 	rm -f ./*.xpi
-	zip -r -9 flex-confirm-mail-we.xpi manifest.json common dialog background resources extlib _locales -x '*/.*' >/dev/null 2>/dev/null
+	zip -r -9 flex-confirm-mail-we.xpi manifest.json common background dialog options resources extlib _locales -x '*/.*' >/dev/null 2>/dev/null
 
 update_extlib:
 	git submodule update --init
@@ -28,6 +28,7 @@ update_extlib:
 install_extlib:
 	rm -f extlib/*.js
 	cp ../submodules/webextensions-lib-configs/Configs.js extlib/; echo 'export default Configs;' >> extlib/Configs.js
+	cp ../submodules/webextensions-lib-options/Options.js extlib/; echo 'export default Options;' >> extlib/Options.js
 	cp ../submodules/webextensions-lib-l10n/l10n.js extlib/; echo 'export default l10n;' >> extlib/l10n.js
 
 test:
