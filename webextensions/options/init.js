@@ -27,13 +27,10 @@ function onConfigChanged(key) {
 configs.$addObserver(onConfigChanged);
 
 window.addEventListener('DOMContentLoaded', async () => {
-console.log('LOADED');
   await configs.$loaded;
 
-console.log('BUILD');
   options.buildUIForAllConfigs(document.querySelector('#debug-configs'));
   onConfigChanged('debug');
 
   document.documentElement.classList.add('initialized');
-console.log('FINISH');
 }, { once: true });
