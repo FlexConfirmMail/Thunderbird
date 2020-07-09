@@ -12,6 +12,7 @@ xpi: makexpi/makexpi.sh copy-extlib
 	git checkout content/unittest/
 	[ -f .need-stash-pop ] && git stash pop || true
 	rm -f .need-stash-pop
+	cd webextensions && make && cp ./*.xpi ../
 
 unittest: makexpi/makexpi.sh copy-extlib
 	makexpi/makexpi.sh -n $(PACKAGE_NAME) -o
