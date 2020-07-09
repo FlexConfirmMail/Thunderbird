@@ -64,6 +64,8 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
     }
   }
 
+  console.log('confirmed: OK to send');
+  mOriginalDetails.delete(tab.id);
   return;
 });
 
