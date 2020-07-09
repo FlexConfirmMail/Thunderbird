@@ -24,7 +24,6 @@ browser.runtime.onMessage.addListener((message, sender) => {
 });
 
 browser.compose.onBeforeSend.addListener(async (tab, details) => {
-  const originalDetails = mOriginalDetails.get(tab.id);
   switch (configs.confirmationMode) {
     case Constants.CONFIRMATION_MODE_NEVER:
       console.log('skip confirmation');
@@ -32,6 +31,7 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
 
     default:
     case Constants.CONFIRMATION_MODE_ONLY_MODIFIED: {
+      const originalDetails = mOriginalDetails.get(tab.id) || { to: [], cc: [], bcc: [] };
       const initialRecipients = JSON.stringify({
         to: originalDetails.to.sort(),
         cc: originalDetails.cc.sort(),
