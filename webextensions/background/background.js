@@ -13,6 +13,7 @@ import * as Constants from '/common/constants.js';
 import * as Dialog from '/common/dialog.js';
 
 import * as ListUtils from './list-utils.js';
+import * as RecipientClassifier from './recipient-classifier.js';
 
 const mOriginalDetails = new Map();
 
@@ -51,12 +52,17 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
       }
       console.log('recipients are modified');
     };
-    case Constants.CONFIRMATION_MODE_ALWAYS:
-      details.to = await ListUtils.populateListAddresses(details.to);
-      details.cc = await ListUtils.populateListAddresses(details.cc);
-      details.bcc = await ListUtils.populateListAddresses(details.bcc);
+    case Constants.CONFIRMATION_MODE_ALWAYS: {
+      const [to, cc, bcc] = await Promise.all([
+        ListUtils.populateListAddresses(details.to),
+        ListUtils.populateListAddresses(details.cc),
+        ListUtils.populateListAddresses(details.bcc)
+      ]);
+      details.to = RecipientClassifier.classify(to, configs.internalDomains);
+      details.cc = RecipientClassifier.classify(cc, configs.internalDomains);
+      details.bcc = RecipientClassifier.classify(bcc, configs.internalDomains);
       log('show confirmation ', tab, details);
-      break;
+    }; break;
   }
 
   if (configs.showCountdown) {
