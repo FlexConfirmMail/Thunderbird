@@ -70,16 +70,16 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
         log('need confirmation because it is a draft');
       }
       else {
-      const currentRecipients = JSON.stringify({
-        to: details.to.sort(),
-        cc: details.cc.sort(),
-        bcc: details.bcc.sort()
-      });
-      if (initialRecipients == currentRecipients) {
-        log('skip confirmation because recipients are not modified');
-        break;
-      }
-      log('recipients are modified');
+        const currentRecipients = JSON.stringify({
+          to: details.to.sort(),
+          cc: details.cc.sort(),
+          bcc: details.bcc.sort()
+        });
+        if (initialRecipients == currentRecipients) {
+          log('skip confirmation because recipients are not modified');
+          break;
+        }
+        log('recipients are modified');
       }
     };
     case Constants.CONFIRMATION_MODE_ALWAYS: {
