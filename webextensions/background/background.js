@@ -41,6 +41,35 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
         cc: originalDetails.cc.sort(),
         bcc: originalDetails.bcc.sort()
       });
+
+      const mailTabs = await browser.mailTabs.query({});
+      const isDrafts = await Promise.all(mailTabs.map(async mailTab => {
+        const displayMessage = await browser.messageDisplay.getDisplayedMessage(mailTab.id);
+        if (!displayMessage)
+          return false;
+        if (!displayMessage.folder || displayMessage.folder.type != 'drafts')
+          return false;
+        const recipients = JSON.stringify({
+          to: displayMessage.recipients.sort(),
+          cc: displayMessage.ccList.sort(),
+          bcc: displayMessage.bccList.sort()
+        });
+        log(`mailTab ${mailTab.id} is the draft folder. `, {
+          editing: recipients == initialRecipients,
+          recipients,
+          initialRecipients
+        });
+        return recipients == initialRecipients;
+      }));
+        log('isDrafts ', isDrafts);
+
+      if (isDrafts.length == 0) {
+        log('need confirmation because it can be a draft');
+      }
+      else if (isDrafts.some(isDraft => !!isDraft)) {
+        log('need confirmation because it is a draft');
+      }
+      else {
       const currentRecipients = JSON.stringify({
         to: details.to.sort(),
         cc: details.cc.sort(),
@@ -50,7 +79,8 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
         log('skip confirmation because recipients are not modified');
         break;
       }
-      console.log('recipients are modified');
+      log('recipients are modified');
+      }
     };
     case Constants.CONFIRMATION_MODE_ALWAYS: {
       const [to, cc, bcc] = await Promise.all([
