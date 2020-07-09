@@ -5,6 +5,9 @@
 */
 'use strict';
 
+export const TYPE_COMPOSE_STARTED = 'compose-started';
+
+
 export const CONFIRMATION_MODE_NEVER = 0;
 export const CONFIRMATION_MODE_ALWAYS = 1;
 export const CONFIRMATION_MODE_ONLY_MODIFIED = 2;
