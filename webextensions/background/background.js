@@ -90,6 +90,28 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
       details.to = RecipientClassifier.classify(to, configs.internalDomains);
       details.cc = RecipientClassifier.classify(cc, configs.internalDomains);
       details.bcc = RecipientClassifier.classify(bcc, configs.internalDomains);
+      const allInternals = new Set([
+        ...details.to.internals,
+        ...details.cc.internals,
+        ...details.bcc.internals
+      ]);
+      const allExternals = new Set([
+        ...details.to.externals,
+        ...details.cc.externals,
+        ...details.bcc.externals
+      ]);
+      if (configs.confirmOnlyInternals &&
+          allExternals.size == 0) {
+        log('skip confirmation because there is no external recipient');
+        break;
+      }
+      if (allInternals.size + allExternals.size <= configs.minRecipientsCount) {
+        log('skip confirmation because there is too few recipients ',
+            allInternals.size + allExternals.size,
+            '<=',
+            configs.minRecipientsCount);
+        break;
+      }
       log('show confirmation ', tab, details);
     }; break;
   }
