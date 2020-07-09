@@ -6,7 +6,8 @@
 'use strict';
 
 import {
-  configs
+  configs,
+  log
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
 import * as Dialog from '/common/dialog.js';
@@ -26,7 +27,7 @@ browser.runtime.onMessage.addListener((message, sender) => {
 browser.compose.onBeforeSend.addListener(async (tab, details) => {
   switch (configs.confirmationMode) {
     case Constants.CONFIRMATION_MODE_NEVER:
-      console.log('skip confirmation');
+      log('skip confirmation');
       break;
 
     default:
@@ -43,28 +44,28 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
         bcc: details.bcc.sort()
       });
       if (initialRecipients == currentRecipients) {
-        console.log('skip confirmation because recipients are not modified');
+        log('skip confirmation because recipients are not modified');
         break;
       }
       console.log('recipients are modified');
     };
     case Constants.CONFIRMATION_MODE_ALWAYS:
-      console.log('show confirmation');
+      log('show confirmation');
       break;
   }
 
   if (configs.showCountdown) {
-    console.log('show countdown');
+    log('show countdown');
     try {
       await Dialog.open('/dialog/countdown/countdown.html');
     }
     catch(error) {
-      console.log('countdown canceled ', error);
+      log('countdown canceled ', error);
       return { cancel: true };
     }
   }
 
-  console.log('confirmed: OK to send');
+  log('confirmed: OK to send');
   mOriginalDetails.delete(tab.id);
   return;
 });

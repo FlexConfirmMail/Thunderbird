@@ -62,3 +62,15 @@ export const configs = new Configs({
     'debug'
   ]
 });
+
+export function log(message, ...args) {
+  if (!configs || !configs.debug)
+    return;
+
+  const nest   = (new Error()).stack.split('\n').length;
+  let indent = '';
+  for (let i = 0; i < nest; i++) {
+    indent += ' ';
+  }
+  console.log(`flex-confirm-mail: ${indent}${message}`, ...args);
+}
