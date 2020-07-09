@@ -10,6 +10,8 @@
   "countdownDialogCancel": { "message": "Cancel" },
 
 
+  "showLastNameFirst": { "message": "false" },
+
   "config_debug_label": { "message": "Debug mode" },
   "config_all_caption": { "message": "All Configs" }
 }

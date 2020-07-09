@@ -5,6 +5,7 @@
   "author": "ClearCode Inc.",
   "description": "__MSG_extensionDescription__",
   "permissions": [
+    "addressBooks",
     "compose",
     "storage"
   ],

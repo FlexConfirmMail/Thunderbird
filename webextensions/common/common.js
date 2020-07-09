@@ -54,6 +54,8 @@ export const configs = new Configs({
   countdownSeconds: 5,
   countdownAllowSkip: true,
 
+  showLastNameFirst: browser.i18n.getMessage('showLastNameFirst') == 'true', // simulates mail.addr_book.lastnamefirst
+
   configsVersion: 0,
   debug: false
 }, {

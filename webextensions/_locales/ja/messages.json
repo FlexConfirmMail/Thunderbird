@@ -10,6 +10,8 @@
   "countdownDialogCancel": { "message": "キャンセル" },
 
 
+  "showLastNameFirst": { "message": "true" },
+
   "config_debug_label": { "message": "デバッグモード" },
   "config_all_caption": { "message": "すべての設定" }
 }

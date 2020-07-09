@@ -12,6 +12,8 @@ import {
 import * as Constants from '/common/constants.js';
 import * as Dialog from '/common/dialog.js';
 
+import * as ListUtils from './list-utils.js';
+
 const mOriginalDetails = new Map();
 
 browser.runtime.onMessage.addListener((message, sender) => {
@@ -50,7 +52,10 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
       console.log('recipients are modified');
     };
     case Constants.CONFIRMATION_MODE_ALWAYS:
-      log('show confirmation');
+      details.to = await ListUtils.populateListAddresses(details.to);
+      details.cc = await ListUtils.populateListAddresses(details.cc);
+      details.bcc = await ListUtils.populateListAddresses(details.bcc);
+      log('show confirmation ', tab, details);
       break;
   }
 
