@@ -61,7 +61,6 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
         });
         return recipients == initialRecipients;
       }));
-        log('isDrafts ', isDrafts);
 
       if (isDrafts.length == 0) {
         log('need confirmation because it can be a draft');
