@@ -10,6 +10,9 @@
   "confirmDialogBodyCaption": { "message": "Body" },
   "confirmDialogAttachmentsCaption": { "message": "Attachments" },
 
+  "confirmDialogAccept": { "message": "Send" },
+  "confirmDialogCancel": { "message": "Cancel" },
+
 
   "countdownDialogTitle": { "message": "Countdown" },
   "countdownDialogMessage_before": { "message": "\u200b" },

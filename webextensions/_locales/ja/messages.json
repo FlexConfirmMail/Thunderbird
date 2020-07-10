@@ -10,6 +10,9 @@
   "confirmDialogBodyCaption": { "message": "本文" },
   "confirmDialogAttachmentsCaption": { "message": "添付ファイル" },
 
+  "confirmDialogAccept": { "message": "送信" },
+  "confirmDialogCancel": { "message": "キャンセル" },
+
 
   "countdownDialogTitle": { "message": "カウントダウン" },
   "countdownDialogMessage_before": { "message": "あと" },

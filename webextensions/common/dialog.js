@@ -229,7 +229,7 @@ export function cancel() {
   });
 }
 
-function initButton(button, onCommand) {
+export function initButton(button, onCommand) {
   button.addEventListener('click', event => {
     if (event.button == 0 &&
         !event.altKey &&

@@ -36,3 +36,14 @@ body {
 :root.offscreen .dialog-content {
   border: 1px solid;
 }
+
+.dialog-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-top: 0.5em;
+}
+
+.dialog-buttons button {
+  margin: 0 0.5em;
+}

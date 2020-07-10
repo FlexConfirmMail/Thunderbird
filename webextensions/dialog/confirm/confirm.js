@@ -26,6 +26,8 @@ const mBodyCheck           = document.querySelector('#body');
 const mBodyField           = document.querySelector('#bodyField');
 const mAttachmentsAllCheck = document.querySelector('#attachmentsAll');
 const mAttachmentsTable    = document.querySelector('#attachments');
+const mAcceptButton        = document.querySelector('#accept');
+const mCancelButton        = document.querySelector('#cancel');
 
 configs.$loaded.then(async () => {
   mParams = await Dialog.getParams();
@@ -44,6 +46,11 @@ configs.$loaded.then(async () => {
   mBodyField.src = `data:text/html,${encodeURIComponent(mParams.details.body)}`;
 
   mAttachmentsAllCheck.classList.toggle('hidden', !configs.allowCheckAllAttachments);
+
+  Dialog.initButton(mAcceptButton, event => {
+    Dialog.accept();
+  });
+  Dialog.initCancelButton(mCancelButton);
 
   Dialog.notifyReady();
 });
