@@ -34,13 +34,16 @@ configs.$loaded.then(async () => {
   mTopMessage.classList.toggle('hidden', !configs.topMessage);
 
   mInternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllInternals);
+
   mExternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllExternals);
-  mAttachmentsAllCheck.classList.toggle('hidden', !configs.allowCheckAllAttachments);
+
   mSubjectCheck.closest('p').classList.toggle('hidden', !configs.requireCheckSubject);
   mSubjectField.textContent = mParams.details.subject;
 
   mBodyCheck.closest('div').classList.toggle('hidden', !configs.requireCheckBody);
   mBodyField.src = `data:text/html,${encodeURIComponent(mParams.details.body)}`;
+
+  mAttachmentsAllCheck.classList.toggle('hidden', !configs.allowCheckAllAttachments);
 
   Dialog.notifyReady();
 });
