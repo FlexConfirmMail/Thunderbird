@@ -5,3 +5,20 @@
 */
 
 @import url(/resources/dialog.css);
+
+#top-message {
+  display: none;
+}
+
+:root:not(.offscreen),
+:root:not(.offscreen) body,
+.dialog-content,
+.flex-box {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+}
+
+#bodyField {
+  height: 3em;
+}

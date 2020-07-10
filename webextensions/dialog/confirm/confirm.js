@@ -18,7 +18,5 @@ let mParams;
 configs.$loaded.then(async () => {
   mParams = await Dialog.getParams();
 
-  document.querySelector('.dialog-content').textContent = JSON.stringify(mParams);
-
   Dialog.notifyReady();
 });
