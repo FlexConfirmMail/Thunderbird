@@ -100,12 +100,12 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
         ...details.cc.externals,
         ...details.bcc.externals
       ]);
-      if (configs.confirmOnlyInternals &&
+      if (configs.confirmInternalMail &&
           allExternals.size == 0) {
         log('skip confirmation because there is no external recipient');
         break;
       }
-      if (allInternals.size + allExternals.size <= configs.minRecipientsCount) {
+      if (allInternals.size + allExternals.size <= configs.minConfirmationRecipientsCount) {
         log('skip confirmation because there is too few recipients ',
             allInternals.size + allExternals.size,
             '<=',
