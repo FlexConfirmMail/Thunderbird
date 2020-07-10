@@ -54,6 +54,9 @@ export const configs = new Configs({
 
   showLastNameFirst: browser.i18n.getMessage('showLastNameFirst') == 'true', // simulates mail.addr_book.lastnamefirst
 
+  confirmDialogWidth: 680,
+  confirmDialogHeight: 600,
+
   configsVersion: 0,
   debug: false
 }, {

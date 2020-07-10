@@ -156,7 +156,9 @@ async function tryConfirm(tab, details) {
   log('show confirmation ', tab, details);
   return Dialog.open(
     {
-      url: '/dialog/confirm/confirm.html'
+      url: '/dialog/confirm/confirm.html',
+      width:  configs.confirmDialogWidth,
+      height: configs.confirmDialogWidth
     },
     {
       details,
