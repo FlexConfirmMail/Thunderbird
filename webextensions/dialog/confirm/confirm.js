@@ -63,6 +63,10 @@ configs.$loaded.then(async () => {
   mBodyCheck.closest('div').classList.toggle('hidden', !configs.requireCheckBody);
   mBodyField.src = `data:text/html,${encodeURIComponent(mParams.details.body)}`;
 
+  for (const bodyBlockElements of document.querySelectorAll('#bodyAndSubjectContainer, #bodyAndSubjectContainer + hr')) {
+    bodyBlockElements.classList.toggle('hidden', !configs.requireCheckSubject && !configs.requireCheckBody);
+  }
+
   mAttachmentsAllCheck.classList.toggle('hidden', !configs.allowCheckAllAttachments);
   mAttachmentsAllCheck.addEventListener('change', _event => {
     checkAll(mAttachmentsList, mAttachmentsAllCheck.checked);
