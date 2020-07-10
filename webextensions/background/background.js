@@ -114,7 +114,9 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
       }
       log('show confirmation ', tab, details);
       try {
-        await Dialog.open('/dialog/confirm/confirm.html');
+        await Dialog.open({
+          url: '/dialog/confirm/confirm.html'
+        });
       }
       catch(error) {
         log('confirmation canceled ', error);
@@ -126,7 +128,9 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
   if (configs.showCountdown) {
     log('show countdown');
     try {
-      await Dialog.open('/dialog/countdown/countdown.html');
+      await Dialog.open({
+        url: '/dialog/countdown/countdown.html'
+      });
     }
     catch(error) {
       log('countdown canceled ', error);

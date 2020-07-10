@@ -19,7 +19,7 @@ const DEFAULT_HEIGHT_OFFSET = 40; /* top title bar + bottom window frame */
 let lastWidthOffset  = null;
 let lastHeightOffset = null;
 
-export async function open(url) {
+export async function open({ url, left, top, width, height } = {}) {
   const id = generateId();
 
   const extraParams = `dialog-id=${id}&dialog-offscreen=true`;
@@ -30,6 +30,10 @@ export async function open(url) {
   else
     url = `${url}?${extraParams}`;
 
+  const widthOffset  = lastWidthOffset === null ? DEFAULT_WIDTH_OFFSET : lastWidthOffset;
+  const heightOffset = lastHeightOffset === null ? DEFAULT_HEIGHT_OFFSET : lastHeightOffset;
+
+  if (width === undefined || height === undefined) {
   // step 1: render dialog in a hidden iframe to determine its content size
   const dialogContentSize = await new Promise((resolve, _reject) => {
     const loader = document.body.appendChild(document.createElement('iframe'));
@@ -58,8 +62,21 @@ export async function open(url) {
     loader.src = url;
   });
 
-  const widthOffset  = lastWidthOffset === null ? DEFAULT_WIDTH_OFFSET : lastWidthOffset;
-  const heightOffset = lastHeightOffset === null ? DEFAULT_HEIGHT_OFFSET : lastHeightOffset;
+    if (width === undefined)
+      width = dialogContentSize.width - widthOffset;
+    else
+      width -= widthOffset;
+
+    if (height === undefined)
+      height = dialogContentSize.height - heightOffset;
+    else
+      height -= heightOffset;
+  }
+  else {
+    width -= widthOffset;
+    height -= heightOffset;
+  }
+
 
   return new Promise(async (resolve, reject) => {
     let win; // eslint-disable-line prefer-const
@@ -76,8 +93,8 @@ export async function open(url) {
           if (lastWidthOffset != widthOffset ||
               lastHeightOffset != heightOffset) {
             browser.windows.update(win.id, {
-              width:  Math.ceil(dialogContentSize.width + lastWidthOffset),
-              height: Math.ceil(dialogContentSize.height + lastHeightOffset)
+              width:  Math.ceil(width + lastWidthOffset),
+              height: Math.ceil(height + lastHeightOffset)
             });
           }
         }; break;
@@ -110,11 +127,17 @@ export async function open(url) {
     browser.windows.onRemoved.addListener(onClosed);
 
     // step 2: open real dialog window
+    const positionParams = {};
+    if (left !== undefined)
+      positionParams.left = left;
+    if (top !== undefined)
+      positionParams.top = top;
     win = await browser.windows.create({
       type:   'popup',
       url:    url.replace(/(dialog-offscreen)=true/, '$1=false'),
-      width:  Math.ceil(dialogContentSize.width + widthOffset),
-      height: Math.ceil(dialogContentSize.height + heightOffset),
+      width:  Math.ceil(width + widthOffset),
+      height: Math.ceil(height + heightOffset),
+      ...positionParams,
       allowScriptsToClose: true
     });
   });
