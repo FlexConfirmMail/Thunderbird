@@ -48,6 +48,13 @@ configs.$loaded.then(async () => {
   mAttachmentsAllCheck.classList.toggle('hidden', !configs.allowCheckAllAttachments);
 
   Dialog.initButton(mAcceptButton, event => {
+    for (const checkbox of document.querySelectorAll('input[type="checkbox"]')) {
+      if (checkbox.classList.contains('hidden') ||
+          checkbox.closest('.hidden'))
+        continue;
+      if (!checkbox.checked)
+        return;
+    }
     Dialog.accept();
   });
   Dialog.initCancelButton(mCancelButton);
