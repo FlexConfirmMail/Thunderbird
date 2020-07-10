@@ -10,22 +10,6 @@
   display: none !important;
 }
 
-.dialog-content,
-.flex-box {
-  align-items: stretch;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-:root:not(.offscreen) .dialog-content {
-  bottom: 0;
-  left: 0;
-  position: fixed;
-  right: 0;
-  top: 0;
-}
-
 .listbox,
 iframe {
   min-height: 4em;

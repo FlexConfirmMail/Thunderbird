@@ -5,3 +5,7 @@
 */
 
 @import url(/resources/dialog.css);
+
+.countdown-message {
+  text-align: center;
+}

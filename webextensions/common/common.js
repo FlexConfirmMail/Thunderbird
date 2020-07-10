@@ -57,6 +57,9 @@ export const configs = new Configs({
   confirmDialogWidth: 680,
   confirmDialogHeight: 600,
 
+  countdownDialogWidth: 300,
+  countdownDialogHeight: 130,
+
   configsVersion: 0,
   debug: false
 }, {

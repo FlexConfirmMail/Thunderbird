@@ -202,7 +202,9 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
     log('show countdown');
     try {
       await Dialog.open({
-        url: '/dialog/countdown/countdown.html'
+        url: '/dialog/countdown/countdown.html',
+        width: configs.countdownDialogWidth,
+        height: configs.countdownDialogHeight
       });
     }
     catch(error) {
