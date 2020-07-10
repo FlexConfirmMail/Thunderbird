@@ -6,6 +6,7 @@
   "confirmDialogTitle": { "message": "Confirm E-mail addresses." },
   "confirmDialogInternalsCaption": { "message": "Your domain addresses" },
   "confirmDialogExternalsCaption": { "message": "Other domain addresses" },
+  "confirmDialogSubjectCaption": { "message": "Subject: " },
   "confirmDialogBodyCaption": { "message": "Body" },
   "confirmDialogAttachmentsCaption": { "message": "Attachments" },
 

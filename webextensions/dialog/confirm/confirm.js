@@ -21,6 +21,7 @@ const mInternalsTable      = document.querySelector('#internals');
 const mExternalsAllCheck   = document.querySelector('#externalsAll');
 const mExternalsTable      = document.querySelector('#externals');
 const mSubjectCheck        = document.querySelector('#subject');
+const mSubjectField        = document.querySelector('#subjectField');
 const mBodyCheck           = document.querySelector('#body');
 const mBodyField           = document.querySelector('#bodyField');
 const mAttachmentsAllCheck = document.querySelector('#attachmentsAll');
@@ -36,6 +37,8 @@ configs.$loaded.then(async () => {
   mExternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllExternals);
   mAttachmentsAllCheck.classList.toggle('hidden', !configs.allowCheckAllAttachments);
   mSubjectCheck.closest('p').classList.toggle('hidden', !configs.requireCheckSubject);
+  mSubjectField.textContent = mParams.details.subject;
+
   mBodyCheck.closest('div').classList.toggle('hidden', !configs.requireCheckBody);
 
   Dialog.notifyReady();

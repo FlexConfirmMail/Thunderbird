@@ -6,6 +6,7 @@
   "confirmDialogTitle": { "message": "あて先メールアドレスの確認" },
   "confirmDialogInternalsCaption": { "message": "登録済みドメインのメールアドレス" },
   "confirmDialogExternalsCaption": { "message": "外部ドメインのメールアドレス" },
+  "confirmDialogSubjectCaption": { "message": "件名: " },
   "confirmDialogBodyCaption": { "message": "本文" },
   "confirmDialogAttachmentsCaption": { "message": "添付ファイル" },
 
