@@ -36,8 +36,20 @@ configs.$loaded.then(async () => {
   mTopMessage.classList.toggle('hidden', !configs.topMessage);
 
   mInternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllInternals);
+  mInternalsAllCheck.addEventListener('change', _event => {
+    checkAll(mInternalsTable, mInternalsAllCheck.checked);
+  });
+  mInternalsTable.addEventListener('change', _event => {
+    mInternalsAllCheck.checked = isAllChecked(mInternalsTable);
+  });
 
   mExternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllExternals);
+  mExternalsAllCheck.addEventListener('change', _event => {
+    checkAll(mExternalsTable, mExternalsAllCheck.checked);
+  });
+  mExternalsTable.addEventListener('change', _event => {
+    mExternalsAllCheck.checked = isAllChecked(mExternalsTable);
+  });
 
   mSubjectCheck.closest('p').classList.toggle('hidden', !configs.requireCheckSubject);
   mSubjectField.textContent = mParams.details.subject;
@@ -46,18 +58,41 @@ configs.$loaded.then(async () => {
   mBodyField.src = `data:text/html,${encodeURIComponent(mParams.details.body)}`;
 
   mAttachmentsAllCheck.classList.toggle('hidden', !configs.allowCheckAllAttachments);
+  mAttachmentsAllCheck.addEventListener('change', _event => {
+    checkAll(mAttachmentsTable, mAttachmentsAllCheck.checked);
+  });
+  mAttachmentsTable.addEventListener('change', _event => {
+    mAttachmentsAllCheck.checked = isAllChecked(mAttachmentsTable);
+  });
+
+  mAcceptButton.disabled = !isAllChecked();
+  document.addEventListener('change', _event => {
+    mAcceptButton.disabled = !isAllChecked();
+  });
 
   Dialog.initButton(mAcceptButton, _event => {
-    for (const checkbox of document.querySelectorAll('input[type="checkbox"]')) {
-      if (checkbox.classList.contains('hidden') ||
-          checkbox.closest('.hidden'))
-        continue;
-      if (!checkbox.checked)
-        return;
-    }
+    if (!isAllChecked())
+      return;
     Dialog.accept();
   });
   Dialog.initCancelButton(mCancelButton);
 
   Dialog.notifyReady();
 });
+
+function checkAll(container, checked) {
+  for (const checkbox of container.querySelectorAll('input[type="checkbox"]')) {
+    checkbox.checked = checked;
+  }
+}
+
+function isAllChecked(container = document) {
+  for (const checkbox of container.querySelectorAll('input[type="checkbox"]')) {
+    if (checkbox.classList.contains('hidden') ||
+        checkbox.closest('.hidden'))
+      continue;
+    if (!checkbox.checked)
+      return false;
+  }
+  return true;
+}
