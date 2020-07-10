@@ -34,33 +34,33 @@ export async function open({ url, left, top, width, height } = {}) {
   const heightOffset = lastHeightOffset === null ? DEFAULT_HEIGHT_OFFSET : lastHeightOffset;
 
   if (width === undefined || height === undefined) {
-  // step 1: render dialog in a hidden iframe to determine its content size
-  const dialogContentSize = await new Promise((resolve, _reject) => {
-    const loader = document.body.appendChild(document.createElement('iframe'));
-    loader.addEventListener(
-      'load',
-      async () => {
-        loader.contentDocument.documentElement.classList.add('offscreen');
-        const [readyEvent, ] = await Promise.all([
-          new Promise(resolveReady => loader.contentDocument.addEventListener(TYPE_READY, resolveReady, { once: true })),
-          new Promise(resolveNextTick => setTimeout(resolveNextTick, 0))
-        ]);
-        const dialogContent = loader.contentDocument.querySelector('.dialog-content') || loader.contentDocument.body;
-        const rect = dialogContent.getBoundingClientRect();
-        resolve({
-          ...readyEvent.detail,
-          width:  rect.width,
-          height: rect.height
-        });
-        loader.parentNode.removeChild(loader);
-      },
-      {
-        once:    true,
-        capture: true
-      }
-    );
-    loader.src = url;
-  });
+    // step 1: render dialog in a hidden iframe to determine its content size
+    const dialogContentSize = await new Promise((resolve, _reject) => {
+      const loader = document.body.appendChild(document.createElement('iframe'));
+      loader.addEventListener(
+        'load',
+        async () => {
+          loader.contentDocument.documentElement.classList.add('offscreen');
+          const [readyEvent, ] = await Promise.all([
+            new Promise(resolveReady => loader.contentDocument.addEventListener(TYPE_READY, resolveReady, { once: true })),
+            new Promise(resolveNextTick => setTimeout(resolveNextTick, 0))
+          ]);
+          const dialogContent = loader.contentDocument.querySelector('.dialog-content') || loader.contentDocument.body;
+          const rect = dialogContent.getBoundingClientRect();
+          resolve({
+            ...readyEvent.detail,
+            width:  rect.width,
+            height: rect.height
+          });
+          loader.parentNode.removeChild(loader);
+        },
+        {
+          once:    true,
+          capture: true
+        }
+      );
+      loader.src = url;
+    });
 
     if (width === undefined)
       width = dialogContentSize.width - widthOffset;
