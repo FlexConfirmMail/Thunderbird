@@ -13,14 +13,14 @@
     <div class="dialog-content">
       <p id="top-message"></p>
       <div id="addressesContainer" class="flex-box">
-        <fieldset id="internalsContainer">
+        <fieldset id="internalsContainer" class="flex-box">
           <legend><label><input id="internalsAll" type="checkbox">__MSG_confirmDialogInternalsCaption__</label></legend>
-          <table id="internals"></table>
+          <table id="internals" class="flex-box"></table>
         </fieldset>
         <hr class="splitter">
-        <fieldset id="externalsContainer">
+        <fieldset id="externalsContainer" class="flex-box">
           <legend><label><input id="externalsAll" type="checkbox">__MSG_confirmDialogExternalsCaption__</label></legend>
-          <table id="externals"></table>
+          <table id="externals" class="flex-box"></table>
         </fieldset>
       </div>
       <hr class="splitter">
@@ -29,13 +29,14 @@
         <div id="bodyContainer" class="flex-box">
           <p><label><input id="body" type="checkbox">__MSG_confirmDialogBodyCaption__</label></p>
           <iframe id="bodyField"
-                  src="data:text/html,&lt;!DOCTYPE html&gt;&lt;html style=&quot;margin: 0; padding: 0.3em; color: -moz-fieldtext; background: -moz-field; font-family: -moz-fixed;&quot;&gt;&lt;style type=&quot;text/css&quot;&gt;* { font-size: medium !important; } body { margin: 0; } body &gt; *:first-child { margin-top: 0 !important; } &lt;/style&gt;&lt;/html&gt;"></iframe>
+                  src="data:text/html,&lt;!DOCTYPE html&gt;&lt;html style=&quot;margin: 0; padding: 0.3em; color: -moz-fieldtext; background: -moz-field; font-family: -moz-fixed;&quot;&gt;&lt;style type=&quot;text/css&quot;&gt;* { font-size: medium !important; } body { margin: 0; } body &gt; *:first-child { margin-top: 0 !important; } &lt;/style&gt;&lt;/html&gt;"
+                  class="flex-box"></iframe>
         </div>
       </div>
       <hr class="splitter">
-      <fieldset id="attachmentsContainer">
+      <fieldset id="attachmentsContainer" class="flex-box">
         <legend><label><input id="attachmentsAll" type="checkbox">__MSG_confirmDialogAttachmentsCaption__</label></legend>
-        <table id="attachments"></table>
+        <table id="attachments" class="flex-box"></table>
       </fieldset>
     </div>
   </body>

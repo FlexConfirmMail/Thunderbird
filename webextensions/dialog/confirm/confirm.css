@@ -10,15 +10,31 @@
   display: none;
 }
 
-:root:not(.offscreen),
-:root:not(.offscreen) body,
 .dialog-content,
 .flex-box {
   align-items: stretch;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+}
+
+:root:not(.offscreen) .dialog-content {
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
 }
 
 #bodyField {
   height: 3em;
+}
+
+hr.splitter {
+  border: none;
+  cursor: row-resize;
+  height: 0.25em;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
