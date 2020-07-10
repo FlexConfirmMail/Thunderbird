@@ -17,15 +17,15 @@ let mParams;
 
 const mTopMessage          = document.querySelector('#top-message');
 const mInternalsAllCheck   = document.querySelector('#internalsAll');
-const mInternalsTable      = document.querySelector('#internals');
+const mInternalsList       = document.querySelector('#internals');
 const mExternalsAllCheck   = document.querySelector('#externalsAll');
-const mExternalsTable      = document.querySelector('#externals');
+const mExternalsList       = document.querySelector('#externals');
 const mSubjectCheck        = document.querySelector('#subject');
 const mSubjectField        = document.querySelector('#subjectField');
 const mBodyCheck           = document.querySelector('#body');
 const mBodyField           = document.querySelector('#bodyField');
 const mAttachmentsAllCheck = document.querySelector('#attachmentsAll');
-const mAttachmentsTable    = document.querySelector('#attachments');
+const mAttachmentsList     = document.querySelector('#attachments');
 const mAcceptButton        = document.querySelector('#accept');
 const mCancelButton        = document.querySelector('#cancel');
 
@@ -37,19 +37,25 @@ configs.$loaded.then(async () => {
 
   mInternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllInternals);
   mInternalsAllCheck.addEventListener('change', _event => {
-    checkAll(mInternalsTable, mInternalsAllCheck.checked);
+    checkAll(mInternalsList, mInternalsAllCheck.checked);
   });
-  mInternalsTable.addEventListener('change', _event => {
-    mInternalsAllCheck.checked = isAllChecked(mInternalsTable);
+  mInternalsList.addEventListener('change', _event => {
+    mInternalsAllCheck.checked = isAllChecked(mInternalsList);
   });
+  for (const recipient of mParams.internals) {
+    mInternalsList.appendChild(createRecipientRow(recipient.type, recipient.address));
+  }
 
   mExternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllExternals);
   mExternalsAllCheck.addEventListener('change', _event => {
-    checkAll(mExternalsTable, mExternalsAllCheck.checked);
+    checkAll(mExternalsList, mExternalsAllCheck.checked);
   });
-  mExternalsTable.addEventListener('change', _event => {
-    mExternalsAllCheck.checked = isAllChecked(mExternalsTable);
+  mExternalsList.addEventListener('change', _event => {
+    mExternalsAllCheck.checked = isAllChecked(mExternalsList);
   });
+  for (const recipient of mParams.externals) {
+    mExternalsList.appendChild(createRecipientRow(recipient.type, recipient.address));
+  }
 
   mSubjectCheck.closest('p').classList.toggle('hidden', !configs.requireCheckSubject);
   mSubjectField.textContent = mParams.details.subject;
@@ -59,10 +65,10 @@ configs.$loaded.then(async () => {
 
   mAttachmentsAllCheck.classList.toggle('hidden', !configs.allowCheckAllAttachments);
   mAttachmentsAllCheck.addEventListener('change', _event => {
-    checkAll(mAttachmentsTable, mAttachmentsAllCheck.checked);
+    checkAll(mAttachmentsList, mAttachmentsAllCheck.checked);
   });
-  mAttachmentsTable.addEventListener('change', _event => {
-    mAttachmentsAllCheck.checked = isAllChecked(mAttachmentsTable);
+  mAttachmentsList.addEventListener('change', _event => {
+    mAttachmentsAllCheck.checked = isAllChecked(mAttachmentsList);
   });
 
   mAcceptButton.disabled = !isAllChecked();
@@ -79,6 +85,27 @@ configs.$loaded.then(async () => {
 
   Dialog.notifyReady();
 });
+
+function createRecipientRow(type, address) {
+  const row = createCheckableRow([`${type}:`, address]);
+  row.setAttribute('title', `${type}: ${address}`);
+  return row;
+}
+
+let mCreatedCheckboxCount = 0;
+
+function createCheckableRow(columns) {
+  const row = document.createElement('div');
+  const checkbox = row.appendChild(document.createElement('input'));
+  checkbox.id = `checkbox-created-${mCreatedCheckboxCount++}`;
+  checkbox.type = 'checkbox';
+  for (const column of columns) {
+    const label = row.appendChild(document.createElement('label'));
+    label.appendChild(document.createElement('span')).textContent = column;
+    label.setAttribute('for', checkbox.id);
+  }
+  return row;
+}
 
 function checkAll(container, checked) {
   for (const checkbox of container.querySelectorAll('input[type="checkbox"]')) {

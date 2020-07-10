@@ -87,18 +87,18 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
         ListUtils.populateListAddresses(details.cc),
         ListUtils.populateListAddresses(details.bcc)
       ]);
-      details.to = RecipientClassifier.classify(to, configs.internalDomains);
-      details.cc = RecipientClassifier.classify(cc, configs.internalDomains);
-      details.bcc = RecipientClassifier.classify(bcc, configs.internalDomains);
+      const classifiedTo = RecipientClassifier.classify(to, configs.internalDomains);
+      const classifiedCc = RecipientClassifier.classify(cc, configs.internalDomains);
+      const classifiedBcc = RecipientClassifier.classify(bcc, configs.internalDomains);
       const allInternals = new Set([
-        ...details.to.internals,
-        ...details.cc.internals,
-        ...details.bcc.internals
+        ...classifiedTo.internals,
+        ...classifiedCc.internals,
+        ...classifiedBcc.internals
       ]);
       const allExternals = new Set([
-        ...details.to.externals,
-        ...details.cc.externals,
-        ...details.bcc.externals
+        ...classifiedTo.externals,
+        ...classifiedCc.externals,
+        ...classifiedBcc.externals
       ]);
       if (configs.confirmInternalMail &&
           allExternals.size == 0) {
@@ -116,7 +116,19 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
       try {
         await Dialog.open({
           url: '/dialog/confirm/confirm.html'
-        }, { details });
+        }, {
+          details,
+          internals: [
+            ...classifiedTo.internals.map(address => ({ type: 'To', address })),
+            ...classifiedCc.internals.map(address => ({ type: 'Cc', address })),
+            ...classifiedBcc.internals.map(address => ({ type: 'Bcc', address }))
+          ],
+          externals: [
+            ...classifiedTo.externals.map(address => ({ type: 'To', address })),
+            ...classifiedCc.externals.map(address => ({ type: 'Cc', address })),
+            ...classifiedBcc.externals.map(address => ({ type: 'Bcc', address }))
+          ]
+        });
       }
       catch(error) {
         log('confirmation canceled ', error);

@@ -38,3 +38,41 @@ hr.splitter {
   padding: 0;
   width: 100%;
 }
+
+.listbox {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  white-space: nowrap;
+}
+.listbox > * {
+  align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.listbox > * > * {
+  position: relative;
+}
+.listbox > * > *:last-child {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+#internals label:nth-child(2),
+#externals label:nth-child(2) {
+  width: 3em;
+}
+
+#internals label:last-child span,
+#externals label:last-child span {
+  bottom: 0;
+  display: block;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  text-overflow: ellipsis;
+  top: 0;
+}
