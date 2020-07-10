@@ -116,7 +116,7 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
       try {
         await Dialog.open({
           url: '/dialog/confirm/confirm.html'
-        });
+        }, { details });
       }
       catch(error) {
         log('confirmation canceled ', error);

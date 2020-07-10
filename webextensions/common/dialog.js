@@ -5,6 +5,8 @@
 */
 'use strict';
 
+export const TYPE_FETCH_PARAMS = 'dialog-fetch-params';
+export const TYPE_RESPOND_PARAMS = 'dialog-respond-params';
 export const TYPE_READY = 'dialog-ready';
 export const TYPE_ACCEPT = 'dialog-accept';
 export const TYPE_CANCEL = 'dialog-cancel';
@@ -19,7 +21,7 @@ const DEFAULT_HEIGHT_OFFSET = 40; /* top title bar + bottom window frame */
 let lastWidthOffset  = null;
 let lastHeightOffset = null;
 
-export async function open({ url, left, top, width, height } = {}) {
+export async function open({ url, left, top, width, height } = {}, dialogParams = {}) {
   const id = generateId();
 
   const extraParams = `dialog-id=${id}&dialog-offscreen=true`;
@@ -41,8 +43,20 @@ export async function open({ url, left, top, width, height } = {}) {
         'load',
         async () => {
           loader.contentDocument.documentElement.classList.add('offscreen');
+          const onFetchParams = () => {
+            loader.contentDocument.dispatchEvent(new loader.contentWindow.CustomEvent(TYPE_RESPOND_PARAMS, {
+              detail:     dialogParams,
+              bubbles:    true,
+              cancelable: false,
+              composed:   true
+            }));
+          };
+          loader.contentDocument.addEventListener(TYPE_FETCH_PARAMS, onFetchParams);
           const [readyEvent, ] = await Promise.all([
-            new Promise(resolveReady => loader.contentDocument.addEventListener(TYPE_READY, resolveReady, { once: true })),
+            new Promise(resolveReady => loader.contentDocument.addEventListener(TYPE_READY, event => {
+              loader.contentDocument.removeEventListener(TYPE_FETCH_PARAMS, onFetchParams);
+              resolveReady(event);
+            }, { once: true })),
             new Promise(resolveNextTick => setTimeout(resolveNextTick, 0))
           ]);
           const dialogContent = loader.contentDocument.querySelector('.dialog-content') || loader.contentDocument.body;
@@ -86,6 +100,9 @@ export async function open({ url, left, top, width, height } = {}) {
         return;
 
       switch (message.type) {
+        case TYPE_FETCH_PARAMS:
+          return Promise.resolve(dialogParams);
+
         case TYPE_READY: {
           // step 3: shrink or expand the dialog window if the offset is changed
           lastWidthOffset  = message.windowWidthOffset;
@@ -152,6 +169,27 @@ function getCurrentId() {
   return params.get('dialog-id');
 }
 
+export async function getParams() {
+  const params = new URLSearchParams(location.search);
+  const id = params.get('dialog-id');
+
+  if (params.get('dialog-offscreen') != 'true')
+    return browser.runtime.sendMessage({
+      type: TYPE_FETCH_PARAMS,
+      id
+    });
+  else
+    return new Promise((resolve, _reject) => {
+      document.addEventListener(TYPE_RESPOND_PARAMS, event => resolve(event.detail), { once: true });
+      document.dispatchEvent(new CustomEvent(TYPE_FETCH_PARAMS, {
+        detail:     null,
+        bubbles:    true,
+        cancelable: false,
+        composed:   true
+      }));
+    });
+}
+
 export function notifyReady() {
   const params = new URLSearchParams(location.search);
   const id = params.get('dialog-id');
@@ -161,19 +199,19 @@ export function notifyReady() {
     windowWidthOffset:  Math.max(0, window.outerWidth - window.innerWidth),
     windowHeightOffset: Math.max(0, window.outerHeight - window.innerHeight)
   };
-  const event = new CustomEvent(TYPE_READY, {
-    detail,
-    bubbles:    true,
-    cancelable: false,
-    composed:   true
-  });
-  document.dispatchEvent(event);
 
   if (params.get('dialog-offscreen') != 'true')
     browser.runtime.sendMessage({
       type: TYPE_READY,
       ...detail
     });
+  else
+    document.dispatchEvent(new CustomEvent(TYPE_READY, {
+      detail,
+      bubbles:    true,
+      cancelable: false,
+      composed:   true
+    }));
 }
 
 export function accept(detail = null) {

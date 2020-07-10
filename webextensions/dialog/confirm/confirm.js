@@ -13,6 +13,12 @@ import {
 
 import * as Dialog from '/common/dialog.js';
 
-configs.$loaded.then(() => {
+let mParams;
+
+configs.$loaded.then(async () => {
+  mParams = await Dialog.getParams();
+
+  document.querySelector('.dialog-content').textContent = JSON.stringify(mParams);
+
   Dialog.notifyReady();
 });
