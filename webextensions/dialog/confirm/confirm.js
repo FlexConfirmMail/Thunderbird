@@ -40,6 +40,7 @@ configs.$loaded.then(async () => {
   mSubjectField.textContent = mParams.details.subject;
 
   mBodyCheck.closest('div').classList.toggle('hidden', !configs.requireCheckBody);
+  mBodyField.src = `data:text/html,${encodeURIComponent(mParams.details.body)}`;
 
   Dialog.notifyReady();
 });
