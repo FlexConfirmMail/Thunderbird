@@ -3,6 +3,13 @@
   "extensionDescription": { "message": "柔軟なルールに基づいて、送信前に宛先のアドレスや添付ファイルの確認を行うようにします。" },
 
 
+  "confirmDialogTitle": { "message": "あて先メールアドレスの確認" },
+  "confirmDialogInternalsCaption": { "message": "登録済みドメインへのメール" },
+  "confirmDialogExternalsCaption": { "message": "外部ドメインへのメール" },
+  "confirmDialogBodyCaption": { "message": "本文" },
+  "confirmDialogAttachmentsCaption": { "message": "添付ファイル" },
+
+
   "countdownDialogTitle": { "message": "カウントダウン" },
   "countdownDialogMessage_before": { "message": "あと" },
   "countdownDialogMessage_after": { "message": "秒で送信します" },

@@ -3,6 +3,13 @@
   "extensionDescription": { "message": "Confirm mailaddress and attachments based on flexible rules." },
 
 
+  "confirmDialogTitle": { "message": "Confirm E-mail addresses." },
+  "confirmDialogInternalsCaption": { "message": "Your domain addresses" },
+  "confirmDialogExternalsCaption": { "message": "Other domain addresses" },
+  "confirmDialogBodyCaption": { "message": "Body" },
+  "confirmDialogAttachmentsCaption": { "message": "Attachments" },
+
+
   "countdownDialogTitle": { "message": "Countdown" },
   "countdownDialogMessage_before": { "message": "\u200b" },
   "countdownDialogMessage_after": { "message": " seconds left to send." },

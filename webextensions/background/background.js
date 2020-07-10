@@ -113,6 +113,13 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
         break;
       }
       log('show confirmation ', tab, details);
+      try {
+        await Dialog.open('/dialog/confirm/confirm.html');
+      }
+      catch(error) {
+        log('confirmation canceled ', error);
+        return { cancel: true };
+      }
     }; break;
   }
 
