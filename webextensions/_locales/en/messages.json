@@ -15,6 +15,15 @@
   "confirmDialogCancel": { "message": "Cancel" },
 
 
+  "confirmAttentionDomainsTitle": { "message": "Recipients with attention domains" },
+  "confirmAttentionDomainsMessage": { "message": "These recipients with attention domains are found:\n\n$RECIPIENTS$\n\nIf there is no problem, continue to send.",
+    "placeholders": {
+      "recipients": { "content": "$1", "example": "mail@example.com" }
+    }},
+  "confirmAttentionDomainsAccept": { "message": "Send" },
+  "confirmAttentionDomainsCancel": { "message": "Cancel" },
+
+
   "countdownDialogTitle": { "message": "Countdown" },
   "countdownDialogMessage_before": { "message": "\u200b" },
   "countdownDialogMessage_after": { "message": " seconds left to send." },

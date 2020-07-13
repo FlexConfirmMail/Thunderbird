@@ -6,11 +6,14 @@
 'use strict';
 
 import '/extlib/l10n.js';
+//import RichConfirm from '/extlib/RichConfirm.js';
 
 import {
-  configs
+  configs,
+  log
 } from '/common/common.js';
 
+import * as Constants from '/common/constants.js';
 import * as Dialog from '/common/dialog.js';
 
 let mParams;
@@ -47,9 +50,13 @@ configs.$loaded.then(async () => {
     mAcceptButton.disabled = !isAllChecked();
   });
 
-  Dialog.initButton(mAcceptButton, _event => {
+  Dialog.initButton(mAcceptButton, async _event => {
     if (!isAllChecked())
       return;
+
+    if (!(await confirmAttentionDomains()))
+      return;
+
     Dialog.accept();
   });
   Dialog.initCancelButton(mCancelButton);
@@ -223,4 +230,50 @@ function isAllChecked(container = document) {
       return false;
   }
   return true;
+}
+
+
+async function confirmAttentionDomains() {
+  const mode = configs.attentionDomainsConfirmationMode;
+  const shouldConfirm = (
+    mode == Constants.ATTENTION_CONFIRMATION_MODE_ALWAYS ||
+    mode == Constants.ATTENTION_CONFIRMATION_MODE_ONLY_WITH_ATTACHMENTS && mParams.attachments.length > 0
+  );
+  log('confirmAttentionDomains shouldConfirm = ', shouldConfirm);
+  if (!shouldConfirm)
+    return true;
+
+  const attentionDomains = new Set(configs.attentionDomains);
+  const attentionRecipients = mParams.externals.filter(recipient => attentionDomains.has(recipient.domain)).map(recipient => recipient.address);
+  log('confirmAttentionDomains attentionRecipients = ', attentionRecipients);
+  if (attentionRecipients.length == 0)
+    return true;
+
+  return window.confirm(browser.i18n.getMessage('confirmAttentionDomainsMessage', [attentionRecipients.join('\n')]));
+  /*
+  let result;
+  try {
+    result = await RichConfirm.showInPopup(mParams.windowId, {
+      modal: true,
+      type:  'common-dialog',
+      url:   '/resources/blank.html',
+      title: browser.i18n.getMessage('confirmAttentionDomainsTitle'),
+      message: browser.i18n.getMessage('confirmAttentionDomainsMessage', [attentionRecipients.join('\n')]),
+      buttons: [
+        browser.i18n.getMessage('confirmAttentionDomainsAccept'),
+        browser.i18n.getMessage('confirmAttentionDomainsCancel')
+      ]
+    });
+  }
+  catch(_error) {
+    result = { buttonIndex: -1 };
+  }
+  log('confirmAttentionDomains result.buttonIndex = ', result.buttonIndex);
+  switch (result.buttonIndex) {
+    case 0:
+      return true;
+    default:
+      return false;
+  }
+  */
 }

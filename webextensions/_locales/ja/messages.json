@@ -15,6 +15,15 @@
   "confirmDialogCancel": { "message": "キャンセル" },
 
 
+  "confirmAttentionDomainsTitle": { "message": "特別に注意が必要な宛先" },
+  "confirmAttentionDomainsMessage": { "message": "特別に注意が必要なドメインに属する以下の宛先が含まれています。\n\n$RECIPIENTS$\n\n問題がない事を確認の上でメールを送信してください。",
+    "placeholders": {
+      "recipients": { "content": "$1", "example": "mail@example.com" }
+    }},
+  "confirmAttentionDomainsAccept": { "message": "送信" },
+  "confirmAttentionDomainsCancel": { "message": "キャンセル" },
+
+
   "countdownDialogTitle": { "message": "カウントダウン" },
   "countdownDialogMessage_before": { "message": "あと" },
   "countdownDialogMessage_after": { "message": "秒で送信します" },
