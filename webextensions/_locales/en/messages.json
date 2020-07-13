@@ -24,6 +24,15 @@
   "confirmAttentionDomainsCancel": { "message": "Cancel" },
 
 
+  "confirmAttentionSuffixesTitle": { "message": "Attachments with attention extensions" },
+  "confirmAttentionSuffixesMessage": { "message": "These attachments with attention extensions are found:\n\n$ATTACHMENTS$\n\nIf there is no problem, continue to send.",
+    "placeholders": {
+      "attachments": { "content": "$1", "example": "file.txt" }
+    }},
+  "confirmAttentionDomainsAccept": { "message": "Send" },
+  "confirmAttentionDomainsCancel": { "message": "Cancel" },
+
+
   "countdownDialogTitle": { "message": "Countdown" },
   "countdownDialogMessage_before": { "message": "\u200b" },
   "countdownDialogMessage_after": { "message": " seconds left to send." },

@@ -57,6 +57,9 @@ configs.$loaded.then(async () => {
     if (!(await confirmAttentionDomains()))
       return;
 
+    if (!(await confirmAttentionSuffixes()))
+      return;
+
     Dialog.accept();
   });
   Dialog.initCancelButton(mCancelButton);
@@ -269,6 +272,46 @@ async function confirmAttentionDomains() {
     result = { buttonIndex: -1 };
   }
   log('confirmAttentionDomains result.buttonIndex = ', result.buttonIndex);
+  switch (result.buttonIndex) {
+    case 0:
+      return true;
+    default:
+      return false;
+  }
+  */
+}
+
+async function confirmAttentionSuffixes() {
+  log('confirmAttentionSuffixes shouldConfirm = ', configs.attentionSuffixesConfirm);
+  if (!configs.attentionSuffixesConfirm)
+    return true;
+
+  const attentionSuffixesMatcher = new RegExp(`\\.(${configs.attentionSuffixes.map(suffix => suffix.toLowerCase().replace(/^\./, '')).join('|')})$`, 'i');
+  const attentionAttachments = mParams.attachments.filter(attachment => attentionSuffixesMatcher.test(attachment.name)).map(attachment => attachment.name);
+  log('confirmAttentionSuffixes attentionAttachments = ', attentionAttachments);
+  if (attentionAttachments.length == 0)
+    return true;
+
+  return window.confirm(browser.i18n.getMessage('confirmAttentionSuffixesMessage', [attentionAttachments.join('\n')]));
+  /*
+  let result;
+  try {
+    result = await RichConfirm.showInPopup(mParams.windowId, {
+      modal: true,
+      type:  'common-dialog',
+      url:   '/resources/blank.html',
+      title: browser.i18n.getMessage('confirmAttentionSuffixesTitle'),
+      message: browser.i18n.getMessage('confirmAttentionSuffixesMessage', [attentionAttachments.join('\n')]),
+      buttons: [
+        browser.i18n.getMessage('confirmAttentionSuffixesAccept'),
+        browser.i18n.getMessage('confirmAttentionSuffixesCancel')
+      ]
+    });
+  }
+  catch(_error) {
+    result = { buttonIndex: -1 };
+  }
+  log('confirmAttentionSuffixes result.buttonIndex = ', result.buttonIndex);
   switch (result.buttonIndex) {
     case 0:
       return true;

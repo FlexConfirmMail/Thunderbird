@@ -24,6 +24,15 @@
   "confirmAttentionDomainsCancel": { "message": "キャンセル" },
 
 
+  "confirmAttentionSuffixesTitle": { "message": "特別に注意が必要な添付ファイル" },
+  "confirmAttentionSuffixesMessage": { "message": "特別に注意が必要な拡張子を持つ以下の添付ファイルが含まれています。\n\n$ATTACHMENTS$\n\n問題がない事を確認の上でメールを送信してください。",
+    "placeholders": {
+      "attachments": { "content": "$1", "example": "file.txt" }
+    }},
+  "confirmAttentionSuffixesAccept": { "message": "送信" },
+  "confirmAttentionSuffixesCancel": { "message": "キャンセル" },
+
+
   "countdownDialogTitle": { "message": "カウントダウン" },
   "countdownDialogMessage_before": { "message": "あと" },
   "countdownDialogMessage_after": { "message": "秒で送信します" },
