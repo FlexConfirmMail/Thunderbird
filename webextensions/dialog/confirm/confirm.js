@@ -35,45 +35,10 @@ configs.$loaded.then(async () => {
   mTopMessage.textContent = configs.topMessage;
   mTopMessage.classList.toggle('hidden', !configs.topMessage);
 
-  mInternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllInternals);
-  mInternalsAllCheck.addEventListener('change', _event => {
-    checkAll(mInternalsList, mInternalsAllCheck.checked);
-  });
-  mInternalsList.addEventListener('change', _event => {
-    mInternalsAllCheck.checked = isAllChecked(mInternalsList);
-  });
-  for (const recipient of mParams.internals) {
-    mInternalsList.appendChild(createRecipientRow(recipient.type, recipient.address));
-  }
-
-  mExternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllExternals);
-  mExternalsAllCheck.addEventListener('change', _event => {
-    checkAll(mExternalsList, mExternalsAllCheck.checked);
-  });
-  mExternalsList.addEventListener('change', _event => {
-    mExternalsAllCheck.checked = isAllChecked(mExternalsList);
-  });
-  for (const recipient of mParams.externals) {
-    mExternalsList.appendChild(createRecipientRow(recipient.type, recipient.address));
-  }
-
-  mSubjectCheck.closest('p').classList.toggle('hidden', !configs.requireCheckSubject);
-  mSubjectField.textContent = mParams.details.subject;
-
-  mBodyCheck.closest('div').classList.toggle('hidden', !configs.requireCheckBody);
-  mBodyField.src = `data:text/html,${encodeURIComponent(mParams.details.body)}`;
-
-  for (const bodyBlockElements of document.querySelectorAll('#bodyAndSubjectContainer, #bodyAndSubjectContainer + hr')) {
-    bodyBlockElements.classList.toggle('hidden', !configs.requireCheckSubject && !configs.requireCheckBody);
-  }
-
-  mAttachmentsAllCheck.classList.toggle('hidden', !configs.allowCheckAllAttachments);
-  mAttachmentsAllCheck.addEventListener('change', _event => {
-    checkAll(mAttachmentsList, mAttachmentsAllCheck.checked);
-  });
-  mAttachmentsList.addEventListener('change', _event => {
-    mAttachmentsAllCheck.checked = isAllChecked(mAttachmentsList);
-  });
+  initInternals();
+  initExternals();
+  initBodyBlock();
+  initAttachments();
 
   mAcceptButton.disabled = !isAllChecked();
   document.addEventListener('change', _event => {
@@ -89,6 +54,54 @@ configs.$loaded.then(async () => {
 
   Dialog.notifyReady();
 });
+
+function initInternals() {
+  mInternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllInternals);
+  mInternalsAllCheck.addEventListener('change', _event => {
+    checkAll(mInternalsList, mInternalsAllCheck.checked);
+  });
+  mInternalsList.addEventListener('change', _event => {
+    mInternalsAllCheck.checked = isAllChecked(mInternalsList);
+  });
+  for (const recipient of mParams.internals) {
+    mInternalsList.appendChild(createRecipientRow(recipient.type, recipient.address));
+  }
+}
+
+function initExternals() {
+  mExternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllExternals);
+  mExternalsAllCheck.addEventListener('change', _event => {
+    checkAll(mExternalsList, mExternalsAllCheck.checked);
+  });
+  mExternalsList.addEventListener('change', _event => {
+    mExternalsAllCheck.checked = isAllChecked(mExternalsList);
+  });
+  for (const recipient of mParams.externals) {
+    mExternalsList.appendChild(createRecipientRow(recipient.type, recipient.address));
+  }
+}
+
+function initBodyBlock() {
+  mSubjectCheck.closest('p').classList.toggle('hidden', !configs.requireCheckSubject);
+  mSubjectField.textContent = mParams.details.subject;
+
+  mBodyCheck.closest('div').classList.toggle('hidden', !configs.requireCheckBody);
+  mBodyField.src = `data:text/html,${encodeURIComponent(mParams.details.body)}`;
+
+  for (const bodyBlockElements of document.querySelectorAll('#bodyAndSubjectContainer, #bodyAndSubjectContainer + hr')) {
+    bodyBlockElements.classList.toggle('hidden', !configs.requireCheckSubject && !configs.requireCheckBody);
+  }
+}
+
+function initAttachments() {
+  mAttachmentsAllCheck.classList.toggle('hidden', !configs.allowCheckAllAttachments);
+  mAttachmentsAllCheck.addEventListener('change', _event => {
+    checkAll(mAttachmentsList, mAttachmentsAllCheck.checked);
+  });
+  mAttachmentsList.addEventListener('change', _event => {
+    mAttachmentsAllCheck.checked = isAllChecked(mAttachmentsList);
+  });
+}
 
 function createRecipientRow(type, address) {
   const row = createCheckableRow([`${type}:`, address]);
