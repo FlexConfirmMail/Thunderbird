@@ -64,7 +64,7 @@ function initInternals() {
     mInternalsAllCheck.checked = isAllChecked(mInternalsList);
   });
   for (const recipient of mParams.internals) {
-    mInternalsList.appendChild(createRecipientRow(recipient.type, recipient.address));
+    mInternalsList.appendChild(createRecipientRow(recipient.type, recipient.recipient));
   }
 }
 
@@ -73,11 +73,33 @@ function initExternals() {
   mExternalsAllCheck.addEventListener('change', _event => {
     checkAll(mExternalsList, mExternalsAllCheck.checked);
   });
-  mExternalsList.addEventListener('change', _event => {
+  mExternalsList.addEventListener('change', event => {
+    const row = event.target.closest('.row');
+    const domainRow = mExternalsList.querySelector(`.domain[data-domain="${row.dataset.domain}"]`);
+    const recipientCheckboxes = mExternalsList.querySelectorAll(`.recipient[data-domain="${row.dataset.domain}"] input[type="checkbox"]`);
+    domainRow.classList.toggle('checked', Array.from(recipientCheckboxes).every(checkbox => checkbox.checked));
     mExternalsAllCheck.checked = isAllChecked(mExternalsList);
   });
+
+  const recipientsOfDomain = new Map();
   for (const recipient of mParams.externals) {
-    mExternalsList.appendChild(createRecipientRow(recipient.type, recipient.address));
+    const recipients = recipientsOfDomain.get(recipient.domain) || [];
+    recipients.push(recipient);
+    recipientsOfDomain.set(recipient.domain, recipients);
+  }
+
+  for (const domain of recipientsOfDomain.keys()) {
+    const domainRow = createRow([domain]);
+    domainRow.setAttribute('title', domain);
+    domainRow.classList.add('domain');
+    domainRow.dataset.domain = domain;
+    mExternalsList.appendChild(domainRow);
+
+    for (const recipient of recipientsOfDomain.get(domain)) {
+      const recipientRow = createRecipientRow(recipient.type, recipient.recipient);
+      recipientRow.dataset.domain = domain;
+      mExternalsList.appendChild(recipientRow);
+    }
   }
 }
 
@@ -106,20 +128,29 @@ function initAttachments() {
 function createRecipientRow(type, address) {
   const row = createCheckableRow([`${type}:`, address]);
   row.setAttribute('title', `${type}: ${address}`);
+  row.classList.add('recipient');
   return row;
 }
 
 let mCreatedCheckboxCount = 0;
 
 function createCheckableRow(columns) {
-  const row = document.createElement('div');
-  const checkbox = row.appendChild(document.createElement('input'));
+  const row = createRow(columns);
+  const checkbox = row.insertBefore(document.createElement('input'), row.firstChild);
   checkbox.id = `checkbox-created-${mCreatedCheckboxCount++}`;
   checkbox.type = 'checkbox';
+  for (const label of row.querySelectorAll('label')) {
+    label.setAttribute('for', checkbox.id);
+  }
+  return row;
+}
+
+function createRow(columns) {
+  const row = document.createElement('div');
+  row.classList.add('row');
   for (const column of columns) {
     const label = row.appendChild(document.createElement('label'));
     label.appendChild(document.createElement('span')).textContent = column;
-    label.setAttribute('for', checkbox.id);
   }
   return row;
 }

@@ -163,14 +163,14 @@ async function tryConfirm(tab, details) {
     {
       details,
       internals: [
-        ...classifiedTo.internals.map(address => ({ type: 'To', address })),
-        ...classifiedCc.internals.map(address => ({ type: 'Cc', address })),
-        ...classifiedBcc.internals.map(address => ({ type: 'Bcc', address }))
+        ...classifiedTo.internals.map(recipient => ({ ...recipient, type: 'To' })),
+        ...classifiedCc.internals.map(recipient => ({ ...recipient, type: 'Cc' })),
+        ...classifiedBcc.internals.map(recipient => ({ ...recipient, type: 'Bcc' }))
       ],
       externals: [
-        ...classifiedTo.externals.map(address => ({ type: 'To', address })),
-        ...classifiedCc.externals.map(address => ({ type: 'Cc', address })),
-        ...classifiedBcc.externals.map(address => ({ type: 'Bcc', address }))
+        ...classifiedTo.externals.map(recipient => ({ ...recipient, type: 'To' })),
+        ...classifiedCc.externals.map(recipient => ({ ...recipient, type: 'Cc' })),
+        ...classifiedBcc.externals.map(recipient => ({ ...recipient, type: 'Bcc' }))
       ]
     }
   );

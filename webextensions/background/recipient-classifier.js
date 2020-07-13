@@ -18,10 +18,15 @@ export function classify(recipients, internalDomains = []) {
   for (const recipient of recipients) {
     const address = /<([^@]+@[^>]+)>\s*$/.test(recipient) ? RegExp.$1 : recipient;
     const domain = address.split('@')[1].toLowerCase();
+    const classifiedRecipient = {
+      recipient,
+      address,
+      domain
+    };
     if (internalDomainsSet.has(domain))
-      internals.push(recipient);
+      internals.push(classifiedRecipient);
     else
-      externals.push(recipient);
+      externals.push(classifiedRecipient);
   }
 
   return { internals, externals };

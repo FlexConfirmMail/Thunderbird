@@ -45,13 +45,13 @@ hr.splitter {
   flex-shrink: 1;
 }
 
-#internals label:nth-child(2),
-#externals label:nth-child(2) {
+/* recipient type column */
+.row.recipient label:nth-child(2),
+.row.recipient label:nth-child(2) {
   width: 3em;
 }
 
-#internals label:last-child span,
-#externals label:last-child span {
+.listbox label:last-child span {
   bottom: 0;
   display: block;
   left: 0;
@@ -60,4 +60,21 @@ hr.splitter {
   right: 0;
   text-overflow: ellipsis;
   top: 0;
+}
+
+/* placeholder for the cell */
+.row.domain label::after {
+  content: " ";
+}
+
+.row.domain::before {
+  content: "☆";
+}
+
+.row.domain.checked::before {
+  content: "★";
+}
+
+#externals .row.recipient {
+  padding-left: 1em;
 }
