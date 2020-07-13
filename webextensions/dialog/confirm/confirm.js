@@ -89,16 +89,11 @@ function initExternals() {
   }
 
   for (const domain of recipientsOfDomain.keys()) {
-    const domainRow = createRow([domain]);
-    domainRow.setAttribute('title', domain);
-    domainRow.classList.add('domain');
-    domainRow.dataset.domain = domain;
-    mExternalsList.appendChild(domainRow);
-
+    mExternalsList.appendChild(createDomainRow(domain));
     for (const recipient of recipientsOfDomain.get(domain)) {
-      const recipientRow = createRecipientRow(recipient.type, recipient.recipient);
-      recipientRow.dataset.domain = domain;
-      mExternalsList.appendChild(recipientRow);
+      const row = createRecipientRow(recipient.type, recipient.recipient);
+      row.dataset.domain = domain;
+      mExternalsList.appendChild(row);
     }
   }
 }
@@ -116,6 +111,7 @@ function initBodyBlock() {
 }
 
 function initAttachments() {
+  mAttachmentsAllCheck.disabled = configs.requireReinputAttachmentNames;
   mAttachmentsAllCheck.classList.toggle('hidden', !configs.allowCheckAllAttachments);
   mAttachmentsAllCheck.addEventListener('change', _event => {
     checkAll(mAttachmentsList, mAttachmentsAllCheck.checked);
@@ -132,13 +128,56 @@ function createRecipientRow(type, address) {
   const row = createCheckableRow([`${type}:`, address]);
   row.setAttribute('title', `${type}: ${address}`);
   row.classList.add('recipient');
+  row.lastChild.classList.add('flexible');
   return row;
 }
+
+function createDomainRow(domain) {
+  const row = createCheckableRow([domain]);
+  row.setAttribute('title', domain);
+  row.classList.add('domain');
+  row.dataset.domain = domain;
+  row.lastChild.classList.add('flexible');
+  return row;
+}
+
+let mCreatedInputFieldCount = 0;
 
 function createAttachmentRow(attachment) {
   const row = createCheckableRow([attachment.name]);
   row.setAttribute('title', attachment.name);
   row.classList.add('attachment');
+  row.lastChild.classList.add('flexible');
+
+  if (configs.requireReinputAttachmentNames) {
+    const checkbox = row.querySelector('input[type="checkbox"]');
+    checkbox.disabled = true;
+
+    const column = row.insertBefore(document.createElement('span'), row.querySelector('label'));
+    column.classList.add('column');
+    column.classList.add('flexible');
+
+    const field = column.appendChild(document.createElement('input'));
+    field.id = `input-field-created-${mCreatedInputFieldCount++}`;
+    field.type = 'text';
+    field.addEventListener('input', () => {
+      if (checkbox.checked == (field.value == attachment.name))
+        return;
+
+      checkbox.checked = !checkbox.checked;
+      checkbox.dispatchEvent(new CustomEvent('change', {
+        detail:     checkbox.checked,
+        bubbles:    true,
+        cancelable: false,
+        composed:   true
+      }));
+    });
+
+    for (const label of row.querySelectorAll('label')) {
+      label.setAttribute('for', field.id);
+    }
+  }
+
   return row;
 }
 
@@ -161,6 +200,7 @@ function createRow(columns) {
   for (const column of columns) {
     const label = row.appendChild(document.createElement('label'));
     label.appendChild(document.createElement('span')).textContent = column;
+    label.classList.add('column');
   }
   return row;
 }
