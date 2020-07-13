@@ -9,6 +9,7 @@
   "confirmDialogSubjectCaption": { "message": "Subject: " },
   "confirmDialogBodyCaption": { "message": "Body" },
   "confirmDialogAttachmentsCaption": { "message": "Attachments" },
+  "confirmDialogAttachmentNameReinputPlaceholder": { "message": "Retype the filename for confirmation." },
 
   "confirmDialogAccept": { "message": "Send" },
   "confirmDialogCancel": { "message": "Cancel" },

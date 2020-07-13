@@ -9,6 +9,7 @@
   "confirmDialogSubjectCaption": { "message": "件名: " },
   "confirmDialogBodyCaption": { "message": "本文" },
   "confirmDialogAttachmentsCaption": { "message": "添付ファイル" },
+  "confirmDialogAttachmentNameReinputPlaceholder": { "message": "確認のため添付ファイル名を再入力して下さい" },
 
   "confirmDialogAccept": { "message": "送信" },
   "confirmDialogCancel": { "message": "キャンセル" },

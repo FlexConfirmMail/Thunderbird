@@ -162,6 +162,7 @@ function createAttachmentRow(attachment) {
     const field = column.appendChild(document.createElement('input'));
     field.id = `input-field-created-${mCreatedInputFieldCount++}`;
     field.type = 'text';
+    field.placeholder = browser.i18n.getMessage('confirmDialogAttachmentNameReinputPlaceholder');
     field.addEventListener('input', () => {
       if (checkbox.checked == (field.value == attachment.name))
         return;
