@@ -134,7 +134,7 @@ export async function open({ url, left, top, width, height } = {}, dialogParams 
     browser.runtime.onMessage.addListener(onMessage);
 
     const onClosed = windowId => {
-      if (windowId != win.id)
+      if (!win || windowId != win.id)
         return;
       browser.runtime.onMessage.removeListener(onMessage);
       browser.windows.onRemoved.removeListener(onClosed);
@@ -157,6 +157,8 @@ export async function open({ url, left, top, width, height } = {}, dialogParams 
       ...positionParams,
       allowScriptsToClose: true
     });
+    if (!('windowId' in dialogParams))
+      dialogParams.windowId = win.id;
   });
 }
 
