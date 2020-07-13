@@ -14,7 +14,7 @@ export function classify(recipients, internalDomains = []) {
     return { internals, externals };
   }
 
-  const internalDomainsSet = new Set(internalDomains);
+  const internalDomainsSet = new Set(internalDomains.map(domain => domain.toLowerCase()));
   for (const recipient of recipients) {
     const address = /<([^@]+@[^>]+)>\s*$/.test(recipient) ? RegExp.$1 : recipient;
     const domain = address.split('@')[1].toLowerCase();

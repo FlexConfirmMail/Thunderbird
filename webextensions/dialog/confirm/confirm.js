@@ -246,8 +246,8 @@ async function confirmAttentionDomains() {
   if (!shouldConfirm)
     return true;
 
-  const attentionDomains = new Set(configs.attentionDomains);
-  const attentionRecipients = mParams.externals.filter(recipient => attentionDomains.has(recipient.domain)).map(recipient => recipient.address);
+  const attentionDomains = new Set(configs.attentionDomains.map(domain => domain.toLowerCase()));
+  const attentionRecipients = mParams.externals.filter(recipient => attentionDomains.has(recipient.domain.toLowerCase())).map(recipient => recipient.address);
   log('confirmAttentionDomains attentionRecipients = ', attentionRecipients);
   if (attentionRecipients.length == 0)
     return true;
