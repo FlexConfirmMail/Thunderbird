@@ -135,7 +135,7 @@ function initAttachments() {
 
 function createRecipientRow(type, address) {
   const row = createCheckableRow([`${type}:`, address]);
-  row.setAttribute('title', `${type}: ${address}`);
+  row.setAttribute('title', foldLongTooltipText(`${type}: ${address}`));
   row.classList.add('recipient');
   row.lastChild.classList.add('flexible');
   return row;
@@ -143,7 +143,7 @@ function createRecipientRow(type, address) {
 
 function createDomainRow(domain) {
   const row = createRow([domain]);
-  row.setAttribute('title', domain);
+  row.setAttribute('title', foldLongTooltipText(domain));
   row.classList.add('domain');
   row.dataset.domain = domain;
   row.lastChild.classList.add('flexible');
@@ -154,7 +154,7 @@ let mCreatedInputFieldCount = 0;
 
 function createAttachmentRow(attachment) {
   const row = createCheckableRow([attachment.name]);
-  row.setAttribute('title', attachment.name);
+  row.setAttribute('title', foldLongTooltipText(attachment.name));
   row.classList.add('attachment');
   row.lastChild.classList.add('flexible');
 
@@ -213,6 +213,16 @@ function createRow(columns) {
     label.classList.add('column');
   }
   return row;
+}
+
+function foldLongTooltipText(text) {
+  const max = configs.maxTooltipTextLength;
+  const folded = [];
+  while (text.length > 0) {
+    folded.push(text.substring(0, max));
+    text = text.substring(max);
+  }
+  return folded.join('\n');
 }
 
 function checkAll(container, checked) {

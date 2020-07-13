@@ -60,6 +60,8 @@ export const configs = new Configs({
   countdownDialogWidth: 300,
   countdownDialogHeight: 130,
 
+  maxTooltipTextLength: 60,
+
   configsVersion: 0,
   debug: false
 }, {
