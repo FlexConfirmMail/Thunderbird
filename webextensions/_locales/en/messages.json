@@ -38,8 +38,8 @@
     "placeholders": {
       "attachments": { "content": "$1", "example": "file.txt" }
     }},
-  "confirmAttentionDomainsAccept": { "message": "Send" },
-  "confirmAttentionDomainsCancel": { "message": "Cancel" },
+  "confirmAttentionSuffixesAccept": { "message": "Send" },
+  "confirmAttentionSuffixesCancel": { "message": "Cancel" },
 
 
   "countdownDialogTitle": { "message": "Countdown" },
