@@ -87,3 +87,9 @@ hr.splitter {
 #externals .row.recipient {
   padding-left: 1em;
 }
+
+#externals .row.attention,
+#attachments .row.attention {
+  color: red;
+  font-weight bold;
+}

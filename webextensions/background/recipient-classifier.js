@@ -5,7 +5,7 @@
 */
 'use strict';
 
-export function classify(recipients, internalDomains = []) {
+export function classify(recipients, {internalDomains, attentionDomains } = {}) {
   const internals = [];
   const externals = [];
 
@@ -14,14 +14,16 @@ export function classify(recipients, internalDomains = []) {
     return { internals, externals };
   }
 
-  const internalDomainsSet = new Set(internalDomains.map(domain => domain.toLowerCase()));
+  const internalDomainsSet = new Set((internalDomains || []).map(domain => domain.toLowerCase()));
+  const attentionDomainsSet = new Set(attentionDomains || []);
   for (const recipient of recipients) {
     const address = /<([^@]+@[^>]+)>\s*$/.test(recipient) ? RegExp.$1 : recipient;
     const domain = address.split('@')[1].toLowerCase();
     const classifiedRecipient = {
       recipient,
       address,
-      domain
+      domain,
+      isAttentionDomain: attentionDomainsSet.has(domain)
     };
     if (internalDomainsSet.has(domain))
       internals.push(classifiedRecipient);

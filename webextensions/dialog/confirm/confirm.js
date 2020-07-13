@@ -17,6 +17,7 @@ import * as Constants from '/common/constants.js';
 import * as Dialog from '/common/dialog.js';
 
 let mParams;
+let mAttentionSuffixesMatcher;
 
 const mTopMessage          = document.querySelector('#top-message');
 const mInternalsAllCheck   = document.querySelector('#internalsAll');
@@ -32,8 +33,18 @@ const mAttachmentsList     = document.querySelector('#attachments');
 const mAcceptButton        = document.querySelector('#accept');
 const mCancelButton        = document.querySelector('#cancel');
 
+function onConfigChange(key) {
+  switch (key) {
+    case 'attentionSuffixes':
+      mAttentionSuffixesMatcher = new RegExp(`\\.(${configs.attentionSuffixes.map(suffix => suffix.toLowerCase().replace(/^\./, '')).join('|')})$`, 'i');
+      break;
+  }
+}
+configs.$addObserver(onConfigChange);
+
 configs.$loaded.then(async () => {
   mParams = await Dialog.getParams();
+  onConfigChange('attentionSuffixes');
 
   document.documentElement.classList.toggle('debug', configs.debug);
 
@@ -73,7 +84,7 @@ function initInternals() {
     mInternalsAllCheck.checked = isAllChecked(mInternalsList);
   });
   for (const recipient of mParams.internals) {
-    mInternalsList.appendChild(createRecipientRow(recipient.type, recipient.recipient));
+    mInternalsList.appendChild(createRecipientRow(recipient));
   }
 }
 
@@ -100,7 +111,7 @@ function initExternals() {
   for (const domain of recipientsOfDomain.keys()) {
     mExternalsList.appendChild(createDomainRow(domain));
     for (const recipient of recipientsOfDomain.get(domain)) {
-      const row = createRecipientRow(recipient.type, recipient.recipient);
+      const row = createRecipientRow(recipient);
       row.dataset.domain = domain;
       mExternalsList.appendChild(row);
     }
@@ -133,11 +144,13 @@ function initAttachments() {
   }
 }
 
-function createRecipientRow(type, address) {
-  const row = createCheckableRow([`${type}:`, address]);
-  row.setAttribute('title', foldLongTooltipText(`${type}: ${address}`));
+function createRecipientRow(recipient) {
+  const row = createCheckableRow([`${recipient.type}:`, recipient.recipient]);
+  row.setAttribute('title', foldLongTooltipText(`${recipient.type}: ${recipient.recipient}`));
   row.classList.add('recipient');
   row.lastChild.classList.add('flexible');
+  if (recipient.isAttentionDomain)
+    row.classList.add('attention');
   return row;
 }
 
@@ -157,6 +170,8 @@ function createAttachmentRow(attachment) {
   row.setAttribute('title', foldLongTooltipText(attachment.name));
   row.classList.add('attachment');
   row.lastChild.classList.add('flexible');
+  if (mAttentionSuffixesMatcher.test(attachment.name))
+    row.classList.add('attention');
 
   if (configs.requireReinputAttachmentNames) {
     const checkbox = row.querySelector('input[type="checkbox"]');
@@ -332,8 +347,7 @@ async function confirmAttentionSuffixes() {
   if (!configs.attentionSuffixesConfirm)
     return true;
 
-  const attentionSuffixesMatcher = new RegExp(`\\.(${configs.attentionSuffixes.map(suffix => suffix.toLowerCase().replace(/^\./, '')).join('|')})$`, 'i');
-  const attentionAttachments = mParams.attachments.filter(attachment => attentionSuffixesMatcher.test(attachment.name)).map(attachment => attachment.name);
+  const attentionAttachments = mParams.attachments.filter(attachment => mAttentionSuffixesMatcher.test(attachment.name)).map(attachment => attachment.name);
   log('confirmAttentionSuffixes attentionAttachments = ', attentionAttachments);
   if (attentionAttachments.length == 0)
     return true;

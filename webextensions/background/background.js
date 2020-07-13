@@ -129,9 +129,14 @@ async function tryConfirm(tab, details) {
     ListUtils.populateListAddresses(details.cc),
     ListUtils.populateListAddresses(details.bcc)
   ]);
-  const classifiedTo = RecipientClassifier.classify(to, configs.internalDomains);
-  const classifiedCc = RecipientClassifier.classify(cc, configs.internalDomains);
-  const classifiedBcc = RecipientClassifier.classify(bcc, configs.internalDomains);
+  const classifierParams = {
+    internalDomains:  configs.internalDomains,
+    attentionDomains: configs.attentionDomains
+  };
+  const classifiedTo = RecipientClassifier.classify(to, classifierParams);
+  const classifiedCc = RecipientClassifier.classify(cc, classifierParams);
+  const classifiedBcc = RecipientClassifier.classify(bcc, classifierParams);
+  log('classified results: ', { classifiedTo, classifiedCc, classifiedBcc });
 
   const allInternals = new Set([
     ...classifiedTo.internals,
