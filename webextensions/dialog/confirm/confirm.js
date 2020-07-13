@@ -32,6 +32,8 @@ const mCancelButton        = document.querySelector('#cancel');
 configs.$loaded.then(async () => {
   mParams = await Dialog.getParams();
 
+  document.documentElement.classList.toggle('debug', configs.debug);
+
   mTopMessage.textContent = configs.topMessage;
   mTopMessage.classList.toggle('hidden', !configs.topMessage);
 

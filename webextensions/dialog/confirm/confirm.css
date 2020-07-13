@@ -6,6 +6,13 @@
 
 @import url(/resources/dialog.css);
 
+:root.debug .row {
+  border: 1px solid blue;
+}
+:root.debug .column {
+  border: 1px solid red;
+}
+
 .hidden {
   display: none !important;
 }
