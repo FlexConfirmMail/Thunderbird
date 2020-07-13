@@ -33,6 +33,7 @@ const mInitialSignatureForTab = new Map();
 browser.runtime.onMessage.addListener((message, sender) => {
   switch (message && message.type) {
     case Constants.TYPE_COMPOSE_STARTED:
+      log('TYPE_COMPOSE_STARTED received');
       browser.compose.getComposeDetails(sender.tab.id).then(details => {
         mInitialSignatureForTab.set(sender.tab.id, getMessageSignature(details));
       });
@@ -75,6 +76,7 @@ const mRecentlySavedDraftSignatures = new Set();
 browser.messages.onNewMailReceived.addListener((folder, messages) => {
   if (folder.type != 'drafts')
     return;
+  log('draft saved: ', messages);
   mRecentlySavedDraftSignatures.clear();
   for (const message of messages.messages) {
     mRecentlySavedDraftSignatures.add(getMessageSignature(message));
@@ -121,6 +123,7 @@ async function needConfirmationOnModified(tab, details) {
 
 
 async function tryConfirm(tab, details) {
+  log('tryConfirm: ', tab, details);
   const [to, cc, bcc] = await Promise.all([
     ListUtils.populateListAddresses(details.to),
     ListUtils.populateListAddresses(details.cc),
