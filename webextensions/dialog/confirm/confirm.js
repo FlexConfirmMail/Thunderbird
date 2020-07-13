@@ -135,7 +135,7 @@ function createRecipientRow(type, address) {
 }
 
 function createDomainRow(domain) {
-  const row = createCheckableRow([domain]);
+  const row = createRow([domain]);
   row.setAttribute('title', domain);
   row.classList.add('domain');
   row.dataset.domain = domain;
