@@ -15,6 +15,15 @@
   "confirmDialogCancel": { "message": "Cancel" },
 
 
+  "confirmMultipleRecipientDomainsTitle": { "message": "Multiple recipient domains in To or Cc" },
+  "confirmMultipleRecipientDomainsMessage": { "message": "There are multiple recipient domains in To or Cc.\n\n$DOMAINS$\n\nAll recipients information will be disclosed to all other recipients. Do you really want to send this message?",
+    "placeholders": {
+      "domains": { "content": "$1", "example": "example.com" }
+    }},
+  "confirmMultipleRecipientDomainsAccept": { "message": "Send" },
+  "confirmMultipleRecipientDomainsCancel": { "message": "Cancel" },
+
+
   "confirmAttentionDomainsTitle": { "message": "Recipients with attention domains" },
   "confirmAttentionDomainsMessage": { "message": "These recipients with attention domains are found:\n\n$RECIPIENTS$\n\nIf there is no problem, continue to send.",
     "placeholders": {

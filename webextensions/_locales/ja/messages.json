@@ -15,6 +15,15 @@
   "confirmDialogCancel": { "message": "キャンセル" },
 
 
+  "confirmMultipleRecipientDomainsTitle": { "message": "複数のドメインがToまたはCcの宛先に含まれています" },
+  "confirmMultipleRecipientDomainsMessage": { "message": "ToまたはCcの宛先に複数のドメインが含まれています。\n\n$DOMAINS$\n\n送信すると、他の宛先の情報が全ての宛先に通知されます。送信してよろしいですか？",
+    "placeholders": {
+      "domains": { "content": "$1", "example": "example.com" }
+    }},
+  "confirmMultipleRecipientDomainsAccept": { "message": "送信" },
+  "confirmMultipleRecipientDomainsCancel": { "message": "キャンセル" },
+
+
   "confirmAttentionDomainsTitle": { "message": "特別に注意が必要な宛先" },
   "confirmAttentionDomainsMessage": { "message": "特別に注意が必要なドメインに属する以下の宛先が含まれています。\n\n$RECIPIENTS$\n\n問題がない事を確認の上でメールを送信してください。",
     "placeholders": {

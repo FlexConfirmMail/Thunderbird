@@ -51,13 +51,10 @@ configs.$loaded.then(async () => {
   });
 
   Dialog.initButton(mAcceptButton, async _event => {
-    if (!isAllChecked())
-      return;
-
-    if (!(await confirmAttentionDomains()))
-      return;
-
-    if (!(await confirmAttentionSuffixes()))
+    if (!isAllChecked() ||
+        !(await confirmMultipleRecipientDomains()) ||
+        !(await confirmAttentionDomains()) ||
+        !(await confirmAttentionSuffixes()))
       return;
 
     Dialog.accept();
@@ -235,6 +232,45 @@ function isAllChecked(container = document) {
   return true;
 }
 
+
+async function confirmMultipleRecipientDomains() {
+  log('confirmMultipleRecipientDomains shouldConfirm = ', configs.confirmMultipleRecipientDomains);
+  if (!configs.confirmMultipleRecipientDomains)
+    return true;
+
+  const domains = new Set(mParams.externals.filter(recipient => recipient.type != 'Bcc').map(recipient => recipient.domain));
+  log('confirmMultipleRecipientDomains domains = ', domains);
+  if (domains.size <= 1)
+    return true;
+
+  return window.confirm(browser.i18n.getMessage('confirmMultipleRecipientDomainsMessage', [Array.from(domains).join('\n')]));
+  /*
+  let result;
+  try {
+    result = await RichConfirm.showInPopup(mParams.windowId, {
+      modal: true,
+      type:  'common-dialog',
+      url:   '/resources/blank.html',
+      title: browser.i18n.getMessage('confirmMultipleRecipientDomainsTitle'),
+      message: browser.i18n.getMessage('confirmMultipleRecipientDomainsMessage', [Array.from(domains).join('\n')]),
+      buttons: [
+        browser.i18n.getMessage('confirmMultipleRecipientDomainsAccept'),
+        browser.i18n.getMessage('confirmMultipleRecipientDomainsCancel')
+      ]
+    });
+  }
+  catch(_error) {
+    result = { buttonIndex: -1 };
+  }
+  log('confirmMultipleRecipientDomains result.buttonIndex = ', result.buttonIndex);
+  switch (result.buttonIndex) {
+    case 0:
+      return true;
+    default:
+      return false;
+  }
+  */
+}
 
 async function confirmAttentionDomains() {
   const mode = configs.attentionDomainsConfirmationMode;
