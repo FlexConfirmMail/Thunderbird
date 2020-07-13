@@ -40,7 +40,7 @@ export const configs = new Configs({
   requireCheckSubject: false,
   requireCheckBody: false,
   requireReinputAttachmentNames: false,
-  highlightUnmatchedDomains: false,
+  highlightExternalDomains: false,
   largeFontSizeForAddresses: false,
   alwaysLargeDialog: false,
   alwaysLargeDialogMinWidth: 680,
