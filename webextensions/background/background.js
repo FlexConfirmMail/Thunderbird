@@ -171,7 +171,8 @@ async function tryConfirm(tab, details) {
         ...classifiedTo.externals.map(recipient => ({ ...recipient, type: 'To' })),
         ...classifiedCc.externals.map(recipient => ({ ...recipient, type: 'Cc' })),
         ...classifiedBcc.externals.map(recipient => ({ ...recipient, type: 'Bcc' }))
-      ]
+      ],
+      attachments: await browser.compose.listAttachments(tab.id)
     }
   );
 }

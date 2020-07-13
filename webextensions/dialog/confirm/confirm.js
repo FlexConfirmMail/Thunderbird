@@ -123,12 +123,22 @@ function initAttachments() {
   mAttachmentsList.addEventListener('change', _event => {
     mAttachmentsAllCheck.checked = isAllChecked(mAttachmentsList);
   });
+  for (const attachment of mParams.attachments) {
+    mAttachmentsList.appendChild(createAttachmentRow(attachment));
+  }
 }
 
 function createRecipientRow(type, address) {
   const row = createCheckableRow([`${type}:`, address]);
   row.setAttribute('title', `${type}: ${address}`);
   row.classList.add('recipient');
+  return row;
+}
+
+function createAttachmentRow(attachment) {
+  const row = createCheckableRow([attachment.name]);
+  row.setAttribute('title', attachment.name);
+  row.classList.add('attachment');
   return row;
 }
 
