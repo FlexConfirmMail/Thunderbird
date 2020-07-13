@@ -101,7 +101,7 @@ function initExternals() {
 }
 
 function initBodyBlock() {
-  mSubjectCheck.closest('p').classList.toggle('hidden', !configs.requireCheckSubject);
+  mSubjectCheck.closest('div').classList.toggle('hidden', !configs.requireCheckSubject);
   mSubjectField.textContent = mParams.details.subject;
 
   mBodyCheck.closest('div').classList.toggle('hidden', !configs.requireCheckBody);
