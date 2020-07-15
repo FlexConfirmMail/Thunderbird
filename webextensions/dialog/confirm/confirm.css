@@ -36,6 +36,7 @@ hr.splitter {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  overflow-y: auto;
   white-space: nowrap;
 }
 .listbox .row {
