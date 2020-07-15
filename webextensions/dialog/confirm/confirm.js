@@ -328,7 +328,11 @@ async function confirmAttentionDomains() {
   if (attentionRecipients.length == 0)
     return true;
 
-  return window.confirm(browser.i18n.getMessage('confirmAttentionDomainsMessage', [attentionRecipients.join('\n')]));
+  const message = (
+    configs.attentionDomainDialogMessage.replace(/\%s/i, attentionRecipients.join('\n')) ||
+    browser.i18n.getMessage('confirmAttentionDomainsMessage', [attentionRecipients.join('\n')])
+  );
+  return window.confirm(message);
   /*
   let result;
   try {
@@ -336,8 +340,8 @@ async function confirmAttentionDomains() {
       modal: true,
       type:  'common-dialog',
       url:   '/resources/blank.html',
-      title: browser.i18n.getMessage('confirmAttentionDomainsTitle'),
-      message: browser.i18n.getMessage('confirmAttentionDomainsMessage', [attentionRecipients.join('\n')]),
+      title: configs.attentionDomainDialogTitle || browser.i18n.getMessage('confirmAttentionDomainsTitle'),
+      message,
       buttons: [
         browser.i18n.getMessage('confirmAttentionDomainsAccept'),
         browser.i18n.getMessage('confirmAttentionDomainsCancel')
@@ -367,7 +371,11 @@ async function confirmAttentionSuffixes() {
   if (attentionAttachments.length == 0)
     return true;
 
-  return window.confirm(browser.i18n.getMessage('confirmAttentionSuffixesMessage', [attentionAttachments.join('\n')]));
+  const message = (
+    configs.attentionSuffixDialogMessage.replace(/\%s/i, attentionAttachments.join('\n')) ||
+    browser.i18n.getMessage('confirmAttentionSuffixesMessage', [attentionAttachments.join('\n')])
+  );
+  return window.confirm(message);
   /*
   let result;
   try {
@@ -375,8 +383,8 @@ async function confirmAttentionSuffixes() {
       modal: true,
       type:  'common-dialog',
       url:   '/resources/blank.html',
-      title: browser.i18n.getMessage('confirmAttentionSuffixesTitle'),
-      message: browser.i18n.getMessage('confirmAttentionSuffixesMessage', [attentionAttachments.join('\n')]),
+      title: configs.attentionSuffixDialogTitle || browser.i18n.getMessage('confirmAttentionSuffixesTitle'),
+      message,
       buttons: [
         browser.i18n.getMessage('confirmAttentionSuffixesAccept'),
         browser.i18n.getMessage('confirmAttentionSuffixesCancel')
