@@ -88,7 +88,7 @@ hr.splitter {
   padding-left: 1em;
 }
 
-#externals .row.attention,
+:root.attention-domains-highlighted #externals .row.attention,
 #attachments .row.attention {
   color: red;
   font-weight bold;

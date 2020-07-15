@@ -34,9 +34,22 @@ const mAcceptButton        = document.querySelector('#accept');
 const mCancelButton        = document.querySelector('#cancel');
 
 function onConfigChange(key) {
+  const value = configs[key];
   switch (key) {
+    case 'attentionDomainsHighlightMode':
+      document.documentElement.classList.toggle('attention-domains-highlighted', (
+        value == Constants.ATTENTION_HIGHLIGHT_MODE_ALWAYS ||
+        (value == Constants.ATTENTION_HIGHLIGHT_MODE_ONLY_WITH_ATTACHMENTS &&
+         mParams.attachments.length > 0)
+      ));
+      break;
+
     case 'attentionSuffixes':
-      mAttentionSuffixesMatcher = new RegExp(`\\.(${configs.attentionSuffixes.map(suffix => suffix.toLowerCase().replace(/^\./, '')).join('|')})$`, 'i');
+      mAttentionSuffixesMatcher = new RegExp(`\\.(${value.map(suffix => suffix.toLowerCase().replace(/^\./, '')).join('|')})$`, 'i');
+      break;
+
+    case 'debug':
+      document.documentElement.classList.toggle('debug', value);
       break;
   }
 }
@@ -44,9 +57,10 @@ configs.$addObserver(onConfigChange);
 
 configs.$loaded.then(async () => {
   mParams = await Dialog.getParams();
-  onConfigChange('attentionSuffixes');
 
-  document.documentElement.classList.toggle('debug', configs.debug);
+  onConfigChange('attentionDomainsHighlightMode');
+  onConfigChange('attentionSuffixes');
+  onConfigChange('debug');
 
   mTopMessage.textContent = configs.topMessage;
   mTopMessage.classList.toggle('hidden', !configs.topMessage);
