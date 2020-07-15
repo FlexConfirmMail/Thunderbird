@@ -6,18 +6,27 @@
 'use strict';
 
 export const TYPE_RESIZED = 'resizable-box-resized';
+const MIN_HEIGHT = '1em';
+
+let mSizes;
 
 let mResizableBoxCount = 0;
+
 const mResizableBoxes = new Map();
 
 export function init(sizes) {
+  mSizes = (sizes && typeof sizes == 'object') ? sizes : {};
+
   for (const splitter of document.querySelectorAll('hr.splitter')) {
-    if (!splitter.previousElementSibling ||
-        !splitter.nextElementSibling)
+    const previousBox = findPreviousResizableBox(splitter);
+    const nextBox = findNextResizableBox(splitter);
+
+    if (!previousBox ||
+        !nextBox)
       continue;
 
-    const previousBox = splitter.previousElementSibling;
-    const nextBox = splitter.nextElementSibling;
+    splitter.previousBox = previousBox;
+    splitter.nextBox = nextBox;
 
     if (!previousBox.id)
       previousBox.id = `resizable-box-${mResizableBoxCount++}`;
@@ -30,15 +39,41 @@ export function init(sizes) {
     splitter.addEventListener('mouseup', onMouseUp);
   }
 
-  if (sizes && typeof sizes == 'object') {
-    for (const id of Object.keys(sizes)) {
-      const size = sizes[id];
+    for (const id of Object.keys(mSizes)) {
+      const size = mSizes[id];
       const box = mResizableBoxes.get(id);
       if (!box || typeof size != 'number')
         continue;
-      box.style.height = `${size}px`;
+      setBoxHeight(box, size);
     }
-  }
+}
+
+function findPreviousResizableBox(splitter) {
+  let box = splitter.previousElementSibling;
+  do {
+    const style = window.getComputedStyle(box, null);
+    if (style.display != 'none' &&
+        style.visibility != 'collapse')
+      break;;
+    box = box.previousElementSibling;
+  } while (box);
+  return box;
+}
+
+function findNextResizableBox(splitter) {
+  let box = splitter.nextElementSibling;
+  do {
+    const style = window.getComputedStyle(box, null);
+    if (style.display != 'none' &&
+        style.visibility != 'collapse')
+      break;;
+    box = box.nextElementSibling;
+  } while (box);
+  return box;
+}
+
+function setBoxHeight(box, height) {
+  box.style.height = height >= 0 ? `${height}px` : MIN_HEIGHT;
 }
 
 let mStartY;
@@ -49,25 +84,24 @@ let mResizingSplitter;
 function onMouseDown(event) {
   mResizingSplitter = event.currentTarget;
   mStartY = event.screenY;
-  mStartPreviousHeight = mResizingSplitter.previousElementSibling.offsetHeight;
-  mStartNextHeight = mResizingSplitter.nextElementSibling.offsetHeight;
+  mStartPreviousHeight = mResizingSplitter.previousBox.offsetHeight;
+  mStartNextHeight = mResizingSplitter.nextBox.offsetHeight;
   mResizingSplitter.setCapture(false);
   window.addEventListener('mousemove', onResizing);
 }
 
 function resizeBoxesFor(splitter, event) {
   const delta = event.screenY - mStartY;
-  const result = {};
-  splitter.previousElementSibling.style.height = `${mStartPreviousHeight + delta}px`;
-  splitter.nextElementSibling.style.height = `${mStartNextHeight - delta}px`;
+  setBoxHeight(splitter.previousBox, mStartPreviousHeight + delta);
+  setBoxHeight(splitter.nextBox, mStartNextHeight - delta);
   for (const box of mResizableBoxes.values()) {
-    if (box != splitter.previousElementSibling &&
-        box != splitter.nextElementSibling) {
-      box.style.height = `${box.offsetHeight}px`;
+    if (box != splitter.previousBox &&
+        box != splitter.nextBox) {
+      setBoxHeight(box, box.offsetHeight);
     }
-    result[box.id] = box.offsetHeight;
+    mSizes[box.id] = box.offsetHeight;
   }
-  return result;
+  return { ...mSizes };
 }
 
 let mThrottledResize;
