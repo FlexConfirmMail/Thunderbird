@@ -315,7 +315,8 @@ async function confirmAttentionDomains() {
   const mode = configs.attentionDomainsConfirmationMode;
   const shouldConfirm = (
     mode == Constants.ATTENTION_CONFIRMATION_MODE_ALWAYS ||
-    mode == Constants.ATTENTION_CONFIRMATION_MODE_ONLY_WITH_ATTACHMENTS && mParams.attachments.length > 0
+    (mode == Constants.ATTENTION_CONFIRMATION_MODE_ONLY_WITH_ATTACHMENTS &&
+     mParams.attachments.length > 0)
   );
   log('confirmAttentionDomains shouldConfirm = ', shouldConfirm);
   if (!shouldConfirm)
