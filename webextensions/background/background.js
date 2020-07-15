@@ -162,12 +162,24 @@ async function tryConfirm(tab, details) {
   }
 
   log('show confirmation ', tab, details);
+
+  const dialogParams = {
+    url:    '/dialog/confirm/confirm.html',
+    width:  configs.confirmDialogWidth,
+    height: configs.confirmDialogWidth
+  };
+  if (configs.alwaysLargeDialog) {
+    dialogParams.width = Math.max(
+      configs.alwaysLargeDialogMinWidth,
+      Math.ceil(parseInt(screen.availWidth * 0.9) / 2)
+    );
+    dialogParams.height = parseInt(screen.availHeight * 0.9);
+    dialogParams.left = parseInt((screen.availWidth - dialogParams.width) / 2);
+    dialogParams.top = parseInt((screen.availHeight - dialogParams.height) / 2);
+  }
+
   return Dialog.open(
-    {
-      url: '/dialog/confirm/confirm.html',
-      width:  configs.confirmDialogWidth,
-      height: configs.confirmDialogWidth
-    },
+    dialogParams,
     {
       details,
       internals: [
