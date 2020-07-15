@@ -282,7 +282,11 @@ async function confirmMultipleRecipientDomains() {
   if (domains.size <= 1)
     return true;
 
-  return window.confirm(browser.i18n.getMessage('confirmMultipleRecipientDomainsMessage', [Array.from(domains).join('\n')]));
+  const message = (
+    configs.confirmMultipleRecipientDomainsDialogMessage.replace(/\%s/i, Array.from(domains).join('\n')) ||
+    browser.i18n.getMessage('confirmMultipleRecipientDomainsMessage', [Array.from(domains).join('\n')])
+  );
+  return window.confirm(message);
   /*
   let result;
   try {
@@ -290,8 +294,8 @@ async function confirmMultipleRecipientDomains() {
       modal: true,
       type:  'common-dialog',
       url:   '/resources/blank.html',
-      title: browser.i18n.getMessage('confirmMultipleRecipientDomainsTitle'),
-      message: browser.i18n.getMessage('confirmMultipleRecipientDomainsMessage', [Array.from(domains).join('\n')]),
+      title: configs.confirmMultipleRecipientDomainsDialogTitle || browser.i18n.getMessage('confirmMultipleRecipientDomainsTitle'),
+      message,
       buttons: [
         browser.i18n.getMessage('confirmMultipleRecipientDomainsAccept'),
         browser.i18n.getMessage('confirmMultipleRecipientDomainsCancel')
