@@ -29,6 +29,11 @@ configs.$loaded.then(() => {
 
   Dialog.initCancelButton(mCancelButton);
 
+  window.addEventListener('resize', () => {
+    configs.countdownDialogWidth = window.outerWidth;
+    configs.countdownDialogHeight = window.outerHeight;
+  });
+
   Dialog.notifyReady();
 
   const start = Date.now();

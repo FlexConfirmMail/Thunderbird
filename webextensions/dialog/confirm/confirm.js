@@ -109,6 +109,11 @@ configs.$loaded.then(async () => {
   });
   Dialog.initCancelButton(mCancelButton);
 
+  window.addEventListener('resize', () => {
+    configs.confirmDialogWidth = window.outerWidth;
+    configs.confirmDialogHeight = window.outerHeight;
+  });
+
   Dialog.notifyReady();
 });
 
