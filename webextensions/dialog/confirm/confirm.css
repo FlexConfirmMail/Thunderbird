@@ -17,6 +17,16 @@
   display: none !important;
 }
 
+.flex-box {
+  overflow-y: auto;
+}
+
+#internalsContainer,
+#externalsContainer,
+#attachmentsContainer {
+  min-height: 2em;
+}
+
 .listbox,
 iframe {
   min-height: 4em;

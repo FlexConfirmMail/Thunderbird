@@ -15,6 +15,7 @@ import {
 
 import * as Constants from '/common/constants.js';
 import * as Dialog from '/common/dialog.js';
+import * as ResizableBox from '/common/resizable-box.js';
 
 let mParams;
 let mAttentionSuffixesMatcher;
@@ -88,6 +89,8 @@ configs.$loaded.then(async () => {
   onConfigChange('topMessage');
   onConfigChange('debug');
 
+  ResizableBox.init(configs.confirmDialogBoxSizes);
+
   initInternals();
   initExternals();
   initBodyBlock();
@@ -118,8 +121,13 @@ configs.$loaded.then(async () => {
     configs.confirmDialogTop = event.detail.top;
   });
 
+  window.addEventListener(ResizableBox.TYPE_RESIZED, event => {
+    configs.confirmDialogBoxSizes = event.detail;
+  });
+
   Dialog.notifyReady();
 });
+
 
 function initInternals() {
   mInternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllInternals);
