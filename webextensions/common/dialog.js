@@ -21,7 +21,7 @@ const DEFAULT_HEIGHT_OFFSET = 40; /* top title bar + bottom window frame */
 let lastWidthOffset  = null;
 let lastHeightOffset = null;
 
-export async function open({ url, left, top, width, height } = {}, dialogParams = {}) {
+export async function open({ url, left, top, width, height } = {}, dialogContentsParams = {}) {
   const id = generateId();
 
   const extraParams = `dialog-id=${id}&dialog-offscreen=true`;
@@ -45,7 +45,7 @@ export async function open({ url, left, top, width, height } = {}, dialogParams 
           loader.contentDocument.documentElement.classList.add('offscreen');
           const onFetchParams = () => {
             loader.contentDocument.dispatchEvent(new loader.contentWindow.CustomEvent(TYPE_RESPOND_PARAMS, {
-              detail:     dialogParams,
+              detail:     dialogContentsParams,
               bubbles:    true,
               cancelable: false,
               composed:   true
@@ -101,7 +101,7 @@ export async function open({ url, left, top, width, height } = {}, dialogParams 
 
       switch (message.type) {
         case TYPE_FETCH_PARAMS:
-          return Promise.resolve(dialogParams);
+          return Promise.resolve(dialogContentsParams);
 
         case TYPE_READY: {
           // step 3: shrink or expand the dialog window if the offset is changed
@@ -157,8 +157,8 @@ export async function open({ url, left, top, width, height } = {}, dialogParams 
       ...positionParams,
       allowScriptsToClose: true
     });
-    if (!('windowId' in dialogParams))
-      dialogParams.windowId = win.id;
+    if (!('windowId' in dialogContentsParams))
+      dialogContentsParams.windowId = win.id;
   });
 }
 
