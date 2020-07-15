@@ -110,9 +110,9 @@
   "configs_highlightExternalDomains_label": { "message": "外部ドメインの宛先のアドレスを強調表示する" },
   "configs_largeFontSizeForAddresses_label": { "message": "メールアドレスを大きなフォントサイズで表示する" },
   "configs_alwaysLargeDialog_label": { "message": "確認のダイアログを常に大きなサイズで開く" },
-  "configs_label.topMessage": { "message": "確認のダイアログの冒頭メッセージ:" },
-  "configs_checkbox.emphasizeTopMessage": { "message": "メッセージを強調表示する" },
-  "configs_checkbox.emphasizeRecipientType": { "message": "宛先の種別（To/Cc/Bcc）を強調表示する" },
+  "configs_topMessage_label": { "message": "確認のダイアログの冒頭メッセージ:" },
+  "configs_emphasizeTopMessage_label": { "message": "メッセージを強調表示する" },
+  "configs_emphasizeRecipientType_label": { "message": "宛先の種別（To/Cc/Bcc）を強調表示する" },
 
 
   "config_debug_label": { "message": "デバッグモード" },
