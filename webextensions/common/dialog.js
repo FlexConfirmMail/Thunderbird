@@ -7,7 +7,10 @@
 
 export const TYPE_FETCH_PARAMS = 'dialog-fetch-params';
 export const TYPE_RESPOND_PARAMS = 'dialog-respond-params';
+export const TYPE_NOTIFY_WINDOW_ID = 'dialog-notify-window-id';
 export const TYPE_READY = 'dialog-ready';
+export const TYPE_FOCUS = 'dialog-focus';
+export const TYPE_MOVED = 'dialog-moved';
 export const TYPE_ACCEPT = 'dialog-accept';
 export const TYPE_CANCEL = 'dialog-cancel';
 
@@ -21,7 +24,7 @@ const DEFAULT_HEIGHT_OFFSET = 40; /* top title bar + bottom window frame */
 let lastWidthOffset  = null;
 let lastHeightOffset = null;
 
-export async function open({ url, left, top, width, height } = {}, dialogContentsParams = {}) {
+export async function open({ url, left, top, width, height, modal } = {}, dialogContentsParams = {}) {
   const id = generateId();
 
   const extraParams = `dialog-id=${id}&dialog-offscreen=true`;
@@ -95,7 +98,7 @@ export async function open({ url, left, top, width, height } = {}, dialogContent
   return new Promise(async (resolve, reject) => {
     let win; // eslint-disable-line prefer-const
 
-    const onMessage = async (message, _sender) => {
+    const onMessage = (message, _sender) => {
       if (!message || message.id != id)
         return;
 
@@ -114,18 +117,22 @@ export async function open({ url, left, top, width, height } = {}, dialogContent
               height: Math.ceil(height + lastHeightOffset)
             });
           }
+          browser.runtime.sendMessage(TYPE_NOTIFY_WINDOW_ID, {
+            id,
+            windowId: win.id
+          });
         }; break;
 
         case TYPE_ACCEPT:
           browser.runtime.onMessage.removeListener(onMessage);
-          browser.windows.onRemoved.removeListener(onClosed); // eslint-disable-line no-use-before-define
+          browser.windows.onRemoved.removeListener(onRemoved); // eslint-disable-line no-use-before-define
           browser.windows.remove(win.id);
           resolve(message);
           break;
 
         case TYPE_CANCEL:
           browser.runtime.onMessage.removeListener(onMessage);
-          browser.windows.onRemoved.removeListener(onClosed); // eslint-disable-line no-use-before-define
+          browser.windows.onRemoved.removeListener(onRemoved); // eslint-disable-line no-use-before-define
           browser.windows.remove(win.id);
           reject(message);
           break;
@@ -133,21 +140,86 @@ export async function open({ url, left, top, width, height } = {}, dialogContent
     };
     browser.runtime.onMessage.addListener(onMessage);
 
-    const onClosed = windowId => {
+    const onFocusChanged = windowId => {
+      if (!win)
+        return;
+
+      if (modal &&
+          windowId != win.id) {
+        // setting "focused=true" fails on Thunderbird...
+        //browser.windows.update(win.id, { focused: true });
+        browser.runtime.sendMessage({
+          type: TYPE_FOCUS,
+          id
+        });
+      }
+    };
+    browser.windows.onFocusChanged.addListener(onFocusChanged);
+
+    const onUpdated = (windowId, updateInfo) => {
+      if (!win ||
+          windowId != win.id)
+        return;
+
+      const left = updateInfo.left;
+      const top = updateInfo.top;
+      if (typeof left == 'number' ||
+          typeof top == 'number') {
+        if (typeof left == 'number')
+          win.left = left;
+        if (typeof top == 'number')
+          win.top = top;
+        browser.runtime.sendMessage({
+          type: TYPE_MOVED,
+          id,
+          left: win.left,
+          top:  win.top
+        });
+      }
+    };
+    if (browser.windows.onUpdated)
+      browser.windows.onUpdated.addListener(onUpdated);
+    else
+      onUpdated.timer = setInterval(async () => {
+        try {
+          const updatedWin = await browser.windows.get(win.id);
+          const updateInfo = {};
+          if (updatedWin.left != win.left)
+            updateInfo.left = updatedWin.left;
+          if (updatedWin.top != win.top)
+            updateInfo.top = updatedWin.top;
+          if (Object.keys(updateInfo) == 0)
+            return;
+          onUpdated(win.id, updateInfo);
+        }
+        catch(_error) {
+          if (onUpdated.timer) {
+            window.clearInterval(onUpdated.timer);
+            onUpdated.timer = null;
+          }
+        }
+      }, 500);
+
+    const onRemoved = windowId => {
       if (!win || windowId != win.id)
         return;
       browser.runtime.onMessage.removeListener(onMessage);
-      browser.windows.onRemoved.removeListener(onClosed);
+      browser.windows.onRemoved.removeListener(onRemoved);
+      browser.windows.onFocusChanged.removeListener(onFocusChanged);
+      if (browser.windows.onUpdated)
+        browser.windows.onUpdated.removeListener(onUpdated);
+      else if (onUpdated.timer)
+        window.clearInterval(onUpdated.timer);
       browser.windows.remove(win.id);
       reject();
     };
-    browser.windows.onRemoved.addListener(onClosed);
+    browser.windows.onRemoved.addListener(onRemoved);
 
     // step 2: open real dialog window
     const positionParams = {};
-    if (left !== undefined)
+    if (typeof left == 'number')
       positionParams.left = left;
-    if (top !== undefined)
+    if (typeof top == 'number')
       positionParams.top = top;
     win = await browser.windows.create({
       type:   'popup',
@@ -157,6 +229,13 @@ export async function open({ url, left, top, width, height } = {}, dialogContent
       ...positionParams,
       allowScriptsToClose: true
     });
+    // workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=1271047
+    browser.windows.get(win.id).then(openedWin => {
+      if ((typeof left == 'number' && openedWin.left != left) ||
+          (typeof top == 'number' && openedWin.top != top))
+        browser.windows.update(win.id, { left, top });
+    });
+
     if (!('windowId' in dialogContentsParams))
       dialogContentsParams.windowId = win.id;
   });
@@ -196,6 +275,8 @@ export function notifyReady() {
   const params = new URLSearchParams(location.search);
   const id = params.get('dialog-id');
 
+  initDialogListener(id);
+
   const detail = {
     id,
     windowWidthOffset:  Math.max(0, window.outerWidth - window.innerWidth),
@@ -214,6 +295,46 @@ export function notifyReady() {
       cancelable: false,
       composed:   true
     }));
+}
+
+function initDialogListener(id) {
+  let currentWindowId;
+
+  const onMessage = (message, _sender) => {
+    if (!message || message.id != id)
+      return;
+
+    switch (message.type) {
+      case TYPE_FOCUS:
+        window.focus();
+        break;
+
+      case TYPE_MOVED:
+        document.dispatchEvent(new CustomEvent(TYPE_MOVED, {
+          detail: {
+            left: message.left,
+            top:  message.top
+          },
+          bubbles:    true,
+          cancelable: false,
+          composed:   true
+        }));
+        break;
+
+      case TYPE_NOTIFY_WINDOW_ID:
+        currentWindowId = message.windowId;
+        break;
+    }
+  };
+  browser.runtime.onMessage.addListener(onMessage);
+
+  const onRemoved = windowId => {
+    if (windowId != currentWindowId)
+      return;
+    browser.runtime.onMessage.removeListener(onMessage);
+    browser.windows.onRemoved.removeListener(onRemoved);
+  };
+  browser.windows.onRemoved.addListener(onRemoved);
 }
 
 export function accept(detail = null) {

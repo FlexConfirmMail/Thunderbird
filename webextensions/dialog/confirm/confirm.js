@@ -113,6 +113,10 @@ configs.$loaded.then(async () => {
     configs.confirmDialogWidth = window.outerWidth;
     configs.confirmDialogHeight = window.outerHeight;
   });
+  window.addEventListener(Dialog.TYPE_MOVED, event => {
+    configs.confirmDialogLeft = event.detail.left;
+    configs.confirmDialogTop = event.detail.top;
+  });
 
   Dialog.notifyReady();
 });

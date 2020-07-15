@@ -165,6 +165,7 @@ async function tryConfirm(tab, details) {
 
   const dialogParams = {
     url:    '/dialog/confirm/confirm.html',
+    modal:  true,
     width:  configs.confirmDialogWidth,
     height: configs.confirmDialogWidth
   };
@@ -176,6 +177,12 @@ async function tryConfirm(tab, details) {
     dialogParams.height = parseInt(screen.availHeight * 0.9);
     dialogParams.left = parseInt((screen.availWidth - dialogParams.width) / 2);
     dialogParams.top = parseInt((screen.availHeight - dialogParams.height) / 2);
+  }
+  else {
+    if (typeof configs.confirmDialogLeft == 'number')
+      dialogParams.left = configs.confirmDialogLeft;
+    if (typeof configs.confirmDialogTop == 'number')
+      dialogParams.top = configs.confirmDialogTop;
   }
 
   return Dialog.open(
@@ -221,12 +228,20 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
 
   if (configs.showCountdown) {
     log('show countdown');
+
+    const dialogParams = {
+      url:    '/dialog/countdown/countdown.html',
+      modal:  true,
+      width:  configs.countdownDialogWidth,
+      height: configs.countdownDialogHeight
+    }
+    if (typeof configs.countdownDialogLeft == 'number')
+      dialogParams.left = configs.countdownDialogLeft;
+    if (typeof configs.countdownDialogTop == 'number')
+      dialogParams.top = configs.countdownDialogTop;
+
     try {
-      await Dialog.open({
-        url: '/dialog/countdown/countdown.html',
-        width: configs.countdownDialogWidth,
-        height: configs.countdownDialogHeight
-      });
+      await Dialog.open(dialogParams);
     }
     catch(error) {
       log('countdown canceled ', error);

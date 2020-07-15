@@ -56,9 +56,13 @@ export const configs = new Configs({
 
   confirmDialogWidth: 680,
   confirmDialogHeight: 600,
+  confirmDialogLeft: null,
+  confirmDialogTop: null,
 
   countdownDialogWidth: 300,
   countdownDialogHeight: 130,
+  countdownDialogLeft: null,
+  countdownDialogTop: null,
 
   maxTooltipTextLength: 60,
 

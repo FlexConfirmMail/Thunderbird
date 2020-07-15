@@ -33,6 +33,10 @@ configs.$loaded.then(() => {
     configs.countdownDialogWidth = window.outerWidth;
     configs.countdownDialogHeight = window.outerHeight;
   });
+  window.addEventListener(Dialog.TYPE_MOVED, event => {
+    configs.countdownDialogLeft = event.detail.left;
+    configs.countdownDialogTop = event.detail.top;
+  });
 
   Dialog.notifyReady();
 
