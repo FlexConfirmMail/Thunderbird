@@ -27,6 +27,15 @@ body {
   justify-content: center;
 }
 
+.dialog-content {
+  opacity: 1;
+  transition: 0.25s opacity ease-out;
+}
+
+:root:not(.ready) .dialog-content {
+  opacity: 0;
+}
+
 .dialog-content,
 .flex-box {
   align-items: stretch;

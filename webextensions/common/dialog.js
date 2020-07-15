@@ -295,6 +295,10 @@ export function notifyReady() {
       cancelable: false,
       composed:   true
     }));
+
+  setTimeout(() => {
+    document.documentElement.classList.add('ready');
+  }, 0);
 }
 
 function initDialogListener(id) {
