@@ -12,6 +12,7 @@
 
 :root,
 body {
+  font: message-box;
   line-height: 1;
   margin: 0;
   overflow: hidden;

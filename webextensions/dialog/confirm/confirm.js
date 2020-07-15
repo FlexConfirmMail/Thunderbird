@@ -37,15 +37,36 @@ function onConfigChange(key) {
   const value = configs[key];
   switch (key) {
     case 'attentionDomainsHighlightMode':
-      document.documentElement.classList.toggle('attention-domains-highlighted', (
+      document.documentElement.classList.toggle('highlight-attention-domains', (
         value == Constants.ATTENTION_HIGHLIGHT_MODE_ALWAYS ||
         (value == Constants.ATTENTION_HIGHLIGHT_MODE_ONLY_WITH_ATTACHMENTS &&
          mParams.attachments.length > 0)
       ));
       break;
 
+    case 'highlightExternalDomains':
+      document.documentElement.classList.toggle('highlight-external-domains', value);
+      break;
+
+    case 'largeFontSizeForAddresses':
+      document.documentElement.classList.toggle('large-font-size-for-addresses', value);
+      break;
+
+    case 'emphasizeRecipientType':
+      document.documentElement.classList.toggle('emphasize-recipient-type', value);
+      break;
+
     case 'attentionSuffixes':
       mAttentionSuffixesMatcher = new RegExp(`\\.(${value.map(suffix => suffix.toLowerCase().replace(/^\./, '')).join('|')})$`, 'i');
+      break;
+
+    case 'emphasizeTopMessage':
+      document.documentElement.classList.toggle('emphasize-top-message', value);
+      break;
+
+    case 'topMessage':
+      mTopMessage.textContent = value;
+      mTopMessage.classList.toggle('hidden', !value);
       break;
 
     case 'debug':
@@ -59,11 +80,13 @@ configs.$loaded.then(async () => {
   mParams = await Dialog.getParams();
 
   onConfigChange('attentionDomainsHighlightMode');
+  onConfigChange('highlightExternalDomains');
+  onConfigChange('largeFontSizeForAddresses');
+  onConfigChange('emphasizeRecipientType');
   onConfigChange('attentionSuffixes');
+  onConfigChange('emphasizeTopMessage');
+  onConfigChange('topMessage');
   onConfigChange('debug');
-
-  mTopMessage.textContent = configs.topMessage;
-  mTopMessage.classList.toggle('hidden', !configs.topMessage);
 
   initInternals();
   initExternals();
@@ -122,11 +145,20 @@ function initExternals() {
     recipientsOfDomain.set(recipient.domain, recipients);
   }
 
-  for (const domain of recipientsOfDomain.keys()) {
-    mExternalsList.appendChild(createDomainRow(domain));
-    for (const recipient of recipientsOfDomain.get(domain)) {
+  let groupCount = 0;
+  for (const [domain, recipients] of recipientsOfDomain.entries()) {
+    groupCount++;
+
+    const domainRow = createDomainRow(domain);
+    if (recipients.some(recipient => recipient.isAttentionDomain))
+      domainRow.classList.add('attention');
+    mExternalsList.appendChild(domainRow);
+
+    const domainClass = groupCount % 2 ? 'domain-odd' : 'domain-even';
+    for (const recipient of recipients) {
       const row = createRecipientRow(recipient);
       row.dataset.domain = domain;
+      row.classList.add(domainClass);
       mExternalsList.appendChild(row);
     }
   }

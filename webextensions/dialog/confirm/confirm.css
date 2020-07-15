@@ -88,8 +88,49 @@ hr.splitter {
   padding-left: 1em;
 }
 
-:root.attention-domains-highlighted #externals .row.attention,
+:root.highlight-attention-domains #externals .row.attention,
 #attachments .row.attention {
   color: red;
   font-weight bold;
+}
+
+
+:root.large-font-size-for-addresses .row.recipient,
+:root.large-font-size-for-addresses .row.recipient {
+  font-size: 120%;
+}
+
+:root.highlight-external-domains #externals .row.domain {
+  font-size: 125%;
+}
+:root.large-font-size-for-addresses.highlight-external-domains #externals .row.domain {
+  font-size: 160%;
+}
+
+:root.highlight-external-domains #externals .row.recipient.domain-even label {
+  background: rgb(255, 192, 0);
+}
+/*
+:root.highlight-external-domains #externals:not(:focus) .row.recipient.domain-even label {
+  background: rgb(198, 156, 27);
+}
+*/
+
+:root.highlight-external-domains #externals .row.recipient.domain-odd label {
+  background: rgb(70, 170, 252);
+}
+/*
+:root.highlight-external-domains #externals:not(:focus) .row.recipient.domain-odd label {
+  background: rgb(72, 146, 206);
+}
+*/
+
+:root.emphasize-recipient-type .row.recipient .column:first-of-type {
+  font-weight:  bold;
+  font-size: 150%;
+}
+
+:root.emphasize-top-message #top-message {
+    color: red;
+    font-size: 160%;
 }
