@@ -165,7 +165,7 @@ async function tryConfirm(tab, details) {
 
   const dialogParams = {
     url:    '/dialog/confirm/confirm.html',
-    modal:  true,
+    modal:  !configs.debug,
     width:  configs.confirmDialogWidth,
     height: configs.confirmDialogWidth
   };
@@ -231,7 +231,7 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
 
     const dialogParams = {
       url:    '/dialog/countdown/countdown.html',
-      modal:  true,
+      modal:  !configs.debug,
       width:  configs.countdownDialogWidth,
       height: configs.countdownDialogHeight
     }
