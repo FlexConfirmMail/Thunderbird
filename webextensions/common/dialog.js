@@ -7,7 +7,6 @@
 
 export const TYPE_FETCH_PARAMS = 'dialog-fetch-params';
 export const TYPE_RESPOND_PARAMS = 'dialog-respond-params';
-export const TYPE_NOTIFY_WINDOW_ID = 'dialog-notify-window-id';
 export const TYPE_READY = 'dialog-ready';
 export const TYPE_FOCUS = 'dialog-focus';
 export const TYPE_MOVED = 'dialog-moved';
@@ -117,10 +116,7 @@ export async function open({ url, left, top, width, height, modal } = {}, dialog
               height: Math.ceil(height + lastHeightOffset)
             });
           }
-          browser.runtime.sendMessage(TYPE_NOTIFY_WINDOW_ID, {
-            id,
-            windowId: win.id
-          });
+          return Promise.resolve(win.id);
         }; break;
 
         case TYPE_ACCEPT:
@@ -271,6 +267,8 @@ export async function getParams() {
     });
 }
 
+let mCurrentWindowId;
+
 export function notifyReady() {
   const params = new URLSearchParams(location.search);
   const id = params.get('dialog-id');
@@ -287,7 +285,7 @@ export function notifyReady() {
     browser.runtime.sendMessage({
       type: TYPE_READY,
       ...detail
-    });
+    }).then(windowId => mCurrentWindowId = windowId);
   else
     document.dispatchEvent(new CustomEvent(TYPE_READY, {
       detail,
@@ -302,8 +300,6 @@ export function notifyReady() {
 }
 
 function initDialogListener(id) {
-  let currentWindowId;
-
   const onMessage = (message, _sender) => {
     if (!message || message.id != id)
       return;
@@ -324,16 +320,13 @@ function initDialogListener(id) {
           composed:   true
         }));
         break;
-
-      case TYPE_NOTIFY_WINDOW_ID:
-        currentWindowId = message.windowId;
-        break;
     }
   };
   browser.runtime.onMessage.addListener(onMessage);
 
   const onRemoved = windowId => {
-    if (windowId != currentWindowId)
+    if (!mCurrentWindowId ||
+        windowId != mCurrentWindowId)
       return;
     browser.runtime.onMessage.removeListener(onMessage);
     browser.windows.onRemoved.removeListener(onRemoved);
