@@ -39,13 +39,13 @@ export function init(sizes) {
     splitter.addEventListener('mouseup', onMouseUp);
   }
 
-    for (const id of Object.keys(mSizes)) {
-      const size = mSizes[id];
-      const box = mResizableBoxes.get(id);
-      if (!box || typeof size != 'number')
-        continue;
-      setBoxHeight(box, size);
-    }
+  for (const id of Object.keys(mSizes)) {
+    const size = mSizes[id];
+    const box = mResizableBoxes.get(id);
+    if (!box || typeof size != 'number')
+      continue;
+    setBoxHeight(box, size);
+  }
 }
 
 function findPreviousResizableBox(splitter) {
