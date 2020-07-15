@@ -3,7 +3,7 @@
   "extensionDescription": { "message": "柔軟なルールに基づいて、送信前に宛先のアドレスや添付ファイルの確認を行うようにします。" },
 
 
-  "confirmDialogTitle": { "message": "あて先メールアドレスの確認" },
+  "confirmDialogTitle": { "message": "宛先メールアドレスの確認" },
   "confirmDialogInternalsCaption": { "message": "登録済みドメインのメールアドレス" },
   "confirmDialogExternalsCaption": { "message": "外部ドメインのメールアドレス" },
   "confirmDialogSubjectCaption": { "message": "件名: " },
@@ -50,6 +50,70 @@
 
 
   "showLastNameFirst": { "message": "true" },
+
+
+  "configs_recipients_caption": { "message": "宛先" },
+
+  "configs_enableConfirmation_caption": { "message": "送信前の宛先確認:" },
+  "configs_confirmationMode_always_label": { "message": "常に確認" },
+  "configs_confirmationMode_onModified_label": { "message": "宛先が変更された時だけ確認" },
+  "configs_confirmationMode_never_label": { "message": "確認しない" },
+
+  "configs_internalDomains_caption": { "message": "組織内として扱うメールアドレスのドメイン名" },
+  "configs_internalDomains_input_placeholder": { "message": "ドメイン名を入力（例：example.com）" },
+
+  "configs_confirmInternalMail_label": { "message": "すべての宛先が登録済みドメインのメール送信時は確認ダイアログを表示しない" },
+  "configs_minConfirmationRecipientsCount_label_before": { "message": "宛先が" },
+  "configs_minConfirmationRecipientsCount_label_after": { "message": "件以下の場合は確認ダイアログを表示しない（※0で常に確認）" },
+  "configs_confirmMultipleRecipientDomains_label": { "message": "ToまたはCcの宛先に複数のドメインが含まれる場合に警告する" },
+  "configs_allowCheckAllInternals_label": { "message": "組織内の宛先の一括チェックを許可" },
+  "configs_allowCheckAllExternals_label": { "message": "外部の宛先の一括チェックを許可" },
+
+
+  "configs_attentionDomains_caption": { "message": "特別に注意が必要な外部ドメインの宛先" },
+
+  "configs_attentionDomainsHighlightMode_caption": { "message": "これらのドメインに該当する宛先の強調表示" },
+  "configs_attentionDomainsHighlightMode_always_label": { "message": "常に強調表示" },
+  "configs_attentionDomainsHighlightMode_withAttachments_label": { "message": "添付ファイルがある時だけ強調表示" },
+  "configs_attentionDomainsHighlightMode_never_label": { "message": "強調表示しない" },
+
+  "configs_attentionDomainsConfirmationMode_caption": { "message": "これらのドメインに該当する宛先がある場合の送信確認後の再警告" },
+  "configs_attentionDomainsConfirmationMode_always_label": { "message": "常に再度警告する" },
+  "configs_attentionDomainsConfirmationMode_withAttachments_label": { "message": "添付ファイルがある時だけ再度警告する" },
+  "configs_attentionDomainsConfirmationMode_never_label": { "message": "再度警告しない" },
+
+  "configs_attentionDomainsSource_config_label": { "message": "手動編集のリストを使用" },
+  "configs_attentionDomainsSourceFile_label": { "message": "ファイル形式のリストを使用" },
+  "configs_attentionDomainsSourceFile_button_label": { "message": "参照..." },
+
+
+
+  "configs_attachments_caption": { "message": "添付ファイル" },
+
+  "configs_exceptionalSuffixesConfirm_label": { "message": "これらの拡張子を持つファイルが外部ドメイン宛のメールに添付されている場合は再度警告する" },
+  "configs_exceptionalSuffixesContirm_config_label": { "message": "手動編集のリストを使用" },
+  "configs_exceptionalSuffixesContirmFile_label": { "message": "ファイル形式のリストを使用" },
+  "configs_exceptionalSuffixesContirmFile_button_label": { "message": "参照..." },
+
+  "configs_requireReinputAttachmentNames_label": { "message": "宛先に外部ドメインのアドレスがある場合、添付ファイル名の手動での入力を求める" },
+  "configs_allowCheckAllAttachments_label": { "message": "「&confirm.dialog.fileName_label;」セクションのチェックボックスの一括制御を許可" },
+
+
+  "configs_misc_caption": { "message": "その他" },
+
+  "configs_showCountdown_label": { "message": "[送信]ボタン押下後にカウントダウンを開始する(1-3000秒)--&gt;" },
+  "configs_countdownSeconds_label": { "message": "秒" },
+  "configs_countdownAllowSkip_label": { "message": "カウントを飛ばしてすぐに送信することを許容する" },
+
+  "configs_requireCheckSubject_label": { "message": "件名の確認を求める" },
+  "configs_requireCheckBody_label": { "message": "メール本文の確認を求める" },
+  "configs_highlightExternalDomains_label": { "message": "外部ドメインの宛先のアドレスを強調表示する" },
+  "configs_largeFontSizeForAddresses_label": { "message": "メールアドレスを大きなフォントサイズで表示する" },
+  "configs_alwaysLargeDialog_label": { "message": "確認のダイアログを常に大きなサイズで開く" },
+  "configs_label.topMessage": { "message": "確認のダイアログの冒頭メッセージ:" },
+  "configs_checkbox.emphasizeTopMessage": { "message": "メッセージを強調表示する" },
+  "configs_checkbox.emphasizeRecipientType": { "message": "宛先の種別（To/Cc/Bcc）を強調表示する" },
+
 
   "config_debug_label": { "message": "デバッグモード" },
   "config_all_caption": { "message": "すべての設定" }

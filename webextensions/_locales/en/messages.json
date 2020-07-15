@@ -51,6 +51,69 @@
 
   "showLastNameFirst": { "message": "false" },
 
+
+  "configs_recipients_caption": { "message": "Recipients" },
+
+  "configs_confirmationMode_caption": { "message": "Confirm Recipients before Sending:" },
+  "configs_confirmationMode_always_label": { "message": "Always" },
+  "configs_confirmationMode_onModified_label": { "message": "Only when recipients are modified" },
+  "configs_confirmationMode_never_label": { "message": "Never" },
+
+  "configs_internalDomains_caption": { "message": "Domains treated as internals" },
+  "configs_internalDomains_input_placeholder": { "message": "Input a domain name (e.g. example.com)" },
+
+  "configs_confirmInternalMail_label": { "message": "Skip confirmation if all recipients are internals" },
+  "configs_minConfirmationRecipientsCount_label_before": { "message": "Skip confirmation if there are/is only" },
+  "configs_minConfirmationRecipientsCount_label_after": { "message": "or fewer recipient(s) (*0 means &quot;always confirm&quot;)" },
+  "configs_confirmMultipleRecipientDomains_label": { "message": "Confirm when there are multiple domains in To/Cc recipients" },
+  "configs_allowCheckAllInternals_label": { "message": "Allow to make all internal recipients to be checked with one checkbox" },
+  "configs_allowCheckAllExternals_label": { "message": "Allow to make all foreign recipients to be checked with one checkbox" },
+
+
+  "configs_attentionDomains_caption": { "message": "Specially alerted foreign domains in recipients" },
+
+  "configs_attentionDomainsHighlightMode_caption": { "message": "Highlight recipients of these domains" },
+  "configs_attentionDomainsHighlightMode_always_label": { "message": "Always" },
+  "configs_attentionDomainsHighlightMode_withAttachments_label": { "message": "Only when there is any attachment" },
+  "configs_attentionDomainsHighlightMode_never_label": { "message": "Never" },
+
+  "configs_attentionDomainsConfirmationMode_caption": { "message": "Re-confirmation when there is any recipient with one of these domains" },
+  "configs_attentionDomainsConfirmationMode_always_label": { "message": "Always" },
+  "configs_attentionDomainsConfirmationMode_withAttachments_label": { "message": "Only when there is any attachment" },
+  "configs_attentionDomainsConfirmationMode_never_label": { "message": "Never" },
+
+  "configs_attentionDomainsSource_config_label": { "message": "Use the manually managed list" },
+  "configs_attentionDomainsSourceFile_label": { "message": "Use a list given as a file" },
+  "configs_attentionDomainsSourceFile_button_label": { "message": "Choose…" },
+
+
+  "configs_attachments_caption": { "message": "Attachments" },
+
+  "configs_exceptionalSuffixesConfirm_label": { "message": "Confirm me again before send, if there is any attachment with one of these extensions in a message to foreign domains" },
+  "configs_exceptionalSuffixesContirm_config_label": { "message": "Use the manually managed list" },
+  "configs_exceptionalSuffixesContirmFile_label": { "message": "Use a list given as a file" },
+  "configs_exceptionalSuffixesContirmFile_button_label": { "message": "Choose…" },
+
+  "configs_requireReinputAttachmentNames_label": { "message": "Require to input file names of attachments, if there is any other domain recipient" },
+  "configs_allowCheckAllAttachments_label": { "message": "All to control checkboxes under the &quot;&confirm.dialog.fileName_label;&quot; section" },
+
+
+  "configs_misc_caption": { "message": "Misc." },
+
+  "configs_showCountdown_label": { "message": "Countdown before sending mail(1-3000sec)" },
+  "configs_countdownSeconds_label": { "message": "(s)" },
+  "configs_countdownAllowSkip_label": { "message": "Allow to skip countdown to send the mail immediately" },
+
+  "configs_requireCheckSubject_label": { "message": "Require check the subject" },
+  "configs_requireCheckBody_label": { "message": "Require to check the message body" },
+  "configs_highlightExternalDomains_label": { "message": "Highlight forein recipient addesses" },
+  "configs_largeFontSizeForAddresses_label": { "message": "Show addresses with larget font size" },
+  "configs_alwaysLargeDialog_label": { "message": "Open confirmation dialog with large size always" },
+  "configs_topMessage_label": { "message": "Top Message of the confirmation dialog:" },
+  "configs_emphasizeTopMessage_label": { "message": "Empasize the top message" },
+  "configs_emphasizeRecipientType_label": { "message": "Emphasize recipient types (To/Cc/Bcc)" },
+
+
   "config_debug_label": { "message": "Debug mode" },
   "config_all_caption": { "message": "All Configs" }
 }
