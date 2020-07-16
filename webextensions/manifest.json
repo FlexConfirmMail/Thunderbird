@@ -9,6 +9,7 @@
     "addressBooks",
     "compose",
     "messagesRead",
+    "nativeMessaging",
     "storage",
     "tabs"
   ],

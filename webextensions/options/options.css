@@ -94,3 +94,9 @@ li textarea {
   margin-left: 2em;
   width: calc(100% - 2em);
 }
+
+
+input[type="text"].filepath {
+  margin-left: 2em;
+  width: calc(100% - 2em);
+}

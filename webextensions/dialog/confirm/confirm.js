@@ -57,10 +57,6 @@ function onConfigChange(key) {
       document.documentElement.classList.toggle('emphasize-recipient-type', value);
       break;
 
-    case 'attentionSuffixes':
-      mAttentionSuffixesMatcher = new RegExp(`\\.(${value.map(suffix => suffix.toLowerCase().replace(/^\./, '')).join('|')})$`, 'i');
-      break;
-
     case 'emphasizeTopMessage':
       document.documentElement.classList.toggle('emphasize-top-message', value);
       break;
@@ -80,11 +76,12 @@ configs.$addObserver(onConfigChange);
 configs.$loaded.then(async () => {
   mParams = await Dialog.getParams();
 
+  mAttentionSuffixesMatcher = new RegExp(`\\.(${mParams.attentionSuffixes.map(suffix => suffix.toLowerCase().replace(/^\./, '')).join('|')})$`, 'i');
+
   onConfigChange('attentionDomainsHighlightMode');
   onConfigChange('highlightExternalDomains');
   onConfigChange('largeFontSizeForAddresses');
   onConfigChange('emphasizeRecipientType');
-  onConfigChange('attentionSuffixes');
   onConfigChange('emphasizeTopMessage');
   onConfigChange('topMessage');
   onConfigChange('debug');

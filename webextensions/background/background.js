@@ -129,9 +129,14 @@ async function tryConfirm(tab, details) {
     ListUtils.populateListAddresses(details.cc),
     ListUtils.populateListAddresses(details.bcc)
   ]);
+  const [attentionDomains, attentionSuffixes] = await Promise.all([
+    getAttentionDomains(),
+    getAttentionSuffixes()
+  ]);
+  log('attention list: ', { attentionDomains, attentionSuffixes });
   const classifierParams = {
-    internalDomains:  configs.internalDomains,
-    attentionDomains: configs.attentionDomains
+    internalDomains: configs.internalDomains,
+    attentionDomains
   };
   const classifiedTo = RecipientClassifier.classify(to, classifierParams);
   const classifiedCc = RecipientClassifier.classify(cc, classifierParams);
@@ -199,9 +204,62 @@ async function tryConfirm(tab, details) {
         ...classifiedCc.externals.map(recipient => ({ ...recipient, type: 'Cc' })),
         ...classifiedBcc.externals.map(recipient => ({ ...recipient, type: 'Bcc' }))
       ],
-      attachments: await browser.compose.listAttachments(tab.id)
+      attachments: await browser.compose.listAttachments(tab.id),
+      attentionSuffixes
     }
   );
+}
+
+async function getAttentionDomains() {
+  switch (configs.attentionDomainsSource) {
+    default:
+    case Constants.SOURCE_CONFIG:
+      return configs.attentionDomains;
+
+    case Constants.SOURCE_FILE: {
+      if (!configs.attentionDomainsFile)
+        return [];
+      try {
+        const response = await browser.runtime.sendNativeMessage(Constants.HOST_ID, {
+          command: Constants.HOST_COMMAND_FETCH,
+          path: configs.attentionDomainsFile
+        });
+        if (!response || typeof response.contents != 'string')
+          throw new Error(`invalid response: ${String(response)}`);
+        return response.contents.trim().split(/[\s,|]+/).filter(part => !!part);
+      }
+      catch(error) {
+        log(`Error: failed to fetch attention domains from ${configs.attentionDomainsFile}. `, error);
+        return [];
+      }
+    };
+  }
+}
+
+async function getAttentionSuffixes() {
+  switch (configs.attentionSuffixesSource) {
+    default:
+    case Constants.SOURCE_CONFIG:
+      return configs.attentionSuffixes;
+
+    case Constants.SOURCE_FILE: {
+      if (!configs.attentionSuffixesFile)
+        return [];
+      try {
+        const response = await browser.runtime.sendNativeMessage(Constants.HOST_ID, {
+          command: Constants.HOST_COMMAND_FETCH,
+          path: configs.attentionSuffixesFile
+        });
+        if (!response || typeof response.contents != 'string')
+          throw new Error(`invalid response: ${String(response)}`);
+        return response.contents.trim().split(/[\s,|]+/).filter(part => !!part);
+      }
+      catch(error) {
+        log(`Error: failed to fetch attention suffixes from ${configs.attentionSuffixesFile}. `, error);
+        return [];
+      }
+    };
+  }
 }
 
 
