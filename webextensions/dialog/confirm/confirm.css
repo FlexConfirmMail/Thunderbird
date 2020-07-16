@@ -163,7 +163,7 @@ hr.splitter {
   font-size: 160%;
 }
 
-:root.highlight-external-domains .listbox#externals .row.attention label {
+:root.highlight-external-domains.highlight-attention-domains .listbox#externals .row.attention label {
   text-shadow: 0 0 5px white,
                0 0 5px white,
                0 0 5px white,
