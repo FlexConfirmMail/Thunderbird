@@ -41,11 +41,12 @@ func main() {
 
 type FetchResponse struct {
 	Contents string `json:"contents"`
+	Error    string `json:"error"`
 }
 
 func FetchAndRespond(path string) {
-	contents := Fetch(path)
-	response := &FetchResponse{contents}
+	contents, errorMessage := Fetch(path)
+	response := &FetchResponse{contents, errorMessage}
 	body, err := json.Marshal(response)
 	if err != nil {
 		log.Fatal(err)
@@ -56,11 +57,10 @@ func FetchAndRespond(path string) {
 	}
 }
 
-func Fetch(path string) (contents string) {
+func Fetch(path string) (contents string, errorMessage string) {
 	buffer, err := ioutil.ReadFile(path)
 	if err != nil {
-		return ""
-	} else {
-		return string(buffer)
+		return "", path + ": " + err.Error()
 	}
+	return string(buffer), ""
 }
