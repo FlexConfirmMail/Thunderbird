@@ -77,6 +77,7 @@
   "config_attentionDomains_input_placeholder": { "message": "ドメイン名を入力（例：example.com）" },
   "config_attentionDomainsFile_label": { "message": "ファイル形式のリストを使用" },
   "config_attentionDomainsFile_button_label": { "message": "参照..." },
+  "config_attentionDomainsFile_input_placeholder": { "message": "ファイルのパスを入力（例：\\FileServer\\Shared\\domains.txt）" },
 
   "config_attentionDomainsHighlightMode_caption": { "message": "これらのドメインに該当する宛先の強調表示" },
   "config_attentionDomainsHighlightMode_always_label": { "message": "常に強調表示" },
@@ -97,6 +98,7 @@
   "config_attentionSuffixes_input_placeholder": { "message": "ファイルの拡張子を入力（例：.exe、.pdf）" },
   "config_attentionSuffixesFile_label": { "message": "ファイル形式のリストを使用" },
   "config_attentionSuffixesFile_button_label": { "message": "参照..." },
+  "config_attentionSuffixesFile_input_placeholder": { "message": "ファイルのパスを入力（例：\\FileServer\\Shared\\suffixes.txt）" },
 
   "config_requireReinputAttachmentNames_label": { "message": "宛先に外部ドメインのアドレスがある場合、添付ファイル名の手動での入力を求める" },
   "config_allowCheckAllAttachments_label": { "message": "添付ファイルのチェックボックスの一括制御を許可" },

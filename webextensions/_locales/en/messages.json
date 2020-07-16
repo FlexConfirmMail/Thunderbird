@@ -77,6 +77,7 @@
   "config_attentionDomains_input_placeholder": { "message": "Input a domain name (e.g. example.com)" },
   "config_attentionDomainsFile_label": { "message": "Use a list given as a file" },
   "config_attentionDomainsFile_button_label": { "message": "Choose…" },
+  "config_attentionDomainsFile_input_placeholder": { "message": "Path to the file (e.g. \\FileServer\\Shared\\domains.txt)" },
 
   "config_attentionDomainsHighlightMode_caption": { "message": "Highlight recipients of these domains" },
   "config_attentionDomainsHighlightMode_always_label": { "message": "Always" },
@@ -96,6 +97,7 @@
   "config_attentionSuffixes_input_placeholder": { "message": "Input an file extension (e.g. .exe, .pdf)" },
   "config_attentionSuffixesFile_label": { "message": "Use a list given as a file" },
   "config_attentionSuffixesFile_button_label": { "message": "Choose…" },
+  "config_attentionSuffixesFile_input_placeholder": { "message": "Path to the file (e.g. \\FileServer\\Shared\\suffixes.txt)" },
 
   "config_requireReinputAttachmentNames_label": { "message": "Require to input file names of attachments, if there is any other domain recipient" },
   "config_allowCheckAllAttachments_label": { "message": "Allow to make all attachments to be checked with one checkbox" },
