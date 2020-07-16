@@ -7,7 +7,8 @@
 
 import {
   configs,
-  log
+  log,
+  sendToHost
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
 import * as Dialog from '/common/dialog.js';
@@ -219,21 +220,13 @@ async function getAttentionDomains() {
     case Constants.SOURCE_FILE: {
       if (!configs.attentionDomainsFile)
         return [];
-      try {
-        const response = await browser.runtime.sendNativeMessage(Constants.HOST_ID, {
-          command: Constants.HOST_COMMAND_FETCH,
-          params: {
-            path: configs.attentionDomainsFile
-          }
-        });
-        if (!response || typeof response.contents != 'string')
-          throw new Error(`invalid response: ${String(response)}`);
-        return response.contents.trim().split(/[\s,|]+/).filter(part => !!part);
-      }
-      catch(error) {
-        log(`Error: failed to fetch attention domains from ${configs.attentionDomainsFile}. `, error);
-        return [];
-      }
+      const response = await sendToHost({
+        command: Constants.HOST_COMMAND_FETCH,
+        params: {
+          path: configs.attentionDomainsFile
+        }
+      });
+      return response ? response.contents.trim().split(/[\s,|]+/).filter(part => !!part) : [];
     };
   }
 }
@@ -247,21 +240,13 @@ async function getAttentionSuffixes() {
     case Constants.SOURCE_FILE: {
       if (!configs.attentionSuffixesFile)
         return [];
-      try {
-        const response = await browser.runtime.sendNativeMessage(Constants.HOST_ID, {
-          command: Constants.HOST_COMMAND_FETCH,
-          params: {
-            path: configs.attentionSuffixesFile
-          }
-        });
-        if (!response || typeof response.contents != 'string')
-          throw new Error(`invalid response: ${String(response)}`);
-        return response.contents.trim().split(/[\s,|]+/).filter(part => !!part);
-      }
-      catch(error) {
-        log(`Error: failed to fetch attention suffixes from ${configs.attentionSuffixesFile}. `, error);
-        return [];
-      }
+      const response = await sendToHost({
+        command: Constants.HOST_COMMAND_FETCH,
+        params: {
+          path: configs.attentionSuffixesFile
+        }
+      });
+      return response ? response.contents.trim().split(/[\s,|]+/).filter(part => !!part) : [];
     };
   }
 }

@@ -87,3 +87,16 @@ export function log(message, ...args) {
   }
   console.log(`flex-confirm-mail: ${indent}${message}`, ...args);
 }
+
+export async function sendToHost(message) {
+  try {
+    const response = await browser.runtime.sendNativeMessage(Constants.HOST_ID, message);
+    if (!response || typeof response != 'object')
+      throw new Error(`invalid response: ${String(response)}`);
+    return response;
+  }
+  catch(error) {
+    log('Error: failed to get response for message', message, error);
+    return null;
+  }
+}

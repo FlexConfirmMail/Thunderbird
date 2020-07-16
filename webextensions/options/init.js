@@ -6,7 +6,8 @@
 'use strict';
 
 import {
-  configs
+  configs,
+  sendToHost
 } from '/common/common.js';
 import Options from '/extlib/Options.js';
 import '/extlib/l10n.js';
@@ -23,6 +24,26 @@ function onConfigChanged(key) {
 configs.$addObserver(onConfigChanged);
 
 
+/*
+function activateField(field) {
+  field.classList.remove('disabled');
+  field.disabled = false;
+  for (const subField of field.querySelectorAll('input, textarea, button, select')) {
+    subField.classList.remove('disabled');
+    subField.disabled = false;
+  }
+}
+*/
+
+function deactivateField(field) {
+  field.classList.add('disabled');
+  field.disabled = true;
+  for (const subField of field.querySelectorAll('input, textarea, button, select')) {
+    subField.classList.add('disabled');
+    subField.disabled = true;
+  }
+}
+
 function initArrayTypeTextArea(textarea) {
   textarea.value = configs[textarea.dataset.configKey].join('\n');
   textarea.addEventListener('input', () => {
@@ -33,7 +54,16 @@ function initArrayTypeTextArea(textarea) {
 
 
 window.addEventListener('DOMContentLoaded', async () => {
-  await configs.$loaded;
+  const [response, ] = await Promise.all([
+    sendToHost({ command: 'echo' }),
+    configs.$loaded
+  ]);
+
+  if (!response) {
+    for (const field of document.querySelectorAll('.require-native-messaging-host')) {
+      deactivateField(field);
+    }
+  }
 
   for (const textarea of document.querySelectorAll('textarea.array-type-config')) {
     initArrayTypeTextArea(textarea);

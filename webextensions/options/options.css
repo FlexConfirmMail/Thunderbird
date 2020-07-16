@@ -83,6 +83,14 @@ table input[type="radio"] {
 }
 
 
+.disabled {
+  opacity: 0.5;
+}
+.disabled .disabled {
+  opacity: 1;
+}
+
+
 
 textarea {
   display: block;
