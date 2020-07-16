@@ -121,6 +121,7 @@ hr.splitter {
 
 .listbox .row.domain {
   background: var(--bg-color);
+  min-height: 1.5em;
   left: 0;
   position: sticky;
   right: 0;
@@ -129,11 +130,15 @@ hr.splitter {
 }
 
 .listbox .row.domain::before {
-  content: "☆";
+  background: url("/resources/domain-unchecked.png") center no-repeat;
+  content: " ";
+  height: 1.5em;
+  min-height: 16px;
+  width: 16px;
 }
 
 .listbox .row.domain.checked::before {
-  content: "★";
+  background-image: url("/resources/domain-checked.png");
 }
 
 .listbox#externals .row.recipient {
