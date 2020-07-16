@@ -45,7 +45,7 @@ iframe {
 }
 
 iframe {
-  border: 1px solid;
+  border: 1px solid var(--in-content-box-border-color);
 }
 
 hr.splitter {
