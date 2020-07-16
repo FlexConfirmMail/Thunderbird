@@ -1,7 +1,7 @@
 NPM_MOD_DIR := $(CURDIR)/node_modules
 NPM_BIN_DIR := $(NPM_MOD_DIR)/.bin
 
-.PHONY: xpi install_dependency install_hook lint format update_extlib install_extlib test
+.PHONY: xpi install_dependency install_hook lint format update_extlib install_extlib host test
 
 all: xpi
 
@@ -31,6 +31,11 @@ install_extlib:
 	cp ../submodules/webextensions-lib-options/Options.js extlib/; echo 'export default Options;' >> extlib/Options.js
 	cp ../submodules/webextensions-lib-l10n/l10n.js extlib/; echo 'export default l10n;' >> extlib/l10n.js
 	#cp ../submodules/webextensions-lib-rich-confirm/RichConfirm.js extlib/; echo 'export default RichConfirm;' >> extlib/RichConfirm.js
+
+host:
+	native-messaging-host/build.sh
+	rm -f flex-confirm-mail-host.zip
+	cd native-messaging-host && zip -r -9 ../flex-confirm-mail-host.zip 386 amd64 *.bat *.json
 
 test:
 	npm run test

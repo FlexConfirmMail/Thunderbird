@@ -1,5 +1,7 @@
 *.xpi
+*.zip
 extlib/*.js
+.goutputstream-*
 
 # node.js dependency
 node_modules/

@@ -1,6 +1,6 @@
 PACKAGE_NAME = flex-confirm-mail
 
-.PHONY: xpi lint
+.PHONY: xpi lint host
 
 all: xpi
 
@@ -13,6 +13,9 @@ xpi: makexpi/makexpi.sh copy-extlib
 	[ -f .need-stash-pop ] && git stash pop || true
 	rm -f .need-stash-pop
 	cd webextensions && make && cp ./*.xpi ../
+
+host:
+	cd webextensions && make host && cp ./*host.zip ../
 
 unittest: makexpi/makexpi.sh copy-extlib
 	makexpi/makexpi.sh -n $(PACKAGE_NAME) -o
