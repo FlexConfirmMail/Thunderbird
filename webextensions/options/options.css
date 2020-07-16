@@ -92,18 +92,17 @@ table input[type="radio"] {
 
 
 
-textarea {
+textarea,
+#topMessage {
   display: block;
-  min-height: 6em;
   width: 100%;
 }
 
-li textarea {
-  margin-left: 2em;
-  width: calc(100% - 2em);
+textarea {
+  min-height: 6em;
 }
 
-
+li textarea,
 input[type="text"].filepath {
   margin-left: 2em;
   width: calc(100% - 2em);
