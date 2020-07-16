@@ -60,7 +60,7 @@
   "config_confirmationMode_never_label": { "message": "Never" },
 
   "config_internalDomains_caption": { "message": "Domains treated as internals" },
-  "config_internalDomains_input_placeholder": { "message": "Input a domain name (e.g. example.com)" },
+  "config_internalDomains_input_placeholder": { "message": "Input domain names per line (e.g. example.com)" },
 
   "config_skipConfirmationForInternalMail_label": { "message": "Skip confirmation if all recipients are internals" },
   "config_minConfirmationRecipientsCount_label_before": { "message": "Skip confirmation if there are/is only" },
@@ -74,7 +74,7 @@
 
   "config_attentionDomainsSource_caption": { "message": "Specially alerted foreign domains" },
   "config_attentionDomains_label": { "message": "Use the manually managed list" },
-  "config_attentionDomains_input_placeholder": { "message": "Input a domain name (e.g. example.com)" },
+  "config_attentionDomains_input_placeholder": { "message": "Input domain names per line (e.g. example.com)" },
   "config_attentionDomainsFile_label": { "message": "Use a list given as a file" },
   "config_attentionDomainsFile_button_label": { "message": "Choose…" },
   "config_attentionDomainsFile_input_placeholder": { "message": "Path to the file (e.g. \\FileServer\\Shared\\domains.txt)" },
@@ -94,7 +94,7 @@
 
   "config_attentionSuffixesConfirm_label": { "message": "Confirm me again before send, if there is any attachment with one of these extensions in a message to foreign domains" },
   "config_attentionSuffixes_label": { "message": "Use the manually managed list" },
-  "config_attentionSuffixes_input_placeholder": { "message": "Input an file extension (e.g. .exe, .pdf)" },
+  "config_attentionSuffixes_input_placeholder": { "message": "Input file extensions per line (e.g. .exe, .pdf)" },
   "config_attentionSuffixesFile_label": { "message": "Use a list given as a file" },
   "config_attentionSuffixesFile_button_label": { "message": "Choose…" },
   "config_attentionSuffixesFile_input_placeholder": { "message": "Path to the file (e.g. \\FileServer\\Shared\\suffixes.txt)" },

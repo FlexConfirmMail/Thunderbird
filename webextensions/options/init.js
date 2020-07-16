@@ -20,11 +20,24 @@ function onConfigChanged(key) {
       break;
   }
 }
-
 configs.$addObserver(onConfigChanged);
+
+
+function initArrayTypeTextArea(textarea) {
+  textarea.value = configs[textarea.dataset.configKey].join('\n');
+  textarea.addEventListener('input', () => {
+    const value = textarea.value.trim().split(/[\s,|]+/).filter(part => !!part);
+    configs[textarea.dataset.configKey] = value;
+  });
+}
+
 
 window.addEventListener('DOMContentLoaded', async () => {
   await configs.$loaded;
+
+  for (const textarea of document.querySelectorAll('textarea.array-type-config')) {
+    initArrayTypeTextArea(textarea);
+  }
 
   options.buildUIForAllConfigs(document.querySelector('#debug-configs'));
   onConfigChanged('debug');

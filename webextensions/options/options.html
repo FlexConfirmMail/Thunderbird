@@ -22,9 +22,10 @@
 
     <fieldset>
       <legend>__MSG_config_internalDomains_caption__</legend>
-      <ul class="listbox">
-        <li><input type="text" placeholder="__MSG_config_internalDomains_input_placeholder__"></li>
-      </ul>
+      <textarea id="internalDomainsField"
+                class="array-type-config"
+                data-config-key="internalDomains"
+                placeholder="__MSG_config_internalDomains_input_placeholder__"></textarea>
     </fieldset>
 
     <p><label><input id="skipConfirmationForInternalMail" type="checkbox">__MSG_config_skipConfirmationForInternalMail_label__</label></p>
@@ -45,9 +46,10 @@
       <legend>__MSG_config_attentionDomainsSource_caption__</legend>
       <ul>
         <li><label><input name="attentionDomainsSource" type="radio" value="0">__MSG_config_attentionDomains_label__</label>
-            <ul class="listbox">
-              <li><input type="text" placeholder="__MSG_config_attentionDomains_input_placeholder__"></li>
-            </ul>
+            <textarea id="attentionDomainsField"
+                      class="array-type-config"
+                      data-config-key="attentionDomains"
+                      placeholder="__MSG_config_attentionDomains_input_placeholder__"></textarea>
             </li>
         <li><label><input name="attentionDomainsSource" type="radio" value="1">__MSG_config_attentionDomainsFile_label__</label>
             <label><input type="text" placeholder="__MSG_config_attentionDomainsFile_input_placeholder__"></label></li>
@@ -79,9 +81,10 @@
       <legend><label><input id="attentionSuffixesConfirm" type="checkbox">__MSG_config_attentionSuffixesConfirm_label__</label></legend>
       <ul>
         <li><label><input name="attentionSuffixesSource" type="radio" value="0">__MSG_config_attentionSuffixes_label__</label>
-            <ul class="listbox">
-              <li><input type="text" placeholder="__MSG_config_attentionSuffixes_input_placeholder__"></li>
-            </ul>
+            <textarea id="attentionSuffixesField"
+                      class="array-type-config"
+                      data-config-key="attentionSuffixes"
+                      placeholder="__MSG_config_attentionSuffixes_input_placeholder__"></textarea>
             </li>
         <li><label><input name="attentionSuffixesSource" type="radio" value="1">__MSG_config_attentionSuffixesFile_label__</label>
             <label><input type="text" placeholder="__MSG_config_attentionSuffixesFile_input_placeholder__"></label></li>

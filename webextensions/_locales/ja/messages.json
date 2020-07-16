@@ -60,7 +60,7 @@
   "config_confirmationMode_never_label": { "message": "確認しない" },
 
   "config_internalDomains_caption": { "message": "組織内として扱うメールアドレスのドメイン名" },
-  "config_internalDomains_input_placeholder": { "message": "ドメイン名を入力（例：example.com）" },
+  "config_internalDomains_input_placeholder": { "message": "ドメイン名を1行ずつ入力（例：example.com）" },
 
   "config_skipConfirmationForInternalMail_label": { "message": "すべての宛先が登録済みドメインのメール送信時は確認ダイアログを表示しない" },
   "config_minConfirmationRecipientsCount_label_before": { "message": "宛先が" },
@@ -74,7 +74,7 @@
 
   "config_attentionDomainsSource_caption": { "message": "特別に注意が必要な外部ドメイン" },
   "config_attentionDomains_label": { "message": "手動編集のリストを使用" },
-  "config_attentionDomains_input_placeholder": { "message": "ドメイン名を入力（例：example.com）" },
+  "config_attentionDomains_input_placeholder": { "message": "ドメイン名を1行ずつ入力（例：example.com）" },
   "config_attentionDomainsFile_label": { "message": "ファイル形式のリストを使用" },
   "config_attentionDomainsFile_button_label": { "message": "参照..." },
   "config_attentionDomainsFile_input_placeholder": { "message": "ファイルのパスを入力（例：\\FileServer\\Shared\\domains.txt）" },
@@ -95,7 +95,7 @@
 
   "config_attentionSuffixesConfirm_label": { "message": "これらの拡張子を持つファイルが外部ドメイン宛のメールに添付されている場合は再度警告する" },
   "config_attentionSuffixes_label": { "message": "手動編集のリストを使用" },
-  "config_attentionSuffixes_input_placeholder": { "message": "ファイルの拡張子を入力（例：.exe、.pdf）" },
+  "config_attentionSuffixes_input_placeholder": { "message": "ファイルの拡張子を1行ずつ入力（例：.exe、.pdf）" },
   "config_attentionSuffixesFile_label": { "message": "ファイル形式のリストを使用" },
   "config_attentionSuffixesFile_button_label": { "message": "参照..." },
   "config_attentionSuffixesFile_input_placeholder": { "message": "ファイルのパスを入力（例：\\FileServer\\Shared\\suffixes.txt）" },

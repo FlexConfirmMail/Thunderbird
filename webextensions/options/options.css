@@ -81,3 +81,15 @@ table input[type="radio"] {
   margin-left: 1.5em;
   margin-right: 1.5em;
 }
+
+
+
+textarea {
+  display: block;
+  width: 100%;
+}
+
+li textarea {
+  margin-left: 2em;
+  width: calc(100% - 2em);
+}
