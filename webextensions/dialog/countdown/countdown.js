@@ -38,6 +38,7 @@ configs.$loaded.then(() => {
     configs.countdownDialogTop = event.detail.top;
   });
 
+  mCancelButton
   Dialog.notifyReady();
 
   const start = Date.now();
