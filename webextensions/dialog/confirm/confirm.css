@@ -107,6 +107,7 @@ hr.splitter {
 }
 
 .listbox .column.flexible > .flexible-container > *:not(input) {
+  line-height: 1.25;
   /* We need to specify these properties instead of the flexible-container because text-overflow doesn't work for display:flex elements. */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -123,6 +124,7 @@ hr.splitter {
   background: var(--bg-color);
   min-height: 1.5em;
   left: 0;
+  line-height: 1.5;
   position: sticky;
   right: 0;
   top: 0;
