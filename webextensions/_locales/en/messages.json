@@ -98,7 +98,7 @@
   "config_attentionSuffixesFile_button_label": { "message": "Choose…" },
 
   "config_requireReinputAttachmentNames_label": { "message": "Require to input file names of attachments, if there is any other domain recipient" },
-  "config_allowCheckAllAttachments_label": { "message": "All to control checkboxes under the &quot;&confirm.dialog.fileName_label;&quot; section" },
+  "config_allowCheckAllAttachments_label": { "message": "Allow to make all attachments to be checked with one checkbox" },
 
 
   "config_misc_caption": { "message": "Misc." },

@@ -99,7 +99,7 @@
   "config_attentionSuffixesFile_button_label": { "message": "参照..." },
 
   "config_requireReinputAttachmentNames_label": { "message": "宛先に外部ドメインのアドレスがある場合、添付ファイル名の手動での入力を求める" },
-  "config_allowCheckAllAttachments_label": { "message": "「&confirm.dialog.fileName_label;」セクションのチェックボックスの一括制御を許可" },
+  "config_allowCheckAllAttachments_label": { "message": "添付ファイルのチェックボックスの一括制御を許可" },
 
 
   "config_misc_caption": { "message": "その他" },
