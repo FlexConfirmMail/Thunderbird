@@ -284,8 +284,10 @@ function createRow(columns) {
   row.classList.add('row');
   for (const column of columns) {
     const label = row.appendChild(document.createElement('label'));
-    label.appendChild(document.createElement('span')).textContent = column;
     label.classList.add('column');
+    const container = label.appendChild(document.createElement('span'));
+    container.classList.add('flexible-container');
+    container.appendChild(document.createElement('span')).textContent = column;
   }
   return row;
 }

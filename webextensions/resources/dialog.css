@@ -4,12 +4,16 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 
+@import url("/resources/ui-color.css");
+
 * {
   box-sizing: border-box;
 }
 
 :root,
 body {
+  background: var(--bg-color);
+  color: var(--text-color);
   font: message-box;
   line-height: 1;
   margin: 0;

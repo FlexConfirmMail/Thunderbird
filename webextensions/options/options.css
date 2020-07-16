@@ -4,6 +4,8 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 
+@import url("/resources/ui-color.css");
+
 :root > * {
   transition: opacity 0.25s ease-out;
 }

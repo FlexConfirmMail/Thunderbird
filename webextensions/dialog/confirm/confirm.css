@@ -12,6 +12,18 @@
 :root.debug .column {
   border: 1px dotted red;
 }
+:root.debug .column * {
+  border: 1px dotted green;
+}
+
+
+div > label,
+p > label,
+legend > label {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
 
 .hidden {
   display: none !important;
@@ -58,8 +70,21 @@ hr.splitter {
   justify-content: flex-start;
 }
 
+.listbox .row:hover,
+.listbox .row.domain:hover {
+  background: var(--in-content-box-background-hover);
+}
+
+.listbox .column,
+.listbox .column > * {
+  align-items: center;
+  display: flex;
+  vertical-align: middle;
+}
+
 .listbox .column.flexible {
   flex-grow: 1;
+  flex-shrink: 1;
   position: relative;
 }
 
@@ -77,8 +102,8 @@ hr.splitter {
   width: 100%;
 }
 
-.listbox .column.flexible > *:not(input) {
-  display: block;
+.listbox .column.flexible > .flexible-container > *:not(input) {
+  /* We need to specify these properties instead of the flexible-container because text-overflow doesn't work for display:flex elements. */
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -91,7 +116,7 @@ hr.splitter {
 }
 
 .listbox .row.domain {
-  background: white;
+  background: var(--bg-color);
   left: 0;
   position: sticky;
   right: 0;
