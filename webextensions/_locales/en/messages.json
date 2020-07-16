@@ -103,8 +103,8 @@
 
   "config_misc_caption": { "message": "Misc." },
 
-  "config_showCountdown_label": { "message": "Countdown before sending mail(1-3000sec)" },
-  "config_countdownSeconds_label": { "message": "(s)" },
+  "config_showCountdown_label": { "message": "Countdown before sending mail (1~3000 seconds):" },
+  "config_countdownSeconds_label": { "message": "seconds" },
   "config_countdownAllowSkip_label": { "message": "Allow to skip countdown to send the mail immediately" },
 
   "config_requireCheckSubject_label": { "message": "Require check the subject" },
