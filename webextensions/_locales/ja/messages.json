@@ -62,7 +62,7 @@
   "config_internalDomains_caption": { "message": "組織内として扱うメールアドレスのドメイン名" },
   "config_internalDomains_input_placeholder": { "message": "ドメイン名を入力（例：example.com）" },
 
-  "config_confirmInternalMail_label": { "message": "すべての宛先が登録済みドメインのメール送信時は確認ダイアログを表示しない" },
+  "config_skipConfirmationForInternalMail_label": { "message": "すべての宛先が登録済みドメインのメール送信時は確認ダイアログを表示しない" },
   "config_minConfirmationRecipientsCount_label_before": { "message": "宛先が" },
   "config_minConfirmationRecipientsCount_label_after": { "message": "件以下の場合は確認ダイアログを表示しない（※0で常に確認）" },
   "config_confirmMultipleRecipientDomains_label": { "message": "ToまたはCcの宛先に複数のドメインが含まれる場合に警告する" },

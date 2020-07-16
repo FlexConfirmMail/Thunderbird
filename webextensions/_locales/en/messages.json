@@ -62,7 +62,7 @@
   "config_internalDomains_caption": { "message": "Domains treated as internals" },
   "config_internalDomains_input_placeholder": { "message": "Input a domain name (e.g. example.com)" },
 
-  "config_confirmInternalMail_label": { "message": "Skip confirmation if all recipients are internals" },
+  "config_skipConfirmationForInternalMail_label": { "message": "Skip confirmation if all recipients are internals" },
   "config_minConfirmationRecipientsCount_label_before": { "message": "Skip confirmation if there are/is only" },
   "config_minConfirmationRecipientsCount_label_after": { "message": "or fewer recipient(s) (*0 means &quot;always confirm&quot;)" },
   "config_confirmMultipleRecipientDomains_label": { "message": "Confirm when there are multiple domains in To/Cc recipients" },

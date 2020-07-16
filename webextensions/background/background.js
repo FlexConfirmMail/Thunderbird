@@ -148,7 +148,7 @@ async function tryConfirm(tab, details) {
     ...classifiedCc.externals,
     ...classifiedBcc.externals
   ]);
-  if (configs.confirmInternalMail &&
+  if (configs.skipConfirmationForInternalMail &&
       allExternals.size == 0) {
     log('skip confirmation because there is no external recipient');
     return;
