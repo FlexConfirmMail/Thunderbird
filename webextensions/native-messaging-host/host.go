@@ -17,7 +17,7 @@ type Request struct {
 }
 
 func main() {
-	log.SetOutput(ioutil.Discard)
+	log.SetOutput(os.Stderr)
 
 	rawRequest, err := chrome.Receive(os.Stdin)
 	if err != nil {
