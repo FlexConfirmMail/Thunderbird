@@ -16,10 +16,7 @@ const options = new Options(configs);
 function onConfigChanged(key) {
   switch (key) {
     case 'debug':
-      if (configs.debug)
-        document.documentElement.classList.add('debugging');
-      else
-        document.documentElement.classList.remove('debugging');
+      document.documentElement.classList.toggle('debugging', configs.debug);
       break;
   }
 }
