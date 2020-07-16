@@ -106,8 +106,8 @@
 
   "config_misc_caption": { "message": "その他" },
 
-  "config_showCountdown_label": { "message": "[送信]ボタン押下後にカウントダウンを開始する（1～3000秒）：" },
-  "config_countdownSeconds_label": { "message": "秒" },
+  "config_showCountdown_label": { "message": "[送信]ボタンを押してから" },
+  "config_countdownSeconds_label": { "message": "秒間のカウントダウン後に実際に送信する" },
   "config_countdownAllowSkip_label": { "message": "カウントを飛ばしてすぐに送信することを許容する" },
 
   "config_requireCheckSubject_label": { "message": "件名の確認を求める" },
