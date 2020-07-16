@@ -41,6 +41,7 @@ hr.splitter {
   width: 100%;
 }
 
+
 .listbox {
   align-items: stretch;
   display: flex;
@@ -49,6 +50,7 @@ hr.splitter {
   overflow-y: auto;
   white-space: nowrap;
 }
+
 .listbox .row {
   align-items: stretch;
   display: flex;
@@ -56,18 +58,17 @@ hr.splitter {
   justify-content: flex-start;
 }
 
-/* recipient type column */
-.row.recipient .column:nth-child(2),
-.row.recipient .column:nth-child(2) {
-  width: 3em;
-}
-
-.column.flexible {
+.listbox .column.flexible {
   flex-grow: 1;
   position: relative;
 }
 
-.column.flexible > * {
+/* placeholder for the cell */
+.listbox .column.flexible::after {
+  content: " ";
+}
+
+.listbox .column.flexible > * {
   bottom: 0;
   left: 0;
   position: absolute;
@@ -76,13 +77,20 @@ hr.splitter {
   width: 100%;
 }
 
-.column.flexible > *:not(input) {
+.listbox .column.flexible > *:not(input) {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.row.domain {
+
+/* recipient type column */
+.listbox .row.recipient .column:nth-child(2),
+.listbox .row.recipient .column:nth-child(2) {
+  width: 3em;
+}
+
+.listbox .row.domain {
   background: white;
   left: 0;
   position: sticky;
@@ -91,64 +99,60 @@ hr.splitter {
   z-index: 10;
 }
 
-/* placeholder for the cell */
-.row.domain .column.flexible::after {
-  content: " ";
-}
-
-.row.domain::before {
+.listbox .row.domain::before {
   content: "☆";
 }
 
-.row.domain.checked::before {
+.listbox .row.domain.checked::before {
   content: "★";
 }
 
-#externals .row.recipient {
+.listbox#externals .row.recipient {
   padding-left: 1em;
 }
 
-:root.highlight-attention-domains #externals .row.attention,
-#attachments .row.attention {
+:root.highlight-attention-domains .listbox#externals .row.attention,
+.listbox#attachments .row.attention {
   color: red;
   font-weight bold;
 }
 
 
-:root.large-font-size-for-addresses .row.recipient,
-:root.large-font-size-for-addresses .row.recipient {
+:root.large-font-size-for-addresses .listbox .row.recipient,
+:root.large-font-size-for-addresses .listbox .row.recipient {
   font-size: 120%;
 }
 
-:root.highlight-external-domains #externals .row.domain {
+:root.highlight-external-domains .listbox#externals .row.domain {
   font-size: 125%;
 }
-:root.large-font-size-for-addresses.highlight-external-domains #externals .row.domain {
+:root.large-font-size-for-addresses.highlight-external-domains .listbox#externals .row.domain {
   font-size: 160%;
 }
 
-:root.highlight-external-domains #externals .row.recipient.domain-even label {
+:root.highlight-external-domains .listbox#externals .row.recipient.domain-even label {
   background: rgb(255, 192, 0);
 }
 /*
-:root.highlight-external-domains #externals:not(:focus) .row.recipient.domain-even label {
+:root.highlight-external-domains .listbox#externals:not(:focus) .row.recipient.domain-even label {
   background: rgb(198, 156, 27);
 }
 */
 
-:root.highlight-external-domains #externals .row.recipient.domain-odd label {
+:root.highlight-external-domains .listbox#externals .row.recipient.domain-odd label {
   background: rgb(70, 170, 252);
 }
 /*
-:root.highlight-external-domains #externals:not(:focus) .row.recipient.domain-odd label {
+:root.highlight-external-domains .listbox#externals:not(:focus) .row.recipient.domain-odd label {
   background: rgb(72, 146, 206);
 }
 */
 
-:root.emphasize-recipient-type .row.recipient .column:first-of-type {
+:root.emphasize-recipient-type .listbox .row.recipient .column:first-of-type {
   font-weight:  bold;
   font-size: 150%;
 }
+
 
 :root.emphasize-top-message #top-message {
     color: red;
