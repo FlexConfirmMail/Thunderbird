@@ -222,7 +222,9 @@ async function getAttentionDomains() {
       try {
         const response = await browser.runtime.sendNativeMessage(Constants.HOST_ID, {
           command: Constants.HOST_COMMAND_FETCH,
-          path: configs.attentionDomainsFile
+          params: {
+            path: configs.attentionDomainsFile
+          }
         });
         if (!response || typeof response.contents != 'string')
           throw new Error(`invalid response: ${String(response)}`);
@@ -248,7 +250,9 @@ async function getAttentionSuffixes() {
       try {
         const response = await browser.runtime.sendNativeMessage(Constants.HOST_ID, {
           command: Constants.HOST_COMMAND_FETCH,
-          path: configs.attentionSuffixesFile
+          params: {
+            path: configs.attentionSuffixesFile
+          }
         });
         if (!response || typeof response.contents != 'string')
           throw new Error(`invalid response: ${String(response)}`);
