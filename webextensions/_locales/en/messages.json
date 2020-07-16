@@ -72,6 +72,12 @@
 
   "config_attentionDomains_caption": { "message": "Specially alerted foreign domains in recipients" },
 
+  "config_attentionDomainsSource_caption": { "message": "Specially alerted foreign domains" },
+  "config_attentionDomains_label": { "message": "Use the manually managed list" },
+  "config_attentionDomains_input_placeholder": { "message": "Input a domain name (e.g. example.com)" },
+  "config_attentionDomainsFile_label": { "message": "Use a list given as a file" },
+  "config_attentionDomainsFile_button_label": { "message": "Choose…" },
+
   "config_attentionDomainsHighlightMode_caption": { "message": "Highlight recipients of these domains" },
   "config_attentionDomainsHighlightMode_always_label": { "message": "Always" },
   "config_attentionDomainsHighlightMode_withAttachments_label": { "message": "Only when there is any attachment" },
@@ -82,17 +88,14 @@
   "config_attentionDomainsConfirmationMode_withAttachments_label": { "message": "Only when there is any attachment" },
   "config_attentionDomainsConfirmationMode_never_label": { "message": "Never" },
 
-  "config_attentionDomainsSource_config_label": { "message": "Use the manually managed list" },
-  "config_attentionDomainsSourceFile_label": { "message": "Use a list given as a file" },
-  "config_attentionDomainsSourceFile_button_label": { "message": "Choose…" },
-
 
   "config_attachments_caption": { "message": "Attachments" },
 
-  "config_exceptionalSuffixesConfirm_label": { "message": "Confirm me again before send, if there is any attachment with one of these extensions in a message to foreign domains" },
-  "config_exceptionalSuffixesContirm_config_label": { "message": "Use the manually managed list" },
-  "config_exceptionalSuffixesContirmFile_label": { "message": "Use a list given as a file" },
-  "config_exceptionalSuffixesContirmFile_button_label": { "message": "Choose…" },
+  "config_attentionSuffixesConfirm_label": { "message": "Confirm me again before send, if there is any attachment with one of these extensions in a message to foreign domains" },
+  "config_attentionSuffixes_label": { "message": "Use the manually managed list" },
+  "config_attentionSuffixes_input_placeholder": { "message": "Input an file extension (e.g. .exe, .pdf)" },
+  "config_attentionSuffixesFile_label": { "message": "Use a list given as a file" },
+  "config_attentionSuffixesFile_button_label": { "message": "Choose…" },
 
   "config_requireReinputAttachmentNames_label": { "message": "Require to input file names of attachments, if there is any other domain recipient" },
   "config_allowCheckAllAttachments_label": { "message": "All to control checkboxes under the &quot;&confirm.dialog.fileName_label;&quot; section" },
@@ -106,6 +109,7 @@
 
   "config_requireCheckSubject_label": { "message": "Require check the subject" },
   "config_requireCheckBody_label": { "message": "Require to check the message body" },
+
   "config_highlightExternalDomains_label": { "message": "Highlight forein recipient addesses" },
   "config_largeFontSizeForAddresses_label": { "message": "Show addresses with larget font size" },
   "config_alwaysLargeDialog_label": { "message": "Open confirmation dialog with large size always" },
@@ -113,6 +117,8 @@
   "config_emphasizeTopMessage_label": { "message": "Empasize the top message" },
   "config_emphasizeRecipientType_label": { "message": "Emphasize recipient types (To/Cc/Bcc)" },
 
+
+  "config_debug_caption": { "message": "Development" },
 
   "config_debug_label": { "message": "Debug mode" },
   "config_all_caption": { "message": "All Configs" }

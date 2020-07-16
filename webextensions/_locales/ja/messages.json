@@ -54,7 +54,7 @@
 
   "config_recipients_caption": { "message": "宛先" },
 
-  "config_enableConfirmation_caption": { "message": "送信前の宛先確認:" },
+  "config_confirmationMode_caption": { "message": "送信前の宛先確認:" },
   "config_confirmationMode_always_label": { "message": "常に確認" },
   "config_confirmationMode_onModified_label": { "message": "宛先が変更された時だけ確認" },
   "config_confirmationMode_never_label": { "message": "確認しない" },
@@ -72,6 +72,12 @@
 
   "config_attentionDomains_caption": { "message": "特別に注意が必要な外部ドメインの宛先" },
 
+  "config_attentionDomainsSource_caption": { "message": "特別に注意が必要な外部ドメイン" },
+  "config_attentionDomains_label": { "message": "手動編集のリストを使用" },
+  "config_attentionDomains_input_placeholder": { "message": "ドメイン名を入力（例：example.com）" },
+  "config_attentionDomainsFile_label": { "message": "ファイル形式のリストを使用" },
+  "config_attentionDomainsFile_button_label": { "message": "参照..." },
+
   "config_attentionDomainsHighlightMode_caption": { "message": "これらのドメインに該当する宛先の強調表示" },
   "config_attentionDomainsHighlightMode_always_label": { "message": "常に強調表示" },
   "config_attentionDomainsHighlightMode_withAttachments_label": { "message": "添付ファイルがある時だけ強調表示" },
@@ -82,18 +88,15 @@
   "config_attentionDomainsConfirmationMode_withAttachments_label": { "message": "添付ファイルがある時だけ再度警告する" },
   "config_attentionDomainsConfirmationMode_never_label": { "message": "再度警告しない" },
 
-  "config_attentionDomainsSource_config_label": { "message": "手動編集のリストを使用" },
-  "config_attentionDomainsSourceFile_label": { "message": "ファイル形式のリストを使用" },
-  "config_attentionDomainsSourceFile_button_label": { "message": "参照..." },
-
 
 
   "config_attachments_caption": { "message": "添付ファイル" },
 
-  "config_exceptionalSuffixesConfirm_label": { "message": "これらの拡張子を持つファイルが外部ドメイン宛のメールに添付されている場合は再度警告する" },
-  "config_exceptionalSuffixesContirm_config_label": { "message": "手動編集のリストを使用" },
-  "config_exceptionalSuffixesContirmFile_label": { "message": "ファイル形式のリストを使用" },
-  "config_exceptionalSuffixesContirmFile_button_label": { "message": "参照..." },
+  "config_attentionSuffixesConfirm_label": { "message": "これらの拡張子を持つファイルが外部ドメイン宛のメールに添付されている場合は再度警告する" },
+  "config_attentionSuffixes_label": { "message": "手動編集のリストを使用" },
+  "config_attentionSuffixes_input_placeholder": { "message": "ファイルの拡張子を入力（例：.exe、.pdf）" },
+  "config_attentionSuffixesFile_label": { "message": "ファイル形式のリストを使用" },
+  "config_attentionSuffixesFile_button_label": { "message": "参照..." },
 
   "config_requireReinputAttachmentNames_label": { "message": "宛先に外部ドメインのアドレスがある場合、添付ファイル名の手動での入力を求める" },
   "config_allowCheckAllAttachments_label": { "message": "「&confirm.dialog.fileName_label;」セクションのチェックボックスの一括制御を許可" },
@@ -107,6 +110,7 @@
 
   "config_requireCheckSubject_label": { "message": "件名の確認を求める" },
   "config_requireCheckBody_label": { "message": "メール本文の確認を求める" },
+
   "config_highlightExternalDomains_label": { "message": "外部ドメインの宛先のアドレスを強調表示する" },
   "config_largeFontSizeForAddresses_label": { "message": "メールアドレスを大きなフォントサイズで表示する" },
   "config_alwaysLargeDialog_label": { "message": "確認のダイアログを常に大きなサイズで開く" },
@@ -114,6 +118,8 @@
   "config_emphasizeTopMessage_label": { "message": "メッセージを強調表示する" },
   "config_emphasizeRecipientType_label": { "message": "宛先の種別（To/Cc/Bcc）を強調表示する" },
 
+
+  "config_debug_caption": { "message": "開発者向け" },
 
   "config_debug_label": { "message": "デバッグモード" },
   "config_all_caption": { "message": "すべての設定" }

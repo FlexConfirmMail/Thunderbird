@@ -26,6 +26,11 @@ body {
   -moz-user-input: disabled;
 }
 
+hr.spacer {
+  border: 0 none transparent;
+  margin: 0 0 1em;
+}
+
 
 p, ul {
   margin: 0 0 0.5em 0;
