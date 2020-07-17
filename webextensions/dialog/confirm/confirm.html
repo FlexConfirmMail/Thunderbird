@@ -10,9 +10,8 @@
     <title>__MSG_confirmDialogTitle__</title>
   </head>
   <body>
-    <div class="dialog-content">
+    <form id="form" class="dialog-content" action="#" method="GET">
       <div id="top-message"></div>
-      <form id="form" class="flex-box" action="#" method="GET">
       <div id="addressesContainer" class="flex-box">
         <fieldset id="internalsContainer" class="flex-box">
           <legend><label><input id="internalsAll" type="checkbox" class="all-checkbox">__MSG_confirmDialogInternalsCaption__</label></legend>
@@ -42,7 +41,6 @@
         <button id="accept" type="submit">__MSG_confirmDialogAccept__</button>
         <button id="cancel">__MSG_confirmDialogCancel__</button>
       </div>
-      </form>
-    </div>
+    </form>
   </body>
 </html>
