@@ -2,6 +2,15 @@
 
 SET NAME=com.clear_code.flexible_confirm_mail_we_host
 
+SET QUIET_MODE=0
+FOR %%A IN (%*) DO (
+  IF "%%A"=="/Q" (
+    SET QUIET_MODE=1
+  ) ELSE IF "%%A"=="/q" (
+    SET QUIET_MODE=1
+  )
+)
+
 ECHO Uninstalling %NAME%...
 
 ECHO Checking permission...
@@ -22,4 +31,7 @@ REG DELETE "%REG_BASE%\SOFTWARE\Mozilla\NativeMessagingHosts\%NAME%" /f
 RMDIR /Q /S "%INSTALL_DIR%"
 
 ECHO Done.
-PAUSE
+
+IF NOT "%QUIET_MODE%"=="1" (
+  PAUSE
+)

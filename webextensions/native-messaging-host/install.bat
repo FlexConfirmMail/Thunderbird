@@ -2,6 +2,15 @@
 
 SET NAME=com.clear_code.flexible_confirm_mail_we_host
 
+SET QUIET_MODE=0
+FOR %%A IN (%*) DO (
+  IF "%%A"=="/Q" (
+    SET QUIET_MODE=1
+  ) ELSE IF "%%A"=="/q" (
+    SET QUIET_MODE=1
+  )
+)
+
 ECHO Installing %NAME%...
 
 ECHO Checking permission...
@@ -34,4 +43,7 @@ FOR %%f IN ("%INSTALL_DIR%") DO SET EXPANDED_PATH=%%~sf
 REG ADD "%REG_BASE%\SOFTWARE\Mozilla\NativeMessagingHosts\%NAME%" /ve /t REG_SZ /d "%EXPANDED_PATH%\%NAME%.json" /f
 
 ECHO Done.
-PAUSE
+
+IF NOT "%QUIET_MODE%"=="1" (
+  PAUSE
+)
