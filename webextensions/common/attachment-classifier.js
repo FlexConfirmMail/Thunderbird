@@ -11,6 +11,8 @@ export class AttachmentClassifier {
       this.$attentionSuffixMatcher = /[^\w\W]/;
     else
       this.$attentionSuffixMatcher = new RegExp(`\\.(${attentionSuffixes.map(suffix => suffix.replace(/^\./, '')).join('|')})$`, 'i');
+
+    this.hasAttentionSuffix = this.hasAttentionSuffix.bind(this);
   }
 
   hasAttentionSuffix(filename) {
