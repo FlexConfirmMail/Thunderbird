@@ -145,11 +145,14 @@ function initExternals() {
   mExternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllExternals);
   mExternalsAllCheck.addEventListener('change', _event => {
     checkAll(mExternalsList, mExternalsAllCheck.checked);
+    for (const domainRow of mExternalsList.querySelectorAll('.row.domain')) {
+      domainRow.classList.toggle('checked', mExternalsAllCheck.checked);
+    }
   });
   mExternalsList.addEventListener('change', event => {
     const row = event.target.closest('.row');
-    const domainRow = mExternalsList.querySelector(`.domain[data-domain="${row.dataset.domain}"]`);
-    const recipientCheckboxes = mExternalsList.querySelectorAll(`.recipient[data-domain="${row.dataset.domain}"] input[type="checkbox"]`);
+    const domainRow = mExternalsList.querySelector(`.row.domain[data-domain="${row.dataset.domain}"]`);
+    const recipientCheckboxes = mExternalsList.querySelectorAll(`.row.recipient[data-domain="${row.dataset.domain}"] input[type="checkbox"]`);
     domainRow.classList.toggle('checked', Array.from(recipientCheckboxes).every(checkbox => checkbox.checked));
     mExternalsAllCheck.checked = isAllChecked(mExternalsList);
   });
