@@ -10,7 +10,7 @@ export function classify(recipients, {internalDomains, attentionDomains } = {}) 
   const externals = [];
 
   const internalDomainsSet = new Set((internalDomains || []).map(domain => domain.toLowerCase()));
-  const attentionDomainsSet = new Set(attentionDomains || []);
+  const attentionDomainsSet = new Set((attentionDomains || []).map(domain => domain.toLowerCase()));
   for (const recipient of recipients) {
     const address = /<([^@]+@[^>]+)>\s*$/.test(recipient) ? RegExp.$1 : recipient;
     const domain = address.split('@')[1].toLowerCase();
