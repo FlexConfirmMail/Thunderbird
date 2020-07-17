@@ -6,12 +6,11 @@
 'use strict';
 
 import '/extlib/l10n.js';
+import * as Dialog from '/extlib/dialog.js';
 
 import {
   configs
 } from '/common/common.js';
-
-import * as Dialog from '/common/dialog.js';
 
 const mCounter = document.getElementById('count');
 const mSkipButton = document.getElementById('skip');

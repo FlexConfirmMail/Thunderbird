@@ -5,13 +5,14 @@
 */
 'use strict';
 
+import * as Dialog from '/extlib/dialog.js';
+
 import {
   configs,
   log,
   sendToHost
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
-import * as Dialog from '/common/dialog.js';
 
 import * as ListUtils from './list-utils.js';
 import * as RecipientClassifier from './recipient-classifier.js';

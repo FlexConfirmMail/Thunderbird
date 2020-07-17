@@ -16,3 +16,6 @@
 [submodule "submodules/webextensions-lib-rich-confirm"]
 	path = submodules/webextensions-lib-rich-confirm
 	url = https://github.com/piroor/webextensions-lib-rich-confirm.git
+[submodule "submodules/webextensions-lib-dialog"]
+	path = submodules/webextensions-lib-dialog
+	url = https://gitlab.com/clear-code/webextensions-lib-dialog.git

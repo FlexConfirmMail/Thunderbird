@@ -4,7 +4,8 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 
-@import url(/resources/dialog.css);
+@import url(/common/ui-color.css);
+@import url(/extlib/dialog.css);
 
 :root.debug .row {
   border: 1px dotted blue;

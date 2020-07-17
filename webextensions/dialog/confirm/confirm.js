@@ -7,6 +7,7 @@
 
 import '/extlib/l10n.js';
 //import RichConfirm from '/extlib/RichConfirm.js';
+import * as Dialog from '/extlib/dialog.js';
 
 import {
   configs,
@@ -14,7 +15,6 @@ import {
 } from '/common/common.js';
 
 import * as Constants from '/common/constants.js';
-import * as Dialog from '/common/dialog.js';
 import * as ResizableBox from '/common/resizable-box.js';
 
 let mParams;
