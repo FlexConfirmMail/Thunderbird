@@ -16,19 +16,7 @@ import * as Dialog from '/common/dialog.js';
 import * as ListUtils from './list-utils.js';
 import * as RecipientClassifier from './recipient-classifier.js';
 
-configs.$loaded.then(() => {
-  if (configs.debug)
-    Dialog.setLogger(log);
-});
-
-configs.$addObserver(key => {
-  const value = configs[key];
-  switch (key) {
-    case 'debug':
-      Dialog.setLogger(value ? log : null);
-      break;
-  }
-});
+Dialog.setLogger(log);
 
 
 const BLANK_SIGNATURE = getMessageSignature({ to: [], cc: [], bcc: [] });
