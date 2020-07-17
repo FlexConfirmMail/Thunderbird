@@ -13,9 +13,9 @@ import {
   sendToHost
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
+import * as RecipientClassifier from '/common/recipient-classifier.js';
 
 import * as ListUtils from './list-utils.js';
-import * as RecipientClassifier from './recipient-classifier.js';
 
 Dialog.setLogger(log);
 

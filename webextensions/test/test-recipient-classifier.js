@@ -5,7 +5,7 @@
 */
 'use strict';
 
-import * as RecipientClassifier from '../background/recipient-classifier.js';
+import * as RecipientClassifier from '../common/recipient-classifier.js';
 import { assert } from 'tiny-esm-test-runner';
 const { is } = assert;
 
