@@ -69,6 +69,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     initArrayTypeTextArea(textarea);
   }
 
+  for (const container of document.querySelectorAll('section, fieldset, p, div')) {
+    const allFields = container.querySelectorAll('input, textarea, select');
+    const lockedFields = container.querySelectorAll('.locked input, .locked textarea, .locked select');
+    container.classList.toggle('locked', allFields.length == lockedFields.length);
+  }
+
   options.buildUIForAllConfigs(document.querySelector('#debug-configs'));
   onConfigChanged('debug');
 
