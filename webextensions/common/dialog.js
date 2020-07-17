@@ -17,6 +17,16 @@ function generateId() {
   return `${Date.now()}-${Math.round(Math.random() * 65000)}`;
 }
 
+const DEFAULT_LOGGER = () => {};
+let mLogger = DEFAULT_LOGGER;
+
+export function setLogger(logger) {
+  if (typeof logger == 'function')
+    mLogger = (message, ...args) => logger(`[dialog] ${message}`, ...args);
+  else
+    mLogger = DEFAULT_LOGGER;
+}
+
 
 const DEFAULT_WIDTH_OFFSET  = 30; /* left window frame + right window frame + scrollbar (for failsafe) */
 const DEFAULT_HEIGHT_OFFSET = 40; /* top title bar + bottom window frame */
@@ -25,6 +35,7 @@ let lastHeightOffset = null;
 
 export async function open({ url, left, top, width, height, modal } = {}, dialogContentsParams = {}) {
   const id = generateId();
+  mLogger('open ', { id, url, left, top, width, height, modal, dialogContentsParams });
 
   const extraParams = `dialog-id=${id}&dialog-offscreen=true`;
   if (url.includes('?'))
@@ -46,6 +57,7 @@ export async function open({ url, left, top, width, height, modal } = {}, dialog
         async () => {
           loader.contentDocument.documentElement.classList.add('offscreen');
           const onFetchParams = () => {
+            mLogger(`onFetchParams at ${id}`);
             loader.contentDocument.dispatchEvent(new loader.contentWindow.CustomEvent(TYPE_RESPOND_PARAMS, {
               detail:     dialogContentsParams,
               bubbles:    true,
@@ -77,6 +89,7 @@ export async function open({ url, left, top, width, height, modal } = {}, dialog
       );
       loader.src = url;
     });
+    mLogger('dialogContentSize ', dialogContentSize);
 
     if (width === undefined)
       width = dialogContentSize.width - widthOffset;
@@ -101,6 +114,7 @@ export async function open({ url, left, top, width, height, modal } = {}, dialog
       if (!message || message.id != id)
         return;
 
+      mLogger(`onMessage at ${id}`, message);
       switch (message.type) {
         case TYPE_FETCH_PARAMS:
           return Promise.resolve(dialogContentsParams);
@@ -137,26 +151,26 @@ export async function open({ url, left, top, width, height, modal } = {}, dialog
     browser.runtime.onMessage.addListener(onMessage);
 
     const onFocusChanged = windowId => {
-      if (!win)
+      if (!win || windowId == win.id)
         return;
 
-      if (modal &&
-          windowId != win.id) {
+      mLogger(`onFocusChanged at ${id}: raise the window`);
         // setting "focused=true" fails on Thunderbird...
         //browser.windows.update(win.id, { focused: true });
         browser.runtime.sendMessage({
           type: TYPE_FOCUS,
           id
         });
-      }
     };
-    browser.windows.onFocusChanged.addListener(onFocusChanged);
+    if (modal)
+      browser.windows.onFocusChanged.addListener(onFocusChanged);
 
     const onUpdated = (windowId, updateInfo) => {
       if (!win ||
           windowId != win.id)
         return;
 
+      mLogger(`onUpdated at ${id} `, windowId, updateInfo);
       const left = updateInfo.left;
       const top = updateInfo.top;
       if (typeof left == 'number' ||
@@ -165,6 +179,7 @@ export async function open({ url, left, top, width, height, modal } = {}, dialog
           win.left = left;
         if (typeof top == 'number')
           win.top = top;
+        mLogger(`window is moved: `, { left: win.left, top: win.top });
         browser.runtime.sendMessage({
           type: TYPE_MOVED,
           id,
@@ -184,11 +199,13 @@ export async function open({ url, left, top, width, height, modal } = {}, dialog
             updateInfo.left = updatedWin.left;
           if (updatedWin.top != win.top)
             updateInfo.top = updatedWin.top;
+          mLogger(`Periodical check for onUpdated: ${JSON.stringify(updateInfo)}`); // output as a string to reduce needless log lines
           if (Object.keys(updateInfo) == 0)
             return;
           onUpdated(win.id, updateInfo);
         }
-        catch(_error) {
+        catch(error) {
+          mLogger('Failed to do periodical check for onUpdated: ', error);
           if (onUpdated.timer) {
             window.clearInterval(onUpdated.timer);
             onUpdated.timer = null;
@@ -199,9 +216,11 @@ export async function open({ url, left, top, width, height, modal } = {}, dialog
     const onRemoved = windowId => {
       if (!win || windowId != win.id)
         return;
+      mLogger(`onRemoved on ${id}`);
       browser.runtime.onMessage.removeListener(onMessage);
       browser.windows.onRemoved.removeListener(onRemoved);
-      browser.windows.onFocusChanged.removeListener(onFocusChanged);
+      if (modal)
+        browser.windows.onFocusChanged.removeListener(onFocusChanged);
       if (browser.windows.onUpdated)
         browser.windows.onUpdated.removeListener(onUpdated);
       else if (onUpdated.timer)
