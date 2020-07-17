@@ -97,7 +97,7 @@ table input[type="radio"] {
   display: none;
 }
 legend label.locked {
-  dipslay: initial;
+  display: initial;
 }
 
 
