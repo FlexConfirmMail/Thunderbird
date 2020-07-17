@@ -9,7 +9,41 @@ import * as RecipientClassifier from '../background/recipient-classifier.js';
 import { assert } from 'tiny-esm-test-runner';
 const { is } = assert;
 
-test_classify.parameters = {
+export function test_format() {
+  const recipients = [
+    'without-nick@example.com',
+    'My Nickname <with-nick@example.com>',
+    'address-like-nickname@clear-code.com <address-like-nick@example.com>',
+    'domain-must-be-lower-cased@EXAMPLE.com'
+  ];
+  const classified = RecipientClassifier.classify(recipients);
+  is(
+    {
+      internals: [],
+      externals: [
+        { recipient: 'without-nick@example.com',
+          address:   'without-nick@example.com',
+          domain:    'example.com',
+          isAttentionDomain: false },
+        { recipient: 'My Nickname <with-nick@example.com>',
+          address:   'with-nick@example.com',
+          domain:    'example.com',
+          isAttentionDomain: false },
+        { recipient: 'address-like-nickname@clear-code.com <address-like-nick@example.com>',
+          address:   'address-like-nick@example.com',
+          domain:    'example.com',
+          isAttentionDomain: false },
+        { recipient: 'domain-must-be-lower-cased@EXAMPLE.com',
+          address:   'domain-must-be-lower-cased@EXAMPLE.com',
+          domain:    'example.com',
+          isAttentionDomain: false }
+      ]
+    },
+    classified
+  );
+}
+
+test_classifyAddresses.parameters = {
   'all recipients must be classified as externals for blank list': {
     recipients: [
       'aaa@example.com',
@@ -19,14 +53,8 @@ test_classify.parameters = {
     expected: {
       internals: [],
       externals: [
-        { recipient: 'aaa@example.com',
-          address:   'aaa@example.com',
-          domain:    'example.com',
-          isAttentionDomain: false },
-        { recipient: 'bbb@example.com',
-          address:   'bbb@example.com',
-          domain:    'example.com',
-          isAttentionDomain: false }
+        'aaa@example.com',
+        'bbb@example.com'
       ]
     }
   },
@@ -38,14 +66,8 @@ test_classify.parameters = {
     internalDomains: ['clear-code.com'],
     expected: {
       internals: [
-        { recipient: 'aaa@clear-code.com',
-          address:   'aaa@clear-code.com',
-          domain:    'clear-code.com',
-          isAttentionDomain: false },
-        { recipient: 'bbb@clear-code.com',
-          address:   'bbb@clear-code.com',
-          domain:    'clear-code.com',
-          isAttentionDomain: false }
+        'aaa@clear-code.com',
+        'bbb@clear-code.com'
       ],
       externals: []
     }
@@ -59,14 +81,8 @@ test_classify.parameters = {
     expected: {
       internals: [],
       externals: [
-        { recipient: 'aaa@example.com',
-          address:   'aaa@example.com',
-          domain:    'example.com',
-          isAttentionDomain: false },
-        { recipient: 'bbb@example.com',
-          address:   'bbb@example.com',
-          domain:    'example.com',
-          isAttentionDomain: false }
+        'aaa@example.com',
+        'bbb@example.com'
       ]
     }
   },
@@ -80,24 +96,12 @@ test_classify.parameters = {
     internalDomains: ['clear-code.com'],
     expected: {
       internals: [
-        { recipient: 'aaa@clear-code.com',
-          address:   'aaa@clear-code.com',
-          domain:    'clear-code.com',
-          isAttentionDomain: false },
-        { recipient: 'ccc@clear-code.com',
-          address:   'ccc@clear-code.com',
-          domain:    'clear-code.com',
-          isAttentionDomain: false }
+        'aaa@clear-code.com',
+        'ccc@clear-code.com'
       ],
       externals: [
-        { recipient: 'zzz@exmaple.com',
-          address:   'zzz@exmaple.com',
-          domain:    'exmaple.com',
-          isAttentionDomain: false },
-        { recipient: 'bbb@example.org',
-          address:   'bbb@example.org',
-          domain:    'example.org',
-          isAttentionDomain: false }
+        'zzz@exmaple.com',
+        'bbb@example.org'
       ]
     }
   },
@@ -109,41 +113,30 @@ test_classify.parameters = {
     internalDomains: ['clear-code.com'],
     expected: {
       internals: [
-        { recipient: 'aaa@CLEAR-code.com',
-          address:   'aaa@CLEAR-code.com',
-          domain:    'clear-code.com',
-          isAttentionDomain: false },
-        { recipient: 'bbb@clear-CODE.com',
-          address:   'bbb@clear-CODE.com',
-          domain:    'clear-code.com',
-          isAttentionDomain: false }
+        'aaa@CLEAR-code.com',
+        'bbb@clear-CODE.com'
       ],
       externals: []
     }
   },
-  'mistakable local parts and domains must be detected as externals': {
+  'mistakable recipients must be detected as externals': {
     recipients: [
       'aaa@clear-code.com',
       'bbb@unclear-code.com',
-      'clear-code.com@example.com'
+      'clear-code.com@example.com',
+      'address-like-nick@clear-code.com <ccc@example.com>',
+      'address-like-nick@example.com <ddd@clear-code.com>'
     ],
     internalDomains: ['clear-code.com'],
     expected: {
       internals: [
-        { recipient: 'aaa@clear-code.com',
-          address:   'aaa@clear-code.com',
-          domain:    'clear-code.com',
-          isAttentionDomain: false }
+        'aaa@clear-code.com',
+        'ddd@clear-code.com'
       ],
       externals: [
-        { recipient: 'bbb@unclear-code.com',
-          address:   'bbb@unclear-code.com',
-          domain:    'unclear-code.com',
-          isAttentionDomain: false },
-        { recipient: 'clear-code.com@example.com',
-          address:   'clear-code.com@example.com',
-          domain:    'example.com',
-          isAttentionDomain: false }
+        'bbb@unclear-code.com',
+        'clear-code.com@example.com',
+        'ccc@example.com'
       ]
     }
   },
@@ -155,16 +148,10 @@ test_classify.parameters = {
     internalDomains: ['clear-code.com'],
     expected: {
       internals: [
-        { recipient: 'aaa@clear-code.com',
-          address:   'aaa@clear-code.com',
-          domain:    'clear-code.com',
-          isAttentionDomain: false }
+        'aaa@clear-code.com'
       ],
       externals: [
-        { recipient: 'bbb@un.clear-code.com',
-          address:   'bbb@un.clear-code.com',
-          domain:    'un.clear-code.com',
-          isAttentionDomain: false }
+        'bbb@un.clear-code.com'
       ]
     }
   },
@@ -176,23 +163,23 @@ test_classify.parameters = {
     internalDomains: ['un.clear-code.com'],
     expected: {
       internals: [
-        { recipient: 'bbb@un.clear-code.com',
-          address:   'bbb@un.clear-code.com',
-          domain:    'un.clear-code.com',
-          isAttentionDomain: false }
+        'bbb@un.clear-code.com'
       ],
       externals: [
-        { recipient: 'aaa@clear-code.com',
-          address:   'aaa@clear-code.com',
-          domain:    'clear-code.com',
-          isAttentionDomain: false }
+        'aaa@clear-code.com'
       ]
     }
   }
 };
-export function test_classify({ recipients, internalDomains, expected }) {
+export function test_classifyAddresses({ recipients, internalDomains, expected }) {
   const classified = RecipientClassifier.classify(recipients, {
     internalDomains
   });
-  is(expected, classified);
+  is(
+    expected,
+    {
+      internals: classified.internals.map(recipient => recipient.address),
+      externals: classified.externals.map(recipient => recipient.address)
+    }
+  );
 }
