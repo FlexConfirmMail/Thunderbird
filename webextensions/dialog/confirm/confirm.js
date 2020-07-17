@@ -127,6 +127,7 @@ configs.$loaded.then(async () => {
 
 
 function initInternals() {
+  mInternalsAllCheck.disabled = mParams.internals.length == 0;
   mInternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllInternals);
   mInternalsAllCheck.addEventListener('change', _event => {
     checkAll(mInternalsList, mInternalsAllCheck.checked);
@@ -140,6 +141,7 @@ function initInternals() {
 }
 
 function initExternals() {
+  mExternalsAllCheck.disabled = mParams.externals.length == 0;
   mExternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllExternals);
   mExternalsAllCheck.addEventListener('change', _event => {
     checkAll(mExternalsList, mExternalsAllCheck.checked);
@@ -191,7 +193,7 @@ function initBodyBlock() {
 }
 
 function initAttachments() {
-  mAttachmentsAllCheck.disabled = configs.requireReinputAttachmentNames;
+  mAttachmentsAllCheck.disabled = configs.requireReinputAttachmentNames || (mParams.attachments.length == 0);
   mAttachmentsAllCheck.classList.toggle('hidden', !configs.allowCheckAllAttachments);
   mAttachmentsAllCheck.addEventListener('change', _event => {
     checkAll(mAttachmentsList, mAttachmentsAllCheck.checked);
@@ -309,7 +311,7 @@ function checkAll(container, checked) {
 }
 
 function isAllChecked(container = document) {
-  for (const checkbox of container.querySelectorAll('input[type="checkbox"]')) {
+  for (const checkbox of container.querySelectorAll('input[type="checkbox"]:not(.all-checkbox)')) {
     if (checkbox.classList.contains('hidden') ||
         checkbox.closest('.hidden'))
       continue;
