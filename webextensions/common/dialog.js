@@ -155,12 +155,12 @@ export async function open({ url, left, top, width, height, modal } = {}, dialog
         return;
 
       mLogger(`onFocusChanged at ${id}: raise the window`);
-        // setting "focused=true" fails on Thunderbird...
-        //browser.windows.update(win.id, { focused: true });
-        browser.runtime.sendMessage({
-          type: TYPE_FOCUS,
-          id
-        });
+      // setting "focused=true" fails on Thunderbird...
+      //browser.windows.update(win.id, { focused: true });
+      browser.runtime.sendMessage({
+        type: TYPE_FOCUS,
+        id
+      });
     };
     if (modal)
       browser.windows.onFocusChanged.addListener(onFocusChanged);
