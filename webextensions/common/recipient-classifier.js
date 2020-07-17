@@ -7,8 +7,8 @@
 
 export class RecipientClassifier {
   constructor({internalDomains, attentionDomains } = {}) {
-    this.$internalDomainsSet = new Set((internalDomains || []).map(domain => domain.toLowerCase()));
-    this.$attentionDomainsSet = new Set((attentionDomains || []).map(domain => domain.toLowerCase()));
+    this.$internalDomainsSet = new Set((internalDomains || []).map(domain => domain.toLowerCase().replace(/^@/, '')));
+    this.$attentionDomainsSet = new Set((attentionDomains || []).map(domain => domain.toLowerCase().replace(/^@/, '')));
   }
 
   classify(recipients) {

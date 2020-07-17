@@ -170,6 +170,21 @@ test_classifyAddresses.parameters = {
         'aaa@clear-code.com'
       ]
     }
+  },
+  'accept "@" in domain list': {
+    recipients: [
+      'aaa@clear-code.com',
+      'bbb@example.com'
+    ],
+    internalDomains: ['@clear-code.com'],
+    expected: {
+      internals: [
+        'aaa@clear-code.com'
+      ],
+      externals: [
+        'bbb@example.com'
+      ]
+    }
   }
 };
 export function test_classifyAddresses({ recipients, internalDomains, expected }) {
