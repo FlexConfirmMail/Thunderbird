@@ -93,7 +93,7 @@ table input[type="radio"] {
   opacity: 1;
 }
 
-.locked {
+.locked:not(legend label) {
   display: none;
 }
 
