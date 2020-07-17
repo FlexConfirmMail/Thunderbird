@@ -183,3 +183,50 @@ export function test_classifyAddresses({ recipients, internalDomains, expected }
     }
   );
 }
+
+test_classifyAttentionDomains.parameters = {
+  'must detect difference of subdomains': {
+    recipients: [
+      'aaa@un.example.com',
+      'bbb@example.com',
+      'ccc@completely.un.example.com'
+    ],
+    attentionDomains: ['un.example.com'],
+    expected: {
+      internals: [],
+      externals: [
+        true,
+        false,
+        false
+      ]
+    }
+  },
+  'must ignore cases': {
+    recipients: [
+      'aaa@example.com',
+      'bbb@EXAMPLE.com',
+      'ccc@example.org'
+    ],
+    attentionDomains: ['example.com'],
+    expected: {
+      internals: [],
+      externals: [
+        true,
+        true,
+        false
+      ]
+    }
+  }
+};
+export function test_classifyAttentionDomains({ recipients, attentionDomains, expected }) {
+  const classified = RecipientClassifier.classify(recipients, {
+    attentionDomains
+  });
+  is(
+    expected,
+    {
+      internals: classified.internals.map(recipient => recipient.isAttentionDomain),
+      externals: classified.externals.map(recipient => recipient.isAttentionDomain)
+    }
+  );
+}
