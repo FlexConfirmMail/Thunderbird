@@ -167,7 +167,8 @@ select:focus:not(:disabled) {
   box-shadow: 0 0 0 1px var(--in-content-border-active),
               0 0 0 4px var(--in-content-border-active-shadow);
 }
-button:disabled {
+button:disabled,
+input:disabled {
   opacity: 0.5;
 }
 option {
