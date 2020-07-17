@@ -9,11 +9,6 @@ export function classify(recipients, {internalDomains, attentionDomains } = {}) 
   const internals = [];
   const externals = [];
 
-  if (internalDomains.length == 0) {
-    externals.push(...recipients);
-    return { internals, externals };
-  }
-
   const internalDomainsSet = new Set((internalDomains || []).map(domain => domain.toLowerCase()));
   const attentionDomainsSet = new Set(attentionDomains || []);
   for (const recipient of recipients) {
