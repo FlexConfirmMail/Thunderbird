@@ -5,7 +5,7 @@
 */
 'use strict';
 
-import * as RecipientClassifier from '../common/recipient-classifier.js';
+import { RecipientClassifier } from '../common/recipient-classifier.js';
 import { assert } from 'tiny-esm-test-runner';
 const { is } = assert;
 
@@ -16,7 +16,8 @@ export function test_format() {
     'address-like-nickname@clear-code.com <address-like-nick@example.com>',
     'domain-must-be-lower-cased@EXAMPLE.com'
   ];
-  const classified = RecipientClassifier.classify(recipients);
+  const classifier = new RecipientClassifier();
+  const classified = classifier.classify(recipients);
   is(
     {
       internals: [],
@@ -172,9 +173,8 @@ test_classifyAddresses.parameters = {
   }
 };
 export function test_classifyAddresses({ recipients, internalDomains, expected }) {
-  const classified = RecipientClassifier.classify(recipients, {
-    internalDomains
-  });
+  const classifier = new RecipientClassifier({ internalDomains });
+  const classified = classifier.classify(recipients);
   is(
     expected,
     {
@@ -219,9 +219,8 @@ test_classifyAttentionDomains.parameters = {
   }
 };
 export function test_classifyAttentionDomains({ recipients, attentionDomains, expected }) {
-  const classified = RecipientClassifier.classify(recipients, {
-    attentionDomains
-  });
+  const classifier = new RecipientClassifier({ attentionDomains });
+  const classified = classifier.classify(recipients);
   is(
     expected,
     {

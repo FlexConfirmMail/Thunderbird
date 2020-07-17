@@ -13,7 +13,7 @@ import {
   sendToHost
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
-import * as RecipientClassifier from '/common/recipient-classifier.js';
+import { RecipientClassifier } from '/common/recipient-classifier.js';
 
 import * as ListUtils from './list-utils.js';
 
@@ -139,13 +139,13 @@ async function tryConfirm(tab, details, opener) {
     getAttentionSuffixes()
   ]);
   log('attention list: ', { attentionDomains, attentionSuffixes });
-  const classifierParams = {
+  const classifier = new RecipientClassifier({
     internalDomains: configs.internalDomains,
     attentionDomains
-  };
-  const classifiedTo = RecipientClassifier.classify(to, classifierParams);
-  const classifiedCc = RecipientClassifier.classify(cc, classifierParams);
-  const classifiedBcc = RecipientClassifier.classify(bcc, classifierParams);
+  });
+  const classifiedTo = classifier.classify(to);
+  const classifiedCc = classifier.classify(cc);
+  const classifiedBcc = classifier.classify(bcc);
   log('classified results: ', { classifiedTo, classifiedCc, classifiedBcc });
 
   const allInternals = new Set([
