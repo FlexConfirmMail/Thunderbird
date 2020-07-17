@@ -168,7 +168,10 @@ select:focus:not(:disabled) {
               0 0 0 4px var(--in-content-border-active-shadow);
 }
 button:disabled,
-input:disabled {
+input:disabled,
+textarea:disabled,
+select:disabled,
+option:disabled {
   opacity: 0.5;
 }
 option {
