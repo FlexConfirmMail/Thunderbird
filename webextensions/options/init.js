@@ -9,6 +9,7 @@ import {
   configs,
   //sendToHost
 } from '/common/common.js';
+import * as Constants from '/common/constants.js';
 import Options from '/extlib/Options.js';
 import '/extlib/l10n.js';
 
@@ -68,6 +69,46 @@ window.addEventListener('DOMContentLoaded', async () => {
   for (const textarea of document.querySelectorAll('textarea.array-type-config')) {
     initArrayTypeTextArea(textarea);
   }
+
+  const attentionDomainsField = document.querySelector('#attentionDomainsField');
+  attentionDomainsField.classList.toggle(
+    'locked',
+    configs.$isLocked('attentionDomains') ||
+    (configs.$isLocked('attentionDomainsSoruce') &&
+     configs.attentionDomainsSoruce == Constants.SOURCE_FILE)
+  );
+  if (attentionDomainsField.classList.contains('locked'))
+    attentionDomainsField.disabled = true;
+
+  const attentionDomainsFile = document.querySelector('#attentionDomainsFile');
+  attentionDomainsFile.classList.toggle(
+    'locked',
+    configs.$isLocked('attentionDomainsFile') ||
+    (configs.$isLocked('attentionDomainsSoruce') &&
+     configs.attentionDomainsSoruce == Constants.SOURCE_CONFIG)
+  );
+  if (attentionDomainsFile.classList.contains('locked'))
+    attentionDomainsFile.disabled = true;
+
+  const attentionSuffixesField = document.querySelector('#attentionSuffixesField');
+  attentionSuffixesField.classList.toggle(
+    'locked',
+    configs.$isLocked('attentionSuffixes') ||
+    (configs.$isLocked('attentionSuffixesSoruce') &&
+     configs.attentionSuffixesSoruce == Constants.SOURCE_FILE)
+  );
+  if (attentionSuffixesField.classList.contains('locked'))
+    attentionSuffixesField.disabled = true;
+
+  const attentionSuffixesFile = document.querySelector('#attentionSuffixesFile');
+  attentionSuffixesFile.classList.toggle(
+    'locked',
+    configs.$isLocked('attentionSuffixesFile') ||
+    (configs.$isLocked('attentionSuffixesSoruce') &&
+     configs.attentionSuffixesSoruce == Constants.SOURCE_CONFIG)
+  );
+  if (attentionSuffixesFile.classList.contains('locked'))
+    attentionSuffixesFile.disabled = true;
 
   for (const container of document.querySelectorAll('section, fieldset, p, div')) {
     const allFields = container.querySelectorAll('input, textarea, select');
