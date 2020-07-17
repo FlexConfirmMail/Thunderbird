@@ -125,8 +125,8 @@ async function needConfirmationOnModified(tab, details) {
 }
 
 
-async function tryConfirm(tab, details) {
-  log('tryConfirm: ', tab, details);
+async function tryConfirm(tab, details, opener) {
+  log('tryConfirm: ', tab, details, opener);
   const [
     to, cc, bcc,
     attentionDomains, attentionSuffixes
@@ -175,6 +175,7 @@ async function tryConfirm(tab, details) {
   const dialogParams = {
     url:    '/dialog/confirm/confirm.html',
     modal:  !configs.debug,
+    opener,
     width:  configs.confirmDialogWidth,
     height: configs.confirmDialogWidth
   };
@@ -256,6 +257,8 @@ async function getAttentionSuffixes() {
 
 
 browser.compose.onBeforeSend.addListener(async (tab, details) => {
+  const composeWin = await browser.windows.get(tab.windowId);
+
   switch (configs.confirmationMode) {
     case Constants.CONFIRMATION_MODE_NEVER:
       log('skip confirmation');
@@ -267,7 +270,7 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
         break;
     case Constants.CONFIRMATION_MODE_ALWAYS: {
       try {
-        await tryConfirm(tab, details);
+        await tryConfirm(tab, details, composeWin);
       }
       catch(error) {
         log('confirmation canceled ', error);
@@ -282,6 +285,7 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
     const dialogParams = {
       url:    '/dialog/countdown/countdown.html',
       modal:  !configs.debug,
+      opener: composeWin,
       width:  configs.countdownDialogWidth,
       height: configs.countdownDialogHeight
     }

@@ -33,9 +33,9 @@ const DEFAULT_HEIGHT_OFFSET = 40; /* top title bar + bottom window frame */
 let lastWidthOffset  = null;
 let lastHeightOffset = null;
 
-export async function open({ url, left, top, width, height, modal } = {}, dialogContentsParams = {}) {
+export async function open({ url, left, top, width, height, modal, opener } = {}, dialogContentsParams = {}) {
   const id = generateId();
-  mLogger('open ', { id, url, left, top, width, height, modal, dialogContentsParams });
+  mLogger('open ', { id, url, left, top, width, height, modal, opener, dialogContentsParams });
 
   const extraParams = `dialog-id=${id}&dialog-offscreen=true`;
   if (url.includes('?'))
@@ -106,6 +106,16 @@ export async function open({ url, left, top, width, height, modal } = {}, dialog
     height -= heightOffset;
   }
 
+  if (opener) {
+    if (typeof left != 'number' ||
+        opener.left > left + width ||
+        opener.left + opener.width < left)
+      left = opener.left + ((opener.width - width) / 2);
+    if (typeof top != 'number' ||
+        opener.top > top + height ||
+        opener.top + opener.height < top)
+      top = opener.top + ((opener.height - height) / 2);
+  }
 
   return new Promise(async (resolve, reject) => {
     let win; // eslint-disable-line prefer-const
