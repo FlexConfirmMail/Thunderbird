@@ -12,6 +12,7 @@
   <body>
     <div class="dialog-content">
       <div id="top-message"></div>
+      <form id="form" class="flex-box" action="#" method="GET">
       <div id="addressesContainer" class="flex-box">
         <fieldset id="internalsContainer" class="flex-box">
           <legend><label><input id="internalsAll" type="checkbox">__MSG_confirmDialogInternalsCaption__</label></legend>
@@ -38,9 +39,10 @@
         <div id="attachments" class="flex-box listbox"></div>
       </fieldset>
       <div class="dialog-buttons">
-        <button id="accept">__MSG_confirmDialogAccept__</button>
+        <button id="accept" type="submit">__MSG_confirmDialogAccept__</button>
         <button id="cancel">__MSG_confirmDialogCancel__</button>
       </div>
+      </form>
     </div>
   </body>
 </html>
