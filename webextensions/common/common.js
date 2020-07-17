@@ -8,6 +8,8 @@
 import Configs from '/extlib/Configs.js';
 import * as Constants from './constants.js';
 
+const OVERRIDE_DEFAULT_CONFIGS = {}; /* Replace this for more customization on an enterprise use. */
+
 export const configs = new Configs({
   confirmationMode: Constants.CONFIRMATION_MODE_ALWAYS,
   internalDomains: [],
@@ -68,7 +70,9 @@ export const configs = new Configs({
   maxTooltipTextLength: 60,
 
   configsVersion: 0,
-  debug: false
+  debug: false,
+
+  ...OVERRIDE_DEFAULT_CONFIGS
 }, {
   localKeys: [
     'configsVersion',
