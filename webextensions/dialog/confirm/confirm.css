@@ -133,15 +133,18 @@ hr.splitter {
 }
 
 .listbox .row.domain::before {
-  background: url("/resources/domain-unchecked.png") center no-repeat;
+  background: var(--grey-90-a10);
   content: " ";
-  height: 1.5em;
-  min-height: 16px;
-  width: 16px;
+  display: inline-block;
+  height: 1em;
+  margin: 0.25em 0.25em 0.25em 0;
+  mask: url("/resources/domain-unchecked.svg") no-repeat center / 100%;
+  width: 1em;
 }
 
 .listbox .row.domain.checked::before {
-  background-image: url("/resources/domain-checked.png");
+  background-color: var(--orange-50);
+  mask-image: url("/resources/domain-checked.svg");
 }
 
 .listbox#externals .row.recipient {
