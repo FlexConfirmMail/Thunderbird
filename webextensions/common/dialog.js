@@ -223,7 +223,7 @@ export async function open({ url, left, top, width, height, modal } = {}, dialog
         browser.windows.onFocusChanged.removeListener(onFocusChanged);
       if (browser.windows.onUpdated)
         browser.windows.onUpdated.removeListener(onUpdated);
-      else if (onUpdated.timer)
+      if (onUpdated.timer)
         window.clearInterval(onUpdated.timer);
       browser.windows.remove(win.id);
       reject();
