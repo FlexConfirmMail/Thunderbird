@@ -189,6 +189,9 @@ hr.splitter {
 :root.highlight-external-domains .listbox#externals .row.recipient.domain-even label {
   background: rgb(255, 192, 0);
 }
+:root.highlight-external-domains .listbox#externals .row.recipient.domain-even:hover label {
+  background: rgba(255, 192, 0, 0.5);
+}
 /*
 :root.highlight-external-domains .listbox#externals:not(:focus) .row.recipient.domain-even label {
   background: rgb(198, 156, 27);
@@ -197,6 +200,9 @@ hr.splitter {
 
 :root.highlight-external-domains .listbox#externals .row.recipient.domain-odd label {
   background: rgb(70, 170, 252);
+}
+:root.highlight-external-domains .listbox#externals .row.recipient.domain-odd:hover label {
+  background: rgba(70, 170, 252, 0.5);
 }
 /*
 :root.highlight-external-domains .listbox#externals:not(:focus) .row.recipient.domain-odd label {
