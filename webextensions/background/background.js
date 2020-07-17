@@ -127,12 +127,13 @@ async function needConfirmationOnModified(tab, details) {
 
 async function tryConfirm(tab, details) {
   log('tryConfirm: ', tab, details);
-  const [to, cc, bcc] = await Promise.all([
+  const [
+    to, cc, bcc,
+    attentionDomains, attentionSuffixes
+  ] = await Promise.all([
     ListUtils.populateListAddresses(details.to),
     ListUtils.populateListAddresses(details.cc),
-    ListUtils.populateListAddresses(details.bcc)
-  ]);
-  const [attentionDomains, attentionSuffixes] = await Promise.all([
+    ListUtils.populateListAddresses(details.bcc),
     getAttentionDomains(),
     getAttentionSuffixes()
   ]);
