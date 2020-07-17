@@ -12,24 +12,24 @@ export class RecipientClassifier {
   }
 
   classify(recipients) {
-  const internals = [];
-  const externals = [];
+    const internals = [];
+    const externals = [];
 
-  for (const recipient of recipients) {
-    const address = /<([^@]+@[^>]+)>\s*$/.test(recipient) ? RegExp.$1 : recipient;
-    const domain = address.split('@')[1].toLowerCase();
-    const classifiedRecipient = {
-      recipient,
-      address,
-      domain,
-      isAttentionDomain: this.$attentionDomainsSet.has(domain)
-    };
-    if (this.$internalDomainsSet.has(domain))
-      internals.push(classifiedRecipient);
-    else
-      externals.push(classifiedRecipient);
-  }
+    for (const recipient of recipients) {
+      const address = /<([^@]+@[^>]+)>\s*$/.test(recipient) ? RegExp.$1 : recipient;
+      const domain = address.split('@')[1].toLowerCase();
+      const classifiedRecipient = {
+        recipient,
+        address,
+        domain,
+        isAttentionDomain: this.$attentionDomainsSet.has(domain)
+      };
+      if (this.$internalDomainsSet.has(domain))
+        internals.push(classifiedRecipient);
+      else
+        externals.push(classifiedRecipient);
+    }
 
-  return { internals, externals };
+    return { internals, externals };
   }
 }
