@@ -7,7 +7,7 @@
 
 import {
   configs,
-  sendToHost
+  //sendToHost
 } from '/common/common.js';
 import Options from '/extlib/Options.js';
 import '/extlib/l10n.js';
@@ -33,7 +33,6 @@ function activateField(field) {
     subField.disabled = false;
   }
 }
-*/
 
 function deactivateField(field) {
   field.classList.add('disabled');
@@ -43,6 +42,7 @@ function deactivateField(field) {
     subField.disabled = true;
   }
 }
+*/
 
 function initArrayTypeTextArea(textarea) {
   textarea.value = configs[textarea.dataset.configKey].join('\n');
@@ -54,16 +54,16 @@ function initArrayTypeTextArea(textarea) {
 
 
 window.addEventListener('DOMContentLoaded', async () => {
-  const [response, ] = await Promise.all([
-    sendToHost({ command: 'echo' }),
-    configs.$loaded
-  ]);
+  await configs.$loaded;
 
+  /* This always fails even if the native messaging host is available...
+  const response = await sendToHost({ command: 'echo' });
   if (!response) {
     for (const field of document.querySelectorAll('.require-native-messaging-host')) {
       deactivateField(field);
     }
   }
+  */
 
   for (const textarea of document.querySelectorAll('textarea.array-type-config')) {
     initArrayTypeTextArea(textarea);
