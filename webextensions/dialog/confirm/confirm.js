@@ -16,9 +16,10 @@ import {
 
 import * as Constants from '/common/constants.js';
 import * as ResizableBox from '/common/resizable-box.js';
+import { AttachmentClassifier } from '/common/attachment-classifier.js';
 
 let mParams;
-let mAttentionSuffixesMatcher;
+let mAttachmentClassifier;
 
 const mTopMessage          = document.querySelector('#top-message');
 const mInternalsAllCheck   = document.querySelector('#internalsAll');
@@ -76,7 +77,7 @@ configs.$addObserver(onConfigChange);
 configs.$loaded.then(async () => {
   mParams = await Dialog.getParams();
 
-  mAttentionSuffixesMatcher = new RegExp(`\\.(${mParams.attentionSuffixes.map(suffix => suffix.toLowerCase().replace(/^\./, '')).join('|')})$`, 'i');
+  mAttachmentClassifier = new AttachmentClassifier(mParams.attentionSuffixes);
 
   onConfigChange('attentionDomainsHighlightMode');
   onConfigChange('highlightExternalDomains');
@@ -205,7 +206,10 @@ function initAttachments() {
     mAttachmentsAllCheck.checked = isAllChecked(mAttachmentsList);
   });
   for (const attachment of mParams.attachments) {
-    mAttachmentsList.appendChild(createAttachmentRow(attachment));
+    const row = createAttachmentRow(attachment);
+    if (mAttachmentClassifier.hasAttentionSuffix(attachment.name))
+      row.classList.add('attention');
+    mAttachmentsList.appendChild(row);
   }
 }
 
@@ -235,8 +239,6 @@ function createAttachmentRow(attachment) {
   row.setAttribute('title', foldLongTooltipText(attachment.name));
   row.classList.add('attachment');
   row.lastChild.classList.add('flexible');
-  if (mAttentionSuffixesMatcher.test(attachment.name))
-    row.classList.add('attention');
 
   if (configs.requireReinputAttachmentNames) {
     const checkbox = row.querySelector('input[type="checkbox"]');
@@ -423,7 +425,7 @@ async function confirmAttentionSuffixes() {
   if (!configs.attentionSuffixesConfirm)
     return true;
 
-  const attentionAttachments = mParams.attachments.filter(attachment => mAttentionSuffixesMatcher.test(attachment.name)).map(attachment => attachment.name);
+  const attentionAttachments = mParams.attachments.filter(attachment => mAttachmentClassifier.hasAttentionSuffix(attachment.name)).map(attachment => attachment.name);
   log('confirmAttentionSuffixes attentionAttachments = ', attentionAttachments);
   if (attentionAttachments.length == 0)
     return true;
