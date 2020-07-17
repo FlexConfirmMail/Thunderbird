@@ -25,7 +25,7 @@ export const configs = new Configs({
   attentionSuffixesSource: Constants.SOURCE_CONFIG,
   attentionSuffixesFile: '',
 
-  confirmInternalMail: true,
+  skipConfirmationForInternalMail: true,
   confirmMultipleRecipientDomains: false,
   minConfirmationRecipientsCount: 0,
 
