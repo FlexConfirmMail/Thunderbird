@@ -93,6 +93,10 @@ table input[type="radio"] {
   opacity: 1;
 }
 
+.locked {
+  display: none;
+}
+
 
 
 textarea,
