@@ -176,22 +176,23 @@ hr.splitter {
 }
 
 :root.highlight-external-domains.highlight-attention-domains .listbox#externals .row.attention label {
-  text-shadow: 0 0 5px white,
-               0 0 5px white,
-               0 0 5px white,
-               0 0 5px white,
-               0 0 5px white,
-               0 0 5px white,
-               0 0 5px white,
-               0 0 5px white,
-               0 0 5px white,
-               0 0 5px white,
-               0 0 5px white,
-               0 0 5px white,
-               0 0 5px white;
+  text-shadow: 0 0 5px var(--text-shadow-color),
+               0 0 5px var(--text-shadow-color),
+               0 0 5px var(--text-shadow-color),
+               0 0 5px var(--text-shadow-color),
+               0 0 5px var(--text-shadow-color),
+               0 0 5px var(--text-shadow-color),
+               0 0 5px var(--text-shadow-color),
+               0 0 5px var(--text-shadow-color),
+               0 0 5px var(--text-shadow-color),
+               0 0 5px var(--text-shadow-color),
+               0 0 5px var(--text-shadow-color),
+               0 0 5px var(--text-shadow-color),
+               0 0 5px var(--text-shadow-color);
 }
 
 :root.highlight-external-domains .listbox#externals .row.recipient.domain-even label {
+  --text-shadow-color: rgb(255, 230, 172);
   background: rgb(255, 192, 0);
 }
 :root.highlight-external-domains .listbox#externals .row.recipient.domain-even:hover label {
@@ -204,6 +205,7 @@ hr.splitter {
 */
 
 :root.highlight-external-domains .listbox#externals .row.recipient.domain-odd label {
+  --text-shadow-color: rgb(220, 240, 252);
   background: rgb(70, 170, 252);
 }
 :root.highlight-external-domains .listbox#externals .row.recipient.domain-odd:hover label {
