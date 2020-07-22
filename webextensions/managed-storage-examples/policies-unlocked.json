@@ -2,7 +2,7 @@
   "policies": {
     "3rdparty": {
       "Extensions": {
-        "ieview-we@clear-code.com": {
+        "flexible-confirm-mail@clear-code.com": {
           "// 0 = no confirm, 1 = always confirm, 2 = confirm only when modified": true,
           "confirmationMode": 1,
           "confirmationMode:locked": false,
