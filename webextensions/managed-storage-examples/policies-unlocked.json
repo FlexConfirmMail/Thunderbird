@@ -12,7 +12,8 @@
 
           "// 組織内として扱うメールアドレスのドメイン名": 0,
           "internalDomains": [
-            "example.com"
+            "example.com",
+            "sub.example.com"
           ],
             "internalDomains:locked": false,
 
@@ -46,7 +47,8 @@
 
           "// 手動編集の外部ドメイン一覧": 0,
           "attentionDomains": [
-            "example.org"
+            "example.org",
+            "example.jp"
           ],
             "attentionDomains:locked": false,
 
@@ -77,7 +79,8 @@
 
           "// 手動編集の拡張子一覧": 0,
           "attentionSuffixes": [
-            ".txt"
+            ".txt",
+            ".pdf"
           ],
             "attentionSuffixes:locked": false,
 

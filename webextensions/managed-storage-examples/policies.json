@@ -11,7 +11,8 @@
 
           "// 組織内として扱うメールアドレスのドメイン名": 0,
           "internalDomains": [
-            "example.com"
+            "example.com",
+            "sub.example.com"
           ],
 
           "// すべての宛先が登録済みドメインのメール送信時は確認ダイアログを表示しない": 0,
@@ -38,7 +39,8 @@
 
           "// 手動編集の外部ドメイン一覧": 0,
           "attentionDomains": [
-            "example.org"
+            "example.org",
+            "example.jp"
           ],
 
           "// ファイル形式の外部ドメイン一覧のパス": 0,
@@ -63,7 +65,8 @@
 
           "// 手動編集の拡張子一覧": 0,
           "attentionSuffixes": [
-            ".txt"
+            ".txt",
+            ".pdf"
           ],
 
           "// ファイル形式の拡張子一覧のパス": 0,
