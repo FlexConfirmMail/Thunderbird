@@ -85,22 +85,6 @@ table input[type="radio"] {
 }
 
 
-.disabled {
-  opacity: 0.5;
-}
-.disabled .disabled,
-.disabled :disabled {
-  opacity: 1;
-}
-
-.locked {
-  display: none;
-}
-legend label.locked {
-  display: initial;
-}
-
-
 
 textarea,
 #topMessage {
@@ -116,4 +100,21 @@ li textarea,
 input[type="text"].filepath {
   margin-left: 2em;
   width: calc(100% - 2em);
+}
+
+
+
+.disabled {
+  opacity: 0.5;
+}
+.disabled .disabled,
+.disabled :disabled {
+  opacity: 1;
+}
+
+.locked {
+  display: none;
+}
+legend label.locked {
+  display: initial;
 }

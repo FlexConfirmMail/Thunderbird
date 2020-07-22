@@ -112,7 +112,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   for (const container of document.querySelectorAll('section, fieldset, p, div')) {
     const allFields = container.querySelectorAll('input, textarea, select');
-    const lockedFields = container.querySelectorAll('.locked input, .locked textarea, .locked select');
+    const lockedFields = container.querySelectorAll('.locked input, .locked textarea, .locked select, input.locked, textarea.locked, select.locked');
     container.classList.toggle('locked', allFields.length == lockedFields.length);
   }
 
