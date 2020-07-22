@@ -1,0 +1,98 @@
+{
+  "policies": {
+    "3rdparty": {
+      "Extensions": {
+        "ieview-we@clear-code.com": {
+          "// 0 = no confirm, 1 = always confirm, 2 = confirm only when modified": true,
+          "confirmationMode": 1,
+          "confirmationMode:locked": false,
+          "internalDomains": [
+            "example.com"
+          ],
+          "internalDomains:locked": false,
+
+          "// 0 = no highlight, 1 = always highlight, 2 = highlight only when there is any attachment": true,
+          "attentionDomainsHighlightMode": 1,
+            "attentionDomainsHighlightMode:locked": false,
+          "// 0 = no confirm, 1 = always confirm, 2 = confirm only when there is any attachment": true,
+          "attentionDomainsConfirmationMode": 1,
+            "attentionDomainsConfirmationMode:locked": false,
+          "attentionDomains": [
+            "example.org"
+          ],
+            "attentionDomains:locked": false,
+          "attentionDomainsSource": 0,
+            "attentionDomainsSource:locked": false,
+          "attentionDomainsFile": "",
+            "attentionDomainsFile:locked": false,
+
+          "attentionSuffixesConfirm": true,
+            "attentionSuffixesConfirm:locked": false,
+          "attentionSuffixes": [
+            ".txt"
+          ],
+            "attentionSuffixes:locked": false,
+          "attentionSuffixesSource": 0,
+            "attentionSuffixesSource:locked": false,
+          "attentionSuffixesFile": "",
+            "attentionSuffixesFile:locked": false,
+
+          "skipConfirmationForInternalMail": true,
+            "skipConfirmationForInternalMail:locked": false,
+          "confirmMultipleRecipientDomains": false,
+            "confirmMultipleRecipientDomains:locked": false,
+          "minConfirmationRecipientsCount": 0,
+            "minConfirmationRecipientsCount:locked": false,
+
+          "attentionDomainDialogTitle": "",
+            "attentionDomainDialogTitle:locked": false,
+          "attentionDomainDialogMessage": "",
+            "attentionDomainDialogMessage:locked": false,
+          "attentionSuffixDialogTitle": "",
+            "attentionSuffixDialogTitle:locked": false,
+          "attentionSuffixDialogMessage": "",
+            "attentionSuffixDialogMessage:locked": false,
+          "confirmMultipleRecipientDomainsDialogTitle": "",
+            "confirmMultipleRecipientDomainsDialogTitle:locked": false,
+          "confirmMultipleRecipientDomainsDialogMessage": "",
+            "confirmMultipleRecipientDomainsDialogMessage:locked": false,
+
+          "allowCheckAllInternals": true,
+            "allowCheckAllInternals:locked": false,
+          "allowCheckAllExternals": false,
+            "allowCheckAllExternals:locked": false,
+          "allowCheckAllAttachments": false,
+            "allowCheckAllAttachments:locked": false,
+          "requireCheckSubject": false,
+            "requireCheckSubject:locked": false,
+          "requireCheckBody": false,
+            "requireCheckBody:locked": false,
+          "requireReinputAttachmentNames": false,
+            "requireReinputAttachmentNames:locked": false,
+          "highlightExternalDomains": false,
+            "highlightExternalDomains:locked": false,
+          "largeFontSizeForAddresses": false,
+            "largeFontSizeForAddresses:locked": false,
+          "alwaysLargeDialog": false,
+            "alwaysLargeDialog:locked": false,
+          "emphasizeTopMessage": false,
+            "emphasizeTopMessage:locked": false,
+          "topMessage": "",
+            "topMessage:locked": false,
+          "emphasizeRecipientType": false,
+            "emphasizeRecipientType:locked": false,
+
+          "showCountdown": false,
+            "showCountdown:locked": false,
+          "countdownSeconds": 5,
+            "countdownSeconds:locked": false,
+          "countdownAllowSkip": true,
+            "countdownAllowSkip:locked": false,
+
+          "debug": false,
+            "debug:locked": false
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "policies": {
+    "3rdparty": {
+      "Extensions": {
+        "ieview-we@clear-code.com": {
+          "// 0 = no confirm, 1 = always confirm, 2 = confirm only when modified": true,
+          "confirmationMode": 1,
+          "internalDomains": [
+            "example.com"
+          ],
+
+          "// 0 = no highlight, 1 = always highlight, 2 = highlight only when there is any attachment": true,
+          "attentionDomainsHighlightMode": 1,
+          "// 0 = no confirm, 1 = always confirm, 2 = confirm only when there is any attachment": true,
+          "attentionDomainsConfirmationMode": 1,
+          "attentionDomains": [
+            "example.org"
+          ],
+          "attentionDomainsSource": 0,
+          "attentionDomainsFile": "",
+
+          "attentionSuffixesConfirm": true,
+          "attentionSuffixes": [
+            ".txt"
+          ],
+          "attentionSuffixesSource": 0,
+          "attentionSuffixesFile": "",
+
+          "skipConfirmationForInternalMail": true,
+          "confirmMultipleRecipientDomains": false,
+          "minConfirmationRecipientsCount": 0,
+
+          "attentionDomainDialogTitle": "",
+          "attentionDomainDialogMessage": "",
+          "attentionSuffixDialogTitle": "",
+          "attentionSuffixDialogMessage": "",
+          "confirmMultipleRecipientDomainsDialogTitle": "",
+          "confirmMultipleRecipientDomainsDialogMessage": "",
+
+          "allowCheckAllInternals": true,
+          "allowCheckAllExternals": false,
+          "allowCheckAllAttachments": false,
+          "requireCheckSubject": false,
+          "requireCheckBody": false,
+          "requireReinputAttachmentNames": false,
+          "highlightExternalDomains": false,
+          "largeFontSizeForAddresses": false,
+          "alwaysLargeDialog": false,
+          "emphasizeTopMessage": false,
+          "topMessage": "",
+          "emphasizeRecipientType": false,
+
+          "showCountdown": false,
+          "countdownSeconds": 5,
+          "countdownAllowSkip": true,
+
+          "debug": false
+        }
+      }
+    }
+  }
+}
