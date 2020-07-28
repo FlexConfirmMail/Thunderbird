@@ -211,6 +211,7 @@ async function tryConfirm(tab, details, opener) {
         ...classifiedBcc.externals.map(recipient => ({ ...recipient, type: 'Bcc' }))
       ],
       attachments: await browser.compose.listAttachments(tab.id),
+      attentionDomains,
       attentionSuffixes
     }
   );

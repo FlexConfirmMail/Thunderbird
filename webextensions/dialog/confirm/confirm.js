@@ -19,6 +19,7 @@ import * as ResizableBox from '/common/resizable-box.js';
 import { AttachmentClassifier } from '/common/attachment-classifier.js';
 
 let mParams;
+let mAttachmentDomains;
 let mAttachmentClassifier;
 
 const mTopMessage          = document.querySelector('#top-message');
@@ -77,6 +78,7 @@ configs.$addObserver(onConfigChange);
 configs.$loaded.then(async () => {
   mParams = await Dialog.getParams();
 
+  mAttachmentDomains = new AttachmentClassifier(mParams.attentionDomains);
   mAttachmentClassifier = new AttachmentClassifier(mParams.attentionSuffixes);
 
   onConfigChange('attentionDomainsHighlightMode');
@@ -381,7 +383,7 @@ async function confirmAttentionDomains() {
   if (!shouldConfirm)
     return true;
 
-  const attentionDomains = new Set(configs.attentionDomains.map(domain => domain.toLowerCase()));
+  const attentionDomains = new Set(mAttachmentDomains.map(domain => domain.toLowerCase()));
   const attentionRecipients = mParams.externals.filter(recipient => attentionDomains.has(recipient.domain.toLowerCase())).map(recipient => recipient.address);
   log('confirmAttentionDomains attentionRecipients = ', attentionRecipients);
   if (attentionRecipients.length == 0)
