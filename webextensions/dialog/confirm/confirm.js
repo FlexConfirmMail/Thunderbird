@@ -191,7 +191,14 @@ function initBodyBlock() {
   mSubjectField.textContent = mParams.details.subject;
 
   mBodyCheck.closest('div').classList.toggle('hidden', !configs.requireCheckBody);
-  mBodyField.src = `data:text/html,${encodeURIComponent(mParams.details.body)}`;
+
+  // The given message source has a "meta" tag with charset, but the body is already decoded.
+  // We need to extract only its body part and render it with a Unicode encoding.
+  const tree = (new DOMParser()).parseFromString(mParams.details.body, 'text/html');
+  const bodySource = tree.querySelector('body').outerHTML;
+  const source = `<!DOCTYPE html><html><meta charset="UTF-8">${bodySource}</html>`;
+
+  mBodyField.src = `data:text/html,${encodeURIComponent(source)}`;
 
   for (const bodyBlockElements of document.querySelectorAll('#bodyAndSubjectContainer, #bodyAndSubjectContainer + hr')) {
     bodyBlockElements.classList.toggle('hidden', !configs.requireCheckSubject && !configs.requireCheckBody);
