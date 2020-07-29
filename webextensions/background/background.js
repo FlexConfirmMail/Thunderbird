@@ -140,7 +140,7 @@ async function tryConfirm(tab, details, opener) {
   ]);
   log('attention list: ', { attentionDomains, attentionSuffixes });
   const classifier = new RecipientClassifier({
-    internalDomains: configs.internalDomains,
+    internalDomains: configs.internalDomains || [],
     attentionDomains
   });
   const classifiedTo = classifier.classify(to);
@@ -221,7 +221,7 @@ async function getAttentionDomains() {
   switch (configs.attentionDomainsSource) {
     default:
     case Constants.SOURCE_CONFIG:
-      return configs.attentionDomains;
+      return configs.attentionDomains || [];
 
     case Constants.SOURCE_FILE: {
       if (!configs.attentionDomainsFile)
@@ -241,7 +241,7 @@ async function getAttentionSuffixes() {
   switch (configs.attentionSuffixesSource) {
     default:
     case Constants.SOURCE_CONFIG:
-      return configs.attentionSuffixes;
+      return configs.attentionSuffixes || [];
 
     case Constants.SOURCE_FILE: {
       if (!configs.attentionSuffixesFile)
