@@ -46,12 +46,32 @@ function deactivateField(field) {
 */
 
 function initArrayTypeTextArea(textarea) {
-  textarea.value = configs[textarea.dataset.configKey].join('\n');
+  // Use dataset.arrayConfigKey instead of dataset.configKey,
+  // to prevent handling of input field by Ootions.js itself
+  textarea.value = (configs[textarea.dataset.arrayConfigKey] || []).join('\n');
   textarea.addEventListener('input', () => {
-    const value = textarea.value.trim().split(/[\s,|]+/).filter(part => !!part);
-    configs[textarea.dataset.configKey] = value;
+    throttledUpdateArrayTypeTextArea(textarea);
+  });
+  textarea.addEventListener('change', () => {
+    throttledUpdateArrayTypeTextArea(textarea);
   });
 }
+
+function throttledUpdateArrayTypeTextArea(textarea) {
+  const key = textarea.dataset.arrayConfigKey;
+  if (throttledUpdateArrayTypeTextArea.timers.has(key))
+    clearTimeout(throttledUpdateArrayTypeTextArea.timers.get(key));
+  textarea.dataset.configValueUpdating = true;
+  throttledUpdateArrayTypeTextArea.timers.set(key, setTimeout(() => {
+    throttledUpdateArrayTypeTextArea.timers.delete(key);
+    const value = textarea.value.trim().split(/[\s,|]+/).filter(part => !!part);
+    configs[key] = value;
+    setTimeout(() => {
+      textarea.dataset.configValueUpdating = false;
+    }, 50);
+  }, 250));
+}
+throttledUpdateArrayTypeTextArea.timers = new Map();
 
 
 window.addEventListener('DOMContentLoaded', async () => {
