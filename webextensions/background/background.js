@@ -259,6 +259,7 @@ async function getAttentionSuffixes() {
 
 
 browser.compose.onBeforeSend.addListener(async (tab, details) => {
+  await configs.$loaded;
   const composeWin = await browser.windows.get(tab.windowId);
 
   switch (configs.confirmationMode) {
