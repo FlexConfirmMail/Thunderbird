@@ -52,6 +52,8 @@
   "showLastNameFirst": { "message": "false" },
 
 
+  "config_title": { "message": "Flex Confirm Mail Options" },
+
   "config_recipients_caption": { "message": "Recipients" },
 
   "config_confirmationMode_caption": { "message": "Confirm Recipients before Sending:" },

@@ -52,6 +52,8 @@
   "showLastNameFirst": { "message": "true" },
 
 
+  "config_title": { "message": "Flex Confirm Mailの設定" },
+
   "config_recipients_caption": { "message": "宛先" },
 
   "config_confirmationMode_caption": { "message": "送信前の宛先確認:" },
