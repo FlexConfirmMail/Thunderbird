@@ -112,6 +112,8 @@ configs.$loaded.then(async () => {
   });
   Dialog.initCancelButton(mCancelButton);
 
+  await Dialog.notifyReady();
+
   window.addEventListener('resize', () => {
     configs.confirmDialogWidth = window.outerWidth;
     configs.confirmDialogHeight = window.outerHeight;
@@ -124,8 +126,6 @@ configs.$loaded.then(async () => {
   window.addEventListener(ResizableBox.TYPE_RESIZED, event => {
     configs.confirmDialogBoxSizes = event.detail;
   });
-
-  Dialog.notifyReady();
 });
 
 

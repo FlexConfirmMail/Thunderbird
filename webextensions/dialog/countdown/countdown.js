@@ -16,7 +16,7 @@ const mCounter = document.getElementById('count');
 const mSkipButton = document.getElementById('skip');
 const mCancelButton = document.getElementById('cancel');
 
-configs.$loaded.then(() => {
+configs.$loaded.then(async () => {
   mCounter.textContent = configs.countdownSeconds;
 
   if (configs.countdownAllowSkip) {
@@ -28,6 +28,9 @@ configs.$loaded.then(() => {
 
   Dialog.initCancelButton(mCancelButton);
 
+  mCancelButton.focus();
+  await Dialog.notifyReady();
+
   window.addEventListener('resize', () => {
     configs.countdownDialogWidth = window.outerWidth;
     configs.countdownDialogHeight = window.outerHeight;
@@ -36,9 +39,6 @@ configs.$loaded.then(() => {
     configs.countdownDialogLeft = event.detail.left;
     configs.countdownDialogTop = event.detail.top;
   });
-
-  mCancelButton.focus();
-  Dialog.notifyReady();
 
   const start = Date.now();
   window.setInterval(() => {
