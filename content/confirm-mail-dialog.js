@@ -490,7 +490,7 @@ var ExceptionManager = {
 		let terms;
 		if (this.getPref(CA_CONST.EXCEPTIONAL_TERMS_SOURCE) == "file") {
 			try {
-				terms = this.readFile(this.getPref(CA_CONST.EXCEPTIONAL_TERMS_FILE)) || "";
+				terms = this.readFile(this.getPref(CA_CONST.EXCEPTIONAL_TERMS_FILE), "UTF-8") || "";
 			}
 			catch(e) {
 				terms = "";
