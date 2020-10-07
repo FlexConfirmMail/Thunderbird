@@ -79,7 +79,10 @@ configs.$loaded.then(async () => {
   mParams = await Dialog.getParams();
 
   mAttentionDomains = mParams.attentionDomains;
-  mAttachmentClassifier = new AttachmentClassifier(mParams.attentionSuffixes);
+  mAttachmentClassifier = new AttachmentClassifier({
+    attentionSuffixes: mParams.attentionSuffixes,
+    attentionNames:    mParams.attentionNames
+  });
 
   onConfigChange('attentionDomainsHighlightMode');
   onConfigChange('highlightExternalDomains');
@@ -105,6 +108,7 @@ configs.$loaded.then(async () => {
     if (!isAllChecked() ||
         !(await confirmMultipleRecipientDomains()) ||
         !(await confirmAttentionDomains()) ||
+        !(await confirmAttentionNames()) ||
         !(await confirmAttentionSuffixes()))
       return;
 
@@ -420,6 +424,49 @@ async function confirmAttentionDomains() {
     result = { buttonIndex: -1 };
   }
   log('confirmAttentionDomains result.buttonIndex = ', result.buttonIndex);
+  switch (result.buttonIndex) {
+    case 0:
+      return true;
+    default:
+      return false;
+  }
+  */
+}
+
+async function confirmAttentionNames() {
+  log('confirmAttentionNames shouldConfirm = ', configs.attentionNamesConfirm);
+  if (!configs.attentionNamesConfirm)
+    return true;
+
+  const attentionAttachments = mParams.attachments.filter(attachment => mAttachmentClassifier.hasAttentionSuffix(attachment.name)).map(attachment => attachment.name);
+  log('confirmAttentionNames attentionAttachments = ', attentionAttachments);
+  if (attentionAttachments.length == 0)
+    return true;
+
+  const message = (
+    configs.attentionSuffixDialogMessage.replace(/\%s/i, attentionAttachments.join('\n')) ||
+    browser.i18n.getMessage('confirmAttentionNamesMessage', [attentionAttachments.join('\n')])
+  );
+  return window.confirm(message);
+  /*
+  let result;
+  try {
+    result = await RichConfirm.showInPopup(mParams.windowId, {
+      modal: true,
+      type:  'common-dialog',
+      url:   '/resources/blank.html',
+      title: configs.attentionNamesDialogTitle || browser.i18n.getMessage('confirmAttentionNamesTitle'),
+      message,
+      buttons: [
+        browser.i18n.getMessage('confirmAttentionNamesAccept'),
+        browser.i18n.getMessage('confirmAttentionNamesCancel')
+      ]
+    });
+  }
+  catch(_error) {
+    result = { buttonIndex: -1 };
+  }
+  log('confirmAttentionNames result.buttonIndex = ', result.buttonIndex);
   switch (result.buttonIndex) {
     case 0:
       return true;

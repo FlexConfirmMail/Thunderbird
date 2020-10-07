@@ -6,16 +6,30 @@
 'use strict';
 
 export class AttachmentClassifier {
-  constructor(attentionSuffixes = []) {
+  constructor({ attentionSuffixes, attentionNames } = {}) {
+    if (!attentionSuffixes)
+      attentionSuffixes = [];
     if (attentionSuffixes.length == 0)
       this.$attentionSuffixMatcher = /[^\w\W]/;
     else
       this.$attentionSuffixMatcher = new RegExp(`\\.(${attentionSuffixes.map(suffix => suffix.replace(/^\./, '')).join('|')})$`, 'i');
 
+    if (!attentionNames)
+      attentionNames = [];
+    if (attentionNames.length == 0)
+      this.$attentionNameMatcher = /[^\w\W]/;
+    else
+      this.$attentionNameMatcher = new RegExp(`(${attentionNames.join('|')})`, 'i');
+
     this.hasAttentionSuffix = this.hasAttentionSuffix.bind(this);
+    this.hasAttentionName = this.hasAttentionName.bind(this);
   }
 
   hasAttentionSuffix(filename) {
     return this.$attentionSuffixMatcher.test(filename);
+  }
+
+  hasAttentionName(filename) {
+    return this.$attentionNameMatcher.test(filename);
   }
 }

@@ -105,6 +105,25 @@
       </ul>
     </fieldset>
 
+    <fieldset>
+      <legend><label><input id="attentionNamesConfirm" type="checkbox">__MSG_config_attentionNamesConfirm_label__</label></legend>
+      <ul>
+        <li><label><input name="attentionNamesSource" type="radio" value="0">__MSG_config_attentionNames_label__</label>
+            <textarea id="attentionNamesField"
+                      class="array-type-config"
+                      data-array-config-key="attentionNames"
+                      placeholder="__MSG_config_attentionNames_input_placeholder__"></textarea>
+            </li>
+        <li><label class="require-native-messaging-host"
+                  ><input name="attentionNamesSource" type="radio" value="1">__MSG_config_attentionNamesFile_label__</label>
+            <br><label class="require-native-messaging-host"
+                      ><input id="attentionNamesFile"
+                              class="filepath"
+                              type="text"
+                              placeholder="__MSG_config_attentionNamesFile_input_placeholder__"></label></li>
+      </ul>
+    </fieldset>
+
     <p><label><input id="requireReinputAttachmentNames" type="checkbox">__MSG_config_requireReinputAttachmentNames_label__</label></p>
 
     <hr class="spacer">

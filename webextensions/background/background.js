@@ -130,15 +130,16 @@ async function tryConfirm(tab, details, opener) {
   log('tryConfirm: ', tab, details, opener);
   const [
     to, cc, bcc,
-    attentionDomains, attentionSuffixes
+    attentionDomains, attentionSuffixes, attentionNames
   ] = await Promise.all([
     ListUtils.populateListAddresses(details.to),
     ListUtils.populateListAddresses(details.cc),
     ListUtils.populateListAddresses(details.bcc),
     getAttentionDomains(),
-    getAttentionSuffixes()
+    getAttentionSuffixes(),
+    getAttentionNames()
   ]);
-  log('attention list: ', { attentionDomains, attentionSuffixes });
+  log('attention list: ', { attentionDomains, attentionSuffixes, attentionNames });
   const classifier = new RecipientClassifier({
     internalDomains: configs.internalDomains || [],
     attentionDomains
@@ -212,7 +213,8 @@ async function tryConfirm(tab, details, opener) {
       ],
       attachments: await browser.compose.listAttachments(tab.id),
       attentionDomains,
-      attentionSuffixes
+      attentionSuffixes,
+      attentionNames
     }
   );
 }
@@ -250,6 +252,26 @@ async function getAttentionSuffixes() {
         command: Constants.HOST_COMMAND_FETCH,
         params: {
           path: configs.attentionSuffixesFile
+        }
+      });
+      return response ? response.contents.trim().split(/[\s,|]+/).filter(part => !!part) : [];
+    };
+  }
+}
+
+async function getAttentionNames() {
+  switch (configs.attentionNamesSource) {
+    default:
+    case Constants.SOURCE_CONFIG:
+      return configs.attentionNames || [];
+
+    case Constants.SOURCE_FILE: {
+      if (!configs.attentionNamesFile)
+        return [];
+      const response = await sendToHost({
+        command: Constants.HOST_COMMAND_FETCH,
+        params: {
+          path: configs.attentionNamesFile
         }
       });
       return response ? response.contents.trim().split(/[\s,|]+/).filter(part => !!part) : [];
