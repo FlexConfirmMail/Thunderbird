@@ -438,7 +438,7 @@ async function confirmAttentionNames() {
   if (!configs.attentionNamesConfirm)
     return true;
 
-  const attentionAttachments = mParams.attachments.filter(attachment => mAttachmentClassifier.hasAttentionSuffix(attachment.name)).map(attachment => attachment.name);
+  const attentionAttachments = mParams.attachments.filter(attachment => mAttachmentClassifier.hasAttentionName(attachment.name)).map(attachment => attachment.name);
   log('confirmAttentionNames attentionAttachments = ', attentionAttachments);
   if (attentionAttachments.length == 0)
     return true;
