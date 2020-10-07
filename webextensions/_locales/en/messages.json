@@ -42,13 +42,13 @@
   "confirmAttentionSuffixesCancel": { "message": "Cancel" },
 
 
-  "confirmAttentionNamesTitle": { "message": "Attachments including attention term in their name" },
-  "confirmAttentionNamesMessage": { "message": "These attachments including attention term in their name are found:\n\n$ATTACHMENTS$\n\nIf there is no problem, continue to send.",
+  "confirmAttentionTermsTitle": { "message": "Attachments including attention term in their name" },
+  "confirmAttentionTermsMessage": { "message": "These attachments including attention term in their name are found:\n\n$ATTACHMENTS$\n\nIf there is no problem, continue to send.",
     "placeholders": {
       "attachments": { "content": "$1", "example": "file.txt" }
     }},
-  "confirmAttentionNamesAccept": { "message": "Send" },
-  "confirmAttentionNamesCancel": { "message": "Cancel" },
+  "confirmAttentionTermsAccept": { "message": "Send" },
+  "confirmAttentionTermsCancel": { "message": "Cancel" },
 
 
   "countdownDialogTitle": { "message": "Countdown" },
@@ -110,12 +110,12 @@
   "config_attentionSuffixesFile_button_label": { "message": "Choose…" },
   "config_attentionSuffixesFile_input_placeholder": { "message": "Path to the file (e.g. \\FileServer\\Shared\\suffixes.txt)" },
 
-  "config_attentionNamesConfirm_label": { "message": "Confirm me again before send, if there is any attachment name with one of these terms in a message to foreign domains" },
-  "config_attentionNames_label": { "message": "Use the manually managed list" },
-  "config_attentionNames_input_placeholder": { "message": "Input a term per line (e.g. important, confidential)" },
-  "config_attentionNamesFile_label": { "message": "Use a list given as a file" },
-  "config_attentionNamesFile_button_label": { "message": "Choose…" },
-  "config_attentionNamesFile_input_placeholder": { "message": "Path to the file (e.g. \\FileServer\\Shared\\suffixes.txt)" },
+  "config_attentionTermsConfirm_label": { "message": "Confirm me again before send, if there is any attachment name with one of these terms in a message to foreign domains" },
+  "config_attentionTerms_label": { "message": "Use the manually managed list" },
+  "config_attentionTerms_input_placeholder": { "message": "Input a term per line (e.g. important, confidential)" },
+  "config_attentionTermsFile_label": { "message": "Use a list given as a file" },
+  "config_attentionTermsFile_button_label": { "message": "Choose…" },
+  "config_attentionTermsFile_input_placeholder": { "message": "Path to the file (e.g. \\FileServer\\Shared\\suffixes.txt)" },
 
   "config_requireReinputAttachmentNames_label": { "message": "Require to input file names of attachments, if there is any other domain recipient" },
   "config_allowCheckAllAttachments_label": { "message": "Allow to make all attachments to be checked with one checkbox" },

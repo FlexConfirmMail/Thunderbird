@@ -6,7 +6,7 @@
 'use strict';
 
 export class AttachmentClassifier {
-  constructor({ attentionSuffixes, attentionNames } = {}) {
+  constructor({ attentionSuffixes, attentionTerms } = {}) {
     if (!attentionSuffixes)
       attentionSuffixes = [];
     if (attentionSuffixes.length == 0)
@@ -14,22 +14,22 @@ export class AttachmentClassifier {
     else
       this.$attentionSuffixMatcher = new RegExp(`\\.(${attentionSuffixes.map(suffix => suffix.replace(/^\./, '')).join('|')})$`, 'i');
 
-    if (!attentionNames)
-      attentionNames = [];
-    if (attentionNames.length == 0)
-      this.$attentionNameMatcher = /[^\w\W]/;
+    if (!attentionTerms)
+      attentionTerms = [];
+    if (attentionTerms.length == 0)
+      this.$attentionTermMatcher = /[^\w\W]/;
     else
-      this.$attentionNameMatcher = new RegExp(`(${attentionNames.join('|')})`, 'i');
+      this.$attentionTermMatcher = new RegExp(`(${attentionTerms.join('|')})`, 'i');
 
     this.hasAttentionSuffix = this.hasAttentionSuffix.bind(this);
-    this.hasAttentionName = this.hasAttentionName.bind(this);
+    this.hasAttentionTerm = this.hasAttentionTerm.bind(this);
   }
 
   hasAttentionSuffix(filename) {
     return this.$attentionSuffixMatcher.test(filename);
   }
 
-  hasAttentionName(filename) {
-    return this.$attentionNameMatcher.test(filename);
+  hasAttentionTerm(filename) {
+    return this.$attentionTermMatcher.test(filename);
   }
 }

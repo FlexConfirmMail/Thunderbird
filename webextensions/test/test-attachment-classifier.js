@@ -76,13 +76,13 @@ export function test_hasAttentionSuffix({ files, attentionSuffixes, expected }) 
   is(expected, actual);
 }
 
-test_hasAttentionName.parameters = {
+test_hasAttentionTerm.parameters = {
   'same case': {
     files: [
       'filenamedanger.png',
       'filenamesafe.zip'
     ],
-    attentionNames: ['danger'],
+    attentionTerms: ['danger'],
     expected: [
       true,
       false
@@ -94,7 +94,7 @@ test_hasAttentionName.parameters = {
       'filenamedAnGeR.png',
       'filename.png'
     ],
-    attentionNames: ['DaNgEr'],
+    attentionTerms: ['DaNgEr'],
     expected: [
       true,
       true,
@@ -112,7 +112,7 @@ test_hasAttentionName.parameters = {
       'filename-sAFE.txt',
       'filename-SAFE.xpi'
     ],
-    attentionNames: ['danger', 'unsafe'],
+    attentionTerms: ['danger', 'unsafe'],
     expected: [
       true,
       true,
@@ -125,8 +125,8 @@ test_hasAttentionName.parameters = {
     ]
   }
 };
-export function test_hasAttentionName({ files, attentionNames, expected }) {
-  const classifier = new AttachmentClassifier({ attentionNames });
-  const actual = files.map(classifier.hasAttentionName);
+export function test_hasAttentionTerm({ files, attentionTerms, expected }) {
+  const classifier = new AttachmentClassifier({ attentionTerms });
+  const actual = files.map(classifier.hasAttentionTerm);
   is(expected, actual);
 }

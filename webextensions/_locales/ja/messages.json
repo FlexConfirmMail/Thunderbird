@@ -42,13 +42,13 @@
   "confirmAttentionSuffixesCancel": { "message": "キャンセル" },
 
 
-  "confirmAttentionNamesTitle": { "message": "特別に注意が必要な名前の添付ファイル" },
-  "confirmAttentionNamesMessage": { "message": "特別に注意が必要な語句を名前に含む以下の添付ファイルがあります。\n\n$ATTACHMENTS$\n\n問題がない事を確認の上でメールを送信してください。",
+  "confirmAttentionTermsTitle": { "message": "特別に注意が必要な名前の添付ファイル" },
+  "confirmAttentionTermsMessage": { "message": "特別に注意が必要な語句を名前に含む以下の添付ファイルがあります。\n\n$ATTACHMENTS$\n\n問題がない事を確認の上でメールを送信してください。",
     "placeholders": {
       "attachments": { "content": "$1", "example": "file.txt" }
     }},
-  "confirmAttentionNamesAccept": { "message": "送信" },
-  "confirmAttentionNamesCancel": { "message": "キャンセル" },
+  "confirmAttentionTermsAccept": { "message": "送信" },
+  "confirmAttentionTermsCancel": { "message": "キャンセル" },
 
 
   "countdownDialogTitle": { "message": "カウントダウン" },
@@ -111,12 +111,12 @@
   "config_attentionSuffixesFile_button_label": { "message": "参照..." },
   "config_attentionSuffixesFile_input_placeholder": { "message": "ファイルのパスを入力（例：\\FileServer\\Shared\\suffixes.txt）" },
 
-  "config_attentionNamesConfirm_label": { "message": "これらの語句を名前の一部に持つファイルが外部ドメイン宛のメールに添付されている場合は再度警告する" },
-  "config_attentionNames_label": { "message": "手動編集のリストを使用" },
-  "config_attentionNames_input_placeholder": { "message": "語句を1行ずつ入力（例：危険、社外秘）" },
-  "config_attentionNamesFile_label": { "message": "ファイル形式のリストを使用" },
-  "config_attentionNamesFile_button_label": { "message": "参照..." },
-  "config_attentionNamesFile_input_placeholder": { "message": "ファイルのパスを入力（例：\\FileServer\\Shared\\phrases.txt）" },
+  "config_attentionTermsConfirm_label": { "message": "これらの語句を名前の一部に持つファイルが外部ドメイン宛のメールに添付されている場合は再度警告する" },
+  "config_attentionTerms_label": { "message": "手動編集のリストを使用" },
+  "config_attentionTerms_input_placeholder": { "message": "語句を1行ずつ入力（例：危険、社外秘）" },
+  "config_attentionTermsFile_label": { "message": "ファイル形式のリストを使用" },
+  "config_attentionTermsFile_button_label": { "message": "参照..." },
+  "config_attentionTermsFile_input_placeholder": { "message": "ファイルのパスを入力（例：\\FileServer\\Shared\\phrases.txt）" },
 
   "config_requireReinputAttachmentNames_label": { "message": "宛先に外部ドメインのアドレスがある場合、添付ファイル名の手動での入力を求める" },
   "config_allowCheckAllAttachments_label": { "message": "添付ファイルのチェックボックスの一括制御を許可" },

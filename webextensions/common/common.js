@@ -25,10 +25,10 @@ export const configs = new Configs({
   attentionSuffixesSource: Constants.SOURCE_CONFIG,
   attentionSuffixesFile: '',
 
-  attentionNamesConfirm: true,
-  attentionNames: [],
-  attentionNamesSource: Constants.SOURCE_CONFIG,
-  attentionNamesFile: '',
+  attentionTermsConfirm: true,
+  attentionTerms: [],
+  attentionTermsSource: Constants.SOURCE_CONFIG,
+  attentionTermsFile: '',
 
   skipConfirmationForInternalMail: false,
   confirmMultipleRecipientDomains: false,
