@@ -42,8 +42,8 @@
   "confirmAttentionSuffixesCancel": { "message": "Cancel" },
 
 
-  "confirmAttentionNamesTitle": { "message": "Attachments including attention phrase in their name" },
-  "confirmAttentionNamesMessage": { "message": "These attachments including attention phrase in their name are found:\n\n$ATTACHMENTS$\n\nIf there is no problem, continue to send.",
+  "confirmAttentionNamesTitle": { "message": "Attachments including attention term in their name" },
+  "confirmAttentionNamesMessage": { "message": "These attachments including attention term in their name are found:\n\n$ATTACHMENTS$\n\nIf there is no problem, continue to send.",
     "placeholders": {
       "attachments": { "content": "$1", "example": "file.txt" }
     }},
@@ -110,9 +110,9 @@
   "config_attentionSuffixesFile_button_label": { "message": "Choose…" },
   "config_attentionSuffixesFile_input_placeholder": { "message": "Path to the file (e.g. \\FileServer\\Shared\\suffixes.txt)" },
 
-  "config_attentionNamesConfirm_label": { "message": "Confirm me again before send, if there is any attachment name with one of these parts in a message to foreign domains" },
+  "config_attentionNamesConfirm_label": { "message": "Confirm me again before send, if there is any attachment name with one of these terms in a message to foreign domains" },
   "config_attentionNames_label": { "message": "Use the manually managed list" },
-  "config_attentionNames_input_placeholder": { "message": "Input name part per line (e.g. important, confidential)" },
+  "config_attentionNames_input_placeholder": { "message": "Input a term per line (e.g. important, confidential)" },
   "config_attentionNamesFile_label": { "message": "Use a list given as a file" },
   "config_attentionNamesFile_button_label": { "message": "Choose…" },
   "config_attentionNamesFile_input_placeholder": { "message": "Path to the file (e.g. \\FileServer\\Shared\\suffixes.txt)" },
