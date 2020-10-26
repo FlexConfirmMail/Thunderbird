@@ -19,11 +19,18 @@ import * as ListUtils from './list-utils.js';
 
 Dialog.setLogger(log);
 
-
-const BLANK_SIGNATURE = getMessageSignature({ to: [], cc: [], bcc: [] });
+const TYPE_NEWLY_COMPOSED   = 'new-message';
+const TYPE_REPLY            = 'reply';
+const TYPE_DRAFT            = 'draft';
+const TYPE_TEMPLATE         = 'template';
+const TYPE_EXISTING_MESSAGE = 'edit-as-new-message';
 
 function getMessageSignature(message) {
+  const author = message.from || message.author || '';
+  const authorAddressMatched = author.match(/<([^>]+)>$/);
   return JSON.stringify({
+    subject: message.subject || null,
+    from: (authorAddressMatched ? authorAddressMatched[1] : author) || null,
     to: (message.to || message.recipients).sort(),
     cc: (message.cc || message.ccList).sort(),
     bcc: (message.bcc || message.bccList).sort()
@@ -33,13 +40,43 @@ function getMessageSignature(message) {
 
 // There is no API to detect starting of a message composition,
 // so we now wait for a message from a new composition content.
+const mDetectedMessageTypeForTab = new Map();
 const mInitialSignatureForTab = new Map();
+const mInitialSignatureForTabWithoutSubject = new Map();
+const mLastContextMessagesForTab = new Map();
 browser.runtime.onMessage.addListener((message, sender) => {
   switch (message && message.type) {
     case Constants.TYPE_COMPOSE_STARTED:
-      log('TYPE_COMPOSE_STARTED received');
-      browser.compose.getComposeDetails(sender.tab.id).then(details => {
-        mInitialSignatureForTab.set(sender.tab.id, getMessageSignature(details));
+      log('TYPE_COMPOSE_STARTED received ', message, sender);
+      browser.compose.getComposeDetails(sender.tab.id).then(async details => {
+        const author = await getAddressFromIdentity(details.identityId);
+        const signature = getMessageSignature({
+          author,
+          ...details
+        });
+        const signatureWithoutSubject = getMessageSignature({
+          author,
+          ...details,
+          subject: null
+        });
+        const blankSignature = getMessageSignature({ author, subject: null, to: [], cc: [], bcc: [] });
+        log('signature: ', signature);
+        mInitialSignatureForTab.set(sender.tab.id, signature);
+        mInitialSignatureForTabWithoutSubject.set(sender.tab.id, signatureWithoutSubject);
+        const types = new Set(await getContainerFolderTypesFromSignature(signature));
+        log('message types: ', types);
+        const detectedType = (types.has('drafts') && !hasRecentlySavedDraftWithSignature(signature)) ?
+          TYPE_DRAFT :
+          types.has('templates') ?
+            TYPE_TEMPLATE :
+            (types.size > 0) ?
+              TYPE_EXISTING_MESSAGE :
+              (signature == blankSignature) ?
+                TYPE_NEWLY_COMPOSED :
+                TYPE_REPLY;
+        log('detected type: ', detectedType)
+        mDetectedMessageTypeForTab.set(sender.tab.id , detectedType);
+        mLastContextMessagesForTab.delete(sender.tab.id);
       });
       break;
   }
@@ -51,26 +88,57 @@ browser.composeScripts.register({
   ]
 });
 
-// There is no API to detect that the compositing message was a draft or not,
-// so we now find active tabs displaying a draft with a signature same to the compositing message.
-async function hasDraftWithSignature(signature) {
+async function getAddressFromIdentity(id) {
+  const accounts = await browser.accounts.list();
+  for (const account of accounts) {
+    for (const identity of account.identities) {
+      if (identity.id == id)
+        return identity.email;
+    }
+  }
+  return null;
+}
+
+browser.menus.onShown.addListener((info, tab) => {
+  const messages = info.selectedMessages && info.selectedMessages.messages;
+  if (messages && messages.length > 0)
+    mLastContextMessagesForTab.set(tab.id, messages);
+  else
+    mLastContextMessagesForTab.delete(tab.id);
+});
+
+// There is no API to detect that the compositing message was a draft, template or not,
+// so we now find active tabs displaying messages with a signature same to the compositing message.
+async function getContainerFolderTypesFromSignature(signature) {
+  log('getContainerFolderTypesFromSignature: signature = ', signature);
   const mailTabs = await browser.mailTabs.query({});
-  const isDrafts = await Promise.all(mailTabs.map(async mailTab => {
-    const displayMessage = await browser.messageDisplay.getDisplayedMessage(mailTab.id);
-    if (!displayMessage)
+  const results = await Promise.all(mailTabs.map(async mailTab => {
+    const folder = mailTab.displayedFolder;
+    log('getContainerFolderTypesFromSignature: mailTab = ', mailTab, folder);
+    if (!folder)
       return false;
-    if (!displayMessage.folder || displayMessage.folder.type != 'drafts')
-      return false;
-    const displaySignature = getMessageSignature(displayMessage);
-    log(`mailTab ${mailTab.id} is the draft folder. `, {
-      editing: displaySignature == signature
-    });
-    return displaySignature == signature;
+
+    const [displayMessage, selectedMessagesList] = await Promise.all([
+      browser.messageDisplay.getDisplayedMessage(mailTab.id),
+      browser.mailTabs.getSelectedMessages(mailTab.id).catch(_error => ({ messages: [] }))
+    ]);
+    const messages = [
+      ...selectedMessagesList.messages,
+      ...(mLastContextMessagesForTab.get(mailTab.id) || [])
+    ];
+    if (displayMessage)
+      messages.push(displayMessage);
+    log('getContainerFolderTypesFromSignature: messages = ', messages);
+    for (const message of messages) {
+      const testingSignature = getMessageSignature(message);
+      if (testingSignature != signature)
+        continue;
+      log('message is found in the folder: ', folder, message);
+      return folder.type;
+    }
+    return false;
   }));
-  return [
-    isDrafts.some(isDraft => !!isDraft),
-    isDrafts.length > 0
-  ];
+  return results.filter(found => !!found);
 }
 
 
@@ -98,30 +166,28 @@ function hasRecentlySavedDraftWithSignature(signature) {
 
 
 async function needConfirmationOnModified(tab, details) {
-  const initialSignature = mInitialSignatureForTab.get(tab.id) || BLANK_SIGNATURE;
-  const hasSavedDraft = hasRecentlySavedDraftWithSignature(initialSignature);
-  if (hasSavedDraft) {
-    log('need confirmation because it is a recently saved draft');
-    return true;
+  const type = mDetectedMessageTypeForTab.get(tab.id);
+  switch (type) {
+    case TYPE_NEWLY_COMPOSED:
+    case TYPE_DRAFT:
+    case TYPE_TEMPLATE:
+    case TYPE_EXISTING_MESSAGE:
+      log('need confirmation: ', TYPE_NEWLY_COMPOSED);
+      return true;
+
+    default:
+      break;
   }
 
-  const [hasDraft, hasAnyDraftFolder] = await hasDraftWithSignature(initialSignature);
-  if (!hasAnyDraftFolder) {
-    log('need confirmation because it can be a draft');
-    return true;
-  }
-  else if (hasDraft) {
-    log('need confirmation because it is a draft');
-    return true;
-  }
-
+  const initialSignature = mInitialSignatureForTabWithoutSubject.get(tab.id);
   const currentSignature = getMessageSignature(details);
-  if (currentSignature == initialSignature) {
+  if (initialSignature &&
+      currentSignature == initialSignature) {
     log('skip confirmation because recipients are not modified');
     return false;
   }
 
-  log('recipients are modified');
+  log('need confirmation because recipients are modified');
   return true;
 }
 
@@ -329,7 +395,10 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
   }
 
   log('confirmed: OK to send');
+  mDetectedMessageTypeForTab.delete(tab.id)
   mInitialSignatureForTab.delete(tab.id);
+  mInitialSignatureForTabWithoutSubject.delete(tab.id);
   mRecentlySavedDraftSignatures.clear();
+  mLastContextMessagesForTab.clear();
   return;
 });
