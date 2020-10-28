@@ -103,6 +103,8 @@
 
   "config_attachments_caption": { "message": "Attachments" },
 
+  "config_requireCheckAttachment_label": { "message": "Require check attachments" },
+
   "config_attentionSuffixesConfirm_label": { "message": "Confirm me again before send, if there is any attachment with one of these extensions in a message to foreign domains" },
   "config_attentionSuffixes_label": { "message": "Use the manually managed list" },
   "config_attentionSuffixes_input_placeholder": { "message": "Input file extensions per line (e.g. .exe, .pdf)" },

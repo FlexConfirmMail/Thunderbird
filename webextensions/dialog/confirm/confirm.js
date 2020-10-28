@@ -191,25 +191,33 @@ function initExternals() {
 }
 
 function initBodyBlock() {
+  const container = document.querySelector('#bodyAndSubjectContainer');
+  container.classList.toggle('hidden', !configs.requireCheckSubject && !configs.requireCheckBody);
+  container.previousSibling.classList.toggle('hidden', container.classList.contains('hidden')); // splitter
+
   mSubjectCheck.closest('div').classList.toggle('hidden', !configs.requireCheckSubject);
+  if (configs.requireCheckSubject) {
   mSubjectField.textContent = mParams.details.subject;
+  }
 
   mBodyCheck.closest('div').classList.toggle('hidden', !configs.requireCheckBody);
-
+  if (configs.requireCheckBody) {
   // The given message source has a "meta" tag with charset, but the body is already decoded.
   // We need to extract only its body part and render it with a Unicode encoding.
   const tree = (new DOMParser()).parseFromString(mParams.details.body, 'text/html');
   const bodySource = tree.querySelector('body').outerHTML;
   const source = `<!DOCTYPE html><html><meta charset="UTF-8">${bodySource}</html>`;
-
   mBodyField.src = `data:text/html,${encodeURIComponent(source)}`;
-
-  for (const bodyBlockElements of document.querySelectorAll('#bodyAndSubjectContainer, #bodyAndSubjectContainer + hr')) {
-    bodyBlockElements.classList.toggle('hidden', !configs.requireCheckSubject && !configs.requireCheckBody);
   }
 }
 
 function initAttachments() {
+  const container = mAttachmentsList.closest('fieldset');
+  container.classList.toggle('hidden', !configs.requireCheckAttachment);
+  container.previousSibling.classList.toggle('hidden', container.classList.contains('hidden')); // splitter
+  if (!configs.requireCheckAttachment)
+    return;
+
   mAttachmentsAllCheck.disabled = configs.requireReinputAttachmentNames || (mParams.attachments.length == 0);
   mAttachmentsAllCheck.classList.toggle('hidden', !configs.allowCheckAllAttachments);
   mAttachmentsAllCheck.addEventListener('change', _event => {

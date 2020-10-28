@@ -104,6 +104,8 @@
 
   "config_attachments_caption": { "message": "添付ファイル" },
 
+  "config_requireCheckAttachment_label": { "message": "添付ファイルの確認を求める" },
+
   "config_attentionSuffixesConfirm_label": { "message": "これらの拡張子を持つファイルが外部ドメイン宛のメールに添付されている場合は再度警告する" },
   "config_attentionSuffixes_label": { "message": "手動編集のリストを使用" },
   "config_attentionSuffixes_input_placeholder": { "message": "ファイルの拡張子を1行ずつ入力（例：.exe、.pdf）" },

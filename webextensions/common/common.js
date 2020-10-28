@@ -46,6 +46,7 @@ export const configs = new Configs({
   allowCheckAllAttachments: false,
   requireCheckSubject: false,
   requireCheckBody: false,
+  requireCheckAttachment: true,
   requireReinputAttachmentNames: false,
   highlightExternalDomains: false,
   largeFontSizeForAddresses: false,
