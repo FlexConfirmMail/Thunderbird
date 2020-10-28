@@ -197,17 +197,17 @@ function initBodyBlock() {
 
   mSubjectCheck.closest('div').classList.toggle('hidden', !configs.requireCheckSubject);
   if (configs.requireCheckSubject) {
-  mSubjectField.textContent = mParams.details.subject;
+    mSubjectField.textContent = mParams.details.subject;
   }
 
   mBodyCheck.closest('div').classList.toggle('hidden', !configs.requireCheckBody);
   if (configs.requireCheckBody) {
-  // The given message source has a "meta" tag with charset, but the body is already decoded.
-  // We need to extract only its body part and render it with a Unicode encoding.
-  const tree = (new DOMParser()).parseFromString(mParams.details.body, 'text/html');
-  const bodySource = tree.querySelector('body').outerHTML;
-  const source = `<!DOCTYPE html><html><meta charset="UTF-8">${bodySource}</html>`;
-  mBodyField.src = `data:text/html,${encodeURIComponent(source)}`;
+    // The given message source has a "meta" tag with charset, but the body is already decoded.
+    // We need to extract only its body part and render it with a Unicode encoding.
+    const tree = (new DOMParser()).parseFromString(mParams.details.body, 'text/html');
+    const bodySource = tree.querySelector('body').outerHTML;
+    const source = `<!DOCTYPE html><html><meta charset="UTF-8">${bodySource}</html>`;
+    mBodyField.src = `data:text/html,${encodeURIComponent(source)}`;
   }
 }
 
