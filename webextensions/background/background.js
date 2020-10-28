@@ -180,7 +180,9 @@ async function needConfirmationOnModified(tab, details) {
   }
 
   const initialSignature = mInitialSignatureForTabWithoutSubject.get(tab.id);
-  const currentSignature = getMessageSignature(details);
+  const author           = await getAddressFromIdentity(details.identityId);
+  const currentSignature = getMessageSignature({ ...details, author, subject: null });
+  log('signature check: ', { initialSignature, currentSignature });
   if (initialSignature &&
       currentSignature == initialSignature) {
     log('skip confirmation because recipients are not modified');
