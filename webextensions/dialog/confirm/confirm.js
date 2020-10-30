@@ -193,7 +193,7 @@ function initExternals() {
 function initBodyBlock() {
   const container = document.querySelector('#bodyAndSubjectContainer');
   container.classList.toggle('hidden', !configs.requireCheckSubject && !configs.requireCheckBody);
-  container.previousSibling.classList.toggle('hidden', container.classList.contains('hidden')); // splitter
+  container.previousElementSibling.classList.toggle('hidden', container.classList.contains('hidden')); // splitter
 
   mSubjectCheck.closest('div').classList.toggle('hidden', !configs.requireCheckSubject);
   if (configs.requireCheckSubject) {
@@ -214,7 +214,7 @@ function initBodyBlock() {
 function initAttachments() {
   const container = mAttachmentsList.closest('fieldset');
   container.classList.toggle('hidden', !configs.requireCheckAttachment);
-  container.previousSibling.classList.toggle('hidden', container.classList.contains('hidden')); // splitter
+  container.previousElementSibling.classList.toggle('hidden', container.classList.contains('hidden')); // splitter
   if (!configs.requireCheckAttachment)
     return;
 
