@@ -234,7 +234,10 @@ function initAttachments() {
   });
   for (const attachment of mParams.attachments) {
     const row = createAttachmentRow(attachment);
-    if (mAttachmentClassifier.hasAttentionSuffix(attachment.name))
+    const hasAttentionSuffix = mAttachmentClassifier.hasAttentionSuffix(attachment.name);
+    const hasAttentionTerm = mAttachmentClassifier.hasAttentionTerm(attachment.name);
+    log('check attachment: ', attachment, { hasAttentionSuffix, hasAttentionTerm });
+    if (hasAttentionSuffix || hasAttentionTerm)
       row.classList.add('attention');
     mAttachmentsList.appendChild(row);
   }
