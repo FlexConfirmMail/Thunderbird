@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/harry1453/go-common-file-dialog/cfd"
 	"github.com/lhside/chrome-go"
 	"io/ioutil"
 	"log"
@@ -9,7 +10,13 @@ import (
 )
 
 type RequestParams struct {
-	Path string `json:path`
+	Path             string `json:path`
+	Title            string `json:title`
+	Role             string `json:role`
+	FileName         string `json:fileName`
+	DefaultExtension string `json:defaultExtension`
+	DisplayName      string `json:displayName`
+	Pattern          string `json:pattern`
 }
 type Request struct {
 	Command string        `json:"command"`
@@ -31,6 +38,8 @@ func main() {
 	switch command := request.Command; command {
 	case "fetch":
 		FetchAndRespond(request.Params.Path)
+	case "choose-file":
+		ChooseFileAndRespond(request.Params)
 	default: // just echo
 		err = chrome.Post(rawRequest, os.Stdout)
 		if err != nil {
@@ -63,4 +72,52 @@ func Fetch(path string) (contents string, errorMessage string) {
 		return "", path + ": " + err.Error()
 	}
 	return string(buffer), ""
+}
+
+type ChooseFileResponse struct {
+	Path  string `json:"path"`
+	Error string `json:"error"`
+}
+
+func ChooseFileAndRespond(params RequestParams) {
+	path, errorMessage := ChooseFile(params)
+	response := &ChooseFileResponse{path, errorMessage}
+	body, err := json.Marshal(response)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = chrome.Post(body, os.Stdout)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func ChooseFile(params RequestParams) (path string, errorMessage string) {
+	openDialog, err := cfd.NewOpenFileDialog(cfd.DialogConfig{
+		Title: params.Title,
+		Role:  params.Role,
+		FileFilters: []cfd.FileFilter{
+			{
+				DisplayName: params.DisplayName,
+				Pattern:     params.Pattern,
+			},
+		},
+		SelectedFileFilterIndex: 0,
+		FileName:                params.FileName,
+		DefaultExtension:        params.DefaultExtension,
+	})
+	if err != nil {
+		log.Fatal(err)
+		return "", err.Error()
+	}
+	if err := openDialog.Show(); err != nil {
+		log.Fatal(err)
+		return "", err.Error()
+	}
+	result, err := openDialog.GetResult()
+	if err != nil {
+		log.Fatal(err)
+		return "", err.Error()
+	}
+	return result, ""
 }

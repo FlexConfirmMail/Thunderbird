@@ -29,10 +29,13 @@ main() {
   cd "$GOPATH"
 
   echo "preparing dependencies..."
+  prepare_dependency github.com/harry1453/go-common-file-dialog
+    prepare_dependency github.com/go-ole/go-ole
+    prepare_dependency github.com/google/uuid
   prepare_dependency github.com/mitchellh/gox
+  prepare_dependency github.com/lhside/chrome-go
   mkdir -p "$temp_src"
   ln -s "$dist_dir" "$temp_src/host"
-  prepare_dependency github.com/lhside/chrome-go
 
   local path="$(echo "$temp_src" | sed 's;^src/;;')/host"
   gox -os="windows" "$path"

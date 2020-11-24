@@ -88,6 +88,8 @@
   "config_attentionDomains_input_placeholder": { "message": "ドメイン名を1行ずつ入力（例：example.com）" },
   "config_attentionDomainsFile_label": { "message": "ファイル形式のリストを使用" },
   "config_attentionDomainsFile_button_label": { "message": "参照..." },
+  "config_attentionDomainsFile_button_dialogTitle": { "message": "特別に注意が必要な外部ドメインのリストを選択" },
+  "config_attentionDomainsFile_button_dialogDisplayName": { "message": "リストファイル" },
   "config_attentionDomainsFile_input_placeholder": { "message": "ファイルのパスを入力（例：\\FileServer\\Shared\\domains.txt）" },
 
   "config_attentionDomainsHighlightMode_caption": { "message": "これらのドメインに該当する宛先の強調表示" },
@@ -111,6 +113,8 @@
   "config_attentionSuffixes_input_placeholder": { "message": "ファイルの拡張子を1行ずつ入力（例：.exe、.pdf）" },
   "config_attentionSuffixesFile_label": { "message": "ファイル形式のリストを使用" },
   "config_attentionSuffixesFile_button_label": { "message": "参照..." },
+  "config_attentionSuffixesFile_button_dialogTitle": { "message": "添付ファイル名に含まれていた場合に再度警告する拡張子のリストを選択" },
+  "config_attentionSuffixesFile_button_dialogDisplayName": { "message": "リストファイル" },
   "config_attentionSuffixesFile_input_placeholder": { "message": "ファイルのパスを入力（例：\\FileServer\\Shared\\suffixes.txt）" },
 
   "config_attentionTermsConfirm_label": { "message": "これらの語句を名前の一部に持つファイルが外部ドメイン宛のメールに添付されている場合は再度警告する" },
@@ -118,6 +122,8 @@
   "config_attentionTerms_input_placeholder": { "message": "語句を1行ずつ入力（例：危険、社外秘）" },
   "config_attentionTermsFile_label": { "message": "ファイル形式のリストを使用" },
   "config_attentionTermsFile_button_label": { "message": "参照..." },
+  "config_attentionTermsFile_button_dialogTitle": { "message": "添付ファイル名に含まれていた場合に再度警告する語句のリストを選択" },
+  "config_attentionTermsFile_button_dialogDisplayName": { "message": "リストファイル" },
   "config_attentionTermsFile_input_placeholder": { "message": "ファイルのパスを入力（例：\\FileServer\\Shared\\phrases.txt）" },
 
   "config_requireReinputAttachmentNames_label": { "message": "宛先に外部ドメインのアドレスがある場合、添付ファイル名の手動での入力を求める" },

@@ -9,6 +9,7 @@ export const TYPE_COMPOSE_STARTED = 'compose-started';
 
 export const HOST_ID = 'com.clear_code.flexible_confirm_mail_we_host';
 export const HOST_COMMAND_FETCH = 'fetch';
+export const HOST_COMMAND_CHOOSE_FILE = 'choose-file';
 
 export const CONFIRMATION_MODE_NEVER = 0;
 export const CONFIRMATION_MODE_ALWAYS = 1;
