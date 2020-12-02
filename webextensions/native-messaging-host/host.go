@@ -2,12 +2,16 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
+	"fmt"
 	"github.com/harry1453/go-common-file-dialog/cfd"
 	"github.com/lhside/chrome-go"
 	"io/ioutil"
 	"log"
 	"os"
 )
+
+const VERSION = "3.0.5";
 
 type RequestParams struct {
 	Path             string `json:path`
@@ -24,6 +28,13 @@ type Request struct {
 }
 
 func main() {
+	shouldReportVersion := flag.Bool("v", false, "v")
+	flag.Parse()
+	if *shouldReportVersion == true {
+		fmt.Println(VERSION)
+		return
+	}
+
 	log.SetOutput(os.Stderr)
 
 	rawRequest, err := chrome.Receive(os.Stdin)
