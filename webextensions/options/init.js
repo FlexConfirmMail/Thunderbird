@@ -125,7 +125,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       fileName:    attentionDomainsFile.value || ''
     });
     if (path)
-      attentionDomainsFile.value = path;
+      configs.attentionDomainsFile = attentionDomainsFile.value = path;
   });
   if (attentionDomainsFile.classList.contains('locked'))
     attentionDomainsFile.disabled = true;
@@ -157,7 +157,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       fileName:    attentionSuffixesFile.value || ''
     });
     if (path)
-      attentionSuffixesFile.value = path;
+      configs.attentionSuffixesFile = attentionSuffixesFile.value = path;
   });
   if (attentionSuffixesFile.classList.contains('locked'))
     attentionSuffixesFile.disabled = true;
@@ -189,7 +189,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       fileName:    attentionTermsFile.value || ''
     });
     if (path)
-      attentionTermsFile.value = path;
+      configs.attentionTermsFile = attentionTermsFile.value = path;
   });
   if (attentionTermsFile.classList.contains('locked'))
     attentionTermsFile.disabled = true;
