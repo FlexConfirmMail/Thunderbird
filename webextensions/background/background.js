@@ -41,6 +41,7 @@ function getMessageSignature(message) {
 // There is no API to detect starting of a message composition,
 // so we now wait for a message from a new composition content.
 const mDetectedMessageTypeForTab = new Map();
+const mDetectedClipboardStateForTab = new Map();
 const mInitialSignatureForTab = new Map();
 const mInitialSignatureForTabWithoutSubject = new Map();
 const mLastContextMessagesForTab = new Map();
@@ -77,6 +78,30 @@ browser.runtime.onMessage.addListener((message, sender) => {
         log('detected type: ', detectedType)
         mDetectedMessageTypeForTab.set(sender.tab.id , detectedType);
         mLastContextMessagesForTab.delete(sender.tab.id);
+      });
+      break;
+
+    case Constants.TYPE_SOMETHING_COPIED:
+      navigator.clipboard.readText().then(async text => {
+        const details = await browser.compose.getComposeDetails(sender.tab.id);
+        const author = await getAddressFromIdentity(details.identityId);
+        const messageSignature = getMessageSignature({author, ...details});
+        configs.lastClipboardData = { messageSignature, text };
+      });
+      break;
+
+    case Constants.TYPE_SOMETHING_PASTED:
+      navigator.clipboard.readText().then(async text => {
+        const details = await browser.compose.getComposeDetails(sender.tab.id);
+        const author = await getAddressFromIdentity(details.identityId);
+        const messageSignature = getMessageSignature({author, ...details});
+        const lastState = mDetectedClipboardStateForTab.get(sender.tab.id) || Constants.CLIPBOARD_STATE_SAFE;
+        if (configs.lastClipboardData &&
+            messageSignature != configs.lastClipboardData.messageSignature &&
+            text == configs.lastClipboardData.text)
+          mDetectedClipboardStateForTab.set(sender.tab.id, lastState | Constants.CLIPBOARD_STATE_PASTED_TO_DIFFERENT_SIGNATURE_MAIL);
+        else if (text.length > configs.acceptablePastedTextLength)
+          mDetectedClipboardStateForTab.set(sender.tab.id, lastState | Constants.CLIPBOARD_STATE_PASTED_TOO_LARGE_TEXT);
       });
       break;
   }
@@ -177,6 +202,12 @@ async function needConfirmationOnModified(tab, details) {
 
     default:
       break;
+  }
+
+  const clipboardState = mDetectedClipboardStateForTab.get(tab.id) || Constants.CLIPBOARD_STATE_SAFE;
+  if (clipboardState & Constants.CLIPBOARD_STATE_UNSAFE) {
+    log('need confirmation because unsafe text is pasted');
+    return true;
   }
 
   const initialSignature = mInitialSignatureForTabWithoutSubject.get(tab.id);
