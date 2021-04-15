@@ -81,18 +81,38 @@ browser.runtime.onMessage.addListener((message, sender) => {
       });
       break;
 
-    case Constants.TYPE_SOMETHING_COPIED:
-      navigator.clipboard.readText().then(async text => {
-        const details = await browser.compose.getComposeDetails(sender.tab.id);
+    case Constants.TYPE_COMPOSE_SOMETHING_COPIED:
+      Promise.all([
+        browser.compose.getComposeDetails(sender.tab.id),
+        navigator.clipboard.readText(),
+      ]).then(async results => {
+        const [details, text] = results;
         const author = await getAddressFromIdentity(details.identityId);
         const messageSignature = getMessageSignature({author, ...details});
         configs.lastClipboardData = { messageSignature, text };
+        log('configs.lastClipboardData updated by TYPE_COMPOSE_SOMETHING_COPIED: ', configs.lastClipboardData);
       });
       break;
 
-    case Constants.TYPE_SOMETHING_PASTED:
-      navigator.clipboard.readText().then(async text => {
-        const details = await browser.compose.getComposeDetails(sender.tab.id);
+    case Constants.TYPE_MESSAGE_DISPLAY_SOMETHING_COPIED:
+      Promise.all([
+        browser.messageDisplay.getDisplayedMessage(sender.tab.id),
+        navigator.clipboard.readText(),
+      ]).then(async results => {
+        const [details, text] = results;
+        const author = await getAddressFromIdentity(details.identityId);
+        const messageSignature = getMessageSignature({author, ...details});
+        configs.lastClipboardData = { messageSignature, text };
+        log('configs.lastClipboardData updated by TYPE_MESSAGE_DISPLAY_SOMETHING_COPIED: ', configs.lastClipboardData);
+      });
+      break;
+
+    case Constants.TYPE_COMPOSE_SOMETHING_PASTED:
+      Promise.all([
+        browser.compose.getComposeDetails(sender.tab.id),
+        navigator.clipboard.readText(),
+      ]).then(async results => {
+        const [details, text] = results;
         const author = await getAddressFromIdentity(details.identityId);
         const messageSignature = getMessageSignature({author, ...details});
         const lastState = mDetectedClipboardStateForTab.get(sender.tab.id) || Constants.CLIPBOARD_STATE_SAFE;
@@ -102,6 +122,7 @@ browser.runtime.onMessage.addListener((message, sender) => {
           mDetectedClipboardStateForTab.set(sender.tab.id, lastState | Constants.CLIPBOARD_STATE_PASTED_TO_DIFFERENT_SIGNATURE_MAIL);
         else if (configs.acceptablePastedTextLength >= 0 && text.length > configs.acceptablePastedTextLength)
           mDetectedClipboardStateForTab.set(sender.tab.id, lastState | Constants.CLIPBOARD_STATE_PASTED_TOO_LARGE_TEXT);
+        log('pasted: new state => ', mDetectedClipboardStateForTab.get(sender.tab.id));
       });
       break;
   }
@@ -110,6 +131,11 @@ browser.composeScripts.register({
   js: [
     // This sends a Constants.TYPE_COMPOSE_STARTED message on load.
     { file: '/resources/compose.js' }
+  ]
+});
+browser.messageDisplayScripts.register({
+  js: [
+    { file: '/resources/message-display.js' }
   ]
 });
 

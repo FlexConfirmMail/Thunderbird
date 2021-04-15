@@ -6,8 +6,9 @@
 'use strict';
 
 export const TYPE_COMPOSE_STARTED = 'compose-started';
-export const TYPE_SOMETHING_COPIED = 'something-copied';
-export const TYPE_SOMETHING_PASTED = 'something-pasted';
+export const TYPE_COMPOSE_SOMETHING_COPIED = 'compose-something-copied';
+export const TYPE_COMPOSE_SOMETHING_PASTED = 'compose-something-pasted';
+export const TYPE_MESSAGE_DISPLAY_SOMETHING_COPIED = 'message-display-something-copied';
 
 export const HOST_ID = 'com.clear_code.flexible_confirm_mail_we_host';
 export const HOST_COMMAND_FETCH = 'fetch';

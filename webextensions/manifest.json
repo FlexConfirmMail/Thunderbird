@@ -10,6 +10,7 @@
     "clipboardRead",
     "compose",
     "menus",
+    "messagesModify",
     "messagesRead",
     "nativeMessaging",
     "storage",
