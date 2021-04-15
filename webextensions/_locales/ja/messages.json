@@ -67,7 +67,9 @@
 
   "config_confirmationMode_caption": { "message": "送信前の宛先確認:" },
   "config_confirmationMode_always_label": { "message": "常に確認" },
-  "config_confirmationMode_onModified_label": { "message": "宛先が変更された時だけ確認" },
+  "config_confirmationMode_onModified_label": { "message": "誤送信の危険性がある場合だけ確認" },
+  "config_confirmationMode_onModified_description_before": { "message": "宛先が変更された時、異なる宛先を含むメールからテキストをコピー＆ペーストした時、および" },
+  "config_confirmationMode_onModified_description_after": { "message": "文字より長い文字列をペーストした時に確認します。" },
   "config_confirmationMode_never_label": { "message": "確認しない" },
 
   "config_internalDomains_caption": { "message": "組織内として扱うメールアドレスのドメイン名" },

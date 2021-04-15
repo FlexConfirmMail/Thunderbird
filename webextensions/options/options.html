@@ -17,7 +17,12 @@
       <legend>__MSG_config_confirmationMode_caption__</legend>
       <ul>
         <li><label><input name="confirmationMode" type="radio" value="1">__MSG_config_confirmationMode_always_label__</label></li>
-        <li><label><input name="confirmationMode" type="radio" value="2">__MSG_config_confirmationMode_onModified_label__</label></li>
+        <li><label><input name="confirmationMode" type="radio" value="2">__MSG_config_confirmationMode_onModified_label__</label>
+            <p class="sub"
+              ><label>__MSG_config_confirmationMode_onModified_description_before__
+                      <input name="acceptablePastedTextLength" type="number" min="-1" size="6">
+                      __MSG_config_confirmationMode_onModified_description_after__</label></p>
+        </li>
         <li><label><input name="confirmationMode" type="radio" value="0">__MSG_config_confirmationMode_never_label__</label></li>
       </ul>
     </fieldset>

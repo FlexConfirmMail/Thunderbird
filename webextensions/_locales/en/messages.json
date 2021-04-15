@@ -67,7 +67,9 @@
 
   "config_confirmationMode_caption": { "message": "Confirm Recipients before Sending:" },
   "config_confirmationMode_always_label": { "message": "Always" },
-  "config_confirmationMode_onModified_label": { "message": "Only when recipients are modified" },
+  "config_confirmationMode_onModified_label": { "message": "Only for unsafe composition" },
+  "config_confirmationMode_onModified_description_before": { "message": "Confirmation will appear when recipients are modified, something text is copied and pasted from any message with different decipients, or text longer than " },
+  "config_confirmationMode_onModified_description_after": { "message": " characters is pasted." },
   "config_confirmationMode_never_label": { "message": "Never" },
 
   "config_internalDomains_caption": { "message": "Domains treated as internals" },
