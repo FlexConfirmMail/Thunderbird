@@ -31,9 +31,9 @@ function getMessageSignature(message) {
   return JSON.stringify({
     subject: message.subject || null,
     from: (authorAddressMatched ? authorAddressMatched[1] : author) || null,
-    to: (message.to || message.recipients).sort(),
-    cc: (message.cc || message.ccList).sort(),
-    bcc: (message.bcc || message.bccList).sort()
+    to: (message.to || message.recipients || []).sort(),
+    cc: (message.cc || message.ccList || []).sort(),
+    bcc: (message.bcc || message.bccList || []).sort()
   });
 }
 
