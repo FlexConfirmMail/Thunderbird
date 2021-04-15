@@ -100,7 +100,7 @@ browser.runtime.onMessage.addListener((message, sender) => {
             messageSignature != configs.lastClipboardData.messageSignature &&
             text == configs.lastClipboardData.text)
           mDetectedClipboardStateForTab.set(sender.tab.id, lastState | Constants.CLIPBOARD_STATE_PASTED_TO_DIFFERENT_SIGNATURE_MAIL);
-        else if (text.length > configs.acceptablePastedTextLength)
+        else if (configs.acceptablePastedTextLength >= 0 && text.length > configs.acceptablePastedTextLength)
           mDetectedClipboardStateForTab.set(sender.tab.id, lastState | Constants.CLIPBOARD_STATE_PASTED_TOO_LARGE_TEXT);
       });
       break;
