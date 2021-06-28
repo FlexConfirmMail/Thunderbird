@@ -51,6 +51,14 @@
   "confirmAttentionTermsCancel": { "message": "Cancel" },
 
 
+  "alertBlockedDomainsTitle": { "message": "Recipients with blocked domains" },
+  "alertBlockedDomainsMessage": { "message": "These recipients with blocked domains are found:\n\n$RECIPIENTS$\n\nIt is not allowe to send messages to such recipients.",
+    "placeholders": {
+      "recipients": { "content": "$1", "example": "mail@example.com" }
+    }},
+  "alertBlockedDomainsAccept": { "message": "Close" },
+
+
   "countdownDialogTitle": { "message": "Countdown" },
   "countdownDialogMessage_before": { "message": "\u200b" },
   "countdownDialogMessage_after": { "message": " seconds left to send." },

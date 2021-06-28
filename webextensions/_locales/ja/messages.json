@@ -51,6 +51,14 @@
   "confirmAttentionTermsCancel": { "message": "キャンセル" },
 
 
+  "alertBlockedDomainsTitle": { "message": "ブロック対象の宛先" },
+  "alertBlockedDomainsMessage": { "message": "ブロック対象のドメインに属する以下の宛先があります。\n\n$RECIPIENTS$\n\nこれらの宛先にメールを送ることはできません。",
+    "placeholders": {
+      "recipients": { "content": "$1", "example": "mail@example.com" }
+    }},
+  "alertBlockedDomainsAccept": { "message": "閉じる" },
+
+
   "countdownDialogTitle": { "message": "カウントダウン" },
   "countdownDialogMessage_before": { "message": "あと" },
   "countdownDialogMessage_after": { "message": "秒で送信します" },

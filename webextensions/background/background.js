@@ -6,6 +6,7 @@
 'use strict';
 
 import * as Dialog from '/extlib/dialog.js';
+import RichConfirm from '/extlib/RichConfirm.js';
 
 import {
   configs,
@@ -405,9 +406,76 @@ async function getAttentionTerms() {
 }
 
 
+async function shouldBlock(tab, details) {
+  if (!configs.blockedDomainsEnabled)
+    return false;
+
+  const [
+    to, cc, bcc,
+    blockedDomains,
+  ] = await Promise.all([
+    ListUtils.populateListAddresses(details.to),
+    ListUtils.populateListAddresses(details.cc),
+    ListUtils.populateListAddresses(details.bcc),
+    getBlockedDomains(),
+  ]);
+  log('block list: ', { blockedDomains });
+  const classifier = new RecipientClassifier({
+    blockedDomains,
+  });
+  const { blocked } = classifier.classify([...to, ...cc, ...bcc]);
+  if (blocked.length == 0)
+    return false;
+
+  try {
+    const message = (
+      configs.blcokedDomainDialogMessage.replace(/\%s/i, blocked.join('\n')) ||
+      browser.i18n.getMessage('alertBlockedDomainsMessage', [blocked.join('\n')])
+    );
+    await RichConfirm.showInPopup(tab.windowId, {
+      modal: !configs.debug,
+      type:  'common-dialog',
+      url:   '/resources/blank.html',
+      title: configs.blockedDomainDialogTitle || browser.i18n.getMessage('alertBlockedDomainsTitle'),
+      message,
+      buttons: [
+        browser.i18n.getMessage('alertBlockedDomainsAccept'),
+      ]
+    });
+  }
+  catch(_error) {
+  }
+
+  return true;
+}
+
+async function getBlockedDomains() {
+  switch (configs.blockedDomainsSource) {
+    default:
+    case Constants.SOURCE_CONFIG:
+      return configs.blockedDomains || [];
+
+    case Constants.SOURCE_FILE: {
+      if (!configs.blockedDomainsFile)
+        return [];
+      const response = await sendToHost({
+        command: Constants.HOST_COMMAND_FETCH,
+        params: {
+          path: configs.blockedDomainsFile
+        }
+      });
+      return response ? response.contents.trim().split(/[\s,|]+/).filter(part => !!part) : [];
+    };
+  }
+}
+
+
 browser.compose.onBeforeSend.addListener(async (tab, details) => {
   await configs.$loaded;
   const composeWin = await browser.windows.get(tab.windowId);
+
+  if (await shouldBlock(tab, details))
+    return { cancel: true };
 
   switch (configs.confirmationMode) {
     case Constants.CONFIRMATION_MODE_NEVER:
