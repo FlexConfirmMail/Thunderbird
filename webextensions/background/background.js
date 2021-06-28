@@ -428,9 +428,10 @@ async function shouldBlock(tab, details) {
     return false;
 
   try {
+    const blockedRecipients = [...new Set(blocked.map(recipient => recipient.address))];
     const message = (
-      configs.blcokedDomainDialogMessage.replace(/\%s/i, blocked.join('\n')) ||
-      browser.i18n.getMessage('alertBlockedDomainsMessage', [blocked.join('\n')])
+      configs.blockedDomainDialogMessage.replace(/\%s/i, blockedRecipients.join('\n')) ||
+      browser.i18n.getMessage('alertBlockedDomainsMessage', [blockedRecipients.join('\n')])
     );
     await RichConfirm.showInPopup(tab.windowId, {
       modal: !configs.debug,
@@ -443,7 +444,8 @@ async function shouldBlock(tab, details) {
       ]
     });
   }
-  catch(_error) {
+  catch(error) {
+    console.error(error);
   }
 
   return true;
