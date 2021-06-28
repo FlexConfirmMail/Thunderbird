@@ -38,7 +38,8 @@ export function test_format() {
           address:   'domain-must-be-lower-cased@EXAMPLE.com',
           domain:    'example.com',
           isAttentionDomain: false }
-      ]
+      ],
+      blocked: [],
     },
     classified
   );
@@ -56,7 +57,8 @@ test_classifyAddresses.parameters = {
       externals: [
         'aaa@example.com',
         'bbb@example.com'
-      ]
+      ],
+      blocked: [],
     }
   },
   'all recipients must be classified as internals based on the list': {
@@ -70,7 +72,8 @@ test_classifyAddresses.parameters = {
         'aaa@clear-code.com',
         'bbb@clear-code.com'
       ],
-      externals: []
+      externals: [],
+      blocked: [],
     }
   },
   'all recipients must be classified as externals based on the list': {
@@ -84,7 +87,8 @@ test_classifyAddresses.parameters = {
       externals: [
         'aaa@example.com',
         'bbb@example.com'
-      ]
+      ],
+      blocked: [],
     }
   },
   'mixed recipients must be classified to internals and externals': {
@@ -103,7 +107,8 @@ test_classifyAddresses.parameters = {
       externals: [
         'zzz@exmaple.com',
         'bbb@example.org'
-      ]
+      ],
+      blocked: [],
     }
   },
   'difference of cases in domains must be ignored': {
@@ -117,7 +122,8 @@ test_classifyAddresses.parameters = {
         'aaa@CLEAR-code.com',
         'bbb@clear-CODE.com'
       ],
-      externals: []
+      externals: [],
+      blocked: [],
     }
   },
   'mistakable recipients must be detected as externals': {
@@ -138,7 +144,8 @@ test_classifyAddresses.parameters = {
         'bbb@unclear-code.com',
         'clear-code.com@example.com',
         'ccc@example.com'
-      ]
+      ],
+      blocked: [],
     }
   },
   'sub domain must not detected as internal': {
@@ -153,7 +160,8 @@ test_classifyAddresses.parameters = {
       ],
       externals: [
         'bbb@un.clear-code.com'
-      ]
+      ],
+      blocked: [],
     }
   },
   'upper domain must not detected as internal': {
@@ -168,7 +176,8 @@ test_classifyAddresses.parameters = {
       ],
       externals: [
         'aaa@clear-code.com'
-      ]
+      ],
+      blocked: [],
     }
   },
   'accept "@" in domain list': {
@@ -183,18 +192,74 @@ test_classifyAddresses.parameters = {
       ],
       externals: [
         'bbb@example.com'
-      ]
+      ],
+      blocked: [],
     }
-  }
+  },
+  'blocked internal domains': {
+    recipients: [
+      'aaa@clear-code.com',
+      'bbb@example.com'
+    ],
+    internalDomains: ['@clear-code.com'],
+    blockedDomains: ['@clear-code.com'],
+    expected: {
+      internals: [
+      ],
+      externals: [
+        'bbb@example.com',
+      ],
+      blocked: [
+        'aaa@clear-code.com',
+      ],
+    }
+  },
+  'blocked external domains': {
+    recipients: [
+      'aaa@clear-code.com',
+      'bbb@example.com'
+    ],
+    internalDomains: ['@clear-code.com'],
+    blockedDomains: ['@example.com'],
+    expected: {
+      internals: [
+        'aaa@clear-code.com',
+      ],
+      externals: [
+      ],
+      blocked: [
+        'bbb@example.com',
+      ],
+    }
+  },
+  'blocked domains with attention domains': {
+    recipients: [
+      'aaa@clear-code.com',
+      'bbb@example.com'
+    ],
+    attentionDomains: ['@clear-code.com'],
+    blockedDomains: ['@clear-code.com'],
+    expected: {
+      internals: [
+      ],
+      externals: [
+        'bbb@example.com',
+      ],
+      blocked: [
+        'aaa@clear-code.com',
+      ],
+    }
+  },
 };
-export function test_classifyAddresses({ recipients, internalDomains, expected }) {
-  const classifier = new RecipientClassifier({ internalDomains });
+export function test_classifyAddresses({ recipients, internalDomains, attentionDomains, blockedDomains, expected }) {
+  const classifier = new RecipientClassifier({ internalDomains, attentionDomains, blockedDomains });
   const classified = classifier.classify(recipients);
   is(
     expected,
     {
       internals: classified.internals.map(recipient => recipient.address),
-      externals: classified.externals.map(recipient => recipient.address)
+      externals: classified.externals.map(recipient => recipient.address),
+      blocked:   classified.blocked.map(recipient => recipient.address)
     }
   );
 }
