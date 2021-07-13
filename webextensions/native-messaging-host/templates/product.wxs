@@ -38,6 +38,11 @@
                   
                     <File Id="ApplicationFile1" Source="..\com.clear_code.flexible_confirm_mail_we_host.json"/>
                   
+                   <RegistryKey Root="HKLM"
+                                Key="SOFTWARE\Mozilla\NativeMessagingHosts\com.clear_code.flexible_confirm_mail_we_host"
+                         Action="createAndRemoveOnUninstall">
+                       <RegistryValue Type="string" Value="[INSTALLDIR]com.clear_code.flexible_confirm_mail_we_host.json"/>
+                   </RegistryKey>
                </Component>
                
                
