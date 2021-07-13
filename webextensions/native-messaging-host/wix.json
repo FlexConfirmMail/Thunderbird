@@ -1,0 +1,32 @@
+{
+  "product": "Flex Confirm Mail Native Messaging Host",
+  "company": "ClearCode Inc.",
+  "license": "",
+  "upgrade-code": "1483d792-4f48-4810-8e61-c0f7894d60f2",
+  "files": {
+    "guid": "afdc4e40-5b95-49b1-8a9f-2b938e866e31",
+    "items": [
+      "host.exe",
+      "com.clear_code.flexible_confirm_mail_we_host.json"
+    ]
+  },
+  "env": {
+    "guid": "1a1aa5fc-67da-4676-af2a-7f1a64eaceff",
+    "vars": [
+      {
+        "name": "PATH",
+        "value": "[INSTALLDIR]",
+        "permanent": "no",
+        "system": "no",
+        "action": "set",
+        "part": "last"
+      }
+    ]
+  },
+  "choco": {
+    "description": "Native Messaging Host for Flex Confirm Mail",
+    "project-url": "https://github.com/clear-code/flex-confirm-mail",
+    "tags": "thunderbird addon",
+    "license-url": "https://github.com/clear-code/flex-confirm-mail/blob/master/webextensions/native-messaging-host/LICENSE"
+  }
+}

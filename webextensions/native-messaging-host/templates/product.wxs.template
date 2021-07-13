@@ -10,19 +10,19 @@
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
-   <Product Id="*" UpgradeCode="1483d792-4f48-4810-8e61-c0f7894d60f2"
-            Name="Flex Confirm Mail Native Messaging Host"
-            Version="3.0.10"
-            Manufacturer="ClearCode Inc."
+   <Product Id="*" UpgradeCode="%UPGRADE_CODE_GUID%"
+            Name="%PRODUCT%"
+            Version="%VERSION%"
+            Manufacturer="%VENDOR%"
             Language="1033">
 
       <Package InstallerVersion="200" Compressed="yes" Comments="Windows Installer Package" InstallScope="perMachine"/>
 
       <Media Id="1" Cabinet="product.cab" EmbedCab="yes"/>
 
-      <Upgrade Id="1483d792-4f48-4810-8e61-c0f7894d60f2">
-         <UpgradeVersion Minimum="3.0.10" OnlyDetect="yes" Property="NEWERVERSIONDETECTED"/>
-         <UpgradeVersion Minimum="0.0.0" Maximum="3.0.10" IncludeMinimum="yes" IncludeMaximum="no"
+      <Upgrade Id="%UPGRADE_CODE_GUID%">
+         <UpgradeVersion Minimum="%VERSION%" OnlyDetect="yes" Property="NEWERVERSIONDETECTED"/>
+         <UpgradeVersion Minimum="0.0.0" Maximum="%VERSION%" IncludeMinimum="yes" IncludeMaximum="no"
                          Property="OLDERVERSIONBEINGUPGRADED"/>
       </Upgrade>
       <Condition Message="A newer version of this software is already installed.">NOT NEWERVERSIONDETECTED</Condition>
@@ -30,18 +30,18 @@
       <Directory Id="TARGETDIR" Name="SourceDir">
 
          <Directory Id="$(var.Program_Files)">
-            <Directory Id="VENDORDIR" Name="ClearCode Inc.">
-               <Directory Id="INSTALLDIR" Name="Flex Confirm Mail Native Messaging Host">
+            <Directory Id="VENDORDIR" Name="%VENDOR%">
+               <Directory Id="INSTALLDIR" Name="%PRODUCT%">
                   
-                  <Component Id="ApplicationFiles" Guid="afdc4e40-5b95-49b1-8a9f-2b938e866e31">
+                  <Component Id="ApplicationFiles" Guid="%FILES_GUID%">
                      
                        <File Id="ApplicationFile0" Source="..\host.exe"/>
                      
-                       <File Id="ApplicationFile1" Source="..\com.clear_code.flexible_confirm_mail_we_host.json"/>
+                       <File Id="ApplicationFile1" Source="..\%NAME%.json"/>
                      
                       <RegistryKey Root="HKLM"
-                                   Key="SOFTWARE\Mozilla\NativeMessagingHosts\com.clear_code.flexible_confirm_mail_we_host">
-                          <RegistryValue Type="string" Value="[INSTALLDIR]com.clear_code.flexible_confirm_mail_we_host.json"/>
+                                   Key="SOFTWARE\Mozilla\NativeMessagingHosts\%NAME%">
+                          <RegistryValue Type="string" Value="[INSTALLDIR]%NAME%.json"/>
                       </RegistryKey>
                   </Component>
                   
@@ -51,7 +51,7 @@
          </Directory>
 
          
-         <Component Id="ENVS" Guid="1a1aa5fc-67da-4676-af2a-7f1a64eaceff">
+         <Component Id="ENVS" Guid="%ENV_GUID%">
           
           <Environment Id="ENV0"
             Name="PATH"

@@ -22,3 +22,16 @@ You can define exceptions of attachments, via the configuration dialog or the pr
 1. Open `sample.eml` with Thunderbird.
 2. Hit Ctrl-E to edit the mail as a new message.
 3. Try to send it.
+
+## How to build the native messaging host and its installer?
+
+On Windows 10 + WSL:
+
+1. [Install and setup Golang](https://golang.org/doc/install) on your Linux environment.
+2. Install go-msi https://github.com/mh-cbon/go-msi *via an MSI to your Windows environment*.
+3. Install WiX Toolset https://wixtoolset.org/releases/ to your Windows environment.
+4. Set PATH to go-msi (ex. `C:\Program Files\go-msi`) and WiX Toolse (ex. `C:\Program Files (x86)\WiX Toolset v3.11\bin`).
+   Then `.exe` files and a batch file to build MSI will be generated.
+5. Double-click the generated `build_msi.bat` on your Windows environment.
+   Then two MSIs will be generated.
+
