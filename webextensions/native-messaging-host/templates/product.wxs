@@ -41,10 +41,6 @@
                </Component>
                
                
-               
-               <Directory Id="APPDIR0" Name="templates" />
-               
-               
             </Directory>
          </Directory>
 
@@ -81,9 +77,6 @@
          
          <ComponentRef Id="ApplicationFiles"/>
          
-         
-         
-         <ComponentGroupRef Id="AppFiles0" />
          
       </Feature>
 
