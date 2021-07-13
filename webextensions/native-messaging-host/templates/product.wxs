@@ -12,7 +12,7 @@
 
    <Product Id="*" UpgradeCode="1483d792-4f48-4810-8e61-c0f7894d60f2"
             Name="Flex Confirm Mail Native Messaging Host"
-            Version="3.0.8"
+            Version="3.0.10"
             Manufacturer="ClearCode Inc."
             Language="1033">
 
@@ -21,8 +21,8 @@
       <Media Id="1" Cabinet="product.cab" EmbedCab="yes"/>
 
       <Upgrade Id="1483d792-4f48-4810-8e61-c0f7894d60f2">
-         <UpgradeVersion Minimum="3.0.8" OnlyDetect="yes" Property="NEWERVERSIONDETECTED"/>
-         <UpgradeVersion Minimum="0.0.0" Maximum="3.0.8" IncludeMinimum="yes" IncludeMaximum="no"
+         <UpgradeVersion Minimum="3.0.10" OnlyDetect="yes" Property="NEWERVERSIONDETECTED"/>
+         <UpgradeVersion Minimum="0.0.0" Maximum="3.0.10" IncludeMinimum="yes" IncludeMaximum="no"
                          Property="OLDERVERSIONBEINGUPGRADED"/>
       </Upgrade>
       <Condition Message="A newer version of this software is already installed.">NOT NEWERVERSIONDETECTED</Condition>
