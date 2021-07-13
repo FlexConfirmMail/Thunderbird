@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+
+<?if $(sys.BUILDARCH)="x86"?>
+    <?define Program_Files="ProgramFilesFolder"?>
+<?elseif $(sys.BUILDARCH)="x64"?>
+    <?define Program_Files="ProgramFiles64Folder"?>
+<?else?>
+    <?error Unsupported value of sys.BUILDARCH=$(sys.BUILDARCH)?>
+<?endif?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+   <Product Id="*" UpgradeCode="1483d792-4f48-4810-8e61-c0f7894d60f2"
+            Name="Flex Confirm Mail Native Messaging Host"
+            Version="3.0.8"
+            Manufacturer="ClearCode Inc."
+            Language="1033">
+
+      <Package InstallerVersion="200" Compressed="yes" Comments="Windows Installer Package" InstallScope="perMachine"/>
+
+      <Media Id="1" Cabinet="product.cab" EmbedCab="yes"/>
+
+      <Upgrade Id="1483d792-4f48-4810-8e61-c0f7894d60f2">
+         <UpgradeVersion Minimum="3.0.8" OnlyDetect="yes" Property="NEWERVERSIONDETECTED"/>
+         <UpgradeVersion Minimum="0.0.0" Maximum="3.0.8" IncludeMinimum="yes" IncludeMaximum="no"
+                         Property="OLDERVERSIONBEINGUPGRADED"/>
+      </Upgrade>
+      <Condition Message="A newer version of this software is already installed.">NOT NEWERVERSIONDETECTED</Condition>
+
+      <Directory Id="TARGETDIR" Name="SourceDir">
+
+         <Directory Id="$(var.Program_Files)">
+            <Directory Id="INSTALLDIR" Name="Flex Confirm Mail Native Messaging Host">
+               
+               <Component Id="ApplicationFiles" Guid="afdc4e40-5b95-49b1-8a9f-2b938e866e31">
+                  
+                    <File Id="ApplicationFile0" Source="..\host.exe"/>
+                  
+                    <File Id="ApplicationFile1" Source="..\com.clear_code.flexible_confirm_mail_we_host.json"/>
+                  
+               </Component>
+               
+               
+               
+               <Directory Id="APPDIR0" Name="templates" />
+               
+               
+            </Directory>
+         </Directory>
+
+         
+         <Component Id="ENVS" Guid="1a1aa5fc-67da-4676-af2a-7f1a64eaceff">
+          
+          <Environment Id="ENV0"
+            Name="PATH"
+            Value="[INSTALLDIR]"
+            Permanent="no"
+            Part="last"
+            Action="set"
+            System="no" />
+          
+        </Component>
+        
+
+         
+
+      </Directory>
+
+      
+      
+      <InstallExecuteSequence>
+         <RemoveExistingProducts After="InstallValidate"/>
+         
+         
+      </InstallExecuteSequence>
+
+      <Feature Id="DefaultFeature" Level="1">
+         
+         <ComponentRef Id="ENVS"/>
+         
+         
+         <ComponentRef Id="ApplicationFiles"/>
+         
+         
+         
+         <ComponentGroupRef Id="AppFiles0" />
+         
+      </Feature>
+
+      <UI>
+         <!-- Define the installer UI -->
+         <UIRef Id="WixUI_HK" />
+      </UI>
+
+      <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+
+      <!-- this should help to propagate env var changes -->
+      <CustomActionRef Id="WixBroadcastEnvironmentChange" />
+
+   </Product>
+
+</Wix>
