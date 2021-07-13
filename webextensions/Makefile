@@ -40,7 +40,7 @@ install_extlib:
 host:
 	native-messaging-host/build.sh
 	rm -f flex-confirm-mail-host.zip
-	cd native-messaging-host && zip -r -9 ../flex-confirm-mail-host.zip 386 amd64 *.bat *.json
+	cd native-messaging-host && zip -r -9 ../flex-confirm-mail-host.zip 386 amd64 *.bat com.clear_code.*.json
 
 test:
 	npm run test
