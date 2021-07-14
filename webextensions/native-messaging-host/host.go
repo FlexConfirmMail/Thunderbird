@@ -11,6 +11,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/harry1453/go-common-file-dialog/cfd"
+	"github.com/harry1453/go-common-file-dialog/cfdutil"
 	"github.com/lhside/chrome-go"
 	"io/ioutil"
 	"log"
@@ -110,7 +111,7 @@ func ChooseFileAndRespond(params RequestParams) {
 }
 
 func ChooseFile(params RequestParams) (path string, errorMessage string) {
-	openDialog, err := cfd.NewOpenFileDialog(cfd.DialogConfig{
+	result, err := cfdutil.ShowOpenFileDialog(cfd.DialogConfig{
 		Title: params.Title,
 		Role:  params.Role,
 		FileFilters: []cfd.FileFilter{
@@ -123,16 +124,9 @@ func ChooseFile(params RequestParams) (path string, errorMessage string) {
 		FileName:                params.FileName,
 		DefaultExtension:        params.DefaultExtension,
 	})
-	if err != nil {
-		log.Fatal(err)
-		return "", err.Error()
-	}
-	if err := openDialog.Show(); err != nil {
-		log.Fatal(err)
-		return "", err.Error()
-	}
-	result, err := openDialog.GetResult()
-	if err != nil {
+	if err == cfd.ErrorCancelled {
+		return result, ""
+	} else if err != nil {
 		log.Fatal(err)
 		return "", err.Error()
 	}
