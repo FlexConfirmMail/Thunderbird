@@ -95,11 +95,11 @@ prepare_msi_sources() {
   rm -f "$build_msi_bat"
   touch "$build_msi_bat"
   echo -e "del host.exe \r" >> "$build_msi_bat"
-  echo -e "copy 386\\host.exe %cd%\\ \r" >> "$build_msi_bat"
-  echo -e "go-msi.exe make --msi ${msi_basename}-386.msi --version ${addon_version} --src templates --out "%cd%\\outdir" --arch 386 \r" >> "$build_msi_bat"
+  echo -e "copy 386\\host.exe \"%cd%\\\" \r" >> "$build_msi_bat"
+  echo -e "go-msi.exe make --msi ${msi_basename}-386.msi --version ${addon_version} --src templates --out \"%cd%\\outdir\" --arch 386 \r" >> "$build_msi_bat"
   echo -e "del host.exe \r" >> "$build_msi_bat"
-  echo -e "copy amd64\\host.exe %cd%\\ \r" >> "$build_msi_bat"
-  echo -e "go-msi.exe make --msi ${msi_basename}-amd64.msi --version ${addon_version} --src templates --out "%cd%\\outdir" --arch amd64 \r" >> "$build_msi_bat"
+  echo -e "copy amd64\\host.exe \"%cd%\\\" \r" >> "$build_msi_bat"
+  echo -e "go-msi.exe make --msi ${msi_basename}-amd64.msi --version ${addon_version} --src templates --out \"%cd%\\outdir\" --arch amd64 \r" >> "$build_msi_bat"
   echo -e "del host.exe \r" >> "$build_msi_bat"
 }
 
