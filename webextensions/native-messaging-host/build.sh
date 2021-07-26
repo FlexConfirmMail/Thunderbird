@@ -94,14 +94,18 @@ prepare_msi_sources() {
 
   rm -f "$build_msi_bat"
   touch "$build_msi_bat"
-  echo -e "cd \"%~dp0\" \r" >> "$build_msi_bat"
-  echo -e "del host.exe \r" >> "$build_msi_bat"
+  echo -e "set MSITEMP=%USERPROFILE%\\\\temp%RANDOM%\r" >> "$build_msi_bat"
+  echo -e "set SOURCE=%~dp0\r" >> "$build_msi_bat"
+  echo -e "xcopy \"%SOURCE%\\*\" \"%MSITEMP%\" /S /I \r" >> "$build_msi_bat"
+  echo -e "cd \"%MSITEMP%\" \r" >> "$build_msi_bat"
   echo -e "copy 386\\host.exe \"%cd%\\\" \r" >> "$build_msi_bat"
   echo -e "go-msi.exe make --msi ${msi_basename}-386.msi --version ${addon_version} --src templates --out \"%cd%\\outdir\" --arch 386 \r" >> "$build_msi_bat"
   echo -e "del host.exe \r" >> "$build_msi_bat"
   echo -e "copy amd64\\host.exe \"%cd%\\\" \r" >> "$build_msi_bat"
   echo -e "go-msi.exe make --msi ${msi_basename}-amd64.msi --version ${addon_version} --src templates --out \"%cd%\\outdir\" --arch amd64 \r" >> "$build_msi_bat"
-  echo -e "del host.exe \r" >> "$build_msi_bat"
+  echo -e "xcopy *.msi \"%SOURCE%\" /I /Y \r" >> "$build_msi_bat"
+  echo -e "cd \"%SOURCE%\" \r" >> "$build_msi_bat"
+  echo -e "rd /S /Q \"%MSITEMP%\" \r" >> "$build_msi_bat"
 }
 
 main
