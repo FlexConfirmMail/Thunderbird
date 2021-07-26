@@ -32,6 +32,7 @@ On Windows 10 + WSL:
 3. Install WiX Toolset https://wixtoolset.org/releases/ to your Windows environment.
 4. Set PATH to go-msi (ex. `C:\Program Files\go-msi`) and WiX Toolse (ex. `C:\Program Files (x86)\WiX Toolset v3.11\bin`).
    Then `.exe` files and a batch file to build MSI will be generated.
-5. Double-click the generated `build_msi.bat` on your Windows environment.
+5. Run `make host`.
+6. Double-click the generated `webextensions\native-messaging-host\build_msi.bat` on your Windows environment.
    Then two MSIs will be generated.
 
