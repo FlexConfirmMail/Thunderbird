@@ -28,8 +28,8 @@ export const configs = new Configs({
   attentionSuffixes: [],
   attentionSuffixesSource: Constants.SOURCE_CONFIG,
   attentionSuffixesFile: '',
-  attentionSuffixDialogTitle: '',
-  attentionSuffixDialogMessage: '',
+  attentionSuffixesDialogTitle: '',
+  attentionSuffixesDialogMessage: '',
 
   attentionTermsConfirm: true,
   attentionTerms: [],

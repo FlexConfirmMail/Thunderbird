@@ -504,7 +504,7 @@ async function confirmAttentionSuffixes() {
     return true;
 
   const message = (
-    configs.attentionSuffixDialogMessage.replace(/\%s/i, attentionAttachments.join('\n')) ||
+    configs.attentionSuffixesDialogMessage.replace(/\%s/i, attentionAttachments.join('\n')) ||
     browser.i18n.getMessage('confirmAttentionSuffixesMessage', [attentionAttachments.join('\n')])
   );
   return window.confirm(message);
@@ -515,7 +515,7 @@ async function confirmAttentionSuffixes() {
       modal: true,
       type:  'common-dialog',
       url:   '/resources/blank.html',
-      title: configs.attentionSuffixDialogTitle || browser.i18n.getMessage('confirmAttentionSuffixesTitle'),
+      title: configs.attentionSuffixesDialogTitle || browser.i18n.getMessage('confirmAttentionSuffixesTitle'),
       message,
       buttons: [
         browser.i18n.getMessage('confirmAttentionSuffixesAccept'),

@@ -149,8 +149,8 @@
             "attentionDomainDialogMessage:locked": false,
 
           "// 例外拡張子の再確認ダイアログの文言": 0,
-          "attentionSuffixDialogMessage": "",
-            "attentionSuffixDialogMessage:locked": false,
+          "attentionSuffixesDialogMessage": "",
+            "attentionSuffixesDialogMessage:locked": false,
 
           "// 宛先に複数ドメインが含まれる場合の再確認ダイアログの文言": 0,
           "confirmMultipleRecipientDomainsDialogMessage": "",
