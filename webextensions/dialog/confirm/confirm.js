@@ -461,7 +461,7 @@ async function confirmAttentionTerms() {
     return true;
 
   const message = (
-    configs.attentionSuffixDialogMessage.replace(/\%s/i, attentionAttachments.join('\n')) ||
+    configs.attentionTermsDialogMessage.replace(/\%s/i, attentionAttachments.join('\n')) ||
     browser.i18n.getMessage('confirmAttentionTermsMessage', [attentionAttachments.join('\n')])
   );
   return window.confirm(message);
