@@ -8,6 +8,8 @@
 import Configs from '/extlib/Configs.js';
 import * as Constants from './constants.js';
 
+const CONFIGS_VERSION = 1;
+
 const OVERRIDE_DEFAULT_CONFIGS = {}; /* Replace this for more customization on an enterprise use. */
 
 export const configs = new Configs({
@@ -89,12 +91,33 @@ export const configs = new Configs({
   configsVersion: 0,
   debug: false,
 
+  // obsolete keys (already migrated)
+  blockedDomainDialogMessage: null,
+  blockedDomainDialogTitle: null,
+
   ...OVERRIDE_DEFAULT_CONFIGS
 }, {
   localKeys: [
-    'configsVersion',
     'debug'
   ]
+});
+
+configs.$loaded.then(() => {
+  switch (configs.configsVersion) {
+    case 0:
+      configs.blockedDomainsDialogTitle      = configs.blockedDomainDialogTitle;
+      configs.blockedDomainsDialogMessage    = configs.blockedDomainDialogMessage;
+      configs.attentionDomainsDialogTitle    = configs.attentionDomainDialogTitle;
+      configs.attentionDomainsDialogMessage  = configs.attentionDomainDialogMessage;
+      configs.attentionSuffixesDialogTitle   = configs.attentionSuffixDialogTitle;
+      configs.attentionSuffixesDialogMessage = configs.attentionSuffixDialogMessage;
+
+    default:
+      break;
+  }
+
+  if (configs.configsVersion != CONFIGS_VERSION)
+    configs.configsVersion = CONFIGS_VERSION;
 });
 
 export function log(message, ...args) {
