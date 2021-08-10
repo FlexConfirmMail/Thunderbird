@@ -193,6 +193,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   });
   if (attentionSuffixes2File.classList.contains('locked'))
     attentionSuffixes2File.disabled = true;
+  document.querySelector('#attentionSuffixes2DialogMessage').placeholder = browser.i18n.getMessage('confirmAttentionSuffixes2Message', ['$ATTACHMENTS$']);
 
 
   const attentionTermsField = document.querySelector('#attentionTermsField');

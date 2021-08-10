@@ -155,6 +155,7 @@
   "config_attentionSuffixes2File_button_dialogTitle": { "message": "添付ファイル名に含まれていた場合に再度警告する拡張子のリストを選択" },
   "config_attentionSuffixes2File_button_dialogDisplayName": { "message": "リストファイル" },
   "config_attentionSuffixes2File_input_placeholder": { "message": "ファイルのパスを入力（例：\\\\FileServer\\Shared\\suffixes.txt）" },
+  "config_attentionSuffixes2DialogMessage_label": { "message": "警告のメッセージ (\"$\u200bATTACHMENTS\u200b$\" と書いた位置に添付ファイル名が入ります):" },
 
   "config_attentionTermsConfirm_label": { "message": "これらの語句を名前の一部に持つファイルが外部ドメイン宛のメールに添付されている場合は再度警告する" },
   "config_attentionTerms_label": { "message": "手動編集のリストを使用" },

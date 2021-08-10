@@ -154,6 +154,7 @@
   "config_attentionSuffixes2File_button_dialogTitle": { "message": "Choose a list of extensions in attachment names requiring reconfirmation" },
   "config_attentionSuffixes2File_button_dialogDisplayName": { "message": "List File" },
   "config_attentionSuffixes2File_input_placeholder": { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\suffixes.txt)" },
+  "config_attentionSuffixes2DialogMessage_label": { "message": "Message for confirmation (\"$\u200bATTACHMENTS\u200b$\" will be filled with attachment file names):" },
 
   "config_attentionTermsConfirm_label": { "message": "Confirm me again before send, if there is any attachment name with one of these terms in a message to foreign domains" },
   "config_attentionTerms_label": { "message": "Use the manually managed list" },
