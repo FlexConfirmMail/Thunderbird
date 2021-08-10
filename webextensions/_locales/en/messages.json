@@ -41,6 +41,14 @@
   "confirmAttentionSuffixesAccept": { "message": "Send" },
   "confirmAttentionSuffixesCancel": { "message": "Cancel" },
 
+  "confirmAttentionSuffixes2Title": { "message": "Attachments with more attention file types" },
+  "confirmAttentionSuffixes2Message": { "message": "These attachments with more attention extensions are found:\n\n$ATTACHMENTS$\n\nIf there is no problem, continue to send.",
+    "placeholders": {
+      "attachments": { "content": "$1", "example": "file.txt" }
+    }},
+  "confirmAttentionSuffixes2Accept": { "message": "Send" },
+  "confirmAttentionSuffixes2Cancel": { "message": "Cancel" },
+
 
   "confirmAttentionTermsTitle": { "message": "Attachments including attention term in their name" },
   "confirmAttentionTermsMessage": { "message": "These attachments including attention term in their name are found:\n\n$ATTACHMENTS$\n\nIf there is no problem, continue to send.",

@@ -81,8 +81,9 @@ configs.$loaded.then(async () => {
 
   mAttentionDomains = mParams.attentionDomains;
   mAttachmentClassifier = new AttachmentClassifier({
-    attentionSuffixes: mParams.attentionSuffixes,
-    attentionTerms:    mParams.attentionTerms
+    attentionSuffixes:  mParams.attentionSuffixes,
+    attentionSuffixess: mParams.attentionSuffixess,
+    attentionTerms:     mParams.attentionTerms
   });
 
   onConfigChange('attentionDomainsHighlightMode');
@@ -110,7 +111,8 @@ configs.$loaded.then(async () => {
         !(await confirmMultipleRecipientDomains()) ||
         !(await confirmAttentionDomains()) ||
         !(await confirmAttentionTerms()) ||
-        !(await confirmAttentionSuffixes()))
+        !(await confirmAttentionSuffixes()) ||
+        !(await confirmAttentionSuffixes2()))
       return;
 
     Dialog.accept();
@@ -235,9 +237,12 @@ function initAttachments() {
   for (const attachment of mParams.attachments) {
     const row = createAttachmentRow(attachment);
     const hasAttentionSuffix = mAttachmentClassifier.hasAttentionSuffix(attachment.name);
+    const hasAttentionSuffix2 = mAttachmentClassifier.hasAttentionSuffix2(attachment.name);
     const hasAttentionTerm = mAttachmentClassifier.hasAttentionTerm(attachment.name);
-    log('check attachment: ', attachment, { hasAttentionSuffix, hasAttentionTerm });
-    if (hasAttentionSuffix || hasAttentionTerm)
+    log('check attachment: ', attachment, { hasAttentionSuffix, hasAttentionSuffix2, hasAttentionTerm });
+    if (hasAttentionSuffix ||
+        hasAttentionSuffix2 ||
+        hasAttentionTerm)
       row.classList.add('attention');
     mAttachmentsList.appendChild(row);
   }
@@ -527,6 +532,49 @@ async function confirmAttentionSuffixes() {
     result = { buttonIndex: -1 };
   }
   log('confirmAttentionSuffixes result.buttonIndex = ', result.buttonIndex);
+  switch (result.buttonIndex) {
+    case 0:
+      return true;
+    default:
+      return false;
+  }
+  */
+}
+
+async function confirmAttentionSuffixes2() {
+  log('confirmAttentionSuffixes2 shouldConfirm = ', configs.attentionSuffixes2Confirm);
+  if (!configs.attentionSuffixes2Confirm)
+    return true;
+
+  const attentionAttachments = mParams.attachments.filter(attachment => mAttachmentClassifier.hasAttentionSuffix(attachment.name)).map(attachment => attachment.name);
+  log('confirmAttentionSuffixes2 attentionAttachments = ', attentionAttachments);
+  if (attentionAttachments.length == 0)
+    return true;
+
+  const message = (
+    configs.attentionSuffixes2DialogMessage.replace(/\%s/i, attentionAttachments.join('\n')) ||
+    browser.i18n.getMessage('confirmAttentionSuffixes2Message', [attentionAttachments.join('\n')])
+  );
+  return window.confirm(message);
+  /*
+  let result;
+  try {
+    result = await RichConfirm.showInPopup(mParams.windowId, {
+      modal: true,
+      type:  'common-dialog',
+      url:   '/resources/blank.html',
+      title: configs.attentionSuffixes2DialogTitle || browser.i18n.getMessage('confirmAttentionSuffixes2Title'),
+      message,
+      buttons: [
+        browser.i18n.getMessage('confirmAttentionSuffixes2Accept'),
+        browser.i18n.getMessage('confirmAttentionSuffixes2Cancel')
+      ]
+    });
+  }
+  catch(_error) {
+    result = { buttonIndex: -1 };
+  }
+  log('confirmAttentionSuffixes2 result.buttonIndex = ', result.buttonIndex);
   switch (result.buttonIndex) {
     case 0:
       return true;

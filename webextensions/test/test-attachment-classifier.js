@@ -76,6 +76,73 @@ export function test_hasAttentionSuffix({ files, attentionSuffixes, expected }) 
   is(expected, actual);
 }
 
+test_hasAttentionSuffix2.parameters = {
+  'without period': {
+    files: [
+      'filename.png',
+      'filename.zip'
+    ],
+    attentionSuffixes2: ['png'],
+    expected: [
+      true,
+      false
+    ]
+  },
+  'with period': {
+    files: [
+      'filename.png',
+      'filename.zip'
+    ],
+    attentionSuffixes2: ['.png'],
+    expected: [
+      true,
+      false
+    ]
+  },
+  'mistakable filename': {
+    files: [
+      'filename.png',
+      'filename.png.zip'
+    ],
+    attentionSuffixes2: ['.png'],
+    expected: [
+      true,
+      false
+    ]
+  },
+  'must ignore cases': {
+    files: [
+      'lowercase.png',
+      'uppercase.PNG'
+    ],
+    attentionSuffixes2: ['.png'],
+    expected: [
+      true,
+      true
+    ]
+  },
+  'mixed': {
+    files: [
+      'filename.png',
+      'filename.zip',
+      'filename.txt',
+      'filename.xpi'
+    ],
+    attentionSuffixes2: ['.png', 'txt'],
+    expected: [
+      true,
+      false,
+      true,
+      false
+    ]
+  }
+};
+export function test_hasAttentionSuffix2({ files, attentionSuffixes2, expected }) {
+  const classifier = new AttachmentClassifier({ attentionSuffixes2 });
+  const actual = files.map(classifier.hasAttentionSuffix2);
+  is(expected, actual);
+}
+
 test_hasAttentionTerm.parameters = {
   'same case': {
     files: [

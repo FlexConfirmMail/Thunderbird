@@ -33,6 +33,13 @@ export const configs = new Configs({
   attentionSuffixesDialogTitle: '',
   attentionSuffixesDialogMessage: '',
 
+  attentionSuffixes2Confirm: true,
+  attentionSuffixes2: [],
+  attentionSuffixes2Source: Constants.SOURCE_CONFIG,
+  attentionSuffixes2File: '',
+  attentionSuffixes2DialogTitle: '',
+  attentionSuffixes2DialogMessage: '',
+
   attentionTermsConfirm: true,
   attentionTerms: [],
   attentionTermsSource: Constants.SOURCE_CONFIG,

@@ -41,6 +41,14 @@
   "confirmAttentionSuffixesAccept": { "message": "送信" },
   "confirmAttentionSuffixesCancel": { "message": "キャンセル" },
 
+  "confirmAttentionSuffixes2Title": { "message": "さらに特別に注意が必要な種類の添付ファイル" },
+  "confirmAttentionSuffixes2Message": { "message": "さらに特別に注意が必要な拡張子を持つ以下の添付ファイルがあります。\n\n$ATTACHMENTS$\n\n問題がない事を確認の上でメールを送信してください。",
+    "placeholders": {
+      "attachments": { "content": "$1", "example": "file.txt" }
+    }},
+  "confirmAttentionSuffixes2Accept": { "message": "送信" },
+  "confirmAttentionSuffixes2Cancel": { "message": "キャンセル" },
+
 
   "confirmAttentionTermsTitle": { "message": "特別に注意が必要な名前の添付ファイル" },
   "confirmAttentionTermsMessage": { "message": "特別に注意が必要な語句を名前に含む以下の添付ファイルがあります。\n\n$ATTACHMENTS$\n\n問題がない事を確認の上でメールを送信してください。",
