@@ -146,6 +146,15 @@
   "config_attentionSuffixesFile_button_dialogDisplayName": { "message": "List File" },
   "config_attentionSuffixesFile_input_placeholder": { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\suffixes.txt)" },
 
+  "config_attentionSuffixes2Confirm_label": { "message": "Confirm me more again before send, if there is any attachment with one of these extensions in a message to foreign domains" },
+  "config_attentionSuffixes2_label": { "message": "Use the manually managed list" },
+  "config_attentionSuffixes2_input_placeholder": { "message": "Input file extensions per line (e.g. .exe, .pdf)" },
+  "config_attentionSuffixes2File_label": { "message": "Use a list given as a file" },
+  "config_attentionSuffixes2File_button_label": { "message": "Choose…" },
+  "config_attentionSuffixes2File_button_dialogTitle": { "message": "Choose a list of extensions in attachment names requiring reconfirmation" },
+  "config_attentionSuffixes2File_button_dialogDisplayName": { "message": "List File" },
+  "config_attentionSuffixes2File_input_placeholder": { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\suffixes.txt)" },
+
   "config_attentionTermsConfirm_label": { "message": "Confirm me again before send, if there is any attachment name with one of these terms in a message to foreign domains" },
   "config_attentionTerms_label": { "message": "Use the manually managed list" },
   "config_attentionTerms_input_placeholder": { "message": "Input a term per line (e.g. important, confidential)" },

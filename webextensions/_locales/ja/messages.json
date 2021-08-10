@@ -147,6 +147,15 @@
   "config_attentionSuffixesFile_button_dialogDisplayName": { "message": "リストファイル" },
   "config_attentionSuffixesFile_input_placeholder": { "message": "ファイルのパスを入力（例：\\\\FileServer\\Shared\\suffixes.txt）" },
 
+  "config_attentionSuffixes2Confirm_label": { "message": "これらの拡張子を持つファイルが外部ドメイン宛のメールに添付されている場合はさらに再度警告する" },
+  "config_attentionSuffixes2_label": { "message": "手動編集のリストを使用" },
+  "config_attentionSuffixes2_input_placeholder": { "message": "ファイルの拡張子を1行ずつ入力（例：.exe、.pdf）" },
+  "config_attentionSuffixes2File_label": { "message": "ファイル形式のリストを使用" },
+  "config_attentionSuffixes2File_button_label": { "message": "参照..." },
+  "config_attentionSuffixes2File_button_dialogTitle": { "message": "添付ファイル名に含まれていた場合に再度警告する拡張子のリストを選択" },
+  "config_attentionSuffixes2File_button_dialogDisplayName": { "message": "リストファイル" },
+  "config_attentionSuffixes2File_input_placeholder": { "message": "ファイルのパスを入力（例：\\\\FileServer\\Shared\\suffixes.txt）" },
+
   "config_attentionTermsConfirm_label": { "message": "これらの語句を名前の一部に持つファイルが外部ドメイン宛のメールに添付されている場合は再度警告する" },
   "config_attentionTerms_label": { "message": "手動編集のリストを使用" },
   "config_attentionTerms_input_placeholder": { "message": "語句を1行ずつ入力（例：危険、社外秘）" },

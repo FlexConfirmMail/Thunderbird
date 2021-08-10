@@ -163,6 +163,38 @@ window.addEventListener('DOMContentLoaded', async () => {
     attentionSuffixesFile.disabled = true;
 
 
+  const attentionSuffixes2Field = document.querySelector('#attentionSuffixes2Field');
+  attentionSuffixes2Field.classList.toggle(
+    'locked',
+    configs.$isLocked('attentionSuffixes2') ||
+    (configs.$isLocked('attentionSuffixes2Soruce') &&
+     configs.attentionSuffixes2Soruce == Constants.SOURCE_FILE)
+  );
+  if (attentionSuffixes2Field.classList.contains('locked'))
+    attentionSuffixes2Field.disabled = true;
+
+  const attentionSuffixes2File = document.querySelector('#attentionSuffixes2File');
+  attentionSuffixes2File.classList.toggle(
+    'locked',
+    configs.$isLocked('attentionSuffixes2File') ||
+    (configs.$isLocked('attentionSuffixes2Soruce') &&
+     configs.attentionSuffixes2Soruce == Constants.SOURCE_CONFIG)
+  );
+  Dialog.initButton(document.querySelector('#attentionSuffixes2FileChoose'), async _event => {
+    const path = await chooseFile({
+      title:       browser.i18n.getMessage('config_attentionSuffixes2File_button_dialogTitle'),
+      role:        'AttentionSuffixes2FileChoose',
+      displayName: `${browser.i18n.getMessage('config_attentionSuffixes2File_button_dialogDisplayName')} (*.*)`,
+      pattern:     '*.*',
+      fileName:    attentionSuffixes2File.value || ''
+    });
+    if (path)
+      configs.attentionSuffixes2File = attentionSuffixes2File.value = path;
+  });
+  if (attentionSuffixes2File.classList.contains('locked'))
+    attentionSuffixes2File.disabled = true;
+
+
   const attentionTermsField = document.querySelector('#attentionTermsField');
   attentionTermsField.classList.toggle(
     'locked',

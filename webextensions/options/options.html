@@ -147,6 +147,28 @@
     </fieldset>
 
     <fieldset>
+      <legend><label><input id="attentionSuffixes2Confirm" type="checkbox">__MSG_config_attentionSuffixes2Confirm_label__</label></legend>
+      <ul>
+        <li><label><input name="attentionSuffixes2Source" type="radio" value="0">__MSG_config_attentionSuffixes2_label__</label>
+            <textarea id="attentionSuffixes2Field"
+                      class="array-type-config"
+                      data-array-config-key="attentionSuffixes2"
+                      placeholder="__MSG_config_attentionSuffixes2_input_placeholder__"></textarea>
+            </li>
+        <li><label class="require-native-messaging-host"
+                  ><input name="attentionSuffixes2Source" type="radio" value="1">__MSG_config_attentionSuffixes2File_label__</label>
+            <br><label class="require-native-messaging-host flex-box row"
+                      ><input id="attentionSuffixes2File"
+                              class="filepath flex-box column"
+                              type="text"
+                              placeholder="__MSG_config_attentionSuffixes2File_input_placeholder__">
+                       <button id="attentionSuffixes2FileChoose"
+                               class="flex-box column"
+                              >__MSG_config_attentionSuffixes2File_button_label__</button></label></li>
+      </ul>
+    </fieldset>
+
+    <fieldset>
       <legend><label><input id="attentionTermsConfirm" type="checkbox">__MSG_config_attentionTermsConfirm_label__</label></legend>
       <ul>
         <li><label><input name="attentionTermsSource" type="radio" value="0">__MSG_config_attentionTerms_label__</label>
