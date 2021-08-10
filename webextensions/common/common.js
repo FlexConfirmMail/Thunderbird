@@ -92,8 +92,12 @@ export const configs = new Configs({
   debug: false,
 
   // obsolete keys (already migrated)
-  blockedDomainDialogMessage: null,
-  blockedDomainDialogTitle: null,
+  blockedDomainDialogTitle:     null,
+  blockedDomainDialogMessage:   null,
+  attentionDomainDialogTitle:   null,
+  attentionDomainDialogMessage: null,
+  attentionSuffixDialogTitle:   null,
+  attentionSuffixDialogMessage: null,
 
   ...OVERRIDE_DEFAULT_CONFIGS
 }, {
