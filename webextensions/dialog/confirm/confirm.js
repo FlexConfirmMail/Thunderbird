@@ -418,7 +418,7 @@ async function confirmAttentionDomains() {
     return true;
 
   const message = (
-    configs.attentionDomainDialogMessage.replace(/\%s/i, attentionRecipients.join('\n')) ||
+    configs.attentionDomainsDialogMessage.replace(/\%s/i, attentionRecipients.join('\n')) ||
     browser.i18n.getMessage('confirmAttentionDomainsMessage', [attentionRecipients.join('\n')])
   );
   return window.confirm(message);
@@ -429,7 +429,7 @@ async function confirmAttentionDomains() {
       modal: true,
       type:  'common-dialog',
       url:   '/resources/blank.html',
-      title: configs.attentionDomainDialogTitle || browser.i18n.getMessage('confirmAttentionDomainsTitle'),
+      title: configs.attentionDomainsDialogTitle || browser.i18n.getMessage('confirmAttentionDomainsTitle'),
       message,
       buttons: [
         browser.i18n.getMessage('confirmAttentionDomainsAccept'),

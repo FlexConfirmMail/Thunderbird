@@ -145,8 +145,8 @@
 
 
           "// 例外外部ドメインの再確認ダイアログの文言": 0,
-          "attentionDomainDialogMessage": "",
-            "attentionDomainDialogMessage:locked": false,
+          "attentionDomainsDialogMessage": "",
+            "attentionDomainsDialogMessage:locked": false,
 
           "// 例外拡張子の再確認ダイアログの文言": 0,
           "attentionSuffixesDialogMessage": "",

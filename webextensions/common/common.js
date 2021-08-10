@@ -21,8 +21,8 @@ export const configs = new Configs({
   attentionDomains: [],
   attentionDomainsSource: Constants.SOURCE_CONFIG,
   attentionDomainsFile: '',
-  attentionDomainDialogTitle: '',
-  attentionDomainDialogMessage: '',
+  attentionDomainsDialogTitle: '',
+  attentionDomainsDialogMessage: '',
 
   attentionSuffixesConfirm: true,
   attentionSuffixes: [],
@@ -42,8 +42,8 @@ export const configs = new Configs({
   blockedDomains: [],
   blockedDomainsSource: Constants.SOURCE_CONFIG,
   blockedDomainsFile: '',
-  blockedDomainDialogTitle: '',
-  blockedDomainDialogMessage: '',
+  blockedDomainsDialogTitle: '',
+  blockedDomainsDialogMessage: '',
 
   skipConfirmationForInternalMail: false,
 
