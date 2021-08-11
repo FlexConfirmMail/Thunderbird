@@ -560,12 +560,18 @@ const CONFIGS_VERSION = 2;
 configs.$loaded.then(async () => {
   switch (configs.configsVersion) {
     case 0:
-      configs.blockedDomainsDialogTitle      = configs.blockedDomainDialogTitle;
-      configs.blockedDomainsDialogMessage    = configs.blockedDomainDialogMessage;
-      configs.attentionDomainsDialogTitle    = configs.attentionDomainDialogTitle;
-      configs.attentionDomainsDialogMessage  = configs.attentionDomainDialogMessage;
-      configs.attentionSuffixesDialogTitle   = configs.attentionSuffixDialogTitle;
-      configs.attentionSuffixesDialogMessage = configs.attentionSuffixDialogMessage;
+      if (configs.blockedDomainDialogTitle && !configs.blockedDomainsDialogTitle)
+        configs.blockedDomainsDialogTitle = configs.blockedDomainDialogTitle;
+      if (configs.blockedDomainDialogMessage && !configs.blockedDomainsDialogMessage)
+        configs.blockedDomainsDialogMessage = configs.blockedDomainDialogMessage;
+      if (configs.attentionDomainDialogTitle && !configs.attentionDomainsDialogTitle)
+        configs.attentionDomainsDialogTitle = configs.attentionDomainDialogTitle;
+      if (configs.attentionDomainDialogMessage && !configs.attentionDomainsDialogMessage)
+        configs.attentionDomainsDialogMessage = configs.attentionDomainDialogMessage;
+      if (configs.attentionSuffixDialogTitle && !configs.attentionSuffixesDialogTitle)
+        configs.attentionSuffixesDialogTitle = configs.attentionSuffixDialogTitle;
+      if (configs.attentionSuffixDialogMessage && !configs.attentionSuffixesDialogMessage)
+        configs.attentionSuffixesDialogMessage = configs.attentionSuffixDialogMessage;
 
     case 1:
       const allLocalData = await browser.storage.local.get(null);
