@@ -127,6 +127,27 @@ input[type="text"].filepath + button {
 
 
 
+fieldset.collapsible.collapsed > *:not(legend):not(div) /* "div" is for the container of "import" and "export" buttons */ {
+  display: none;
+}
+
+fieldset.collapsible > legend::before,
+body > section > h1:first-child::before {
+  content: "▼";
+  display: inline-block;
+  font-size: 65%;
+  margin-right: 0.5em;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+fieldset.collapsible.collapsed > legend::before,
+body > section.collapsed > h1:first-child::before {
+  transform: rotate(-90deg);
+}
+
+
+
 .disabled {
   opacity: 0.5;
 }

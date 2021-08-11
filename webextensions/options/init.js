@@ -14,6 +14,14 @@ import Options from '/extlib/Options.js';
 import '/extlib/l10n.js';
 import * as Dialog from '/extlib/dialog.js';
 
+const CONFIRMATION_TYPES = [
+  'attentionDomains',
+  'attentionSuffixes',
+  'attentionSuffixes2',
+  'attentionTerms',
+  'blockedDomains',
+];
+
 const options = new Options(configs);
 
 function onConfigChanged(key) {
@@ -99,166 +107,59 @@ window.addEventListener('DOMContentLoaded', async () => {
     initArrayTypeTextArea(textarea);
   }
 
-  const attentionDomainsField = document.querySelector('#attentionDomainsField');
-  attentionDomainsField.classList.toggle(
-    'locked',
-    configs.$isLocked('attentionDomains') ||
-    (configs.$isLocked('attentionDomainsSoruce') &&
-     configs.attentionDomainsSoruce == Constants.SOURCE_FILE)
-  );
-  if (attentionDomainsField.classList.contains('locked'))
-    attentionDomainsField.disabled = true;
+  for (const base of CONFIRMATION_TYPES) {
+    const capitalizedBase = base.replace(/^./, matched => matched.toUpperCase());
 
-  const attentionDomainsFile = document.querySelector('#attentionDomainsFile');
-  attentionDomainsFile.classList.toggle(
-    'locked',
-    configs.$isLocked('attentionDomainsFile') ||
-    (configs.$isLocked('attentionDomainsSoruce') &&
-     configs.attentionDomainsSoruce == Constants.SOURCE_CONFIG)
-  );
-  Dialog.initButton(document.querySelector('#attentionDomainsFileChoose'), async _event => {
-    const path = await chooseFile({
-      title:       browser.i18n.getMessage('config_attentionDomainsFile_button_dialogTitle'),
-      role:        'AttentionDomainsFileChoose',
-      displayName: `${browser.i18n.getMessage('config_attentionDomainsFile_button_dialogDisplayName')} (*.*)`,
-      pattern:     '*.*',
-      fileName:    attentionDomainsFile.value || ''
+    const section = document.querySelector(`#${base}Fields`);
+    const heading = section.querySelector('legend');
+    const checkbox = heading.querySelector('input[type="checkbox"]');
+    if (checkbox) {
+      section.classList.add('collapsible');
+      if (!checkbox.checked)
+        section.classList.add('collapsed');
+      heading.addEventListener('click', () => {
+        checkbox.checked = !checkbox.checked;
+        section.classList.toggle('collapsed', !checkbox.checked);
+      });
+      checkbox.addEventListener('change', () => {
+        section.classList.toggle('collapsed', !checkbox.checked);
+      });
+    }
+
+    const listField = document.querySelector(`#${base}Field`);
+    listField.classList.toggle(
+      'locked',
+      configs.$isLocked(base) ||
+      (configs.$isLocked(`${base}Soruce`) &&
+       configs[`${base}Soruce`] == Constants.SOURCE_FILE)
+    );
+    if (listField.classList.contains('locked'))
+      listField.disabled = true;
+
+    const fileField = document.querySelector(`#${base}File`);
+    fileField.classList.toggle(
+      'locked',
+      configs.$isLocked(`#${base}File`) ||
+      (configs.$isLocked(`${base}Soruce`) &&
+       configs[`${base}Soruce`] == Constants.SOURCE_CONFIG)
+    );
+    Dialog.initButton(document.querySelector(`#${base}FileChoose`), async _event => {
+      const path = await chooseFile({
+        title:       browser.i18n.getMessage(`config_${base}File_button_dialogTitle`),
+        role:        `${capitalizedBase}FileChoose`,
+        displayName: `${browser.i18n.getMessage(`config_${base}File_button_dialogDisplayName`)} (*.*)`,
+        pattern:     '*.*',
+        fileName:    fileField.value || ''
+      });
+      if (path)
+        configs[`${base}File`] = fileField.value = path;
     });
-    if (path)
-      configs.attentionDomainsFile = attentionDomainsFile.value = path;
-  });
-  if (attentionDomainsFile.classList.contains('locked'))
-    attentionDomainsFile.disabled = true;
+    if (fileField.classList.contains('locked'))
+      fileField.disabled = true;
 
-
-  const attentionSuffixesField = document.querySelector('#attentionSuffixesField');
-  attentionSuffixesField.classList.toggle(
-    'locked',
-    configs.$isLocked('attentionSuffixes') ||
-    (configs.$isLocked('attentionSuffixesSoruce') &&
-     configs.attentionSuffixesSoruce == Constants.SOURCE_FILE)
-  );
-  if (attentionSuffixesField.classList.contains('locked'))
-    attentionSuffixesField.disabled = true;
-
-  const attentionSuffixesFile = document.querySelector('#attentionSuffixesFile');
-  attentionSuffixesFile.classList.toggle(
-    'locked',
-    configs.$isLocked('attentionSuffixesFile') ||
-    (configs.$isLocked('attentionSuffixesSoruce') &&
-     configs.attentionSuffixesSoruce == Constants.SOURCE_CONFIG)
-  );
-  Dialog.initButton(document.querySelector('#attentionSuffixesFileChoose'), async _event => {
-    const path = await chooseFile({
-      title:       browser.i18n.getMessage('config_attentionSuffixesFile_button_dialogTitle'),
-      role:        'AttentionSuffixesFileChoose',
-      displayName: `${browser.i18n.getMessage('config_attentionSuffixesFile_button_dialogDisplayName')} (*.*)`,
-      pattern:     '*.*',
-      fileName:    attentionSuffixesFile.value || ''
-    });
-    if (path)
-      configs.attentionSuffixesFile = attentionSuffixesFile.value = path;
-  });
-  if (attentionSuffixesFile.classList.contains('locked'))
-    attentionSuffixesFile.disabled = true;
-
-
-  const attentionSuffixes2Field = document.querySelector('#attentionSuffixes2Field');
-  attentionSuffixes2Field.classList.toggle(
-    'locked',
-    configs.$isLocked('attentionSuffixes2') ||
-    (configs.$isLocked('attentionSuffixes2Soruce') &&
-     configs.attentionSuffixes2Soruce == Constants.SOURCE_FILE)
-  );
-  if (attentionSuffixes2Field.classList.contains('locked'))
-    attentionSuffixes2Field.disabled = true;
-
-  const attentionSuffixes2File = document.querySelector('#attentionSuffixes2File');
-  attentionSuffixes2File.classList.toggle(
-    'locked',
-    configs.$isLocked('attentionSuffixes2File') ||
-    (configs.$isLocked('attentionSuffixes2Soruce') &&
-     configs.attentionSuffixes2Soruce == Constants.SOURCE_CONFIG)
-  );
-  Dialog.initButton(document.querySelector('#attentionSuffixes2FileChoose'), async _event => {
-    const path = await chooseFile({
-      title:       browser.i18n.getMessage('config_attentionSuffixes2File_button_dialogTitle'),
-      role:        'AttentionSuffixes2FileChoose',
-      displayName: `${browser.i18n.getMessage('config_attentionSuffixes2File_button_dialogDisplayName')} (*.*)`,
-      pattern:     '*.*',
-      fileName:    attentionSuffixes2File.value || ''
-    });
-    if (path)
-      configs.attentionSuffixes2File = attentionSuffixes2File.value = path;
-  });
-  if (attentionSuffixes2File.classList.contains('locked'))
-    attentionSuffixes2File.disabled = true;
-  document.querySelector('#attentionSuffixes2DialogMessage').placeholder = browser.i18n.getMessage('confirmAttentionSuffixes2Message', ['$ATTACHMENTS$']);
-
-
-  const attentionTermsField = document.querySelector('#attentionTermsField');
-  attentionTermsField.classList.toggle(
-    'locked',
-    configs.$isLocked('attentionTerms') ||
-    (configs.$isLocked('attentionTermsSoruce') &&
-     configs.attentionTermsSoruce == Constants.SOURCE_FILE)
-  );
-  if (attentionTermsField.classList.contains('locked'))
-    attentionTermsField.disabled = true;
-
-  const attentionTermsFile = document.querySelector('#attentionTermsFile');
-  attentionTermsFile.classList.toggle(
-    'locked',
-    configs.$isLocked('attentionTermsFile') ||
-    (configs.$isLocked('attentionTermsSoruce') &&
-     configs.attentionTermsSoruce == Constants.SOURCE_CONFIG)
-  );
-  Dialog.initButton(document.querySelector('#attentionTermsFileChoose'), async _event => {
-    const path = await chooseFile({
-      title:       browser.i18n.getMessage('config_attentionTermsFile_button_dialogTitle'),
-      role:        'AttentionTermsFileChoose',
-      displayName: `${browser.i18n.getMessage('config_attentionTermsFile_button_dialogDisplayName')} (*.*)`,
-      pattern:     '*.*',
-      fileName:    attentionTermsFile.value || ''
-    });
-    if (path)
-      configs.attentionTermsFile = attentionTermsFile.value = path;
-  });
-  if (attentionTermsFile.classList.contains('locked'))
-    attentionTermsFile.disabled = true;
-
-
-  const blockedDomainsField = document.querySelector('#blockedDomainsField');
-  blockedDomainsField.classList.toggle(
-    'locked',
-    configs.$isLocked('blockedDomains') ||
-    (configs.$isLocked('blockedDomainsSoruce') &&
-     configs.blockedDomainsSoruce == Constants.SOURCE_FILE)
-  );
-  if (blockedDomainsField.classList.contains('locked'))
-    blockedDomainsField.disabled = true;
-
-  const blockedDomainsFile = document.querySelector('#blockedDomainsFile');
-  blockedDomainsFile.classList.toggle(
-    'locked',
-    configs.$isLocked('blockedDomainsFile') ||
-    (configs.$isLocked('blockedDomainsSoruce') &&
-     configs.blockedDomainsSoruce == Constants.SOURCE_CONFIG)
-  );
-  Dialog.initButton(document.querySelector('#blockedDomainsFileChoose'), async _event => {
-    const path = await chooseFile({
-      title:       browser.i18n.getMessage('config_blockedDomainsFile_button_dialogTitle'),
-      role:        'blockedDomainsFileChoose',
-      displayName: `${browser.i18n.getMessage('config_blockedDomainsFile_button_dialogDisplayName')} (*.*)`,
-      pattern:     '*.*',
-      fileName:    blockedDomainsFile.value || ''
-    });
-    if (path)
-      configs.blockedDomainsFile = blockedDomainsFile.value = path;
-  });
-  if (blockedDomainsFile.classList.contains('locked'))
-    blockedDomainsFile.disabled = true;
-
+    const messageField = document.querySelector(`#${base}DialogMessage`);
+    messageField.placeholder = browser.i18n.getMessage(messageField.dataset.defaultMessageKey, ['$S']);
+  }
 
   options.buildUIForAllConfigs(document.querySelector('#debug-configs'));
   onConfigChanged('debug');

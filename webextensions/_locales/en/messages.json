@@ -109,6 +109,7 @@
   "config_attentionDomainsFile_button_dialogTitle": { "message": "Choose a list of specially alerted foreign domains in recipients" },
   "config_attentionDomainsFile_button_dialogDisplayName": { "message": "List File" },
   "config_attentionDomainsFile_input_placeholder": { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\domains.txt)" },
+  "config_attentionDomainsDialogMessage_label": { "message": "Message for confirmation (\"%S\" will be filled with recipients):" },
 
   "config_attentionDomainsHighlightMode_caption": { "message": "Highlight recipients of these domains" },
   "config_attentionDomainsHighlightMode_always_label": { "message": "Always" },
@@ -131,6 +132,7 @@
   "config_blockedDomainsFile_button_dialogTitle": { "message": "Choose a list of blocked domains in recipients" },
   "config_blockedDomainsFile_button_dialogDisplayName": { "message": "List File" },
   "config_blockedDomainsFile_input_placeholder": { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\domains.txt)" },
+  "config_blockedDomainsDialogMessage_label": { "message": "Message for alert (\"%S\" will be filled with recipients):" },
 
 
   "config_attachments_caption": { "message": "Attachments" },
@@ -145,6 +147,7 @@
   "config_attentionSuffixesFile_button_dialogTitle": { "message": "Choose a list of extensions in attachment names requiring reconfirmation" },
   "config_attentionSuffixesFile_button_dialogDisplayName": { "message": "List File" },
   "config_attentionSuffixesFile_input_placeholder": { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\suffixes.txt)" },
+  "config_attentionSuffixesDialogMessage_label": { "message": "Message for confirmation (\"%S\" will be filled with attachment file names):" },
 
   "config_attentionSuffixes2Confirm_label": { "message": "Confirm me more again before send, if there is any attachment with one of these extensions in a message to foreign domains" },
   "config_attentionSuffixes2_label": { "message": "Use the manually managed list" },
@@ -154,7 +157,7 @@
   "config_attentionSuffixes2File_button_dialogTitle": { "message": "Choose a list of extensions in attachment names requiring reconfirmation" },
   "config_attentionSuffixes2File_button_dialogDisplayName": { "message": "List File" },
   "config_attentionSuffixes2File_input_placeholder": { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\suffixes.txt)" },
-  "config_attentionSuffixes2DialogMessage_label": { "message": "Message for confirmation (\"$\u200bATTACHMENTS\u200b$\" will be filled with attachment file names):" },
+  "config_attentionSuffixes2DialogMessage_label": { "message": "Message for confirmation (\"%S\" will be filled with attachment file names):" },
 
   "config_attentionTermsConfirm_label": { "message": "Confirm me again before send, if there is any attachment name with one of these terms in a message to foreign domains" },
   "config_attentionTerms_label": { "message": "Use the manually managed list" },
@@ -164,6 +167,7 @@
   "config_attentionTermsFile_button_dialogTitle": { "message": "Choose a list of terms in attachment names requiring reconfirmation" },
   "config_attentionTermsFile_button_dialogDisplayName": { "message": "List File" },
   "config_attentionTermsFile_input_placeholder": { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\suffixes.txt)" },
+  "config_attentionTermsDialogMessage_label": { "message": "Message for confirmation (\"%S\" will be filled with attachment file names):" },
 
   "config_requireReinputAttachmentNames_label": { "message": "Require to input file names of attachments, if there is any other domain recipient" },
   "config_allowCheckAllAttachments_label": { "message": "Allow to make all attachments to be checked with one checkbox" },

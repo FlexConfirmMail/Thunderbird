@@ -50,7 +50,7 @@
     <section>
     <h1>__MSG_config_attentionDomains_caption__</h1>
 
-    <fieldset>
+    <fieldset id="attentionDomainsFields">
       <legend>__MSG_config_attentionDomainsSource_caption__</legend>
       <ul>
         <li><label><input name="attentionDomainsSource" type="radio" value="0">__MSG_config_attentionDomains_label__</label>
@@ -70,6 +70,9 @@
                                class="flex-box column"
                               >__MSG_config_attentionDomainsFile_button_label__</button></label></li>
       </ul>
+      <p><label>__MSG_config_attentionDomainsDialogMessage_label__
+                <textarea id="attentionDomainsDialogMessage"
+                          data-default-message-key="confirmAttentionDomainsMessage"></textarea></label></p>
     </fieldset>
 
     <fieldset>
@@ -95,7 +98,7 @@
     <section>
     <h1>__MSG_config_blockedDomains_caption__</h1>
 
-    <fieldset>
+    <fieldset id="blockedDomainsFields">
       <legend><label><input id="blockedDomainsEnabled" type="checkbox">__MSG_config_blockedDomainsEnabled__</label></legend>
       <ul>
         <li><label><input name="blockedDomainsSource" type="radio" value="0">__MSG_config_blockedDomains_label__</label>
@@ -115,6 +118,9 @@
                                class="flex-box column"
                               >__MSG_config_blockedDomainsFile_button_label__</button></label></li>
       </ul>
+      <p><label>__MSG_config_blockedDomainsDialogMessage_label__
+                <textarea id="blockedDomainsDialogMessage"
+                          data-default-message-key="alertBlockedDomainsMessage"></textarea></label></p>
     </fieldset>
     </section>
 
@@ -124,7 +130,7 @@
 
     <p><label><input id="requireCheckAttachment" type="checkbox">__MSG_config_requireCheckAttachment_label__</label></p>
 
-    <fieldset>
+    <fieldset id="attentionSuffixesFields">
       <legend><label><input id="attentionSuffixesConfirm" type="checkbox">__MSG_config_attentionSuffixesConfirm_label__</label></legend>
       <ul>
         <li><label><input name="attentionSuffixesSource" type="radio" value="0">__MSG_config_attentionSuffixes_label__</label>
@@ -144,9 +150,12 @@
                                class="flex-box column"
                               >__MSG_config_attentionSuffixesFile_button_label__</button></label></li>
       </ul>
+      <p><label>__MSG_config_attentionSuffixesDialogMessage_label__
+                <textarea id="attentionSuffixesDialogMessage"
+                          data-default-message-key="confirmAttentionSuffixesMessage"></textarea></label></p>
     </fieldset>
 
-    <fieldset>
+    <fieldset id="attentionSuffixes2Fields">
       <legend><label><input id="attentionSuffixes2Confirm" type="checkbox">__MSG_config_attentionSuffixes2Confirm_label__</label></legend>
       <ul>
         <li><label><input name="attentionSuffixes2Source" type="radio" value="0">__MSG_config_attentionSuffixes2_label__</label>
@@ -167,10 +176,11 @@
                               >__MSG_config_attentionSuffixes2File_button_label__</button></label></li>
       </ul>
       <p><label>__MSG_config_attentionSuffixes2DialogMessage_label__
-                <textarea id="attentionSuffixes2DialogMessage"></textarea></label></p>
+                <textarea id="attentionSuffixes2DialogMessage"
+                          data-default-message-key="confirmAttentionSuffixes2Message"></textarea></label></p>
     </fieldset>
 
-    <fieldset>
+    <fieldset id="attentionTermsFields">
       <legend><label><input id="attentionTermsConfirm" type="checkbox">__MSG_config_attentionTermsConfirm_label__</label></legend>
       <ul>
         <li><label><input name="attentionTermsSource" type="radio" value="0">__MSG_config_attentionTerms_label__</label>
@@ -190,6 +200,9 @@
                                class="flex-box column"
                               >__MSG_config_attentionTermsFile_button_label__</button></label></li>
       </ul>
+      <p><label>__MSG_config_attentionTermsDialogMessage_label__
+                <textarea id="attentionTermsDialogMessage"
+                          data-default-message-key="confirmAttentionTermsMessage"></textarea></label></p>
     </fieldset>
 
     <p><label><input id="requireReinputAttachmentNames" type="checkbox">__MSG_config_requireReinputAttachmentNames_label__</label></p>
