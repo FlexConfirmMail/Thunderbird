@@ -132,7 +132,7 @@ fieldset.collapsible.collapsed > *:not(legend):not(div) /* "div" is for the cont
 }
 
 fieldset.collapsible > legend::before,
-body > section > h1:first-child::before {
+body > section.collapsible > h1:first-child::before {
   content: "▼";
   display: inline-block;
   font-size: 65%;
@@ -142,7 +142,7 @@ body > section > h1:first-child::before {
 }
 
 fieldset.collapsible.collapsed > legend::before,
-body > section.collapsed > h1:first-child::before {
+body > section.collapsible.collapsed > h1:first-child::before {
   transform: rotate(-90deg);
 }
 
