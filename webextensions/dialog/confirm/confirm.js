@@ -6,7 +6,7 @@
 'use strict';
 
 import '/extlib/l10n.js';
-//import RichConfirm from '/extlib/RichConfirm.js';
+import RichConfirm from '/extlib/RichConfirm.js';
 import * as Dialog from '/extlib/dialog.js';
 
 import {
@@ -376,11 +376,9 @@ async function confirmMultipleRecipientDomains() {
     configs.confirmMultipleRecipientDomainsDialogMessage.replace(/\%s/i, Array.from(domains).join('\n')) ||
     browser.i18n.getMessage('confirmMultipleRecipientDomainsMessage', [Array.from(domains).join('\n')])
   );
-  return window.confirm(message);
-  /*
   let result;
   try {
-    result = await RichConfirm.showInPopup(mParams.windowId, {
+    result = await RichConfirm.show({
       modal: true,
       type:  'common-dialog',
       url:   '/resources/blank.html',
@@ -402,7 +400,6 @@ async function confirmMultipleRecipientDomains() {
     default:
       return false;
   }
-  */
 }
 
 async function confirmAttentionDomains() {
@@ -426,11 +423,9 @@ async function confirmAttentionDomains() {
     configs.attentionDomainsDialogMessage.replace(/\%s/i, attentionRecipients.join('\n')) ||
     browser.i18n.getMessage('confirmAttentionDomainsMessage', [attentionRecipients.join('\n')])
   );
-  return window.confirm(message);
-  /*
   let result;
   try {
-    result = await RichConfirm.showInPopup(mParams.windowId, {
+    result = await RichConfirm.show({
       modal: true,
       type:  'common-dialog',
       url:   '/resources/blank.html',
@@ -452,7 +447,6 @@ async function confirmAttentionDomains() {
     default:
       return false;
   }
-  */
 }
 
 async function confirmAttentionTerms() {
@@ -469,11 +463,9 @@ async function confirmAttentionTerms() {
     configs.attentionTermsDialogMessage.replace(/\%s/i, attentionAttachments.join('\n')) ||
     browser.i18n.getMessage('confirmAttentionTermsMessage', [attentionAttachments.join('\n')])
   );
-  return window.confirm(message);
-  /*
   let result;
   try {
-    result = await RichConfirm.showInPopup(mParams.windowId, {
+    result = await RichConfirm.show({
       modal: true,
       type:  'common-dialog',
       url:   '/resources/blank.html',
@@ -495,7 +487,6 @@ async function confirmAttentionTerms() {
     default:
       return false;
   }
-  */
 }
 
 async function confirmAttentionSuffixes() {
@@ -512,11 +503,9 @@ async function confirmAttentionSuffixes() {
     configs.attentionSuffixesDialogMessage.replace(/\%s/i, attentionAttachments.join('\n')) ||
     browser.i18n.getMessage('confirmAttentionSuffixesMessage', [attentionAttachments.join('\n')])
   );
-  return window.confirm(message);
-  /*
   let result;
   try {
-    result = await RichConfirm.showInPopup(mParams.windowId, {
+    result = await RichConfirm.show({
       modal: true,
       type:  'common-dialog',
       url:   '/resources/blank.html',
@@ -538,7 +527,6 @@ async function confirmAttentionSuffixes() {
     default:
       return false;
   }
-  */
 }
 
 async function confirmAttentionSuffixes2() {
@@ -555,11 +543,9 @@ async function confirmAttentionSuffixes2() {
     configs.attentionSuffixes2DialogMessage.replace(/\%s/i, attentionAttachments.join('\n')) ||
     browser.i18n.getMessage('confirmAttentionSuffixes2Message', [attentionAttachments.join('\n')])
   );
-  return window.confirm(message);
-  /*
   let result;
   try {
-    result = await RichConfirm.showInPopup(mParams.windowId, {
+    result = await RichConfirm.show({
       modal: true,
       type:  'common-dialog',
       url:   '/resources/blank.html',
@@ -581,5 +567,4 @@ async function confirmAttentionSuffixes2() {
     default:
       return false;
   }
-  */
 }

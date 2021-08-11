@@ -227,3 +227,9 @@ hr.splitter {
     color: red;
     font-size: 160%;
 }
+
+
+.rich-confirm-dialog {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
