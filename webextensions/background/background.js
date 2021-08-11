@@ -553,3 +553,43 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
   mLastContextMessagesForTab.clear();
   return;
 });
+
+
+const CONFIGS_VERSION = 2;
+
+configs.$loaded.then(async () => {
+  switch (configs.configsVersion) {
+    case 0:
+      configs.blockedDomainsDialogTitle      = configs.blockedDomainDialogTitle;
+      configs.blockedDomainsDialogMessage    = configs.blockedDomainDialogMessage;
+      configs.attentionDomainsDialogTitle    = configs.attentionDomainDialogTitle;
+      configs.attentionDomainsDialogMessage  = configs.attentionDomainDialogMessage;
+      configs.attentionSuffixesDialogTitle   = configs.attentionSuffixDialogTitle;
+      configs.attentionSuffixesDialogMessage = configs.attentionSuffixDialogMessage;
+
+    case 1:
+      const allLocalData = await browser.storage.local.get(null);
+      if (!('attentionSuffixesConfirm' in allLocalData) &&
+          (configs.attentionSuffixes.length > 0 ||
+           configs.attentionSuffixesFile))
+        configs.attentionSuffixesConfirm = true;
+      if (!('attentionSuffixes2Confirm' in allLocalData) &&
+          (configs.attentionSuffixes2.length > 0 ||
+           configs.attentionSuffixes2File))
+        configs.attentionSuffixes2Confirm = true;
+      if (!('attentionTermsConfirm' in allLocalData) &&
+          (configs.attentionTerms.length > 0 ||
+           configs.attentionTermsFile))
+        configs.attentionTermsConfirm = true;
+      if (!('blockedDomainsEnabled' in allLocalData) &&
+          (configs.blockedDomains.length > 0 ||
+           configs.blockedDomainsFile))
+        configs.blockedDomainsEnabled = true;
+
+    default:
+      break;
+  }
+
+  if (configs.configsVersion != CONFIGS_VERSION)
+    configs.configsVersion = CONFIGS_VERSION;
+});

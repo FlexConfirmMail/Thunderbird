@@ -8,8 +8,6 @@
 import Configs from '/extlib/Configs.js';
 import * as Constants from './constants.js';
 
-const CONFIGS_VERSION = 1;
-
 const OVERRIDE_DEFAULT_CONFIGS = {}; /* Replace this for more customization on an enterprise use. */
 
 export const configs = new Configs({
@@ -26,28 +24,28 @@ export const configs = new Configs({
   attentionDomainsDialogTitle: '',
   attentionDomainsDialogMessage: '',
 
-  attentionSuffixesConfirm: true,
+  attentionSuffixesConfirm: false,
   attentionSuffixes: [],
   attentionSuffixesSource: Constants.SOURCE_CONFIG,
   attentionSuffixesFile: '',
   attentionSuffixesDialogTitle: '',
   attentionSuffixesDialogMessage: '',
 
-  attentionSuffixes2Confirm: true,
+  attentionSuffixes2Confirm: false,
   attentionSuffixes2: [],
   attentionSuffixes2Source: Constants.SOURCE_CONFIG,
   attentionSuffixes2File: '',
   attentionSuffixes2DialogTitle: '',
   attentionSuffixes2DialogMessage: '',
 
-  attentionTermsConfirm: true,
+  attentionTermsConfirm: false,
   attentionTerms: [],
   attentionTermsSource: Constants.SOURCE_CONFIG,
   attentionTermsFile: '',
   attentionTermsDialogTitle: '',
   attentionTermsDialogMessage: '',
 
-  blockedDomainsEnabled: true,
+  blockedDomainsEnabled: false,
   blockedDomains: [],
   blockedDomainsSource: Constants.SOURCE_CONFIG,
   blockedDomainsFile: '',
@@ -111,24 +109,6 @@ export const configs = new Configs({
   localKeys: [
     'debug'
   ]
-});
-
-configs.$loaded.then(() => {
-  switch (configs.configsVersion) {
-    case 0:
-      configs.blockedDomainsDialogTitle      = configs.blockedDomainDialogTitle;
-      configs.blockedDomainsDialogMessage    = configs.blockedDomainDialogMessage;
-      configs.attentionDomainsDialogTitle    = configs.attentionDomainDialogTitle;
-      configs.attentionDomainsDialogMessage  = configs.attentionDomainDialogMessage;
-      configs.attentionSuffixesDialogTitle   = configs.attentionSuffixDialogTitle;
-      configs.attentionSuffixesDialogMessage = configs.attentionSuffixDialogMessage;
-
-    default:
-      break;
-  }
-
-  if (configs.configsVersion != CONFIGS_VERSION)
-    configs.configsVersion = CONFIGS_VERSION;
 });
 
 export function log(message, ...args) {
