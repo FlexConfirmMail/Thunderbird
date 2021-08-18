@@ -109,7 +109,7 @@
   "config_attentionDomainsFile_button_dialogTitle": { "message": "特別に注意が必要な外部ドメインのリストを選択" },
   "config_attentionDomainsFile_button_dialogDisplayName": { "message": "リストファイル" },
   "config_attentionDomainsFile_input_placeholder": { "message": "ファイルのパスを入力（例：\\\\FileServer\\Shared\\domains.txt）" },
-  "config_attentionDomainsDialogMessage_label": { "message": "警告のメッセージ (\"$S\" と書いた位置に宛先が入ります):" },
+  "config_attentionDomainsDialogMessage_label": { "message": "警告のメッセージ (\"%S\" と書いた位置に宛先が入ります):" },
 
   "config_attentionDomainsHighlightMode_caption": { "message": "これらのドメインに該当する宛先の強調表示" },
   "config_attentionDomainsHighlightMode_always_label": { "message": "常に強調表示" },
@@ -133,7 +133,7 @@
   "config_blockedDomainsFile_button_dialogTitle": { "message": "送信を禁止するドメインのリストを選択" },
   "config_blockedDomainsFile_button_dialogDisplayName": { "message": "リストファイル" },
   "config_blockedDomainsFile_input_placeholder": { "message": "ファイルのパスを入力（例：\\\\FileServer\\Shared\\domains.txt）" },
-  "config_blockedDomainsDialogMessage_label": { "message": "警告のメッセージ (\"$S\" と書いた位置に宛先が入ります):" },
+  "config_blockedDomainsDialogMessage_label": { "message": "警告のメッセージ (\"%S\" と書いた位置に宛先が入ります):" },
 
 
   "config_attachments_caption": { "message": "添付ファイル" },
@@ -148,7 +148,7 @@
   "config_attentionSuffixesFile_button_dialogTitle": { "message": "添付ファイル名に含まれていた場合に再度警告する拡張子のリストを選択" },
   "config_attentionSuffixesFile_button_dialogDisplayName": { "message": "リストファイル" },
   "config_attentionSuffixesFile_input_placeholder": { "message": "ファイルのパスを入力（例：\\\\FileServer\\Shared\\suffixes.txt）" },
-  "config_attentionSuffixesDialogMessage_label": { "message": "警告のメッセージ (\"$S\" と書いた位置に添付ファイル名が入ります):" },
+  "config_attentionSuffixesDialogMessage_label": { "message": "警告のメッセージ (\"%S\" と書いた位置に添付ファイル名が入ります):" },
 
   "config_attentionSuffixes2Confirm_label": { "message": "これらの拡張子を持つファイルが外部ドメイン宛のメールに添付されている場合はさらに再度警告する" },
   "config_attentionSuffixes2_label": { "message": "手動編集のリストを使用" },
@@ -158,7 +158,7 @@
   "config_attentionSuffixes2File_button_dialogTitle": { "message": "添付ファイル名に含まれていた場合に再度警告する拡張子のリストを選択" },
   "config_attentionSuffixes2File_button_dialogDisplayName": { "message": "リストファイル" },
   "config_attentionSuffixes2File_input_placeholder": { "message": "ファイルのパスを入力（例：\\\\FileServer\\Shared\\suffixes.txt）" },
-  "config_attentionSuffixes2DialogMessage_label": { "message": "警告のメッセージ (\"$S\" と書いた位置に添付ファイル名が入ります):" },
+  "config_attentionSuffixes2DialogMessage_label": { "message": "警告のメッセージ (\"%S\" と書いた位置に添付ファイル名が入ります):" },
 
   "config_attentionTermsConfirm_label": { "message": "これらの語句を名前の一部に持つファイルが外部ドメイン宛のメールに添付されている場合は再度警告する" },
   "config_attentionTerms_label": { "message": "手動編集のリストを使用" },
@@ -168,7 +168,7 @@
   "config_attentionTermsFile_button_dialogTitle": { "message": "添付ファイル名に含まれていた場合に再度警告する語句のリストを選択" },
   "config_attentionTermsFile_button_dialogDisplayName": { "message": "リストファイル" },
   "config_attentionTermsFile_input_placeholder": { "message": "ファイルのパスを入力（例：\\\\FileServer\\Shared\\phrases.txt）" },
-  "config_attentionTermsDialogMessage_label": { "message": "警告のメッセージ (\"$S\" と書いた位置に添付ファイル名が入ります):" },
+  "config_attentionTermsDialogMessage_label": { "message": "警告のメッセージ (\"%S\" と書いた位置に添付ファイル名が入ります):" },
 
   "config_requireReinputAttachmentNames_label": { "message": "宛先に外部ドメインのアドレスがある場合、添付ファイル名の手動での入力を求める" },
   "config_allowCheckAllAttachments_label": { "message": "添付ファイルのチェックボックスの一括制御を許可" },
