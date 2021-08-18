@@ -82,7 +82,7 @@ configs.$loaded.then(async () => {
   mAttentionDomains = mParams.attentionDomains;
   mAttachmentClassifier = new AttachmentClassifier({
     attentionSuffixes:  mParams.attentionSuffixes,
-    attentionSuffixess: mParams.attentionSuffixess,
+    attentionSuffixes2: mParams.attentionSuffixes2,
     attentionTerms:     mParams.attentionTerms
   });
 
