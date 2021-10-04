@@ -16,8 +16,8 @@ export const configs = new Configs({
   acceptablePastedTextLength: 100,
   internalDomains: [],
 
-  attentionDomainsHighlightMode: Constants.ATTENTION_HIGHLIGHT_MODE_ALWAYS,
-  attentionDomainsConfirmationMode: Constants.ATTENTION_CONFIRMATION_MODE_ALWAYS,
+  attentionDomainsHighlightMode: Constants.HIGHLIGHT_ALWAYS,
+  attentionDomainsConfirmationMode: Constants.CONFIRM_ALWAYS,
   attentionDomains: [],
   attentionDomainsSource: Constants.SOURCE_CONFIG,
   attentionDomainsFile: '',

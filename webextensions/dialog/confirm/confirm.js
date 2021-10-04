@@ -41,8 +41,8 @@ function onConfigChange(key) {
   switch (key) {
     case 'attentionDomainsHighlightMode':
       document.documentElement.classList.toggle('highlight-attention-domains', (
-        value == Constants.ATTENTION_HIGHLIGHT_MODE_ALWAYS ||
-        (value == Constants.ATTENTION_HIGHLIGHT_MODE_ONLY_WITH_ATTACHMENTS &&
+        value == Constants.HIGHLIGHT_ALWAYS ||
+        (value == Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS &&
          mParams.attachments.length > 0)
       ));
       break;
@@ -405,8 +405,8 @@ async function confirmMultipleRecipientDomains() {
 async function confirmAttentionDomains() {
   const mode = configs.attentionDomainsConfirmationMode;
   const shouldConfirm = (
-    mode == Constants.ATTENTION_CONFIRMATION_MODE_ALWAYS ||
-    (mode == Constants.ATTENTION_CONFIRMATION_MODE_ONLY_WITH_ATTACHMENTS &&
+    mode == Constants.CONFIRM_ALWAYS ||
+    (mode == Constants.CONFIRM_ONLY_WITH_ATTACHMENTS &&
      mParams.attachments.length > 0)
   );
   log('confirmAttentionDomains shouldConfirm = ', shouldConfirm);
