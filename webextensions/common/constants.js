@@ -23,9 +23,17 @@ export const CLIPBOARD_STATE_PASTED_TO_DIFFERENT_SIGNATURE_MAIL = 1 << 0;
 export const CLIPBOARD_STATE_PASTED_TOO_LARGE_TEXT = 1 << 1;
 export const CLIPBOARD_STATE_UNSAFE = (1 << 0) | (1 << 1);
 
+export const MATCH_TO_RECIPIENT_DOMAIN  = 0;
+export const MATCH_TO_ATTACHMENT_NAME   = 1;
+export const MATCH_TO_ATTACHMENT_SUFFIX = 2;
+
 export const HIGHLIGHT_NEVER = 0;
 export const HIGHLIGHT_ALWAYS = 1;
 export const HIGHLIGHT_ONLY_WITH_ATTACHMENTS = 2;
+
+export const BLOCK_NEVER = 0;
+export const BLOCK_ALWAYS = 1;
+export const BLOCK_ONLY_WITH_ATTACHMENTS = 2;
 
 export const CONFIRM_NEVER = 0;
 export const CONFIRM_ALWAYS = 1;
