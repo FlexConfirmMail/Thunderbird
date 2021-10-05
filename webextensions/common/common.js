@@ -211,6 +211,73 @@ export const configs = new Configs({
   ]
 });
 
+export function loadUserRules() {
+  const mergedRules     = [];
+  const mergedRulesById = {};
+  for (const rules of [configs.baseRules, configs.userRules, configs.overrideRules]) {
+    const locked = rules === configs.overrideRules;
+    for (const rule of rules) {
+      const id = rule.id;
+      if (!id)
+        continue;
+      let merged = mergedRulesById[id];
+      if (!merged) {
+        merged = mergedRulesById[id] = { id, $lockedKeys: [] };
+        mergedRules.push(merged);
+      }
+      Object.assign(merged, rule);
+      if (locked) {
+        merged.$lockedKeys.push(...Object.keys(rule));
+      }
+    }
+  }
+  return mergedRules;
+}
+
+export function saveUserRules(rules) {
+  const baseRulesById = {};
+  for (const rule of configs.baseRules) {
+    baseRulesById[rule.id] = rule;
+  }
+
+  const lockedKeysById = {};
+  for (const rule of configs.overrideRules) {
+    lockedKeysById[rule.id] = Object.keys(rule).filter(key => key != 'id');
+  }
+
+  const toBeSavedRules = [];
+  const toBeSavedRulesById = {};
+  for (const rule of rules) {
+    const toBeSaved = toBeSavedRulesById[rule.id] = {};
+    Object.assign(toBeSaved, rule);
+    delete toBeSaved.$lockedKeys;
+
+    const baseRule = baseRulesById[rule.id];
+    if (baseRule) {
+      for (const [key, value] of Object.entries(baseRule)) {
+        if (key == 'id')
+          continue;
+        if (JSON.stringify(toBeSaved[key]) == JSON.stringify(value))
+          delete toBeSaved[key];
+      }
+    }
+
+    const lockedKeys = lockedKeysById[rule.id];
+    if (lockedKeys) {
+      for (const key of lockedKeys) {
+        if (key == 'id')
+          continue;
+        delete toBeSaved[key];
+      }
+    }
+
+    if (Object.keys(toBeSaved).length > 1)
+      toBeSavedRules.push(toBeSaved);
+  }
+
+  configs.userRules = toBeSavedRules;
+}
+
 export function log(message, ...args) {
   if (!configs || !configs.debug)
     return;
