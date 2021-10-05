@@ -19,3 +19,6 @@
 [submodule "submodules/webextensions-lib-dialog"]
 	path = submodules/webextensions-lib-dialog
 	url = https://gitlab.com/clear-code/webextensions-lib-dialog.git
+[submodule "submodules/webextensions-lib-dom-updater"]
+	path = submodules/webextensions-lib-dom-updater
+	url = https://github.com/piroor/webextensions-lib-dom-updater.git
