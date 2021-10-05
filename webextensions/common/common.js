@@ -17,19 +17,23 @@ export const configs = new Configs({
   internalDomains: [],
 
   /*
-    Elements of "baseRules" should have properties same to elements of "rules".
+    Elements of "baseRules" and "overrideRules" should have properties same to
+    elements of "userRules".
     FCM should work as:
-      1. Load "baseRules" to a staging object.
-      2. Merge items and properties of "rules" to the staging object.
-      3. Build options UI / do confirmation based on rules described in the staging object.
-      4. Save values only changed from the baseRule to "rules".
-    So, company users (system admins) may lock "baseRules" with partial rules to provide fixed fields.
+      1. Load "baseRules" to a "merged object".
+      2. Merge items and properties of "userRules" to the merged object.
+      3. Merge items and properties of "overrideRules" to the merged object.
+      4. Build options UI / do confirmation based on rules described in the merged object.
+      5. Save values only changed from the baseRule to "userRules".
+    So, company users (system admins) may lock "baseRules" and "overrideRules"
+    with partial properties to provide fixed fields.
   */
   allowAddRules: true, // don't expose this to the options UI!
   allowRemoveRules: true, // don't expose this to the options UI!
   allowRearrangeRules: true, // don't expose this to the options UI!
   baseRules: [], // don't expose this to the options UI!
-  rules: [
+  overrideRules: [], // don't expose this to the options UI!
+  userRules: [
     /*
     {
       id:             'arbitrary unique string',
