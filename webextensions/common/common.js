@@ -16,6 +16,19 @@ export const configs = new Configs({
   acceptablePastedTextLength: 100,
   internalDomains: [],
 
+  /*
+    Elements of "baseRules" should have properties same to elements of "rules".
+    FCM should work as:
+      1. Load "baseRules" to a staging object.
+      2. Merge items and properties of "rules" to the staging object.
+      3. Build options UI / do confirmation based on rules described in the staging object.
+      4. Save values only changed from the baseRule to "rules".
+    So, company users (system admins) may lock "baseRules" with partial rules to provide fixed fields.
+  */
+  allowAddRules: true, // don't expose this to the options UI!
+  allowRemoveRules: true, // don't expose this to the options UI!
+  allowRearrangeRules: true, // don't expose this to the options UI!
+  baseRules: [], // don't expose this to the options UI!
   rules: [
     /*
     {
