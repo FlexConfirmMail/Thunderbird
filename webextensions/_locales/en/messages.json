@@ -99,7 +99,16 @@
   "config_allowCheckAllExternals_label": { "message": "Allow to make all foreign recipients to be checked with one checkbox" },
 
 
+  "config_userRules_caption":              { "message": "More Rules" },
+  "config_userRules_add":                  { "message": "New Rule" },
+  "config_userRules_remove":               { "message": "Remove Rule" },
+  "config_userRules_moveUp_label":         { "message": "▲" },
+  "config_userRules_moveUp_tooltiptext":   { "message": "Move Up" },
+  "config_userRules_moveDown_label":       { "message": "▼" },
+  "config_userRules_moveDown_tooltiptext": { "message": "Move Down" },
+
   "config_userRule_name_placeholder":    { "message": "Title" },
+  "config_userRule_name_tooltiptext":    { "message": "Double click to edit title" },
   "config_userRule_enabled_tooltiptext": { "message": "Check to activate this rule" },
 
   "config_userRule_matchTarget_caption":          { "message": "Match to:" },
@@ -130,9 +139,9 @@
   "config_userRule_itemsFile_input_placeholder_recipientDomain":   { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\domains.txt)" },
   "config_userRule_itemsFile_input_placeholder_attachmentName":    { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\terms.txt)" },
   "config_userRule_itemsFile_input_placeholder_attachmentSuffix":  { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\suffixes.txt)" },
-  "config_userRule_itemsFile_confirmMessage_caption_recipientDomain":  { "message": "Message for confirmation (\"%S\" will be filled with recipients):" },
-  "config_userRule_itemsFile_confirmMessage_caption_attachmentName":   { "message": "Message for confirmation (\"%S\" will be filled with attachment names):" },
-  "config_userRule_itemsFile_confirmMessage_caption_attachmentSuffix": { "message": "Message for confirmation (\"%S\" will be filled with attachment names):" },
+  "config_userRule_confirmMessage_caption_recipientDomain":  { "message": "Message for confirmation (\"%S\" will be filled with recipients):" },
+  "config_userRule_confirmMessage_caption_attachmentName":   { "message": "Message for confirmation (\"%S\" will be filled with attachment names):" },
+  "config_userRule_confirmMessage_caption_attachmentSuffix": { "message": "Message for confirmation (\"%S\" will be filled with attachment names):" },
 
 
   "config_attentionDomains_caption": { "message": "Specially alerted foreign domains in recipients" },

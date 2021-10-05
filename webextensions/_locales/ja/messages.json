@@ -99,7 +99,16 @@
   "config_allowCheckAllExternals_label": { "message": "外部の宛先の一括チェックを許可" },
 
 
-  "config_userRule_name_placeholder":    { "message": "見出し" },
+  "config_userRules_caption":              { "message": "追加のルール" },
+  "config_userRules_add":                  { "message": "新規ルール" },
+  "config_userRules_remove":               { "message": "ルールを削除" },
+  "config_userRules_moveUp_label":         { "message": "▲" },
+  "config_userRules_moveUp_tooltiptext":   { "message": "上に移動" },
+  "config_userRules_moveDown_label":       { "message": "▼" },
+  "config_userRules_moveDown_tooltiptext": { "message": "下に移動" },
+
+  "config_userRule_name_placeholder":    { "message": "タイトル" },
+  "config_userRule_name_tooltiptext":    { "message": "ダブルクリックでタイトルを編集できます" },
   "config_userRule_enabled_tooltiptext": { "message": "チェックをONにすると有効になります" },
 
   "config_userRule_matchTarget_caption":          { "message": "マッチング対象:" },
@@ -130,9 +139,9 @@
   "config_userRule_itemsFile_input_placeholder_recipientDomain":   { "message": "ファイルのパスを入力（例：\\\\FileServer\\Shared\\domains.txt）" },
   "config_userRule_itemsFile_input_placeholder_attachmentName":    { "message": "ファイルのパスを入力（例：\\\\FileServer\\Shared\\terms.txt）" },
   "config_userRule_itemsFile_input_placeholder_attachmentSuffix":  { "message": "ファイルのパスを入力（例：\\\\FileServer\\Shared\\suffixes.txt）" },
-  "config_userRule_itemsFile_confirmMessage_caption_recipientDomain":  { "message": "警告のメッセージ (\"%S\" と書いた位置に宛先が入ります):" },
-  "config_userRule_itemsFile_confirmMessage_caption_attachmentName":   { "message": "警告のメッセージ (\"%S\" と書いた位置に添付ファイル名が入ります):" },
-  "config_userRule_itemsFile_confirmMessage_caption_attachmentSuffix": { "message": "警告のメッセージ (\"%S\" と書いた位置に添付ファイル名が入ります):" },
+  "config_userRule_confirmMessage_caption_recipientDomain":  { "message": "警告のメッセージ (\"%S\" と書いた位置に宛先が入ります):" },
+  "config_userRule_confirmMessage_caption_attachmentName":   { "message": "警告のメッセージ (\"%S\" と書いた位置に添付ファイル名が入ります):" },
+  "config_userRule_confirmMessage_caption_attachmentSuffix": { "message": "警告のメッセージ (\"%S\" と書いた位置に添付ファイル名が入ります):" },
 
 
 
