@@ -36,7 +36,7 @@ export const configs = new Configs({
   userRules: [
     /*
     {
-      id:             'arbitrary unique string',
+      id:             'arbitrary unique string (auto generated)',
       name:           'arbitrary visible name in the UI',
       enabled:        true (enabled) or false (disabled),
       matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN | Constants.MATCH_TO_ATTACHMENT_NAME | Constants.MATCH_TO_ATTACHMENT_SUFFIX,
@@ -46,7 +46,6 @@ export const configs = new Configs({
       itemsSource:    Constants.SOURCE_CONFIG | Constants.SOURCE_FILE,
       items:          [(strings)],
       itemsFile:      '(path to a text file: UTF-8, LF separated)',
-      confirmTitle:   '(string)',
       confirmMessage: '(string)',
     },
     */
@@ -61,7 +60,6 @@ export const configs = new Configs({
       itemsSource:    Constants.SOURCE_CONFIG,
       items:          [],
       itemsFile:      '',
-      confirmTitle:   '',
       confirmMessage: '',
     },
     {
@@ -75,7 +73,6 @@ export const configs = new Configs({
       itemsSource:    Constants.SOURCE_CONFIG,
       items:          [],
       itemsFile:      '',
-      confirmTitle:   '',
       confirmMessage: '',
     },
     {
@@ -89,7 +86,6 @@ export const configs = new Configs({
       itemsSource:    Constants.SOURCE_CONFIG,
       items:          [],
       itemsFile:      '',
-      confirmTitle:   '',
       confirmMessage: '',
     },
     {
@@ -103,7 +99,6 @@ export const configs = new Configs({
       itemsSource:    Constants.SOURCE_CONFIG,
       items:          [],
       itemsFile:      '',
-      confirmTitle:   '',
       confirmMessage: '',
     },
     {
@@ -117,7 +112,6 @@ export const configs = new Configs({
       itemsSource:    Constants.SOURCE_CONFIG,
       items:          [],
       itemsFile:      '',
-      confirmTitle:   '',
       confirmMessage: '',
     },
   ],

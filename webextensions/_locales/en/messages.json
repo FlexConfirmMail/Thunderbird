@@ -99,6 +99,42 @@
   "config_allowCheckAllExternals_label": { "message": "Allow to make all foreign recipients to be checked with one checkbox" },
 
 
+  "config_userRule_name_placeholder":    { "message": "Title" },
+  "config_userRule_enabled_tooltiptext": { "message": "Check to activate this rule" },
+
+  "config_userRule_matchTarget_caption":          { "message": "Match to:" },
+  "config_userRule_matchTarget_recipientDomain":  { "message": "Domain Name of Recipients" },
+  "config_userRule_matchTarget_attachmentName":   { "message": "Attachment Names" },
+  "config_userRule_matchTarget_attachmentSuffix": { "message": "Attachment Suffixes" },
+
+  "config_userRule_highlight_caption_recipient":  { "message": "Highlight matched recipients:" },
+  "config_userRule_highlight_caption_attachment": { "message": "Highlight matched attachments:" },
+  "config_userRule_confirm_caption_recipient":    { "message": "Re-confirmation when there is any matched recipient:" },
+  "config_userRule_confirm_caption_attachment":   { "message": "Re-confirmation when there is any matched attachment:" },
+  "config_userRule_block_caption_recipient":      { "message": "Disallow to send messages including any matched recipient:" },
+  "config_userRule_block_caption_attachment":     { "message": "Disallow to send messages including any matched attachment:" },
+  "config_userRule_applyAction_never":            { "message": "Never" },
+  "config_userRule_applyAction_always":           { "message": "Always" },
+  "config_userRule_applyAction_withAttachments":  { "message": "Only when there is any attachment" },
+
+  "config_userRule_items_caption":                      { "message": "Use a manually managed list" },
+  "config_userRule_items_placeholder_recipientDomain":  { "message": "Input a domain name per line (e.g. example.com)" },
+  "config_userRule_items_placeholder_attachmentName":   { "message": "Input a term per line (e.g. important, confidential)" },
+  "config_userRule_items_placeholder_attachmentSuffix": { "message": "Input a file extension per line (e.g. .exe, .pdf)" },
+  "config_userRule_itemsFile_caption":                             { "message": "Use a list given as a file" },
+  "config_userRule_itemsFile_button_label":                        { "message": "Choose…" },
+  "config_userRule_itemsFile_button_dialogTitle_recipientDomain":  { "message": "Choose a list of domain names" },
+  "config_userRule_itemsFile_button_dialogTitle_attachmentName":   { "message": "Choose a list of temrs" },
+  "config_userRule_itemsFile_button_dialogTitle_attachmentSuffix": { "message": "Choose a list of file extensions" },
+  "config_userRule_itemsFile_button_dialogDisplayName":            { "message": "List File" },
+  "config_userRule_itemsFile_input_placeholder_recipientDomain":   { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\domains.txt)" },
+  "config_userRule_itemsFile_input_placeholder_attachmentName":    { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\terms.txt)" },
+  "config_userRule_itemsFile_input_placeholder_attachmentSuffix":  { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\suffixes.txt)" },
+  "config_userRule_itemsFile_confirmMessage_caption_recipientDomain":  { "message": "Message for confirmation (\"%S\" will be filled with recipients):" },
+  "config_userRule_itemsFile_confirmMessage_caption_attachmentName":   { "message": "Message for confirmation (\"%S\" will be filled with attachment names):" },
+  "config_userRule_itemsFile_confirmMessage_caption_attachmentSuffix": { "message": "Message for confirmation (\"%S\" will be filled with attachment names):" },
+
+
   "config_attentionDomains_caption": { "message": "Specially alerted foreign domains in recipients" },
 
   "config_attentionDomainsSource_caption": { "message": "Specially alerted foreign domains" },

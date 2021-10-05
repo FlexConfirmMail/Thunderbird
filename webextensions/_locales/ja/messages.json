@@ -99,6 +99,43 @@
   "config_allowCheckAllExternals_label": { "message": "外部の宛先の一括チェックを許可" },
 
 
+  "config_userRule_name_placeholder":    { "message": "見出し" },
+  "config_userRule_enabled_tooltiptext": { "message": "チェックをONにすると有効になります" },
+
+  "config_userRule_matchTarget_caption":          { "message": "マッチング対象:" },
+  "config_userRule_matchTarget_recipientDomain":  { "message": "宛先のドメイン名部分" },
+  "config_userRule_matchTarget_attachmentName":   { "message": "添付ファイルの名前" },
+  "config_userRule_matchTarget_attachmentSuffix": { "message": "添付ファイルの拡張子" },
+
+  "config_userRule_highlight_caption_recipient":  { "message": "該当する宛先の強調表示:" },
+  "config_userRule_highlight_caption_attachment": { "message": "該当する添付ファイルの強調表示:" },
+  "config_userRule_confirm_caption_recipient":    { "message": "該当する宛先がある場合の送信確認後の再警告:" },
+  "config_userRule_confirm_caption_attachment":   { "message": "該当する添付ファイルがある場合の送信確認後の再警告:" },
+  "config_userRule_block_caption_recipient":      { "message": "該当する宛先がある場合の送信禁止:" },
+  "config_userRule_block_caption_attachment":     { "message": "該当する添付ファイルがある場合の送信禁止:" },
+  "config_userRule_applyAction_never":            { "message": "しない" },
+  "config_userRule_applyAction_always":           { "message": "常に行う" },
+  "config_userRule_applyAction_withAttachments":  { "message": "添付ファイルがある時だけ行う" },
+
+  "config_userRule_items_caption":                      { "message": "手動編集のリストを使用" },
+  "config_userRule_items_placeholder_recipientDomain":  { "message": "ドメイン名を1行ずつ入力（例：example.com）" },
+  "config_userRule_items_placeholder_attachmentName":   { "message": "語句を1行ずつ入力（例：危険、社外秘）" },
+  "config_userRule_items_placeholder_attachmentSuffix": { "message": "ファイルの拡張子を1行ずつ入力（例：.exe、.pdf）" },
+  "config_userRule_itemsFile_caption":                             { "message": "ファイル形式のリストを使用" },
+  "config_userRule_itemsFile_button_label":                        { "message": "参照..." },
+  "config_userRule_itemsFile_button_dialogTitle_recipientDomain":  { "message": "ドメインのリストを選択" },
+  "config_userRule_itemsFile_button_dialogTitle_attachmentName":   { "message": "語句のリストを選択" },
+  "config_userRule_itemsFile_button_dialogTitle_attachmentSuffix": { "message": "拡張子のリストを選択" },
+  "config_userRule_itemsFile_button_dialogDisplayName":            { "message": "リストファイル" },
+  "config_userRule_itemsFile_input_placeholder_recipientDomain":   { "message": "ファイルのパスを入力（例：\\\\FileServer\\Shared\\domains.txt）" },
+  "config_userRule_itemsFile_input_placeholder_attachmentName":    { "message": "ファイルのパスを入力（例：\\\\FileServer\\Shared\\terms.txt）" },
+  "config_userRule_itemsFile_input_placeholder_attachmentSuffix":  { "message": "ファイルのパスを入力（例：\\\\FileServer\\Shared\\suffixes.txt）" },
+  "config_userRule_itemsFile_confirmMessage_caption_recipientDomain":  { "message": "警告のメッセージ (\"%S\" と書いた位置に宛先が入ります):" },
+  "config_userRule_itemsFile_confirmMessage_caption_attachmentName":   { "message": "警告のメッセージ (\"%S\" と書いた位置に添付ファイル名が入ります):" },
+  "config_userRule_itemsFile_confirmMessage_caption_attachmentSuffix": { "message": "警告のメッセージ (\"%S\" と書いた位置に添付ファイル名が入ります):" },
+
+
+
   "config_attentionDomains_caption": { "message": "特別に注意が必要な外部ドメインの宛先" },
 
   "config_attentionDomainsSource_caption": { "message": "特別に注意が必要な外部ドメイン" },
