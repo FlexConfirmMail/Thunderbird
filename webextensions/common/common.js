@@ -60,7 +60,7 @@ export const configs = new Configs({
       itemsSource:    Constants.SOURCE_CONFIG,
       items:          [],
       itemsFile:      '',
-      confirmMessage: '',
+      confirmMessage: browser.i18n.getMessage('confirmAttentionDomainsMessage', ['$S']),
     },
     {
       id:             'builtInAttentionSuffixes',
@@ -73,11 +73,11 @@ export const configs = new Configs({
       itemsSource:    Constants.SOURCE_CONFIG,
       items:          [],
       itemsFile:      '',
-      confirmMessage: '',
+      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixesTitle', ['$S']),
     },
     {
       id:             'builtInAttentionSuffixes2',
-      name:           browser.i18n.getMessage('config_attentionSuffixesConfirm_label'),
+      name:           browser.i18n.getMessage('config_attentionSuffixes2Confirm_label'),
       enabled:        false,
       matchTarget:    Constants.MATCH_TO_ATTACHMENT_SUFFIX,
       highlight:      Constants.HIGHLIGHT_NEVER,
@@ -86,11 +86,11 @@ export const configs = new Configs({
       itemsSource:    Constants.SOURCE_CONFIG,
       items:          [],
       itemsFile:      '',
-      confirmMessage: '',
+      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixes2Message', ['$S']),
     },
     {
       id:             'builtInAttentionTerms',
-      name:           browser.i18n.getMessage('config_attentionSuffixesConfirm_label'),
+      name:           browser.i18n.getMessage('config_attentionTermsConfirm_label'),
       enabled:        false,
       matchTarget:    Constants.MATCH_TO_ATTACHMENT_NAME,
       highlight:      Constants.HIGHLIGHT_NEVER,
@@ -99,7 +99,7 @@ export const configs = new Configs({
       itemsSource:    Constants.SOURCE_CONFIG,
       items:          [],
       itemsFile:      '',
-      confirmMessage: '',
+      confirmMessage: browser.i18n.getMessage('confirmAttentionTermsMessage', ['$S']),
     },
     {
       id:             'builtInBlockedDomains',
@@ -112,7 +112,7 @@ export const configs = new Configs({
       itemsSource:    Constants.SOURCE_CONFIG,
       items:          [],
       itemsFile:      '',
-      confirmMessage: '',
+      confirmMessage: browser.i18n.getMessage('alertBlockedDomainsMessage', ['$S']),
     },
   ],
 
@@ -231,7 +231,7 @@ export function loadUserRules() {
       }
     }
   }
-  return mergedRules;
+  return [mergedRules, mergedRulesById];
 }
 
 export function saveUserRules(rules) {
@@ -301,4 +301,18 @@ export async function sendToHost(message) {
     log('Error: failed to get response for message', message, error);
     return null;
   }
+}
+
+
+export function toDOMDocumentFragment(source, parent) {
+  const range = document.createRange();
+  range.selectNodeContents(parent);
+  range.collapse(false);
+  const fragment = range.createContextualFragment(source.trim());
+  range.detach();
+  return fragment;
+}
+
+export function sanitizeForHTMLText(text) {
+  return String(text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }

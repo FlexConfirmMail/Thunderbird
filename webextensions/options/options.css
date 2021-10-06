@@ -127,7 +127,8 @@ input[type="text"].filepath + button {
 
 
 
-fieldset.collapsible.collapsed > *:not(legend):not(div) /* "div" is for the container of "import" and "export" buttons */ {
+fieldset.collapsible.collapsed > *:not(legend):not(div) /* "div" is for the container of "import" and "export" buttons */,
+fieldset.collapsible.collapsed .userRule-buttons p * {
   display: none;
 }
 
@@ -148,6 +149,18 @@ body > section.collapsible.collapsed > h1:first-child::before {
 
 
 
+.userRule-buttons .flex-box.row {
+  align-items: center;
+}
+
+.userRule-buttons button {
+  align-items: center;
+  margin: 0 0 0 0.5em;
+  min-width: 0;
+}
+
+
+
 .disabled {
   opacity: 0.5;
 }
@@ -161,4 +174,8 @@ body > section.collapsible.collapsed > h1:first-child::before {
 }
 legend label.locked {
   display: initial;
+}
+
+.hidden {
+  display: none;
 }
