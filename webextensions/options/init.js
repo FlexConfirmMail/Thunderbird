@@ -152,6 +152,10 @@ function setUserRuleFieldValue(query, value) {
   }
 }
 
+function hiddenIfLocked(rule, key) {
+  return rule.$lockedKeys.includes(key) ? 'hidden' : '';
+}
+
 function rebuildUserRulesUI() {
   const sections = [];
   for (const rule of mUserRules) {
@@ -167,7 +171,7 @@ function rebuildUserRulesUI() {
         <legend id=${safeAttrValue('userRule-ui-legend:' + id)}
                ><label id=${safeAttrValue('userRule-ui-legend-label:' + id)}
                       ><input id=${safeAttrValue('userRule-ui-enabled:' + id)}
-                              class="userRule-ui-enabled ${rule.$lockedKeys.includes('enabled') ? 'hidden' : ''}"
+                              class="userRule-ui-enabled ${hiddenIfLocked(rule, 'enabled')}"
                               type="checkbox"
                               title=${safeLocalizedValue('config_userRule_enabled_tooltiptext')}
                               ${rule.enabled ? 'checked' : ''}>
@@ -175,7 +179,7 @@ function rebuildUserRulesUI() {
                              class="userRule-ui-name-display"
                             >${sanitizeForHTMLText(rule.name)}</span>
                        <button id=${safeAttrValue('userRule-ui-name-editButton:' + id)}
-                              class="userRule-ui-name-editButton ${rule.$lockedKeys.includes('name') ? 'hidden' : ''}"
+                              class="userRule-ui-name-editButton ${hiddenIfLocked(rule, 'name')}"
                               >${safeLocalizedText('config_userRule_name_button_label')}</button>
                        <input id=${safeAttrValue('userRule-ui-name:' + id)}
                               class="userRule-ui-name"
@@ -188,7 +192,7 @@ function rebuildUserRulesUI() {
           <p id=${safeAttrValue('userRule-ui-matchTarget-column:' + id)}
              class="flex-box column"
             ><label id=${safeAttrValue('userRule-ui-matchTarget-label:' + id)}
-                    class="${rule.$lockedKeys.includes('matchTarget') ? 'hidden' : ''}"
+                    class="${hiddenIfLocked(rule, 'matchTarget')}"
                    >${safeLocalizedText('config_userRule_matchTarget_caption')}
                     <select id=${safeAttrValue('userRule-ui-matchTarget:' + id)}
                             class="userRule-ui-matchTarget">
@@ -219,20 +223,20 @@ function rebuildUserRulesUI() {
           <li id=${safeAttrValue('userRule-ui-itemsSource-container-items:' + id)}
               class="${rule.$lockedKeys.includes('itemsSource') && rule.itemsSource != Constants.SOURCE_CONFIG ? 'hidden' : ''}"
              ><label id=${safeAttrValue('userRule-ui-itemsSource-container-label-items:' + id)}
-                     class="${rule.$lockedKeys.includes('itemsSource') ? 'hidden' : ''}"
+                     class="${hiddenIfLocked(rule, 'itemsSource')}"
                     ><input id=${safeAttrValue('userRule-ui-itemsSource-items:' + id)}
                             name=${safeAttrValue('userRule-ui-itemsSource:' + id)}
                             type="radio"
                             value="${Constants.SOURCE_CONFIG}">
                      ${safeLocalizedText('config_userRule_items_caption')}</label>
               <textarea id=${safeAttrValue('userRule-ui-items:' + id)}
-                        class="userRule-ui-items ${rule.$lockedKeys.includes('items') ? 'hidden' : ''}"
+                        class="userRule-ui-items ${hiddenIfLocked(rule, 'items')}"
                         placeholder=${safeLocalizedValue('config_userRule_items_placeholder_' + matchTargetSuffix)}></textarea>
               </li>
           <li id=${safeAttrValue('userRule-ui-itemsSource-container-itemsFile:' + id)}
               class="${rule.$lockedKeys.includes('itemsSource') && rule.itemsSource != Constants.SOURCE_FILE ? 'hidden' : ''}"
              ><label id=${safeAttrValue('userRule-ui-itemsSource-container-label-itemsFile:' + id)}
-                     class="require-native-messaging-host ${rule.$lockedKeys.includes('itemsSource') ? 'hidden' : ''}"
+                     class="require-native-messaging-host ${hiddenIfLocked(rule, 'itemsSource')}"
                     ><input id=${safeAttrValue('userRule-ui-itemsSource-itemsFile:' + id)}
                             name=${safeAttrValue('userRule-ui-itemsSource:' + id)}
                             type="radio"
@@ -242,16 +246,16 @@ function rebuildUserRulesUI() {
                  ><label id=${safeAttrValue('userRule-ui-itemsSource-label-itemsFile:' + id)}
                          class="require-native-messaging-host flex-box row"
                         ><input id=${safeAttrValue('userRule-ui-itemsFile:' + id)}
-                                class="filepath flex-box column ${rule.$lockedKeys.includes('itemsFile') ? 'hidden' : ''}"
+                                class="filepath flex-box column ${hiddenIfLocked(rule, 'itemsFile')}"
                                 type="text"
                                 placeholder=${safeLocalizedValue('config_userRule_itemsFile_input_placeholder_' + matchTargetSuffix)}>
                          <button id=${safeAttrValue('userRule-ui-itemsSource-chooseFileButton-itemsFile:' + id)}
-                                 class="flex-box column ${rule.$lockedKeys.includes('itemsFile') ? 'hidden' : ''}"
+                                 class="flex-box column ${hiddenIfLocked(rule, 'itemsFile')}"
                                 >${safeLocalizedText('config_userRule_itemsFile_button_label')}</button></label></li>
         </ul>
 
         <p id=${safeAttrValue('userRule-ui-highlight-container:' + id)}
-           class="${rule.$lockedKeys.includes('highlight') ? 'hidden' : ''}"
+           class="${hiddenIfLocked(rule, 'highlight')}"
           ><label id=${safeAttrValue('userRule-ui-highlight-label:' + id)}
                  >${safeLocalizedText('config_userRule_highlight_caption_' + matchTargetTypeSuffix)}
                   <select id=${safeAttrValue('userRule-ui-highlight:' + id)}
@@ -268,7 +272,7 @@ function rebuildUserRulesUI() {
                   </select></label></p>
 
         <p id=${safeAttrValue('userRule-ui-confirmation-container:' + id)}
-           class="${rule.$lockedKeys.includes('confirmation') ? 'hidden' : ''}"
+           class="${hiddenIfLocked(rule, 'confirmation')}"
           ><label id=${safeAttrValue('userRule-ui-confirmation-label:' + id)}
                  >${safeLocalizedText('config_userRule_confirmation_caption_' + matchTargetTypeSuffix)}
                   <select id=${safeAttrValue('userRule-ui-confirmation:' + id)}
@@ -291,7 +295,7 @@ function rebuildUserRulesUI() {
                             class="userRule-ui-confirmMessage"></textarea></label></p>
 
         <p id=${safeAttrValue('userRule-ui-block-container:' + id)}
-           class="${rule.$lockedKeys.includes('block') ? 'hidden' : ''}"
+           class="${hiddenIfLocked(rule, 'block')}"
           ><label id=${safeAttrValue('userRule-ui-block-label:' + id)}
                  >${safeLocalizedText('config_userRule_block_caption_' + matchTargetTypeSuffix)}
                   <select id=${safeAttrValue('userRule-ui-block:' + id)}
