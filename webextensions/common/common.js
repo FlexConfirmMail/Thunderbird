@@ -10,6 +10,20 @@ import * as Constants from './constants.js';
 
 const OVERRIDE_DEFAULT_CONFIGS = {}; /* Replace this for more customization on an enterprise use. */
 
+const BASE_RULE = {
+  id:             '', // arbitrary unique string (auto generated)
+  name:           '', // arbitrary visible name in the UI
+  enabled:        true, // true (enabled) or false (disabled),
+  matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN, // | Constants.MATCH_TO_ATTACHMENT_NAME | Constants.MATCH_TO_ATTACHMENT_SUFFIX
+  highlight:      Constants.HIGHLIGHT_NEVER, // | Constants.HIGHLIGHT_ALWAYS | Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS
+  confirmation:   Constants.CONFIRM_NEVER, // | Constants.CONFIRM_ALWAYS | Constants.CONFIRM_ONLY_WITH_ATTACHMENTS
+  block:          Constants.BLOCK_NEVER, // | Constants.BLOCK_ALWAYS | Constants.BLOCK_ONLY_WITH_ATTACHMENTS
+  itemsSource:    Constants.SOURCE_CONFIG, // | Constants.SOURCE_FILE
+  items:          [], // array of strings
+  itemsFile:      '', // path to a text file: UTF-8, LF separated
+  confirmMessage: '', // string
+};
+
 export const configs = new Configs({
   confirmationMode: Constants.CONFIRMATION_MODE_ALWAYS,
   lastClipboardData: null,
@@ -222,12 +236,16 @@ export function loadUserRules() {
         continue;
       let merged = mergedRulesById[id];
       if (!merged) {
-        merged = mergedRulesById[id] = { id, $lockedKeys: [] };
+        merged = mergedRulesById[id] = {
+          ...JSON.parse(JSON.stringify(BASE_RULE)),
+          id,
+          $lockedKeys: [],
+        };
         mergedRules.push(merged);
       }
       Object.assign(merged, rule);
       if (locked) {
-        merged.$lockedKeys.push(...Object.keys(rule));
+        merged.$lockedKeys.push(...Object.keys(rule).filter(key => key != 'id'));
       }
     }
   }
@@ -238,11 +256,6 @@ export function saveUserRules(rules) {
   const baseRulesById = {};
   for (const rule of configs.baseRules) {
     baseRulesById[rule.id] = rule;
-  }
-
-  const lockedKeysById = {};
-  for (const rule of configs.overrideRules) {
-    lockedKeysById[rule.id] = Object.keys(rule).filter(key => key != 'id');
   }
 
   const toBeSavedRules = [];
@@ -262,9 +275,8 @@ export function saveUserRules(rules) {
       }
     }
 
-    const lockedKeys = lockedKeysById[rule.id];
-    if (lockedKeys) {
-      for (const key of lockedKeys) {
+    if (rule.$lockedKeys) {
+      for (const key of rule.$lockedKeys) {
         if (key == 'id')
           continue;
         delete toBeSaved[key];
