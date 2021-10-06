@@ -459,8 +459,7 @@ function throttledSaveUserRules() {
     clearTimeout(throttledSaveUserRules.timer);
   throttledSaveUserRules.timer = setTimeout(() => {
     throttledSaveUserRules.timer = null;
-    console.log('SAVE: ', mUserRules);
-    //saveUserRules(mUserRules);
+    saveUserRules(mUserRules);
   }, 50);
 }
 throttledSaveUserRules.timer = null;
