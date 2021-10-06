@@ -5,9 +5,20 @@
 */
 'use strict';
 
+import * as Constants from './constants.js';
+
 export class RecipientClassifier {
-  constructor({internalDomains, attentionDomains, blockedDomains } = {}) {
+  constructor({ internalDomains, rules, attentionDomains, blockedDomains } = {}) {
     this.$internalDomainsSet = new Set((internalDomains || []).map(domain => domain.toLowerCase().replace(/^@/, '')));
+    this.$matchedDomainsSets = {};
+    if (rules) {
+      for (const rule of rules) {
+        if (rule.matchTarget != Constants.MATCH_TO_RECIPIENT_DOMAIN)
+          continue;
+        this.$matchedDomainsSets[rule.id] = new Set((rule.items || []).map(domain => domain.toLowerCase().replace(/^@/, '')));
+      }
+    }
+
     this.$attentionDomainsSet = new Set((attentionDomains || []).map(domain => domain.toLowerCase().replace(/^@/, '')));
     this.$blockedDomainsSet = new Set((blockedDomains || []).map(domain => domain.toLowerCase().replace(/^@/, '')));
 
@@ -16,6 +27,8 @@ export class RecipientClassifier {
 
   classify(recipients) {
     const internals = [];
+    const matched   = {};
+
     const externals = [];
     const blocked   = [];
 
@@ -26,8 +39,22 @@ export class RecipientClassifier {
         recipient,
         address,
         domain,
+        matchedRules: [],
+
         isAttentionDomain: this.$attentionDomainsSet.has(domain)
       };
+      for (const [id, itemsSet] of Object.entries(this.$matchedDomainsSets)) {
+        if (!itemsSet.has(domain))
+          continue;
+
+        classifiedRecipient.matchedRules.push(id);
+        const recipients = matched[id] || [];
+        recipients.push(classifiedRecipient);
+        matched[id] = recipients;
+      }
+      if (classifiedRecipient.matchedRules.length > 0)
+        continue;
+
       if (this.$blockedDomainsSet.has(domain))
         blocked.push(classifiedRecipient);
       else if (this.$internalDomainsSet.has(domain))
@@ -36,6 +63,6 @@ export class RecipientClassifier {
         externals.push(classifiedRecipient);
     }
 
-    return { internals, externals, blocked };
+    return { internals, matched, externals, blocked };
   }
 }

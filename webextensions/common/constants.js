@@ -39,5 +39,5 @@ export const CONFIRM_NEVER = 0;
 export const CONFIRM_ALWAYS = 1;
 export const CONFIRM_ONLY_WITH_ATTACHMENTS = 2;
 
-export const SOURCE_CONFIG = 0;
+export const SOURCE_LOCAL_CONFIG = 0;
 export const SOURCE_FILE = 1;

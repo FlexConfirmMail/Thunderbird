@@ -81,6 +81,7 @@ configs.$loaded.then(async () => {
 
   mAttentionDomains = mParams.attentionDomains;
   mAttachmentClassifier = new AttachmentClassifier({
+    rules: mParams.userRules.filter(rule => rule.matchTarget == Constants.MATCH_TO_ATTACHMENT_NAME || rule.matchTarget == Constants.MATCH_TO_ATTACHMENT_SUFFIX),
     attentionSuffixes:  mParams.attentionSuffixes,
     attentionSuffixes2: mParams.attentionSuffixes2,
     attentionTerms:     mParams.attentionTerms

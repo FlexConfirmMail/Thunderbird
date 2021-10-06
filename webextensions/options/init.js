@@ -224,18 +224,18 @@ function rebuildUserRulesUI() {
                  >${safeLocalizedText('config_userRules_remove_label')}</button>
         </div>
         <ul id=${safeAttrValue('userRule-ui-itemsSource-group:' + id)}>
-          <li id=${safeAttrValue('userRule-ui-itemsSource-container-items:' + id)}
-              class="${rule.$lockedKeys.includes('itemsSource') && rule.itemsSource != Constants.SOURCE_CONFIG ? 'hidden' : ''}"
-             ><label id=${safeAttrValue('userRule-ui-itemsSource-container-label-items:' + id)}
+          <li id=${safeAttrValue('userRule-ui-itemsSource-container-itemsLocal:' + id)}
+              class="${rule.$lockedKeys.includes('itemsSource') && rule.itemsSource != Constants.SOURCE_LOCAL_CONFIG ? 'hidden' : ''}"
+             ><label id=${safeAttrValue('userRule-ui-itemsSource-container-label-itemsLocal:' + id)}
                      class="${hiddenIfLocked(rule, 'itemsSource')}"
-                    ><input id=${safeAttrValue('userRule-ui-itemsSource-items:' + id)}
+                    ><input id=${safeAttrValue('userRule-ui-itemsSource-itemsLocal:' + id)}
                             name=${safeAttrValue('userRule-ui-itemsSource:' + id)}
                             type="radio"
-                            value="${Constants.SOURCE_CONFIG}">
-                     ${safeLocalizedText('config_userRule_items_caption')}</label>
-              <textarea id=${safeAttrValue('userRule-ui-items:' + id)}
-                        class="userRule-ui-items ${hiddenIfLocked(rule, 'items')}"
-                        placeholder=${safeLocalizedValue('config_userRule_items_placeholder_' + matchTargetSuffix)}></textarea>
+                            value="${Constants.SOURCE_LOCAL_CONFIG}">
+                     ${safeLocalizedText('config_userRule_itemsLocal_caption')}</label>
+              <textarea id=${safeAttrValue('userRule-ui-itemsLocal:' + id)}
+                        class="userRule-ui-itemsLocal ${hiddenIfLocked(rule, 'itemsLocal')}"
+                        placeholder=${safeLocalizedValue('config_userRule_itemsLocal_placeholder_' + matchTargetSuffix)}></textarea>
               </li>
           <li id=${safeAttrValue('userRule-ui-itemsSource-container-itemsFile:' + id)}
               class="${rule.$lockedKeys.includes('itemsSource') && rule.itemsSource != Constants.SOURCE_FILE ? 'hidden' : ''}"
@@ -329,7 +329,7 @@ function rebuildUserRulesUI() {
     setUserRuleFieldValue(`#userRule-ui-name\\:${id}`,           rule.name);
     setUserRuleFieldValue(`#userRule-ui-matchTarget\\:${id}`,    rule.matchTarget);
     setUserRuleFieldValue(`#userRule-ui-itemsSource-group\\:${id} input[type="radio"][value="${rule.itemsSource}"]`, true);
-    setUserRuleFieldValue(`#userRule-ui-items\\:${id}`,          rule.items.join('\n'));
+    setUserRuleFieldValue(`#userRule-ui-itemsLocal\\:${id}`,     rule.itemsLocal.join('\n'));
     setUserRuleFieldValue(`#userRule-ui-itemsFile\\:${id}`,      rule.itemsFile);
     setUserRuleFieldValue(`#userRule-ui-highlight\\:${id}`,      rule.highlight);
     setUserRuleFieldValue(`#userRule-ui-confirmation\\:${id}`,   rule.confirmation);
@@ -548,7 +548,7 @@ function reserveToSaveUserRuleChange(field) {
   else if (field.matches('input[type="radio"], select')) {
     value = Number(field.value);
   }
-  else if (field.matches('.userRule-ui-items')) {
+  else if (field.matches('.userRule-ui-itemsLocal')) {
     value = field.value.trim().split(/[\s,|]+/).filter(part => !!part);
   }
   else {
@@ -629,7 +629,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       'locked',
       configs.$isLocked(`#${base}File`) ||
       (configs.$isLocked(`${base}Soruce`) &&
-       configs[`${base}Soruce`] == Constants.SOURCE_CONFIG)
+       configs[`${base}Soruce`] == Constants.SOURCE_LOCAL_CONFIG)
     );
     Dialog.initButton(document.querySelector(`#${base}FileChoose`), async _event => {
       const path = await chooseFile({

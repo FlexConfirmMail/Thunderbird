@@ -6,7 +6,9 @@
 'use strict';
 
 export class AttachmentClassifier {
-  constructor({ attentionSuffixes, attentionSuffixes2, attentionTerms } = {}) {
+  constructor({ rules, attentionSuffixes, attentionSuffixes2, attentionTerms } = {}) {
+     // TBD: build matcher from rules
+
     if (!attentionSuffixes)
       attentionSuffixes = [];
     if (attentionSuffixes.length == 0)

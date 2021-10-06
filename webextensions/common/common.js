@@ -18,8 +18,8 @@ const BASE_RULE = {
   highlight:      Constants.HIGHLIGHT_NEVER, // | Constants.HIGHLIGHT_ALWAYS | Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS
   confirmation:   Constants.CONFIRM_NEVER, // | Constants.CONFIRM_ALWAYS | Constants.CONFIRM_ONLY_WITH_ATTACHMENTS
   block:          Constants.BLOCK_NEVER, // | Constants.BLOCK_ALWAYS | Constants.BLOCK_ONLY_WITH_ATTACHMENTS
-  itemsSource:    Constants.SOURCE_CONFIG, // | Constants.SOURCE_FILE
-  items:          [], // array of strings
+  itemsSource:    Constants.SOURCE_LOCAL_CONFIG, // | Constants.SOURCE_FILE
+  itemsLocal:     [], // array of strings
   itemsFile:      '', // path to a text file: UTF-8, LF separated
   confirmMessage: '', // string
 };
@@ -71,8 +71,8 @@ export const configs = new Configs({
       highlight:      Constants.HIGHLIGHT_ALWAYS,
       confirmation:   Constants.CONFIRM_ALWAYS,
       block:          Constants.BLOCK_NEVER,
-      itemsSource:    Constants.SOURCE_CONFIG,
-      items:          [],
+      itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
+      itemsLocal:     [],
       itemsFile:      '',
       confirmMessage: browser.i18n.getMessage('confirmAttentionDomainsMessage', ['$S']),
     },
@@ -84,8 +84,8 @@ export const configs = new Configs({
       highlight:      Constants.HIGHLIGHT_NEVER,
       confirmation:   Constants.CONFIRM_ALWAYS,
       block:          Constants.BLOCK_NEVER,
-      itemsSource:    Constants.SOURCE_CONFIG,
-      items:          [],
+      itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
+      itemsLocal:     [],
       itemsFile:      '',
       confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixesTitle', ['$S']),
     },
@@ -97,8 +97,8 @@ export const configs = new Configs({
       highlight:      Constants.HIGHLIGHT_NEVER,
       confirmation:   Constants.CONFIRM_ALWAYS,
       block:          Constants.BLOCK_NEVER,
-      itemsSource:    Constants.SOURCE_CONFIG,
-      items:          [],
+      itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
+      itemsLocal:     [],
       itemsFile:      '',
       confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixes2Message', ['$S']),
     },
@@ -110,8 +110,8 @@ export const configs = new Configs({
       highlight:      Constants.HIGHLIGHT_NEVER,
       confirmation:   Constants.CONFIRM_ALWAYS,
       block:          Constants.BLOCK_NEVER,
-      itemsSource:    Constants.SOURCE_CONFIG,
-      items:          [],
+      itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
+      itemsLocal:     [],
       itemsFile:      '',
       confirmMessage: browser.i18n.getMessage('confirmAttentionTermsMessage', ['$S']),
     },
@@ -123,8 +123,8 @@ export const configs = new Configs({
       highlight:      Constants.HIGHLIGHT_NEVER,
       confirmation:   Constants.CONFIRM_NEVER,
       block:          Constants.BLOCK_ALWAYS,
-      itemsSource:    Constants.SOURCE_CONFIG,
-      items:          [],
+      itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
+      itemsLocal:     [],
       itemsFile:      '',
       confirmMessage: browser.i18n.getMessage('alertBlockedDomainsMessage', ['$S']),
     },
@@ -133,35 +133,35 @@ export const configs = new Configs({
   attentionDomainsHighlightMode: Constants.HIGHLIGHT_ALWAYS,
   attentionDomainsConfirmationMode: Constants.CONFIRM_ALWAYS,
   attentionDomains: [],
-  attentionDomainsSource: Constants.SOURCE_CONFIG,
+  attentionDomainsSource: Constants.SOURCE_LOCAL_CONFIG,
   attentionDomainsFile: '',
   attentionDomainsDialogTitle: '',
   attentionDomainsDialogMessage: '',
 
   attentionSuffixesConfirm: false,
   attentionSuffixes: [],
-  attentionSuffixesSource: Constants.SOURCE_CONFIG,
+  attentionSuffixesSource: Constants.SOURCE_LOCAL_CONFIG,
   attentionSuffixesFile: '',
   attentionSuffixesDialogTitle: '',
   attentionSuffixesDialogMessage: '',
 
   attentionSuffixes2Confirm: false,
   attentionSuffixes2: [],
-  attentionSuffixes2Source: Constants.SOURCE_CONFIG,
+  attentionSuffixes2Source: Constants.SOURCE_LOCAL_CONFIG,
   attentionSuffixes2File: '',
   attentionSuffixes2DialogTitle: '',
   attentionSuffixes2DialogMessage: '',
 
   attentionTermsConfirm: false,
   attentionTerms: [],
-  attentionTermsSource: Constants.SOURCE_CONFIG,
+  attentionTermsSource: Constants.SOURCE_LOCAL_CONFIG,
   attentionTermsFile: '',
   attentionTermsDialogTitle: '',
   attentionTermsDialogMessage: '',
 
   blockedDomainsEnabled: false,
   blockedDomains: [],
-  blockedDomainsSource: Constants.SOURCE_CONFIG,
+  blockedDomainsSource: Constants.SOURCE_LOCAL_CONFIG,
   blockedDomainsFile: '',
   blockedDomainsDialogTitle: '',
   blockedDomainsDialogMessage: '',
@@ -250,6 +250,37 @@ export function loadUserRules() {
     }
   }
   return [mergedRules, mergedRulesById];
+}
+
+export async function loadPopulatedUserRules() {
+  const [userRules, userRulesById] = loadUserRules();
+  await Promise.all(userRules.map(async rule => {
+    let items = [];
+    switch (rule.itemsSource) {
+      default:
+      case Constants.SOURCE_LOCAL_CONFIG:
+        items = rule.items || [];
+        break;
+
+      case Constants.SOURCE_FILE: {
+        if (!rule.itemsFile) {
+          items = [];
+        }
+        else {
+          const response = await sendToHost({
+            command: Constants.HOST_COMMAND_FETCH,
+            params: {
+              path: configs.itemsFile
+            }
+          });
+          items = response ? response.contents.trim().split(/[\s,|]+/).filter(part => !!part) : [];
+        }
+        break;
+      };
+    }
+    userRulesById[rule.id].items = items;
+  }));
+  return [userRules, userRulesById];
 }
 
 export function saveUserRules(rules) {

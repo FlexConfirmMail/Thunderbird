@@ -10,8 +10,9 @@ import RichConfirm from '/extlib/RichConfirm.js';
 
 import {
   configs,
+  loadPopulatedUserRules,
   log,
-  sendToHost
+  sendToHost,
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
 import { RecipientClassifier } from '/common/recipient-classifier.js';
@@ -256,20 +257,24 @@ async function tryConfirm(tab, details, opener) {
   log('tryConfirm: ', tab, details, opener);
   const [
     to, cc, bcc,
+    populatedUserRules,
     attentionDomains, attentionSuffixes, attentionSuffixes2, attentionTerms
   ] = await Promise.all([
     ListUtils.populateListAddresses(details.to),
     ListUtils.populateListAddresses(details.cc),
     ListUtils.populateListAddresses(details.bcc),
+    loadPopulatedUserRules(),
     getAttentionDomains(),
     getAttentionSuffixes(),
     getAttentionSuffixes2(),
     getAttentionTerms()
   ]);
-  log('attention list: ', { attentionDomains, attentionSuffixes, attentionSuffixes2, attentionTerms });
+  log('attention list: ', { populatedUserRules, attentionDomains, attentionSuffixes, attentionSuffixes2, attentionTerms });
+  const [userRules, userRulesById] = populatedUserRules;
   const classifier = new RecipientClassifier({
     internalDomains: configs.internalDomains || [],
-    attentionDomains
+    rules: userRules.filter(rule => rule.matchTarget == Constants.MATCH_TO_RECIPIENT_DOMAIN),
+    attentionDomains,
   });
   const classifiedTo = classifier.classify(to);
   const classifiedCc = classifier.classify(cc);
@@ -339,6 +344,8 @@ async function tryConfirm(tab, details, opener) {
         ...classifiedBcc.externals.map(recipient => ({ ...recipient, type: 'Bcc' }))
       ],
       attachments: await browser.compose.listAttachments(tab.id),
+      userRules,
+      userRulesById,
       attentionDomains,
       attentionSuffixes,
       attentionSuffixes2,
@@ -350,7 +357,7 @@ async function tryConfirm(tab, details, opener) {
 async function getAttentionDomains() {
   switch (configs.attentionDomainsSource) {
     default:
-    case Constants.SOURCE_CONFIG:
+    case Constants.SOURCE_LOCAL_CONFIG:
       return configs.attentionDomains || [];
 
     case Constants.SOURCE_FILE: {
@@ -370,7 +377,7 @@ async function getAttentionDomains() {
 async function getAttentionSuffixes() {
   switch (configs.attentionSuffixesSource) {
     default:
-    case Constants.SOURCE_CONFIG:
+    case Constants.SOURCE_LOCAL_CONFIG:
       return configs.attentionSuffixes || [];
 
     case Constants.SOURCE_FILE: {
@@ -390,7 +397,7 @@ async function getAttentionSuffixes() {
 async function getAttentionSuffixes2() {
   switch (configs.attentionSuffixes2Source) {
     default:
-    case Constants.SOURCE_CONFIG:
+    case Constants.SOURCE_LOCAL_CONFIG:
       return configs.attentionSuffixes2 || [];
 
     case Constants.SOURCE_FILE: {
@@ -410,7 +417,7 @@ async function getAttentionSuffixes2() {
 async function getAttentionTerms() {
   switch (configs.attentionTermsSource) {
     default:
-    case Constants.SOURCE_CONFIG:
+    case Constants.SOURCE_LOCAL_CONFIG:
       return configs.attentionTerms || [];
 
     case Constants.SOURCE_FILE: {
@@ -476,7 +483,7 @@ async function shouldBlock(tab, details) {
 async function getBlockedDomains() {
   switch (configs.blockedDomainsSource) {
     default:
-    case Constants.SOURCE_CONFIG:
+    case Constants.SOURCE_LOCAL_CONFIG:
       return configs.blockedDomains || [];
 
     case Constants.SOURCE_FILE: {
