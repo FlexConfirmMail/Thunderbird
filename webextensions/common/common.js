@@ -275,14 +275,6 @@ export function saveUserRules(rules) {
       }
     }
 
-    if (rule.$lockedKeys) {
-      for (const key of rule.$lockedKeys) {
-        if (key == 'id')
-          continue;
-        delete toBeSaved[key];
-      }
-    }
-
     if (Object.keys(toBeSaved).length > 1)
       toBeSavedRules.push(toBeSaved);
   }
