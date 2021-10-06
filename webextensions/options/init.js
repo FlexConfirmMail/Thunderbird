@@ -359,6 +359,36 @@ function exitUserRuleNameEdit(field) {
   rebuildUserRulesUI();
 }
 
+function moveUpRule(id) {
+  if (!configs.allowRearrangeRules)
+    return;
+  const index = mUserRules.findIndex(rule => rule.id == id);
+  const toBeMoved = mUserRules.splice(index, 1);
+  mUserRules.splice(index - 1, 0, ...toBeMoved);
+  saveUserRules(mUserRules);
+  rebuildUserRulesUI();
+}
+
+function moveDownRule(id) {
+  if (!configs.allowRearrangeRules)
+    return;
+  const index = mUserRules.findIndex(rule => rule.id == id);
+  const toBeMoved = mUserRules.splice(index, 1);
+  mUserRules.splice(index + 1, 0, ...toBeMoved);
+  saveUserRules(mUserRules);
+  rebuildUserRulesUI();
+}
+
+function removeRule(id) {
+  if (!configs.allowRemoveRules)
+    return;
+  if (!confirm('OK?'))
+    return;
+  delete mUserRulesById[id];
+  mUserRules = mUserRules.filter(rule => rule.id != id);
+  rebuildUserRulesUI();
+}
+
 function onUserRuleClick(event) {
   const editNameButton = event.target.closest('.userRule-ui-name-editButton');
   if (editNameButton) {
@@ -373,6 +403,24 @@ function onUserRuleClick(event) {
     const enabledCheck = legend.querySelector('.userRule-ui-enabled');
     enabledCheck.checked = !enabledCheck.checked;
     legend.closest('fieldset').classList.toggle('collapsed', !enabledCheck.checked);
+    return;
+  }
+
+  const moveUpButton = event.target.closest('.userRule-button-moveUp');
+  if (moveUpButton) {
+    moveUpRule(moveUpButton.id.split(':')[1]);
+    return;
+  }
+
+  const moveDownButton = event.target.closest('.userRule-button-moveDown');
+  if (moveDownButton) {
+    moveDownRule(moveDownButton.id.split(':')[1]);
+    return;
+  }
+
+  const removeButton = event.target.closest('.userRule-button-remove');
+  if (removeButton) {
+    removeRule(removeButton.id.split(':')[1]);
     return;
   }
 }
