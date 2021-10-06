@@ -253,7 +253,7 @@ function rebuildUserRulesUI() {
                                 type="text"
                                 placeholder=${safeLocalizedValue('config_userRule_itemsFile_input_placeholder_' + matchTargetSuffix)}>
                          <button id=${safeAttrValue('userRule-ui-itemsSource-chooseFileButton-itemsFile:' + id)}
-                                 class="flex-box column ${hiddenIfLocked(rule, 'itemsFile')}"
+                                 class="userRule-ui-itemsSource-chooseFileButton flex-box column ${hiddenIfLocked(rule, 'itemsFile')}"
                                 >${safeLocalizedText('config_userRule_itemsFile_button_label')}</button></label></li>
         </ul>
 
@@ -392,6 +392,20 @@ function removeRule(id) {
   rebuildUserRulesUI();
 }
 
+async function chooseItemsFile(id) {
+  const rule = mUserRulesById[id];
+  const path = await chooseFile({
+    title:       browser.i18n.getMessage(`config_userRule_itemsFile_button_dialogTitle_${getMatchTargetSuffix(rule.matchTarget)}`),
+    role:        `${id}FileChoose`,
+    displayName: `${browser.i18n.getMessage('config_userRule_itemsFile_button_dialogDisplayName')} (*.*)`,
+    pattern:     '*.*',
+    fileName:    rule.itemsFile || ''
+  });
+  const field = document.querySelector(`#userRule-ui-itemsFile\\:${id}`);
+  field.value = path;
+  reserveToSaveUserRuleChange(field);
+}
+
 function onUserRuleClick(event) {
   const editNameButton = event.target.closest('.userRule-ui-name-editButton');
   if (editNameButton) {
@@ -426,6 +440,12 @@ function onUserRuleClick(event) {
     removeRule(removeButton.id.split(':')[1]);
     return;
   }
+
+  const chooseFileButton = event.target.closest('.userRule-ui-itemsSource-chooseFileButton');
+  if (chooseFileButton) {
+    chooseItemsFile(chooseFileButton.id.split(':')[1]);
+    return;
+  }
 }
 
 function onUserRuleKeyDown(event) {
@@ -448,6 +468,18 @@ function onUserRuleKeyDown(event) {
       case ' ':
       case 'Enter':
         enterUserRuleNameEdit(editNameButton.parentNode.querySelector('.userRule-ui-name'));
+        break;
+    }
+    return;
+  }
+
+  const chooseFileButton = event.target.closest('.userRule-ui-itemsSource-chooseFileButton');
+  if (chooseFileButton) {
+    switch (event.key) {
+      case 'Space':
+      case ' ':
+      case 'Enter':
+        chooseItemsFile(chooseFileButton.id.split(':')[1]);
         break;
     }
     return;
