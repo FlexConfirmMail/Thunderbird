@@ -103,6 +103,12 @@
   "config_userRules_add":                  { "message": "New Rule" },
   "config_userRules_remove_label":         { "message": "×" },
   "config_userRules_remove_tooltiptext":   { "message": "Remove Rule" },
+  "config_userRules_remove_confirmMessage": { "message": "Are you sure to remove the rule \"$NAME$\" ?",
+    "placeholders": {
+      "name": { "content": "$1", "example": "rule name" }
+    }},
+  "config_userRules_remove_accept":        { "message": "Remove" },
+  "config_userRules_remove_cancel":        { "message": "Cancel" },
   "config_userRules_moveUp_label":         { "message": "▲" },
   "config_userRules_moveUp_tooltiptext":   { "message": "Move Up" },
   "config_userRules_moveDown_label":       { "message": "▼" },

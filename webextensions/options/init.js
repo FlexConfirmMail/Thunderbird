@@ -18,6 +18,7 @@ import Options from '/extlib/Options.js';
 import '/extlib/l10n.js';
 import * as Dialog from '/extlib/dialog.js';
 import { DOMUpdater } from '/extlib/dom-updater.js';
+import RichConfirm from '/extlib/RichConfirm.js';
 
 const CONFIRMATION_TYPES = [
   'attentionDomains',
@@ -382,11 +383,29 @@ function moveDownRule(id) {
   rebuildUserRulesUI();
 }
 
-function removeRule(id) {
+async function removeRule(id) {
   if (!configs.allowRemoveRules)
     return;
-  if (!confirm('OK?'))
+
+  let result;
+  try {
+    result = await RichConfirm.show({
+      modal: true,
+      type:  'common-dialog',
+      url:   '/resources/blank.html',
+      message: browser.i18n.getMessage('config_userRules_remove_confirmMessage', [mUserRulesById[id].name]),
+      buttons: [
+        browser.i18n.getMessage('config_userRules_remove_accept'),
+        browser.i18n.getMessage('config_userRules_remove_cancel')
+      ]
+    });
+  }
+  catch(_error) {
+    result = { buttonIndex: -1 };
+  }
+  if (result.buttonIndex != 0)
     return;
+
   delete mUserRulesById[id];
   mUserRules = mUserRules.filter(rule => rule.id != id);
   rebuildUserRulesUI();

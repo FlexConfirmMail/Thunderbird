@@ -103,6 +103,12 @@
   "config_userRules_add":                  { "message": "新規ルール" },
   "config_userRules_remove_label":         { "message": "×" },
   "config_userRules_remove_tooltiptext":   { "message": "ルールを削除" },
+  "config_userRules_remove_confirmMessage": { "message": "ルール「$NAME$」を本当に削除しますか？",
+    "placeholders": {
+      "name": { "content": "$1", "example": "rule name" }
+    }},
+  "config_userRules_remove_accept":        { "message": "削除" },
+  "config_userRules_remove_cancel":        { "message": "キャンセル" },
   "config_userRules_moveUp_label":         { "message": "▲" },
   "config_userRules_moveUp_tooltiptext":   { "message": "上に移動" },
   "config_userRules_moveDown_label":       { "message": "▼" },
