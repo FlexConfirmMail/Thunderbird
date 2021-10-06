@@ -341,13 +341,16 @@ function enterUserRuleNameEdit(field) {
 
 function exitUserRuleNameEdit(field) {
   field.closest('legend').classList.remove('editing');
-  throttledUpdateUserRuleField(field);
+  if (field.$lastNameBeforeEdit == field.value)
+    return;
+  reserveToSaveUserRuleChange(field);
+  rebuildUserRulesUI();
 }
 
 function onUserRuleClick(event) {
   const editNameButton = event.target.closest('.userRule-ui-name-editButton');
   if (editNameButton) {
-    enterUserRuleNameEdit(editNameButton.parentNode.querySelector('input.userRule-ui-name'));
+    enterUserRuleNameEdit(editNameButton.parentNode.querySelector('.userRule-ui-name'));
     return;
   }
 
@@ -355,7 +358,7 @@ function onUserRuleClick(event) {
   if (legend) {
     if (event.target.closest('label'))
       return;
-    const enabledCheck = legend.querySelector('input.userRule-ui-enabled');
+    const enabledCheck = legend.querySelector('.userRule-ui-enabled');
     enabledCheck.checked = !enabledCheck.checked;
     legend.closest('fieldset').classList.toggle('collapsed', !enabledCheck.checked);
     return;
@@ -363,7 +366,7 @@ function onUserRuleClick(event) {
 }
 
 function onUserRuleKeyDown(event) {
-  const nameField = event.target.closest('input.userRule-ui-name');
+  const nameField = event.target.closest('.userRule-ui-name');
   if (nameField) {
     switch (event.key) {
       case 'Escape':
@@ -381,7 +384,7 @@ function onUserRuleKeyDown(event) {
       case 'Space':
       case ' ':
       case 'Enter':
-        enterUserRuleNameEdit(editNameButton.parentNode.querySelector('input.userRule-ui-name'));
+        enterUserRuleNameEdit(editNameButton.parentNode.querySelector('.userRule-ui-name'));
         break;
     }
     return;
@@ -391,14 +394,14 @@ function onUserRuleKeyDown(event) {
 function onUserRuleChange(event) {
   const legend = event.target.closest('legend');
   if (legend) {
-    const enabledCheck = event.target.closest('input.userRule-ui-enabled');
+    const enabledCheck = event.target.closest('.userRule-ui-enabled');
     if (enabledCheck)
       legend.closest('fieldset').classList.toggle('collapsed', !enabledCheck.checked);
     return;
   }
 
   const field = event.target.closest('input, textarea, select');
-  throttledUpdateUserRuleField(field);
+  throttledSaveUserRuleChange(field);
 
   const needRebuildUIField = event.target.closest('.userRule-ui-matchTarget, .userRule-ui-confirmation');
   if (needRebuildUIField) {
@@ -408,45 +411,48 @@ function onUserRuleChange(event) {
 
 function onUserRuleInput(event) {
   const field = event.target.closest('input, textarea, select');
-  if (field.matches('input.userRule-ui-name'))
+  if (field.matches('.userRule-ui-name'))
     return;
-  throttledUpdateUserRuleField(field);
+  throttledSaveUserRuleChange(field);
 }
 
 function onUserRuleBlur(event) {
-  const nameField = event.target.closest('input.userRule-ui-name');
+  const nameField = event.target.closest('.userRule-ui-name');
   if (nameField) {
     exitUserRuleNameEdit(nameField);
     return;
   }
 }
 
-function throttledUpdateUserRuleField(field) {
-  if (throttledUpdateUserRuleField.timers.has(field.id))
-    clearTimeout(throttledUpdateUserRuleField.timers.get(field.id));
-  throttledUpdateUserRuleField.timers.set(field.id, setTimeout(() => {
-    throttledUpdateUserRuleField.timers.delete(field.id);
+function reserveToSaveUserRuleChange(field) {
+  const id  = field.id.split(':')[1];
+  const key = (field.name || field.id).split(':')[0].split('-').pop();
+  let value;
+  if (field.matches('input[type="checkbox"]')) {
+    value = field.checked;
+  }
+  else if (field.matches('input[type="radio"], select')) {
+    value = Number(field.value);
+  }
+  else if (field.matches('.userRule-ui-items')) {
+    value = field.value.trim().split(/[\s,|]+/).filter(part => !!part);
+  }
+  else {
+    value = field.value;
+  }
+  mUserRulesById[id][key] = value;
+  throttledSaveUserRules();
+}
 
-    const id  = field.id.split(':')[1];
-    const key = (field.name || field.id).split(':')[0].split('-').pop();
-    let value;
-    if (field.matches('input[type="checkbox"]')) {
-      value = field.checked;
-    }
-    else if (field.matches('input[type="radio"], select')) {
-      value = Number(field.value);
-    }
-    else if (field.matches('.userRule-ui-items')) {
-      value = field.value.trim().split(/[\s,|]+/).filter(part => !!part);
-    }
-    else {
-      value = field.value;
-    }
-    mUserRulesById[id][key] = value;
-    throttledSaveUserRules();
+function throttledSaveUserRuleChange(field) {
+  if (throttledSaveUserRuleChange.timers.has(field.id))
+    clearTimeout(throttledSaveUserRuleChange.timers.get(field.id));
+  throttledSaveUserRuleChange.timers.set(field.id, setTimeout(() => {
+    throttledSaveUserRuleChange.timers.delete(field.id);
+    reserveToSaveUserRuleChange(field);
   }, 250));
 }
-throttledUpdateUserRuleField.timers = new Map();
+throttledSaveUserRuleChange.timers = new Map();
 
 function throttledSaveUserRules() {
   if (throttledSaveUserRules.timer)
