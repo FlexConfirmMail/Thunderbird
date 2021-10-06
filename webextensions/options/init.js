@@ -430,7 +430,6 @@ function throttledUpdateUserRuleField(field) {
     const id  = field.id.split(':')[1];
     const key = (field.name || field.id).split(':')[0].split('-').pop();
     let value;
-    let oldValue = mUserRulesById[id][key];
     if (field.matches('input[type="checkbox"]')) {
       value = field.checked;
     }
