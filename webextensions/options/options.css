@@ -159,6 +159,17 @@ body > section.collapsible.collapsed > h1:first-child::before {
   min-width: 0;
 }
 
+.userRule-ui-group legend.editing .userRule-ui-name-display,
+.userRule-ui-group legend.editing .userRule-ui-name-editButton,
+.userRule-ui-group legend:not(.editing) .userRule-ui-name {
+  display: none;
+}
+
+.userRule-ui-group legend.editing,
+.userRule-ui-name {
+  width: calc(100% - 5em);
+}
+
 
 
 .disabled {

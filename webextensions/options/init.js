@@ -173,13 +173,15 @@ function rebuildUserRulesUI() {
                               ${rule.enabled ? 'checked' : ''}>
                        <span id=${safeAttrValue('userRule-ui-name-display:' + id)}
                              class="userRule-ui-name-display"
-                             title=${safeLocalizedValue('config_userRule_name_tooltiptext')}
                             >${sanitizeForHTMLText(rule.name)}</span>
-                      <input id=${safeAttrValue('userRule-ui-name:' + id)}
-                             class="userRule-ui-name"
-                             type="text"
-                             placeholder=${safeLocalizedValue('config_userRule_name_placeholder')}
-                            ></label></legend>
+                       <button id=${safeAttrValue('userRule-ui-name-editButton:' + id)}
+                              class="userRule-ui-name-editButton"
+                              >${safeLocalizedText('config_userRule_name_button_label')}</button>
+                       <input id=${safeAttrValue('userRule-ui-name:' + id)}
+                              class="userRule-ui-name"
+                              type="text"
+                              placeholder=${safeLocalizedValue('config_userRule_name_placeholder')}
+                             ></label></legend>
         <div id=${safeAttrValue('userRule-ui-matchTarget-row:' + id)}
              class="userRule-buttons flex-box row">
           <p id=${safeAttrValue('userRule-ui-matchTarget-column:' + id)}
@@ -275,7 +277,7 @@ function rebuildUserRulesUI() {
                            >${safeLocalizedText('config_userRule_applyAction_withAttachments')}</option>
                   </select></label></p>
         <p id=${safeAttrValue('userRule-ui-confirmMessage-container:' + id)}
-           class="sub ${rule.confirmation == Constants.CONFIRM_NEVER} ? 'hidden' : ''"
+           class="sub ${rule.confirmation == Constants.CONFIRM_NEVER ? 'hidden' : ''}"
           ><label id=${safeAttrValue('userRule-ui-confirmMessage-label:' + id)}
                  >${safeLocalizedText('config_userRule_confirmMessage_caption_' + matchTargetSuffix)}
                   <textarea id=${safeAttrValue('userRule-ui-confirmMessage:' + id)}
@@ -326,11 +328,29 @@ function throttledRebuildUserRulesUI() {
   throttledRebuildUserRulesUI.timer = setTimeout(() => {
     throttledRebuildUserRulesUI.timer = null;
     rebuildUserRulesUI();
-  }, 50);
+  }, 250);
 }
 throttledRebuildUserRulesUI.timer = null;
 
+function enterUserRuleNameEdit(field) {
+  field.closest('legend').classList.add('editing');
+  field.$lastNameBeforeEdit = field.value;
+  field.select();
+  field.focus();
+}
+
+function exitUserRuleNameEdit(field) {
+  field.closest('legend').classList.remove('editing');
+  throttledUpdateUserRuleField(field);
+}
+
 function onUserRuleClick(event) {
+  const editNameButton = event.target.closest('.userRule-ui-name-editButton');
+  if (editNameButton) {
+    enterUserRuleNameEdit(editNameButton.parentNode.querySelector('input.userRule-ui-name'));
+    return;
+  }
+
   const legend = event.target.closest('legend');
   if (legend) {
     if (event.target.closest('label'))
@@ -338,6 +358,32 @@ function onUserRuleClick(event) {
     const enabledCheck = legend.querySelector('input.userRule-ui-enabled');
     enabledCheck.checked = !enabledCheck.checked;
     legend.closest('fieldset').classList.toggle('collapsed', !enabledCheck.checked);
+    return;
+  }
+}
+
+function onUserRuleKeyDown(event) {
+  const nameField = event.target.closest('input.userRule-ui-name');
+  if (nameField) {
+    switch (event.key) {
+      case 'Escape':
+        nameField.value = nameField.$lastNameBeforeEdit;
+      case 'Enter':
+        exitUserRuleNameEdit(nameField);
+        break;
+    }
+    return;
+  }
+
+  const editNameButton = event.target.closest('.userRule-ui-name-editButton');
+  if (editNameButton) {
+    switch (event.key) {
+      case 'Space':
+      case ' ':
+      case 'Enter':
+        enterUserRuleNameEdit(editNameButton.parentNode.querySelector('input.userRule-ui-name'));
+        break;
+    }
     return;
   }
 }
@@ -353,11 +399,26 @@ function onUserRuleChange(event) {
 
   const field = event.target.closest('input, textarea, select');
   throttledUpdateUserRuleField(field);
+
+  const needRebuildUIField = event.target.closest('.userRule-ui-matchTarget, .userRule-ui-confirmation');
+  if (needRebuildUIField) {
+    throttledRebuildUserRulesUI();
+  }
 }
 
 function onUserRuleInput(event) {
   const field = event.target.closest('input, textarea, select');
+  if (field.matches('input.userRule-ui-name'))
+    return;
   throttledUpdateUserRuleField(field);
+}
+
+function onUserRuleBlur(event) {
+  const nameField = event.target.closest('input.userRule-ui-name');
+  if (nameField) {
+    exitUserRuleNameEdit(nameField);
+    return;
+  }
 }
 
 function throttledUpdateUserRuleField(field) {
@@ -368,18 +429,22 @@ function throttledUpdateUserRuleField(field) {
 
     const id  = field.id.split(':')[1];
     const key = (field.name || field.id).split(':')[0].split('-').pop();
+    let value;
+    let oldValue = mUserRulesById[id][key];
     if (field.matches('input[type="checkbox"]')) {
-      mUserRulesById[id][key] = field.checked;
+      value = field.checked;
     }
     else if (field.matches('input[type="radio"], select')) {
-      mUserRulesById[id][key] = Number(field.value);
+      value = Number(field.value);
+    }
+    else if (field.matches('.userRule-ui-items')) {
+      value = field.value.trim().split(/[\s,|]+/).filter(part => !!part);
     }
     else {
-      const value = field.matches('.userRule-ui-items') ? field.value.trim().split(/[\s,|]+/).filter(part => !!part) : field.value;
-      mUserRulesById[id][key] = value;
+      value = field.value;
     }
+    mUserRulesById[id][key] = value;
     throttledSaveUserRules();
-    throttledRebuildUserRulesUI();
   }, 250));
 }
 throttledUpdateUserRuleField.timers = new Map();
@@ -472,9 +537,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   mUserRulesById = userRulesById;
 
   const userRulesContainer = document.querySelector('#userRulesContainer');
-  userRulesContainer.addEventListener('click',  onUserRuleClick);
-  userRulesContainer.addEventListener('change', onUserRuleChange);
-  userRulesContainer.addEventListener('input',  onUserRuleInput);
+  userRulesContainer.addEventListener('click',   onUserRuleClick);
+  userRulesContainer.addEventListener('keydown', onUserRuleKeyDown);
+  userRulesContainer.addEventListener('change',  onUserRuleChange);
+  userRulesContainer.addEventListener('input',   onUserRuleInput);
+  userRulesContainer.addEventListener('blur',    onUserRuleBlur, true);
 
   rebuildUserRulesUI();
 

@@ -109,7 +109,7 @@
   "config_userRules_moveDown_tooltiptext": { "message": "Move Down" },
 
   "config_userRule_name_placeholder":    { "message": "Title" },
-  "config_userRule_name_tooltiptext":    { "message": "Double click to edit title" },
+  "config_userRule_name_button_label":   { "message": "Edit" },
   "config_userRule_enabled_tooltiptext": { "message": "Check to activate this rule" },
 
   "config_userRule_matchTarget_caption":          { "message": "Match to:" },

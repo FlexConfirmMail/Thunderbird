@@ -109,8 +109,8 @@
   "config_userRules_moveDown_tooltiptext": { "message": "下に移動" },
 
   "config_userRule_name_placeholder":    { "message": "タイトル" },
-  "config_userRule_name_tooltiptext":    { "message": "ダブルクリックでタイトルを編集できます" },
-  "config_userRule_enabled_tooltiptext": { "message": "チェックをONにすると有効になります" },
+  "config_userRule_name_button_label":   { "message": "編集" },
+  "config_userRule_enabled_tooltiptext": { "message": "チェックをONにするとルールが有効になります" },
 
   "config_userRule_matchTarget_caption":          { "message": "マッチング対象:" },
   "config_userRule_matchTarget_recipientDomain":  { "message": "宛先のドメイン名部分" },
