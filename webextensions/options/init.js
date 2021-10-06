@@ -167,7 +167,10 @@ function rebuildUserRulesUI() {
     const matchTargetTypeSuffix = getMatchTargetTypeSuffix(rule.matchTarget);
     sections.push(`
       <fieldset id=${safeAttrValue('userRule-ui-group:' + id)}
-                class="userRule-ui-group collapsible ${rule.enabled ? '' : 'collapsed'}">
+                class="userRule-ui-group
+                       ${rule.$lockedKeys.includes('enabled') ? '' : 'collapsible'}
+                       ${rule.enabled ? '' : 'collapsed'}
+                       ${rule.$lockedKeys.includes('enabled') && !rule.enabled ? 'hidden' : ''}">
         <legend id=${safeAttrValue('userRule-ui-legend:' + id)}
                ><label id=${safeAttrValue('userRule-ui-legend-label:' + id)}
                       ><input id=${safeAttrValue('userRule-ui-enabled:' + id)}
