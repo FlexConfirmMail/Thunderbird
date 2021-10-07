@@ -6,7 +6,6 @@
 'use strict';
 
 import * as Constants from '../common/constants.js';
-
 import { AttachmentClassifier } from '../common/attachment-classifier.js';
 import { assert } from 'tiny-esm-test-runner';
 const { is } = assert;
@@ -34,6 +33,9 @@ test_getMatchedRules.parameters = {
       { id: 'terms',
         matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
         items: ['NAME'] },
+      { id: 'recipient domain (should be ignored)',
+        matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+        items: ['png'] },
     ],
     expected: {
       'filename.png': [

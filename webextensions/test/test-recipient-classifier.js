@@ -5,6 +5,7 @@
 */
 'use strict';
 
+import * as Constants from '../common/constants.js';
 import { RecipientClassifier } from '../common/recipient-classifier.js';
 import { assert } from 'tiny-esm-test-runner';
 const { is } = assert;
@@ -265,6 +266,66 @@ export function test_classifyAddresses({ recipients, internalDomains, attentionD
       internals: classified.internals.map(recipient => recipient.address),
       externals: classified.externals.map(recipient => recipient.address),
       blocked:   classified.blocked.map(recipient => recipient.address)
+    }
+  );
+}
+
+export function test_classifyAddressesWithRules() {
+  const recipients = [
+    'address-like@clear-code.com <aaa@exmaple.com>',
+    'address-like@clear-code.com <bbb@example.org>',
+    'address-like@exmaple.com <ccc@clear-code.com>',
+    'address-like@example.org <ddd@CLEAR-code.com>',
+    'address-like@exmaple.com <eee@blocked.CLEAR-code.com>',
+    'address-like@clear-code.com <fff@blocked.example.com>',
+    'address-like@clear-code.com <ggg@attention.EXAMPLE.com>',
+  ];
+  const classifier = new RecipientClassifier({
+    internalDomains:  [
+      'clear-code.com',
+      'blocked.clear-code.com',
+    ],
+    rules: [
+      { id: 'blocked',
+        matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+        items: ['blocked.example.com', 'blocked.clear-code.com'] },
+      { id: 'attention',
+        matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+        items: ['attention.example.com', 'attention.clear-code.com'] },
+    ],
+  });
+  const expected = {
+    internals: [
+      'ccc@clear-code.com',
+      'ddd@CLEAR-code.com',
+      'eee@blocked.CLEAR-code.com',
+    ],
+    externals: [
+      'aaa@exmaple.com',
+      'bbb@example.org',
+      'fff@blocked.example.com',
+      'ggg@attention.EXAMPLE.com',
+    ],
+    matched: {
+      'blocked': [
+        'eee@blocked.CLEAR-code.com',
+        'fff@blocked.example.com',
+      ],
+      'attention': [
+        'ggg@attention.EXAMPLE.com',
+      ],
+    },
+  };
+  const classified = classifier.classify(recipients);
+  is(
+    expected,
+    {
+      internals: classified.internals.map(recipient => recipient.address),
+      externals: classified.externals.map(recipient => recipient.address),
+      matched:   Object.fromEntries(
+        Object.entries(classified.matched)
+          .map(([id, recipients]) => [id, recipients.map(recipient => recipient.address)])
+      ),
     }
   );
 }

@@ -26,11 +26,10 @@ export class RecipientClassifier {
   }
 
   classify(recipients) {
-    const internals = [];
+    const internals = new Set();
+    const externals = new Set();
     const matched   = {};
-
-    const externals = [];
-    const blocked   = [];
+    const blocked   = new Set();
 
     for (const recipient of recipients) {
       const address = /<([^@]+@[^>]+)>\s*$/.test(recipient) ? RegExp.$1 : recipient;
@@ -48,21 +47,34 @@ export class RecipientClassifier {
           continue;
 
         classifiedRecipient.matchedRules.push(id);
-        const recipients = matched[id] || [];
-        recipients.push(classifiedRecipient);
+        const recipients = matched[id] || new Set();
+        recipients.add(classifiedRecipient);
         matched[id] = recipients;
+
+        if (this.$internalDomainsSet.has(domain))
+          internals.add(classifiedRecipient);
+        else
+          externals.add(classifiedRecipient);
       }
       if (classifiedRecipient.matchedRules.length > 0)
         continue;
 
       if (this.$blockedDomainsSet.has(domain))
-        blocked.push(classifiedRecipient);
+        blocked.add(classifiedRecipient);
       else if (this.$internalDomainsSet.has(domain))
-        internals.push(classifiedRecipient);
+        internals.add(classifiedRecipient);
       else
-        externals.push(classifiedRecipient);
+        externals.add(classifiedRecipient);
     }
 
-    return { internals, externals, matched, blocked };
+    return {
+      internals: Array.from(internals),
+      externals: Array.from(externals),
+      matched: Object.fromEntries(
+        Object.entries(matched)
+          .map(([id, recipients]) => [id, Array.from(recipients)])
+      ),
+      blocked: Array.from(blocked),
+    };
   }
 }
