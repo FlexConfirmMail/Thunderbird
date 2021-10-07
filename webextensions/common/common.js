@@ -16,8 +16,7 @@ const BASE_RULE = {
   enabled:        true, // true (enabled) or false (disabled),
   matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN, // | Constants.MATCH_TO_ATTACHMENT_NAME | Constants.MATCH_TO_ATTACHMENT_SUFFIX
   highlight:      Constants.HIGHLIGHT_NEVER, // | Constants.HIGHLIGHT_ALWAYS | Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS
-  confirmation:   Constants.CONFIRM_NEVER, // | Constants.CONFIRM_ALWAYS | Constants.CONFIRM_ONLY_WITH_ATTACHMENTS
-  block:          Constants.BLOCK_NEVER, // | Constants.BLOCK_ALWAYS | Constants.BLOCK_ONLY_WITH_ATTACHMENTS
+  action:         Constants.ACTION_NONE, // | Constants.ACTION_RECONFIRM_ALWAYS | Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS | Constants.ACTION_BLOCK
   itemsSource:    Constants.SOURCE_LOCAL_CONFIG, // | Constants.SOURCE_FILE
   itemsLocal:     [], // array of strings
   itemsFile:      '', // path to a text file: UTF-8, LF separated
@@ -77,14 +76,13 @@ export const configs = new Configs({
       enabled:        false,
       matchTarget:    Constants.MATCH_TO_ATTACHMENT_NAME,
       highlight:      Constants.HIGHLIGHT_NEVER,
-      confirmation:   Constants.CONFIRM_ALWAYS,
-      block:          Constants.BLOCK_NEVER,
     },
     {
       id:             'builtInBlockedDomains',
       name:           browser.i18n.getMessage('config_blockedDomains_caption'),
       enabled:        false,
       matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN,
+      action:         Constants.ACTION_BLOCK,
       confirmMessage: browser.i18n.getMessage('alertBlockedDomainsMessage', ['$S']),
     },
     */
@@ -96,11 +94,11 @@ export const configs = new Configs({
       enabled:        true,
       matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN,
       highlight:      Constants.HIGHLIGHT_ALWAYS,
-      confirmation:   Constants.CONFIRM_ALWAYS,
-      block:          Constants.BLOCK_NEVER,
+      action:         Constants.ACTION_RECONFIRM_ALWAYS,
       itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
       itemsLocal:     [],
       itemsFile:      '',
+      confirmTitle:   browser.i18n.getMessage('confirmAttentionDomainsTitle'),
       confirmMessage: browser.i18n.getMessage('confirmAttentionDomainsMessage', ['$S']),
     },
     {
@@ -109,12 +107,12 @@ export const configs = new Configs({
       enabled:        false,
       matchTarget:    Constants.MATCH_TO_ATTACHMENT_SUFFIX,
       highlight:      Constants.HIGHLIGHT_NEVER,
-      confirmation:   Constants.CONFIRM_ALWAYS,
-      block:          Constants.BLOCK_NEVER,
+      action:         Constants.ACTION_RECONFIRM_ALWAYS,
       itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
       itemsLocal:     [],
       itemsFile:      '',
-      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixesTitle', ['$S']),
+      confirmTitle:   browser.i18n.getMessage('confirmAttentionSuffixesTitle'),
+      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixesMessage', ['$S']),
     },
     {
       id:             'builtInAttentionSuffixes2',
@@ -122,11 +120,11 @@ export const configs = new Configs({
       enabled:        false,
       matchTarget:    Constants.MATCH_TO_ATTACHMENT_SUFFIX,
       highlight:      Constants.HIGHLIGHT_NEVER,
-      confirmation:   Constants.CONFIRM_ALWAYS,
-      block:          Constants.BLOCK_NEVER,
+      action:         Constants.ACTION_RECONFIRM_ALWAYS,
       itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
       itemsLocal:     [],
       itemsFile:      '',
+      confirmTitle:   browser.i18n.getMessage('confirmAttentionSuffixes2Title'),
       confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixes2Message', ['$S']),
     },
     {
@@ -135,11 +133,11 @@ export const configs = new Configs({
       enabled:        false,
       matchTarget:    Constants.MATCH_TO_ATTACHMENT_NAME,
       highlight:      Constants.HIGHLIGHT_NEVER,
-      confirmation:   Constants.CONFIRM_ALWAYS,
-      block:          Constants.BLOCK_NEVER,
+      action:         Constants.ACTION_RECONFIRM_ALWAYS,
       itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
       itemsLocal:     [],
       itemsFile:      '',
+      confirmTitle:   browser.i18n.getMessage('confirmAttentionTermsTitle'),
       confirmMessage: browser.i18n.getMessage('confirmAttentionTermsMessage', ['$S']),
     },
     {
@@ -148,17 +146,17 @@ export const configs = new Configs({
       enabled:        false,
       matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN,
       highlight:      Constants.HIGHLIGHT_NEVER,
-      confirmation:   Constants.CONFIRM_NEVER,
-      block:          Constants.BLOCK_ALWAYS,
+      action:         Constants.ACTION_BLOCK_ALWAYS,
       itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
       itemsLocal:     [],
       itemsFile:      '',
+      confirmTitle:   browser.i18n.getMessage('alertBlockedDomainsTitle'),
       confirmMessage: browser.i18n.getMessage('alertBlockedDomainsMessage', ['$S']),
     },
   ],
 
   attentionDomainsHighlightMode: Constants.HIGHLIGHT_ALWAYS,
-  attentionDomainsConfirmationMode: Constants.CONFIRM_ALWAYS,
+  attentionDomainsConfirmationMode: Constants.ACTION_RECONFIRM_ALWAYS,
   attentionDomains: [],
   attentionDomainsSource: Constants.SOURCE_LOCAL_CONFIG,
   attentionDomainsFile: '',

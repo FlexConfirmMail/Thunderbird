@@ -31,13 +31,11 @@ export const HIGHLIGHT_NEVER = 0;
 export const HIGHLIGHT_ALWAYS = 1;
 export const HIGHLIGHT_ONLY_WITH_ATTACHMENTS = 2;
 
-export const BLOCK_NEVER = 0;
-export const BLOCK_ALWAYS = 1;
-export const BLOCK_ONLY_WITH_ATTACHMENTS = 2;
-
-export const CONFIRM_NEVER = 0;
-export const CONFIRM_ALWAYS = 1;
-export const CONFIRM_ONLY_WITH_ATTACHMENTS = 2;
+export const ACTION_NONE                           = 0;
+export const ACTION_RECONFIRM_ALWAYS                = 1;
+export const ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS = 2;
+export const ACTION_BLOCK_ALWAYS                    = 3;
+export const ACTION_BLOCK_ONLY_WITH_ATTACHMENTS     = 4;
 
 export const SOURCE_LOCAL_CONFIG = 0;
 export const SOURCE_FILE = 1;

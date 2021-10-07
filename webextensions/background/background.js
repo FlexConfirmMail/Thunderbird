@@ -459,13 +459,12 @@ async function shouldBlock(tab, details) {
 
   for (const [id, recipients] of Object.entries(matched)) {
     const rule = userRulesById[id];
-    if (rule.block == Constants.BLOCK_NEVER ||
-        (rule.block == Constants.BLOCK_ONLY_WITH_ATTACHMENTS &&
-         attachments.length == 0) ||
-        recipients.length == 0)
+    if (rule.action != Constants.ACTION_BLOCK_ALWAYS &&
+        (rule.action != Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS ||
+         attachments.length == 0))
       continue;
     try {
-      const addresses = [...new Set(blocked.map(recipient => recipient.address))];
+      const addresses = [...new Set(recipients.map(recipient => recipient.address))];
       await RichConfirm.showInPopup(tab.windowId, {
         modal:   !configs.debug,
         type:    'common-dialog',
@@ -490,8 +489,8 @@ async function shouldBlock(tab, details) {
 
   for (const [id, attachments] of Object.entries(matchedAttachments)) {
     const rule = userRulesById[id];
-    if (rule.block == Constants.BLOCK_NEVER ||
-        rule.block == Constants.BLOCK_ONLY_WITH_ATTACHMENTS)
+    if (rule.action != Constants.ACTION_BLOCK_ALWAYS &&
+        rule.action != Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS)
       continue;
     try {
       const fileNames = [...new Set(attachments.map(attachment => attachment.name))];

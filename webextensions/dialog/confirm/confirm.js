@@ -406,8 +406,8 @@ async function confirmMultipleRecipientDomains() {
 async function confirmAttentionDomains() {
   const mode = configs.attentionDomainsConfirmationMode;
   const shouldConfirm = (
-    mode == Constants.CONFIRM_ALWAYS ||
-    (mode == Constants.CONFIRM_ONLY_WITH_ATTACHMENTS &&
+    mode == Constants.ACTION_RECONFIRM_ALWAYS ||
+    (mode == Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS &&
      mParams.attachments.length > 0)
   );
   log('confirmAttentionDomains shouldConfirm = ', shouldConfirm);

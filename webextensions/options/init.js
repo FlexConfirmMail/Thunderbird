@@ -266,54 +266,58 @@ function rebuildUserRulesUI() {
                           class="userRule-ui-highlight">
                     <option id=${safeAttrValue('userRule-ui-highlight-option-never:' + id)}
                             value="${Constants.HIGHLIGHT_NEVER}"
-                           >${safeLocalizedText('config_userRule_applyAction_never')}</option>
+                           >${safeLocalizedText('config_userRule_highlight_never')}</option>
                     <option id=${safeAttrValue('userRule-ui-highlight-option-always:' + id)}
                             value="${Constants.HIGHLIGHT_ALWAYS}"
-                           >${safeLocalizedText('config_userRule_applyAction_always')}</option>
+                           >${safeLocalizedText('config_userRule_highlight_always')}</option>
                     <option id=${safeAttrValue('userRule-ui-highlight-option-withAttachments:' + id)}
                             value="${Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS}"
-                           >${safeLocalizedText('config_userRule_applyAction_withAttachments')}</option>
+                           >${safeLocalizedText('config_userRule_highlight_withAttachments')}</option>
                   </select></label></p>
 
-        <p id=${safeAttrValue('userRule-ui-confirmation-container:' + id)}
-           class="${hiddenIfLocked(rule, 'confirmation')}"
-          ><label id=${safeAttrValue('userRule-ui-confirmation-label:' + id)}
-                 >${safeLocalizedText('config_userRule_confirmation_caption_' + matchTargetTypeSuffix)}
-                  <select id=${safeAttrValue('userRule-ui-confirmation:' + id)}
-                          class="userRule-ui-confirmation">
-                    <option id=${safeAttrValue('userRule-ui-confirmation-option-never:' + id)}
-                            value="${Constants.CONFIRM_NEVER}"
-                           >${safeLocalizedText('config_userRule_applyAction_never')}</option>
-                    <option id=${safeAttrValue('userRule-ui-confirmation-option-always:' + id)}
-                            value="${Constants.CONFIRM_ALWAYS}"
-                           >${safeLocalizedText('config_userRule_applyAction_always')}</option>
-                    <option id=${safeAttrValue('userRule-ui-confirmation-option-withAttachments:' + id)}
-                            value="${Constants.CONFIRM_ONLY_WITH_ATTACHMENTS}"
-                           >${safeLocalizedText('config_userRule_applyAction_withAttachments')}</option>
+        <p id=${safeAttrValue('userRule-ui-action-container:' + id)}
+           class="${hiddenIfLocked(rule, 'action')}"
+          ><label id=${safeAttrValue('userRule-ui-action-label:' + id)}
+                 >${safeLocalizedText('config_userRule_action_caption_' + matchTargetTypeSuffix)}
+                  <select id=${safeAttrValue('userRule-ui-action:' + id)}
+                          class="userRule-ui-action">
+                    <option id=${safeAttrValue('userRule-ui-action-option-none:' + id)}
+                            value="${Constants.ACTION_NONE}"
+                           >${safeLocalizedText('config_userRule_action_none')}</option>
+                    <option id=${safeAttrValue('userRule-ui-action-option-separator1:' + id)}
+                            disabled="true">-------------------------------------</option>
+                    <option id=${safeAttrValue('userRule-ui-action-option-reconfirmAlways:' + id)}
+                            value="${Constants.ACTION_RECONFIRM_ALWAYS}"
+                           >${safeLocalizedText('config_userRule_action_reconfirmAlways')}</option>
+                    <option id=${safeAttrValue('userRule-ui-action-option-reconfirmWithAttachments:' + id)}
+                            value="${Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS}"
+                           >${safeLocalizedText('config_userRule_action_reconfirmWithAttachments')}</option>
+                    <option id=${safeAttrValue('userRule-ui-action-option-separator2:' + id)}
+                            disabled="true">-------------------------------------</option>
+                    <option id=${safeAttrValue('userRule-ui-action-option-blockAlways:' + id)}
+                            value="${Constants.ACTION_BLOCK_ALWAYS}"
+                           >${safeLocalizedText('config_userRule_action_blockAlways')}</option>
+                    <option id=${safeAttrValue('userRule-ui-action-option-blockWithAttachments:' + id)}
+                            value="${Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS}"
+                           >${safeLocalizedText('config_userRule_action_blockWithAttachments')}</option>
                   </select></label></p>
+        <p id=${safeAttrValue('userRule-ui-confirmTitle-container:' + id)}
+           class="sub ${rule.action == Constants.ACTION_NONE ||
+                        rule.action == Constants.ACTION_RECONFIRM_ALWAYS ||
+                        rule.action == Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS ||
+                        rule.$lockedKeys.includes('confirmTitle') ? 'hidden' : ''}"
+          ><label id=${safeAttrValue('userRule-ui-confirmTitle-label:' + id)}
+                 >${safeLocalizedText('config_userRule_confirmTitle_caption')}
+                  <br id=${safeAttrValue('userRule-ui-confirmTitle-br:' + id)}
+                     ><input id=${safeAttrValue('userRule-ui-confirmTitle:' + id)}
+                             type="text"
+                             class="userRule-ui-confirmTitle"></label></p>
         <p id=${safeAttrValue('userRule-ui-confirmMessage-container:' + id)}
-           class="sub ${rule.confirmation == Constants.CONFIRM_NEVER || rule.$lockedKeys.includes('confirmMessage') ? 'hidden' : ''}"
+           class="sub ${rule.action == Constants.ACTION_NONE || rule.$lockedKeys.includes('confirmMessage') ? 'hidden' : ''}"
           ><label id=${safeAttrValue('userRule-ui-confirmMessage-label:' + id)}
                  >${safeLocalizedText('config_userRule_confirmMessage_caption_' + matchTargetSuffix)}
                   <textarea id=${safeAttrValue('userRule-ui-confirmMessage:' + id)}
                             class="userRule-ui-confirmMessage"></textarea></label></p>
-
-        <p id=${safeAttrValue('userRule-ui-block-container:' + id)}
-           class="${hiddenIfLocked(rule, 'block')}"
-          ><label id=${safeAttrValue('userRule-ui-block-label:' + id)}
-                 >${safeLocalizedText('config_userRule_block_caption_' + matchTargetTypeSuffix)}
-                  <select id=${safeAttrValue('userRule-ui-block:' + id)}
-                          class="userRule-ui-block">
-                    <option id=${safeAttrValue('userRule-ui-block-option-never:' + id)}
-                            value="${Constants.BLOCK_NEVER}"
-                           >${safeLocalizedText('config_userRule_applyAction_never')}</option>
-                    <option id=${safeAttrValue('userRule-ui-block-option-always:' + id)}
-                            value="${Constants.BLOCK_ALWAYS}"
-                           >${safeLocalizedText('config_userRule_applyAction_always')}</option>
-                    <option id=${safeAttrValue('userRule-ui-block-option-withAttachments:' + id)}
-                            value="${Constants.BLOCK_ONLY_WITH_ATTACHMENTS}"
-                           >${safeLocalizedText('config_userRule_applyAction_withAttachments')}</option>
-                  </select></label></p>
       </fieldset>
     `.trim());
   }
@@ -332,9 +336,9 @@ function rebuildUserRulesUI() {
     setUserRuleFieldValue(`#userRule-ui-itemsLocal\\:${id}`,     rule.itemsLocal.join('\n'));
     setUserRuleFieldValue(`#userRule-ui-itemsFile\\:${id}`,      rule.itemsFile);
     setUserRuleFieldValue(`#userRule-ui-highlight\\:${id}`,      rule.highlight);
-    setUserRuleFieldValue(`#userRule-ui-confirmation\\:${id}`,   rule.confirmation);
+    setUserRuleFieldValue(`#userRule-ui-action\\:${id}`,         rule.action);
+    setUserRuleFieldValue(`#userRule-ui-confirmTitle\\:${id}`,   rule.confirmTitle);
     setUserRuleFieldValue(`#userRule-ui-confirmMessage\\:${id}`, rule.confirmMessage);
-    setUserRuleFieldValue(`#userRule-ui-block\\:${id}`,          rule.block);
   }
 }
 
@@ -517,7 +521,7 @@ function onUserRuleChange(event) {
   const field = event.target.closest('input, textarea, select');
   throttledSaveUserRuleChange(field);
 
-  const needRebuildUIField = event.target.closest('.userRule-ui-matchTarget, .userRule-ui-confirmation');
+  const needRebuildUIField = event.target.closest('.userRule-ui-matchTarget, .userRule-ui-action');
   if (needRebuildUIField) {
     throttledRebuildUserRulesUI();
   }
