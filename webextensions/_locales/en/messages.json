@@ -67,6 +67,8 @@
   "alertBlockedDomainsAccept": { "message": "Close" },
 
 
+  "reconfirmAccept":    { "message": "Send" },
+  "reconfirmCancel":    { "message": "Cancel" },
   "alertBlockedAccept": { "message": "Close" },
 
 

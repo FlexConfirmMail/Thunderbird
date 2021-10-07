@@ -81,7 +81,7 @@ configs.$loaded.then(async () => {
 
   mAttentionDomains = mParams.attentionDomains;
   mAttachmentClassifier = new AttachmentClassifier({
-    rules: mParams.userRules.filter(rule => rule.matchTarget == Constants.MATCH_TO_ATTACHMENT_NAME || rule.matchTarget == Constants.MATCH_TO_ATTACHMENT_SUFFIX),
+    rules: mParams.userRules,
     attentionSuffixes:  mParams.attentionSuffixes,
     attentionSuffixes2: mParams.attentionSuffixes2,
     attentionTerms:     mParams.attentionTerms
@@ -109,7 +109,8 @@ configs.$loaded.then(async () => {
 
   Dialog.initButton(mAcceptButton, async _event => {
     if (!isAllChecked() ||
-        !(await confirmMultipleRecipientDomains()) ||
+        !(await confirmedMultipleRecipientDomains()) ||
+        !(await confirmedWithRules()) ||
         !(await confirmAttentionDomains()) ||
         !(await confirmAttentionTerms()) ||
         !(await confirmAttentionSuffixes()) ||
@@ -363,13 +364,13 @@ function isAllChecked(container = document) {
 }
 
 
-async function confirmMultipleRecipientDomains() {
-  log('confirmMultipleRecipientDomains shouldConfirm = ', configs.confirmMultipleRecipientDomains);
+async function confirmedMultipleRecipientDomains() {
+  log('confirmedMultipleRecipientDomains shouldConfirm = ', configs.confirmMultipleRecipientDomains);
   if (!configs.confirmMultipleRecipientDomains)
     return true;
 
   const domains = new Set(mParams.externals.filter(recipient => recipient.type != 'Bcc').map(recipient => recipient.domain));
-  log('confirmMultipleRecipientDomains domains = ', domains);
+  log('confirmedMultipleRecipientDomains domains = ', domains);
   if (domains.size <= 1)
     return true;
 
@@ -394,13 +395,54 @@ async function confirmMultipleRecipientDomains() {
   catch(_error) {
     result = { buttonIndex: -1 };
   }
-  log('confirmMultipleRecipientDomains result.buttonIndex = ', result.buttonIndex);
+  log('confirmedMultipleRecipientDomains result.buttonIndex = ', result.buttonIndex);
   switch (result.buttonIndex) {
     case 0:
       return true;
     default:
       return false;
   }
+}
+
+async function confirmedWithRules() {
+  for (const [id, recipients] of Object.entries(mParams.matchedRecipients)) {
+    const rule = mParams.rulesById[id];
+    if (!rule ||
+        recipients.length == 0 ||
+        !(rule.action == Constants.ACTION_RECONFIRM_ALWAYS ||
+          (rule.action == Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS &&
+           mParams.attachments.length > 0))) {
+      log('confirmedWithRules: skip confirmation');
+      continue;
+    }
+
+    let result;
+    try {
+      result = await RichConfirm.show({
+        modal: true,
+        type:  'common-dialog',
+        url:   '/resources/blank.html',
+        title: rule.confirmTitle,
+        message: rule.confirmMessage.replace(/\%s/i, recipients.map(recipient => recipient.address).join('\n')),
+        buttons: [
+          browser.i18n.getMessage('reconfirmAccept'),
+          browser.i18n.getMessage('reconfirmCancel')
+        ]
+      });
+    }
+    catch(_error) {
+      result = { buttonIndex: -1 };
+    }
+    log('confirmedWithRules: result.buttonIndex = ', result.buttonIndex);
+    switch (result.buttonIndex) {
+      case 0:
+        continue;
+      default:
+        log(' => canceled');
+        return false;
+    }
+  }
+  return true;
 }
 
 async function confirmAttentionDomains() {

@@ -307,6 +307,15 @@ async function tryConfirm(tab, details, opener) {
 
   log('show confirmation ', tab, details);
 
+  const matched = {};
+  for (const classified of [classifiedTo, classifiedCc, classifiedBcc]) {
+    for (const [id, recipients] of Object.entries(classified.matched)) {
+      const merged = matched[id] || [];
+      merged.push(...recipients);
+      matched[id] = merged;
+    }
+  }
+
   const dialogParams = {
     url:    '/dialog/confirm/confirm.html',
     modal:  !configs.debug,
@@ -344,9 +353,13 @@ async function tryConfirm(tab, details, opener) {
         ...classifiedCc.externals.map(recipient => ({ ...recipient, type: 'Cc' })),
         ...classifiedBcc.externals.map(recipient => ({ ...recipient, type: 'Bcc' }))
       ],
+      matchedRecipients: Object.fromEntries(
+        Object.entries(matched)
+          .map(([id, recipients]) => [id, Array.from(new Set(recipients))])
+      ),
+      rules:     userRules,
+      rulesById: userRulesById,
       attachments: details.attachments || await browser.compose.listAttachments(tab.id),
-      userRules,
-      userRulesById,
       attentionDomains,
       attentionSuffixes,
       attentionSuffixes2,

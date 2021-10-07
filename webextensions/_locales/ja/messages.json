@@ -67,6 +67,8 @@
   "alertBlockedDomainsAccept": { "message": "閉じる" },
 
 
+  "reconfirmAccept":    { "message": "送信" },
+  "reconfirmCancel":    { "message": "キャンセル" },
   "alertBlockedAccept": { "message": "閉じる" },
 
 
