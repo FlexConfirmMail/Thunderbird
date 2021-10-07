@@ -46,23 +46,49 @@ export const configs = new Configs({
   allowRemoveRules: true, // don't expose this to the options UI!
   allowRearrangeRules: true, // don't expose this to the options UI!
   baseRules: [], // don't expose this to the options UI!
-  overrideRules: [], // don't expose this to the options UI!
-  userRules: [
+  overrideRules: [
     /*
     {
-      id:             'arbitrary unique string (auto generated)',
-      name:           'arbitrary visible name in the UI',
-      enabled:        true (enabled) or false (disabled),
-      matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN | Constants.MATCH_TO_ATTACHMENT_NAME | Constants.MATCH_TO_ATTACHMENT_SUFFIX,
-      highlight:      Constants.HIGHLIGHT_NEVER | Constants.HIGHLIGHT_ALWAYS | Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS,
-      confirmation:   Constants.CONFIRM_NEVER | Constants.CONFIRM_ALWAYS | Constants.CONFIRM_ONLY_WITH_ATTACHMENTS,
-      block:          Constants.BLOCK_NEVER | Constants.BLOCK_ALWAYS | Constants.BLOCK_ONLY_WITH_ATTACHMENTS,
-      itemsSource:    Constants.SOURCE_CONFIG | Constants.SOURCE_FILE,
-      items:          [(strings)],
-      itemsFile:      '(path to a text file: UTF-8, LF separated)',
-      confirmMessage: '(string)',
+      id:             'builtInAttentionDomains',
+      name:           browser.i18n.getMessage('config_attentionDomains_caption'),
+      enabled:        true,
+      matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN,
+      itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
+    },
+    {
+      id:             'builtInAttentionSuffixes',
+      name:           browser.i18n.getMessage('config_attentionSuffixesConfirm_label'),
+      enabled:        false,
+      matchTarget:    Constants.MATCH_TO_ATTACHMENT_SUFFIX,
+      itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
+      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixesTitle', ['$S']),
+    },
+    {
+      id:             'builtInAttentionSuffixes2',
+      name:           browser.i18n.getMessage('config_attentionSuffixes2Confirm_label'),
+      enabled:        false,
+      matchTarget:    Constants.MATCH_TO_ATTACHMENT_SUFFIX,
+      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixes2Message', ['$S']),
+    },
+    {
+      id:             'builtInAttentionTerms',
+      name:           browser.i18n.getMessage('config_attentionTermsConfirm_label'),
+      enabled:        false,
+      matchTarget:    Constants.MATCH_TO_ATTACHMENT_NAME,
+      highlight:      Constants.HIGHLIGHT_NEVER,
+      confirmation:   Constants.CONFIRM_ALWAYS,
+      block:          Constants.BLOCK_NEVER,
+    },
+    {
+      id:             'builtInBlockedDomains',
+      name:           browser.i18n.getMessage('config_blockedDomains_caption'),
+      enabled:        false,
+      matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN,
+      confirmMessage: browser.i18n.getMessage('alertBlockedDomainsMessage', ['$S']),
     },
     */
+  ], // don't expose this to the options UI!
+  userRules: [
     {
       id:             'builtInAttentionDomains',
       name:           browser.i18n.getMessage('config_attentionDomains_caption'),

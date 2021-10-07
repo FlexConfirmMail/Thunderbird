@@ -63,6 +63,6 @@ export class RecipientClassifier {
         externals.push(classifiedRecipient);
     }
 
-    return { internals, matched, externals, blocked };
+    return { internals, externals, matched, blocked };
   }
 }

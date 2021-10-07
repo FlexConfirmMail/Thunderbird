@@ -5,9 +5,30 @@
 */
 'use strict';
 
+import * as Constants from './constants.js';
+
 export class AttachmentClassifier {
   constructor({ rules, attentionSuffixes, attentionSuffixes2, attentionTerms } = {}) {
-     // TBD: build matcher from rules
+    this.$ruleMatchers = {};
+    if (rules) {
+      for (const rule of rules) {
+        switch (rule.matchTarget) {
+          case Constants.MATCH_TO_ATTACHMENT_NAME:
+            this.$ruleMatchers[rule.id] = new RegExp(`(${rule.items.join('|')})`, 'i');
+            break;
+
+          case Constants.MATCH_TO_ATTACHMENT_SUFFIX:
+            this.$ruleMatchers[rule.id] = new RegExp(`\\.(${rule.items.map(suffix => suffix.replace(/^\./, '')).join('|')})$`, 'i');
+            break;
+
+          default:
+            break;
+        }
+      }
+    }
+
+    this.getMatchedRules = this.getMatchedRules.bind(this);
+
 
     if (!attentionSuffixes)
       attentionSuffixes = [];
@@ -33,6 +54,12 @@ export class AttachmentClassifier {
     this.hasAttentionSuffix = this.hasAttentionSuffix.bind(this);
     this.hasAttentionSuffix2 = this.hasAttentionSuffix2.bind(this);
     this.hasAttentionTerm = this.hasAttentionTerm.bind(this);
+  }
+
+  getMatchedRules(filename) {
+    return Object.entries(this.$ruleMatchers)
+      .filter(([_id, matcher]) => matcher.test(filename))
+      .map(([id, _matcher]) => id);
   }
 
   hasAttentionSuffix(filename) {
