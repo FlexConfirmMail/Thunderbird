@@ -11,7 +11,8 @@ import * as Dialog from '/extlib/dialog.js';
 
 import {
   configs,
-  log
+  log,
+  sanitizeRegExpSource,
 } from '/common/common.js';
 
 import * as Constants from '/common/constants.js';
@@ -19,6 +20,8 @@ import * as ResizableBox from '/common/resizable-box.js';
 import { AttachmentClassifier } from '/common/attachment-classifier.js';
 
 let mParams;
+let mHighlightRecipientsRulesMatcher;
+let mHighlightAttachmentsRulesMatcher;
 let mAttentionDomains;
 let mAttachmentClassifier;
 
@@ -78,6 +81,28 @@ configs.$addObserver(onConfigChange);
 configs.$loaded.then(async () => {
   mParams = await Dialog.getParams();
   log('confirmation dialog initialize ', mParams);
+
+  mHighlightRecipientsRulesMatcher  = [];
+  mHighlightAttachmentsRulesMatcher = [];
+  for (const rule of mParams.rules) {
+    if (rule.highlight == Constants.HIGHLIGHT_NEVER ||
+        (rule.highlight == Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS &&
+         mParams.attachments.length == 0))
+      continue;
+
+    switch (rule.matchTarget) {
+      case Constants.MATCH_TO_RECIPIENT_DOMAIN:
+        mHighlightRecipientsRulesMatcher.push(rule.id);
+        break;
+
+      case Constants.MATCH_TO_ATTACHMENT_NAME:
+      case Constants.MATCH_TO_ATTACHMENT_SUFFIX:
+        mHighlightAttachmentsRulesMatcher.push(rule.id);
+        break;
+    }
+  }
+  mHighlightRecipientsRulesMatcher  = new RegExp(`^(${mHighlightRecipientsRulesMatcher.map(sanitizeRegExpSource).join('|')})$`, 'm');
+  mHighlightAttachmentsRulesMatcher = new RegExp(`^(${mHighlightAttachmentsRulesMatcher.map(sanitizeRegExpSource).join('|')})$`, 'm');
 
   mAttentionDomains = mParams.attentionDomains;
   mAttachmentClassifier = new AttachmentClassifier({
@@ -184,7 +209,7 @@ function initExternals() {
     groupCount++;
 
     const domainRow = createDomainRow(domain);
-    if (recipients.some(recipient => recipient.isAttentionDomain))
+    if (recipients.some(recipient => mHighlightRecipientsRulesMatcher.test(recipient.matchedRules.join('\n')) || recipient.isAttentionDomain))
       domainRow.classList.add('attention');
     mExternalsList.appendChild(domainRow);
 
@@ -242,7 +267,8 @@ function initAttachments() {
     const hasAttentionSuffix2 = mAttachmentClassifier.hasAttentionSuffix2(attachment.name);
     const hasAttentionTerm = mAttachmentClassifier.hasAttentionTerm(attachment.name);
     log('check attachment: ', attachment, { hasAttentionSuffix, hasAttentionSuffix2, hasAttentionTerm });
-    if (hasAttentionSuffix ||
+    if (mHighlightAttachmentsRulesMatcher.test(mAttachmentClassifier.getMatchedRules(attachment.name).join('\n')) ||
+        hasAttentionSuffix ||
         hasAttentionSuffix2 ||
         hasAttentionTerm)
       row.classList.add('attention');
@@ -255,7 +281,8 @@ function createRecipientRow(recipient) {
   row.setAttribute('title', foldLongTooltipText(`${recipient.type}: ${recipient.recipient}`));
   row.classList.add('recipient');
   row.lastChild.classList.add('flexible');
-  if (recipient.isAttentionDomain)
+  if (mHighlightRecipientsRulesMatcher.test(recipient.matchedRules.join('\n')) ||
+      recipient.isAttentionDomain)
     row.classList.add('attention');
   return row;
 }

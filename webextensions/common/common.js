@@ -376,3 +376,7 @@ export function toDOMDocumentFragment(source, parent) {
 export function sanitizeForHTMLText(text) {
   return String(text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
+
+export function sanitizeRegExpSource(source) {
+  return source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}

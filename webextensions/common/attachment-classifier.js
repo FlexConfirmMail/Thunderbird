@@ -56,6 +56,12 @@ export class AttachmentClassifier {
     this.hasAttentionTerm = this.hasAttentionTerm.bind(this);
   }
 
+  getMatchedRules(filename) {
+    return Object.entries(this.$ruleMatchers)
+      .filter(([_id, matcher]) => matcher.test(filename))
+      .map(([id, _matcher]) => id);
+  }
+
   classify(attachments) {
     const matched = {};
     for (const [id, matcher] of Object.entries(this.$ruleMatchers)) {
