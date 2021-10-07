@@ -10,65 +10,61 @@ import { AttachmentClassifier } from '../common/attachment-classifier.js';
 import { assert } from 'tiny-esm-test-runner';
 const { is } = assert;
 
-test_getMatchedRules.parameters = {
-  'various rules': {
-    files: [
+export function test_classify() {
+  const attachments = [
+    'filename.png',
+    'filename.zip',
+    'fakable-filename.png.zip',
+    'uppercase-for-ignore-case.PNG',
+    'filename.txt',
+    'filename.xpi',
+  ].map(filename => ({ name: filename }));
+  const rules = [
+    { id: 'without period',
+      matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
+      items: ['png'] },
+    { id: 'with period',
+      matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
+      items: ['.png'] },
+    { id: 'mixed',
+      matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
+      items: ['.png', '.txt'] },
+    { id: 'terms',
+      matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
+      items: ['NAME'] },
+    { id: 'recipient domain (should be ignored)',
+      matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+      items: ['png'] },
+  ];
+  const expected = {
+    'without period': [
+      'filename.png',
+      'uppercase-for-ignore-case.PNG',
+    ],
+    'with period': [
+      'filename.png',
+      'uppercase-for-ignore-case.PNG',
+    ],
+    'mixed': [
+      'filename.png',
+      'uppercase-for-ignore-case.PNG',
+      'filename.txt',
+    ],
+    'terms': [
       'filename.png',
       'filename.zip',
       'fakable-filename.png.zip',
-      'uppercase-for-ignore-case.PNG',
       'filename.txt',
       'filename.xpi',
     ],
-    rules: [
-      { id: 'without period',
-        matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
-        items: ['png'] },
-      { id: 'with period',
-        matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
-        items: ['.png'] },
-      { id: 'mixed',
-        matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
-        items: ['.png', '.txt'] },
-      { id: 'terms',
-        matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
-        items: ['NAME'] },
-      { id: 'recipient domain (should be ignored)',
-        matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
-        items: ['png'] },
-    ],
-    expected: {
-      'filename.png': [
-        'without period',
-        'with period',
-        'mixed',
-        'terms',
-      ],
-      'filename.zip': [
-        'terms',
-      ],
-      'fakable-filename.png.zip': [
-        'terms',
-      ],
-      'uppercase-for-ignore-case.PNG': [
-        'without period',
-        'with period',
-        'mixed',
-      ],
-      'filename.txt': [
-        'mixed',
-        'terms',
-      ],
-      'filename.xpi': [
-        'terms',
-      ],
-    },
-  },
-};
-export function test_getMatchedRules({ files, rules, expected }) {
+  };
   const classifier = new AttachmentClassifier({ rules });
-  const actual = Object.fromEntries(files.map(filename => [filename, classifier.getMatchedRules(filename)]));
-  is(expected, actual);
+  const actual = classifier.classify(attachments);
+  is(expected,
+     Object.fromEntries(
+       Object.entries(actual)
+         .map(([id, attachments]) => [id, attachments.map(attachment => attachment.name)])
+     ));
 }
 
 test_hasAttentionSuffix.parameters = {

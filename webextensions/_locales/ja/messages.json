@@ -67,6 +67,9 @@
   "alertBlockedDomainsAccept": { "message": "閉じる" },
 
 
+  "alertBlockedAccept": { "message": "閉じる" },
+
+
   "countdownDialogTitle": { "message": "カウントダウン" },
   "countdownDialogMessage_before": { "message": "あと" },
   "countdownDialogMessage_after": { "message": "秒で送信します" },

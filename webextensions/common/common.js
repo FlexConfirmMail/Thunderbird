@@ -21,6 +21,7 @@ const BASE_RULE = {
   itemsSource:    Constants.SOURCE_LOCAL_CONFIG, // | Constants.SOURCE_FILE
   itemsLocal:     [], // array of strings
   itemsFile:      '', // path to a text file: UTF-8, LF separated
+  confirmTitle:   '', // string
   confirmMessage: '', // string
 };
 

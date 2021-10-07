@@ -67,6 +67,9 @@
   "alertBlockedDomainsAccept": { "message": "Close" },
 
 
+  "alertBlockedAccept": { "message": "Close" },
+
+
   "countdownDialogTitle": { "message": "Countdown" },
   "countdownDialogMessage_before": { "message": "\u200b" },
   "countdownDialogMessage_after": { "message": " seconds left to send." },

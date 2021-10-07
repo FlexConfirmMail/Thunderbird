@@ -16,6 +16,7 @@ import {
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
 import { RecipientClassifier } from '/common/recipient-classifier.js';
+import { AttachmentClassifier } from '/common/attachment-classifier.js';
 
 import * as ListUtils from './list-utils.js';
 
@@ -343,7 +344,7 @@ async function tryConfirm(tab, details, opener) {
         ...classifiedCc.externals.map(recipient => ({ ...recipient, type: 'Cc' })),
         ...classifiedBcc.externals.map(recipient => ({ ...recipient, type: 'Bcc' }))
       ],
-      attachments: await browser.compose.listAttachments(tab.id),
+      attachments: details.attachments || await browser.compose.listAttachments(tab.id),
       userRules,
       userRulesById,
       attentionDomains,
@@ -436,24 +437,83 @@ async function getAttentionTerms() {
 
 
 async function shouldBlock(tab, details) {
-  if (!configs.blockedDomainsEnabled)
-    return false;
-
   const [
-    to, cc, bcc,
+    to, cc, bcc, attachments,
+    populatedUserRules,
     blockedDomains,
   ] = await Promise.all([
     ListUtils.populateListAddresses(details.to),
     ListUtils.populateListAddresses(details.cc),
     ListUtils.populateListAddresses(details.bcc),
+    details.attachments || browser.compose.listAttachments(tab.id),
+    loadPopulatedUserRules(),
     getBlockedDomains(),
   ]);
+  const [userRules, userRulesById] = populatedUserRules;
   log('block list: ', { blockedDomains });
-  const classifier = new RecipientClassifier({
+  const recipientClassifier = new RecipientClassifier({
+    rules: userRules,
     blockedDomains,
   });
-  const { blocked } = classifier.classify([...to, ...cc, ...bcc]);
-  if (blocked.length == 0)
+  const { matched, blocked } = recipientClassifier.classify([...to, ...cc, ...bcc]);
+
+  for (const [id, recipients] of Object.entries(matched)) {
+    const rule = userRulesById[id];
+    if (rule.block == Constants.BLOCK_NEVER ||
+        (rule.block == Constants.BLOCK_ONLY_WITH_ATTACHMENTS &&
+         attachments.length == 0) ||
+        recipients.length == 0)
+      continue;
+    try {
+      const addresses = [...new Set(blocked.map(recipient => recipient.address))];
+      await RichConfirm.showInPopup(tab.windowId, {
+        modal:   !configs.debug,
+        type:    'common-dialog',
+        url:     '/resources/blank.html',
+        title:   rule.confirmTitle,
+        message: rule.confirmMessage.replace(/\%s/i, addresses.join('\n')),
+        buttons: [
+          browser.i18n.getMessage('alertBlockedAccept'),
+        ]
+      });
+      return true;
+    }
+    catch(error) {
+      console.error(error);
+    }
+  }
+
+  const attachmentsClassifier = new AttachmentClassifier({
+    rules: userRules,
+  });
+  const matchedAttachments = attachmentsClassifier.classify(attachments);
+
+  for (const [id, attachments] of Object.entries(matchedAttachments)) {
+    const rule = userRulesById[id];
+    if (rule.block == Constants.BLOCK_NEVER ||
+        rule.block == Constants.BLOCK_ONLY_WITH_ATTACHMENTS)
+      continue;
+    try {
+      const fileNames = [...new Set(attachments.map(attachment => attachment.name))];
+      await RichConfirm.showInPopup(tab.windowId, {
+        modal:   !configs.debug,
+        type:    'common-dialog',
+        url:     '/resources/blank.html',
+        title:   rule.confirmTitle,
+        message: rule.confirmMessage.replace(/\%s/i, fileNames.join('\n')),
+        buttons: [
+          browser.i18n.getMessage('alertBlockedAccept'),
+        ]
+      });
+      return true;
+    }
+    catch(error) {
+      console.error(error);
+    }
+  }
+
+  if (!configs.blockedDomainsEnabled ||
+      blocked.length == 0)
     return false;
 
   try {
