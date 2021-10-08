@@ -483,7 +483,7 @@ async function shouldBlock(tab, details) {
         type:    'common-dialog',
         url:     '/resources/blank.html',
         title:   rule.confirmTitle,
-        message: rule.confirmMessage.replace(/\%s/i, addresses.join('\n')),
+        message: rule.confirmMessage.replace(/[\%\$]s/i, addresses.join('\n')),
         buttons: [
           browser.i18n.getMessage('alertBlockedAccept'),
         ]
@@ -512,7 +512,7 @@ async function shouldBlock(tab, details) {
         type:    'common-dialog',
         url:     '/resources/blank.html',
         title:   rule.confirmTitle,
-        message: rule.confirmMessage.replace(/\%s/i, fileNames.join('\n')),
+        message: rule.confirmMessage.replace(/[\%\$]s/i, fileNames.join('\n')),
         buttons: [
           browser.i18n.getMessage('alertBlockedAccept'),
         ]
@@ -531,7 +531,7 @@ async function shouldBlock(tab, details) {
   try {
     const blockedRecipients = [...new Set(blocked.map(recipient => recipient.address))];
     const message = (
-      configs.blockedDomainsDialogMessage.replace(/\%s/i, blockedRecipients.join('\n')) ||
+      configs.blockedDomainsDialogMessage.replace(/[\%\$]s/i, blockedRecipients.join('\n')) ||
       browser.i18n.getMessage('alertBlockedDomainsMessage', [blockedRecipients.join('\n')])
     );
     await RichConfirm.showInPopup(tab.windowId, {

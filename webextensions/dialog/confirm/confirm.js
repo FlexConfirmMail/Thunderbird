@@ -402,7 +402,7 @@ async function confirmedMultipleRecipientDomains() {
     return true;
 
   const message = (
-    configs.confirmMultipleRecipientDomainsDialogMessage.replace(/\%s/i, Array.from(domains).join('\n')) ||
+    configs.confirmMultipleRecipientDomainsDialogMessage.replace(/[\%\$]s/i, Array.from(domains).join('\n')) ||
     browser.i18n.getMessage('confirmMultipleRecipientDomainsMessage', [Array.from(domains).join('\n')])
   );
   let result;
@@ -450,7 +450,7 @@ async function confirmedWithRules() {
         type:  'common-dialog',
         url:   '/resources/blank.html',
         title: rule.confirmTitle,
-        message: rule.confirmMessage.replace(/\%s/i, recipients.map(recipient => recipient.address).join('\n')),
+        message: rule.confirmMessage.replace(/[\%\$]s/i, recipients.map(recipient => recipient.address).join('\n')),
         buttons: [
           browser.i18n.getMessage('reconfirmAccept'),
           browser.i18n.getMessage('reconfirmCancel')
@@ -490,7 +490,7 @@ async function confirmAttentionDomains() {
     return true;
 
   const message = (
-    configs.attentionDomainsDialogMessage.replace(/\%s/i, attentionRecipients.join('\n')) ||
+    configs.attentionDomainsDialogMessage.replace(/[\%\$]s/i, attentionRecipients.join('\n')) ||
     browser.i18n.getMessage('confirmAttentionDomainsMessage', [attentionRecipients.join('\n')])
   );
   let result;
@@ -530,7 +530,7 @@ async function confirmAttentionTerms() {
     return true;
 
   const message = (
-    configs.attentionTermsDialogMessage.replace(/\%s/i, attentionAttachments.join('\n')) ||
+    configs.attentionTermsDialogMessage.replace(/[\%\$]s/i, attentionAttachments.join('\n')) ||
     browser.i18n.getMessage('confirmAttentionTermsMessage', [attentionAttachments.join('\n')])
   );
   let result;
@@ -570,7 +570,7 @@ async function confirmAttentionSuffixes() {
     return true;
 
   const message = (
-    configs.attentionSuffixesDialogMessage.replace(/\%s/i, attentionAttachments.join('\n')) ||
+    configs.attentionSuffixesDialogMessage.replace(/[\%\$]s/i, attentionAttachments.join('\n')) ||
     browser.i18n.getMessage('confirmAttentionSuffixesMessage', [attentionAttachments.join('\n')])
   );
   let result;
@@ -610,7 +610,7 @@ async function confirmAttentionSuffixes2() {
     return true;
 
   const message = (
-    configs.attentionSuffixes2DialogMessage.replace(/\%s/i, attentionAttachments.join('\n')) ||
+    configs.attentionSuffixes2DialogMessage.replace(/[\%\$]s/i, attentionAttachments.join('\n')) ||
     browser.i18n.getMessage('confirmAttentionSuffixes2Message', [attentionAttachments.join('\n')])
   );
   let result;
