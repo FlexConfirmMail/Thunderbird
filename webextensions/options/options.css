@@ -190,6 +190,11 @@ body > section.collapsible.collapsed > h1:first-child::before {
   width: 100%;
 }
 
+.rich-confirm-dialog:not(.popup-window) {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
 
 
 .disabled {
