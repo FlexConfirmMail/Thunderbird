@@ -10,20 +10,6 @@ import * as Constants from './constants.js';
 
 const OVERRIDE_DEFAULT_CONFIGS = {}; /* Replace this for more customization on an enterprise use. */
 
-const BASE_RULE = {
-  id:             '', // arbitrary unique string (auto generated)
-  name:           '', // arbitrary visible name in the UI
-  enabled:        true, // true (enabled) or false (disabled),
-  matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN, // | Constants.MATCH_TO_ATTACHMENT_NAME | Constants.MATCH_TO_ATTACHMENT_SUFFIX
-  highlight:      Constants.HIGHLIGHT_NEVER, // | Constants.HIGHLIGHT_ALWAYS | Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS
-  action:         Constants.ACTION_NONE, // | Constants.ACTION_RECONFIRM_ALWAYS | Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS | Constants.ACTION_BLOCK
-  itemsSource:    Constants.SOURCE_LOCAL_CONFIG, // | Constants.SOURCE_FILE
-  itemsLocal:     [], // array of strings
-  itemsFile:      '', // path to a text file: UTF-8, LF separated
-  confirmTitle:   '', // string
-  confirmMessage: '', // string
-};
-
 export const configs = new Configs({
   confirmationMode: Constants.CONFIRMATION_MODE_ALWAYS,
   lastClipboardData: null,
@@ -262,7 +248,7 @@ export function loadUserRules() {
       let merged = mergedRulesById[id];
       if (!merged) {
         merged = mergedRulesById[id] = {
-          ...JSON.parse(JSON.stringify(BASE_RULE)),
+          ...JSON.parse(JSON.stringify(Constants.BASE_RULE)),
           id,
           $lockedKeys: [],
         };
@@ -379,4 +365,8 @@ export function sanitizeForHTMLText(text) {
 
 export function sanitizeRegExpSource(source) {
   return source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+export function clone(object) {
+  return JSON.parse(JSON.stringify(object));
 }

@@ -12,6 +12,7 @@ import {
   sendToHost,
   sanitizeForHTMLText,
   toDOMDocumentFragment,
+  clone,
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
 import Options from '/extlib/Options.js';
@@ -186,6 +187,7 @@ function rebuildUserRulesUI() {
                        ${rule.enabled ? '' : 'collapsed'}
                        ${rule.$lockedKeys.includes('enabled') && !rule.enabled ? 'hidden' : ''}">
         <legend id=${safeAttrValue('userRule-ui-legend:' + id)}
+                ${!rule.name ? ' class="editing"' : ''}
                ><label id=${safeAttrValue('userRule-ui-legend-label:' + id)}
                       ><input id=${safeAttrValue('userRule-ui-enabled:' + id)}
                               class="userRule-ui-enabled ${hiddenIfLocked(rule, 'enabled')}"
@@ -600,6 +602,21 @@ function throttledSaveUserRules() {
 }
 throttledSaveUserRules.timer = null;
 
+function onUserRuleAdded(_event) {
+  const newRule = {
+    ...clone(Constants.BASE_RULE),
+    id: `rule-${Date.now()}-${parseInt(Math.random() * 56632)}`,
+    enabled: true,
+    $lockedKeys: [],
+  };
+  mUserRules.push(newRule);
+  mUserRulesById[newRule.id] = newRule;
+
+  rebuildUserRulesUI();
+
+  document.querySelector(`#userRule-ui-name\\:${newRule.id}`).focus();
+}
+
 
 window.addEventListener('DOMContentLoaded', async () => {
   await configs.$loaded;
@@ -682,6 +699,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   userRulesContainer.addEventListener('change',  onUserRuleChange);
   userRulesContainer.addEventListener('input',   onUserRuleInput);
   userRulesContainer.addEventListener('blur',    onUserRuleBlur, true);
+  Dialog.initButton(document.querySelector('#userRulesAddButton'), onUserRuleAdded);
 
   rebuildUserRulesUI();
 
@@ -690,9 +708,13 @@ window.addEventListener('DOMContentLoaded', async () => {
   onConfigChanged('debug');
 
   for (const container of document.querySelectorAll('section, fieldset, p, div')) {
+    const buttons = container.querySelectorAll('button');
     const allFields = container.querySelectorAll('input, textarea, select');
     const lockedFields = container.querySelectorAll('.locked input, .locked textarea, .locked select, input.locked, textarea.locked, select.locked');
-    container.classList.toggle('locked', allFields.length == lockedFields.length);
+    if (allFields.length == 0)
+      container.classList.toggle('locked', buttons.length == 0);
+    else
+      container.classList.toggle('locked', allFields.length == lockedFields.length);
   }
 
   document.documentElement.classList.add('initialized');

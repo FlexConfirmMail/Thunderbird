@@ -180,6 +180,16 @@ body > section.collapsible.collapsed > h1:first-child::before {
   width: 100%;
 }
 
+#userRulesAddButtonContainer {
+  margin: 0.5em 0 0;
+}
+
+#userRulesAddButton {
+  height: 3em;
+  text-align: center;
+  width: 100%;
+}
+
 
 
 .disabled {
