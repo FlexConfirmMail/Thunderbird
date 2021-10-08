@@ -105,7 +105,6 @@ configs.$loaded.then(async () => {
     new RegExp(`^(${mHighlightRecipientsRulesMatcher.map(sanitizeRegExpSource).join('|')})$`, 'm');
   mHighlightAttachmentsRulesMatcher = mHighlightAttachmentsRulesMatcher.length > 0 &&
     new RegExp(`^(${mHighlightAttachmentsRulesMatcher.map(sanitizeRegExpSource).join('|')})$`, 'm');
-console.log('mHighlightAttachmentsRulesMatcher ', mHighlightAttachmentsRulesMatcher);
 
   mAttentionDomains = mParams.attentionDomains;
   mAttachmentClassifier = new AttachmentClassifier({
