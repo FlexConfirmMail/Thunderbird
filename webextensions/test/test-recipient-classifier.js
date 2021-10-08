@@ -330,6 +330,63 @@ export function test_classifyAddressesWithRules() {
   );
 }
 
+export function test_classifyAddressesWithRules_matcherRules() {
+  const recipients = [
+    'address-like@clear-code.com <aaa@exmaple.com>',
+    'address-like@clear-code.com <bbb@example.org>',
+    'address-like@exmaple.com <ccc@clear-code.com>',
+    'address-like@example.org <ddd@CLEAR-code.com>',
+    'address-like@exmaple.com <eee@blocked.CLEAR-code.com>',
+    'address-like@clear-code.com <fff@blocked.example.com>',
+    'address-like@clear-code.com <ggg@attention.EXAMPLE.com>',
+  ];
+  const classifier = new RecipientClassifier({
+    internalDomains:  [
+      'clear-code.com',
+      'blocked.clear-code.com',
+    ],
+    rules: [
+      { id: 'blocked',
+        matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+        items: ['blocked.example.com', 'blocked.clear-code.com'] },
+      { id: 'attention',
+        matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+        items: ['attention.example.com', 'attention.clear-code.com'] },
+    ],
+  });
+  const expected = {
+    internals: {
+      'ccc@clear-code.com': [
+      ],
+      'ddd@CLEAR-code.com': [
+      ],
+      'eee@blocked.CLEAR-code.com': [
+        'blocked',
+      ],
+    },
+    externals: {
+      'aaa@exmaple.com': [
+      ],
+      'bbb@example.org': [
+      ],
+      'fff@blocked.example.com': [
+        'blocked',
+      ],
+      'ggg@attention.EXAMPLE.com': [
+        'attention',
+      ],
+    },
+  };
+  const classified = classifier.classify(recipients);
+  is(
+    expected,
+    {
+      internals: Object.fromEntries(classified.internals.map(recipient => [recipient.address, recipient.matchedRules])),
+      externals: Object.fromEntries(classified.externals.map(recipient => [recipient.address, recipient.matchedRules])),
+    }
+  );
+}
+
 test_classifyAttentionDomains.parameters = {
   'must detect difference of subdomains': {
     recipients: [
