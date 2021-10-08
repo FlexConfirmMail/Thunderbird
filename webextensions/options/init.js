@@ -146,6 +146,19 @@ function setUserRuleFieldValue(query, value) {
     return;
   }
 
+  if (field.localName == 'select') {
+    // if it is disabled, fallback to the nearest preceding sibling available option.
+    let selectedOption = field.querySelector(`option[value="${value}"]`);
+    if (selectedOption.disabled) {
+      while (selectedOption.previousElementSibling) {
+        value = selectedOption.previousElementSibling.value;
+        if (value)
+          break;
+        selectedOption = selectedOption.previousElementSibling;
+      }
+    }
+  }
+
   if (!('$lastValue' in field) ||
       field.value != value) {
     field.value = value;
@@ -272,6 +285,7 @@ function rebuildUserRulesUI() {
                            >${safeLocalizedText('config_userRule_highlight_always')}</option>
                     <option id=${safeAttrValue('userRule-ui-highlight-option-withAttachments:' + id)}
                             value="${Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS}"
+                            ${rule.matchTarget != Constants.MATCH_TO_RECIPIENT_DOMAIN ? 'disabled class="hidden"' : ''}
                            >${safeLocalizedText('config_userRule_highlight_withAttachments')}</option>
                   </select></label></p>
 
@@ -285,20 +299,24 @@ function rebuildUserRulesUI() {
                             value="${Constants.ACTION_NONE}"
                            >${safeLocalizedText('config_userRule_action_none')}</option>
                     <option id=${safeAttrValue('userRule-ui-action-option-separator1:' + id)}
+                            ${rule.matchTarget != Constants.MATCH_TO_RECIPIENT_DOMAIN ? 'class="hidden"' : ''}
                             disabled="true">-------------------------------------</option>
                     <option id=${safeAttrValue('userRule-ui-action-option-reconfirmAlways:' + id)}
                             value="${Constants.ACTION_RECONFIRM_ALWAYS}"
                            >${safeLocalizedText('config_userRule_action_reconfirmAlways')}</option>
                     <option id=${safeAttrValue('userRule-ui-action-option-reconfirmWithAttachments:' + id)}
                             value="${Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS}"
+                            ${rule.matchTarget != Constants.MATCH_TO_RECIPIENT_DOMAIN ? 'disabled class="hidden"' : ''}
                            >${safeLocalizedText('config_userRule_action_reconfirmWithAttachments')}</option>
                     <option id=${safeAttrValue('userRule-ui-action-option-separator2:' + id)}
+                            ${rule.matchTarget != Constants.MATCH_TO_RECIPIENT_DOMAIN ? 'class="hidden"' : ''}
                             disabled="true">-------------------------------------</option>
                     <option id=${safeAttrValue('userRule-ui-action-option-blockAlways:' + id)}
                             value="${Constants.ACTION_BLOCK_ALWAYS}"
                            >${safeLocalizedText('config_userRule_action_blockAlways')}</option>
                     <option id=${safeAttrValue('userRule-ui-action-option-blockWithAttachments:' + id)}
                             value="${Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS}"
+                            ${rule.matchTarget != Constants.MATCH_TO_RECIPIENT_DOMAIN ? 'disabled class="hidden"' : ''}
                            >${safeLocalizedText('config_userRule_action_blockWithAttachments')}</option>
                   </select></label></p>
         <p id=${safeAttrValue('userRule-ui-confirmTitle-container:' + id)}

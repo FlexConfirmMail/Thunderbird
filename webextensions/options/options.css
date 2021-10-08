@@ -149,6 +149,12 @@ body > section.collapsible.collapsed > h1:first-child::before {
 
 
 
+.userRule-ui-group legend::before,
+.userRule-ui-group .userRule-ui-name-display {
+  font-size: large;
+  font-weight: bold;
+}
+
 .userRule-buttons .flex-box.row {
   align-items: center;
 }
