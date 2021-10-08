@@ -136,9 +136,9 @@
 
   "config_userRule_action_caption_recipient":        { "message": "When there is any matched recipient:" },
   "config_userRule_action_caption_attachment":       { "message": "When there is any matched attachment:" },
-  "config_userRule_action_none":                     { "message": "Do only regular confirmation" },
-  "config_userRule_action_reconfirmAlways":          { "message": "Re-confirm after regular confirmation always" },
-  "config_userRule_action_reconfirmWithAttachments": { "message": "Re-confirm after regular confirmation only when there is any attachment" },
+  "config_userRule_action_none":                     { "message": "(Do nothing)" },
+  "config_userRule_action_reconfirmAlways":          { "message": "Re-confirm always" },
+  "config_userRule_action_reconfirmWithAttachments": { "message": "Re-confirm only when there is any attachment" },
   "config_userRule_action_blockAlways":              { "message": "Disallow to send messages always" },
   "config_userRule_action_blockWithAttachments":     { "message": "Disallow to send messages only when there is any attachment" },
 

@@ -136,9 +136,9 @@
 
   "config_userRule_action_caption_recipient":        { "message": "該当する宛先がある場合:" },
   "config_userRule_action_caption_attachment":       { "message": "該当する添付ファイルがある場合:" },
-  "config_userRule_action_none":                     { "message": "通常の送信確認のみ行う" },
-  "config_userRule_action_reconfirmAlways":          { "message": "送信確認後、常に再警告する" },
-  "config_userRule_action_reconfirmWithAttachments": { "message": "添付ファイルがある時、送信確認後に再警告する" },
+  "config_userRule_action_none":                     { "message": "（何もしない）" },
+  "config_userRule_action_reconfirmAlways":          { "message": "常に再警告する" },
+  "config_userRule_action_reconfirmWithAttachments": { "message": "添付ファイルがある時は再警告する" },
   "config_userRule_action_blockAlways":              { "message": "送信を常に禁止する" },
   "config_userRule_action_blockWithAttachments":     { "message": "添付ファイルがある時だけ送信を禁止する" },
 
