@@ -101,8 +101,8 @@ configs.$loaded.then(async () => {
         break;
     }
   }
-  mHighlightRecipientsRulesMatcher  = new RegExp(`^(${mHighlightRecipientsRulesMatcher.map(sanitizeRegExpSource).join('|')})$`, 'm');
-  mHighlightAttachmentsRulesMatcher = new RegExp(`^(${mHighlightAttachmentsRulesMatcher.map(sanitizeRegExpSource).join('|')})$`, 'm');
+  mHighlightRecipientsRulesMatcher  = mHighlightRecipientsRulesMatcher.length > 0 && new RegExp(`^(${mHighlightRecipientsRulesMatcher.map(sanitizeRegExpSource).join('|')})$`, 'm');
+  mHighlightAttachmentsRulesMatcher = mHighlightAttachmentsRulesMatcher.length > 0 && new RegExp(`^(${mHighlightAttachmentsRulesMatcher.map(sanitizeRegExpSource).join('|')})$`, 'm');
 
   mAttentionDomains = mParams.attentionDomains;
   mAttachmentClassifier = new AttachmentClassifier({
@@ -209,7 +209,7 @@ function initExternals() {
     groupCount++;
 
     const domainRow = createDomainRow(domain);
-    if (recipients.some(recipient => mHighlightRecipientsRulesMatcher.test(recipient.matchedRules.join('\n')) || recipient.isAttentionDomain))
+    if (recipients.some(recipient => (mHighlightRecipientsRulesMatcher && mHighlightRecipientsRulesMatcher.test(recipient.matchedRules.join('\n'))) || recipient.isAttentionDomain))
       domainRow.classList.add('attention');
     mExternalsList.appendChild(domainRow);
 
@@ -267,7 +267,8 @@ function initAttachments() {
     const hasAttentionSuffix2 = mAttachmentClassifier.hasAttentionSuffix2(attachment.name);
     const hasAttentionTerm = mAttachmentClassifier.hasAttentionTerm(attachment.name);
     log('check attachment: ', attachment, { hasAttentionSuffix, hasAttentionSuffix2, hasAttentionTerm });
-    if (mHighlightAttachmentsRulesMatcher.test(mAttachmentClassifier.getMatchedRules(attachment.name).join('\n')) ||
+    if ((mHighlightAttachmentsRulesMatcher &&
+         mHighlightAttachmentsRulesMatcher.test(mAttachmentClassifier.getMatchedRules(attachment.name).join('\n'))) ||
         hasAttentionSuffix ||
         hasAttentionSuffix2 ||
         hasAttentionTerm)
