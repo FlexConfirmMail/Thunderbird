@@ -284,7 +284,7 @@ export async function loadPopulatedUserRules() {
     switch (rule.itemsSource) {
       default:
       case Constants.SOURCE_LOCAL_CONFIG:
-        items = rule.items || [];
+        items = rule.itemsLocal || [];
         break;
 
       case Constants.SOURCE_FILE: {
