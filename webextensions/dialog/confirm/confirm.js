@@ -101,12 +101,15 @@ configs.$loaded.then(async () => {
         break;
     }
   }
-  mHighlightRecipientsRulesMatcher  = mHighlightRecipientsRulesMatcher.length > 0 && new RegExp(`^(${mHighlightRecipientsRulesMatcher.map(sanitizeRegExpSource).join('|')})$`, 'm');
-  mHighlightAttachmentsRulesMatcher = mHighlightAttachmentsRulesMatcher.length > 0 && new RegExp(`^(${mHighlightAttachmentsRulesMatcher.map(sanitizeRegExpSource).join('|')})$`, 'm');
+  mHighlightRecipientsRulesMatcher  = mHighlightRecipientsRulesMatcher.length > 0 &&
+    new RegExp(`^(${mHighlightRecipientsRulesMatcher.map(sanitizeRegExpSource).join('|')})$`, 'm');
+  mHighlightAttachmentsRulesMatcher = mHighlightAttachmentsRulesMatcher.length > 0 &&
+    new RegExp(`^(${mHighlightAttachmentsRulesMatcher.map(sanitizeRegExpSource).join('|')})$`, 'm');
+console.log('mHighlightAttachmentsRulesMatcher ', mHighlightAttachmentsRulesMatcher);
 
   mAttentionDomains = mParams.attentionDomains;
   mAttachmentClassifier = new AttachmentClassifier({
-    rules: mParams.userRules,
+    rules: mParams.rules,
     attentionSuffixes:  mParams.attentionSuffixes,
     attentionSuffixes2: mParams.attentionSuffixes2,
     attentionTerms:     mParams.attentionTerms
@@ -433,14 +436,18 @@ async function confirmedMultipleRecipientDomains() {
 }
 
 async function confirmedWithRules() {
-  for (const [id, recipients] of Object.entries(mParams.matchedRecipients)) {
+  const matched = {
+    ...mParams.matchedRecipients,
+    ...mAttachmentClassifier.classify(mParams.attachments),
+  };
+  for (const [id, matchedTargets] of Object.entries(matched)) {
     const rule = mParams.rulesById[id];
     if (!rule ||
-        recipients.length == 0 ||
+        matchedTargets.length == 0 ||
         !(rule.action == Constants.ACTION_RECONFIRM_ALWAYS ||
           (rule.action == Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS &&
            mParams.attachments.length > 0))) {
-      log('confirmedWithRules: skip confirmation');
+      log('confirmedWithRules: skip confirmation ', id);
       continue;
     }
 
@@ -451,7 +458,7 @@ async function confirmedWithRules() {
         type:  'common-dialog',
         url:   '/resources/blank.html',
         title: rule.confirmTitle,
-        message: rule.confirmMessage.replace(/[\%\$]s/i, recipients.map(recipient => recipient.address).join('\n')),
+        message: rule.confirmMessage.replace(/[\%\$]s/i, matchedTargets.map(matchedTarget => matchedTarget.address || matchedTarget.name).join('\n')),
         buttons: [
           browser.i18n.getMessage('reconfirmAccept'),
           browser.i18n.getMessage('reconfirmCancel')

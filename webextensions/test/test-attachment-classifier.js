@@ -67,6 +67,40 @@ export function test_classify() {
      ));
 }
 
+export function test_getMatchedRules() {
+  const files = [
+    'filename.png',
+    'filename.zip',
+    'file.txt',
+  ];
+  const rules = [
+    { id: 'without period',
+      matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
+      items: ['png'] },
+    { id: 'with period',
+      matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
+      items: ['.png'] },
+    { id: 'mixed',
+      matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
+      items: ['.png', '.txt'] },
+    { id: 'terms',
+      matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
+      items: ['NAME'] },
+    { id: 'recipient domain (should be ignored)',
+      matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+      items: ['png'] },
+  ];
+  const expected = [
+    ['without period', 'with period', 'mixed', 'terms'],
+    ['terms'],
+    ['mixed'],
+  ];
+
+  const classifier = new AttachmentClassifier({ rules });
+  const actual = files.map(classifier.getMatchedRules);
+  is(expected, actual);
+}
+
 test_hasAttentionSuffix.parameters = {
   'without period': {
     files: [
