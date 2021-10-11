@@ -192,7 +192,7 @@ export class MatchingRules {
     return false;
   }
 
-  async tryConfirm(ruleId, { targets, confirm, attachments }) {
+  async tryReconfirm(ruleId, { targets, confirm, attachments }) {
     const rule = this.get(ruleId);
     if (!rule ||
         targets.length == 0 ||
