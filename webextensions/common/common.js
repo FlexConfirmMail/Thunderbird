@@ -281,7 +281,7 @@ export async function loadPopulatedUserRules() {
           const response = await sendToHost({
             command: Constants.HOST_COMMAND_FETCH,
             params: {
-              path: configs.itemsFile
+              path: rule.itemsFile
             }
           });
           items = response ? response.contents.trim().split(/[\s,|]+/).filter(part => !!part) : [];
