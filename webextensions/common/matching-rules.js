@@ -23,10 +23,10 @@ const BASE_RULE = {
 };
 
 export class MatchingRules {
-  constructor({ base, baseRules, user, userRules, override, overrideRules }) {
-    this.$baseRules     = base     || baseRules;
-    this.$userRules     = user     || userRules;
-    this.$overrideRules = override || overrideRules;
+  constructor({ base, baseRules, user, userRules, override, overrideRules } = {}) {
+    this.$baseRules     = base     || baseRules     || [];
+    this.$userRules     = user     || userRules     || [];
+    this.$overrideRules = override || overrideRules || [];
     this.$load();
   }
 
@@ -103,9 +103,9 @@ export class MatchingRules {
 
   add(params = {}) {
     const rule = {
+      id: `rule-${Date.now()}-${parseInt(Math.random() * 56632)}`,
       ...JSON.parse(JSON.stringify(BASE_RULE)),
       ...params,
-      id: `rule-${Date.now()}-${parseInt(Math.random() * 56632)}`,
       enabled: true,
       $lockedKeys: [],
     };
@@ -117,17 +117,23 @@ export class MatchingRules {
 
   remove(id) {
     delete this.$rulesById[id];
-    this.$rules = this.$rules.filter(rule => rule.id != id);
+    const index = this.$rules.findIndex(rule => rule.id == id);
+    if (index > -1)
+      this.$rules.splice(index, 1);
   }
 
   moveUp(id) {
     const index = this.$rules.findIndex(rule => rule.id == id);
+    if (index == 0)
+      return;
     const toBeMoved = this.$rules.splice(index, 1);
     this.$rules.splice(index - 1, 0, ...toBeMoved);
   }
 
   moveDown(id) {
     const index = this.$rules.findIndex(rule => rule.id == id);
+    if (index == this.$rules.length - 1)
+      return;
     const toBeMoved = this.$rules.splice(index, 1);
     this.$rules.splice(index + 1, 0, ...toBeMoved);
   }
