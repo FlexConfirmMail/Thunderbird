@@ -10,11 +10,12 @@ import RichConfirm from '/extlib/RichConfirm.js';
 
 import {
   configs,
-  loadPopulatedUserRules,
   log,
   sendToHost,
+  readFile,
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
+import { MatchingRules } from '/common/matching-rules.js';
 import { RecipientClassifier } from '/common/recipient-classifier.js';
 import { AttachmentClassifier } from '/common/attachment-classifier.js';
 
@@ -256,25 +257,24 @@ async function needConfirmationOnModified(tab, details) {
 
 async function tryConfirm(tab, details, opener) {
   log('tryConfirm: ', tab, details, opener);
+  const matchingRules = new MatchingRules(configs);
   const [
     to, cc, bcc,
-    populatedUserRules,
-    attentionDomains, attentionSuffixes, attentionSuffixes2, attentionTerms
+    attentionDomains, attentionSuffixes, attentionSuffixes2, attentionTerms,
   ] = await Promise.all([
     ListUtils.populateListAddresses(details.to),
     ListUtils.populateListAddresses(details.cc),
     ListUtils.populateListAddresses(details.bcc),
-    loadPopulatedUserRules(),
     getAttentionDomains(),
     getAttentionSuffixes(),
     getAttentionSuffixes2(),
-    getAttentionTerms()
+    getAttentionTerms(),
+    matchingRules.populate(readFile),
   ]);
-  log('attention list: ', { populatedUserRules, attentionDomains, attentionSuffixes, attentionSuffixes2, attentionTerms });
-  const [userRules, userRulesById] = populatedUserRules;
+  log('attention list: ', { attentionDomains, attentionSuffixes, attentionSuffixes2, attentionTerms });
   const classifier = new RecipientClassifier({
     internalDomains: configs.internalDomains || [],
-    rules: userRules.filter(rule => rule.matchTarget == Constants.MATCH_TO_RECIPIENT_DOMAIN),
+    rules: matchingRules.all,
     attentionDomains,
   });
   const classifiedTo = classifier.classify(to);
@@ -357,8 +357,6 @@ async function tryConfirm(tab, details, opener) {
         Object.entries(matched)
           .map(([id, recipients]) => [id, Array.from(new Set(recipients))])
       ),
-      rules:     userRules,
-      rulesById: userRulesById,
       attachments: details.attachments || await browser.compose.listAttachments(tab.id),
       attentionDomains,
       attentionSuffixes,
@@ -450,78 +448,78 @@ async function getAttentionTerms() {
 
 
 async function shouldBlock(tab, details) {
+  const matchingRules = new MatchingRules(configs);
   const [
     to, cc, bcc, attachments,
-    populatedUserRules,
     blockedDomains,
   ] = await Promise.all([
     ListUtils.populateListAddresses(details.to),
     ListUtils.populateListAddresses(details.cc),
     ListUtils.populateListAddresses(details.bcc),
     details.attachments || browser.compose.listAttachments(tab.id),
-    loadPopulatedUserRules(),
     getBlockedDomains(),
+    matchingRules.populate(readFile),
   ]);
-  const [userRules, userRulesById] = populatedUserRules;
   log('block list: ', { blockedDomains });
   const recipientClassifier = new RecipientClassifier({
-    rules: userRules,
+    rules: matchingRules.all,
     blockedDomains,
   });
   const { matched, blocked } = recipientClassifier.classify([...to, ...cc, ...bcc]);
 
   for (const [id, recipients] of Object.entries(matched)) {
-    const rule = userRulesById[id];
-    if (rule.action != Constants.ACTION_BLOCK_ALWAYS &&
-        (rule.action != Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS ||
-         attachments.length == 0))
-      continue;
-    try {
-      const addresses = [...new Set(recipients.map(recipient => recipient.address))];
-      await RichConfirm.showInPopup(tab.windowId, {
-        modal:   !configs.debug,
-        type:    'common-dialog',
-        url:     '/resources/blank.html',
-        title:   rule.confirmTitle,
-        message: rule.confirmMessage.replace(/[\%\$]s/i, addresses.join('\n')),
-        buttons: [
-          browser.i18n.getMessage('alertBlockedAccept'),
-        ]
-      });
+    const blocked = await matchingRules.tryBlock(id, {
+      targets: [...new Set(recipients.map(recipient => recipient.address))],
+      async alert({ title, message }) {
+        try {
+          await RichConfirm.show({
+            modal: true,
+            type:  'common-dialog',
+            url:   '/resources/blank.html',
+            title,
+            message,
+            buttons: [
+              browser.i18n.getMessage('alertBlockedAccept'),
+            ],
+          });
+        }
+        catch(_error) {
+        }
+      },
+      attachments,
+    });
+    if (blocked)
       return true;
-    }
-    catch(error) {
-      console.error(error);
-    }
   }
 
   const attachmentsClassifier = new AttachmentClassifier({
-    rules: userRules,
+    rules: matchingRules.all,
   });
   const matchedAttachments = attachmentsClassifier.classify(attachments);
 
   for (const [id, attachments] of Object.entries(matchedAttachments)) {
-    const rule = userRulesById[id];
-    if (rule.action != Constants.ACTION_BLOCK_ALWAYS &&
-        rule.action != Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS)
-      continue;
-    try {
-      const fileNames = [...new Set(attachments.map(attachment => attachment.name))];
-      await RichConfirm.showInPopup(tab.windowId, {
-        modal:   !configs.debug,
-        type:    'common-dialog',
-        url:     '/resources/blank.html',
-        title:   rule.confirmTitle,
-        message: rule.confirmMessage.replace(/[\%\$]s/i, fileNames.join('\n')),
-        buttons: [
-          browser.i18n.getMessage('alertBlockedAccept'),
-        ]
-      });
+    const blocked = await matchingRules.tryBlock(id, {
+      targets: [...new Set(attachments.map(attachment => attachment.name))],
+      async alert({ title, message }) {
+        try {
+          await RichConfirm.show({
+            modal: true,
+            type:  'common-dialog',
+            url:   '/resources/blank.html',
+            title,
+            message,
+            buttons: [
+              browser.i18n.getMessage('alertBlockedAccept'),
+            ],
+          });
+        }
+        catch(_error) {
+        }
+      },
+      attachments,
+    });
+    if (blocked)
       return true;
-    }
-    catch(error) {
-      console.error(error);
-    }
   }
 
   if (!configs.blockedDomainsEnabled ||

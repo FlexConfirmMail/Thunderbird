@@ -17,8 +17,8 @@ export const configs = new Configs({
   internalDomains: [],
 
   /*
-    Elements of "baseRules" and "overrideRules" should have properties same to
-    elements of "userRules".
+    Items of "baseRules" and "overrideRules" should have properties same to
+    items of "userRules".
     FCM should work as:
       1. Load "baseRules" to a "merged object".
       2. Merge items and properties of "userRules" to the merged object.
@@ -27,6 +27,7 @@ export const configs = new Configs({
       5. Save values only changed from the baseRule to "userRules".
     So, company users (system admins) may lock "baseRules" and "overrideRules"
     with partial properties to provide fixed fields.
+    For more detailed behaviors, see "matching-rules.js".
   */
   allowAddRules: true, // don't expose this to the options UI!
   allowRemoveRules: true, // don't expose this to the options UI!
@@ -236,94 +237,6 @@ export const configs = new Configs({
   ]
 });
 
-export function loadUserRules() {
-  const mergedRules     = [];
-  const mergedRulesById = {};
-  for (const rules of [configs.baseRules, configs.userRules, configs.overrideRules]) {
-    const locked = rules === configs.overrideRules;
-    for (const rule of rules) {
-      const id = rule.id;
-      if (!id)
-        continue;
-      let merged = mergedRulesById[id];
-      if (!merged) {
-        merged = mergedRulesById[id] = {
-          ...JSON.parse(JSON.stringify(Constants.BASE_RULE)),
-          id,
-          $lockedKeys: [],
-        };
-        mergedRules.push(merged);
-      }
-      Object.assign(merged, rule);
-      if (locked) {
-        merged.$lockedKeys.push(...Object.keys(rule).filter(key => key != 'id'));
-      }
-    }
-  }
-  return [mergedRules, mergedRulesById];
-}
-
-export async function loadPopulatedUserRules() {
-  const [userRules, userRulesById] = loadUserRules();
-  await Promise.all(userRules.map(async rule => {
-    let items = [];
-    switch (rule.itemsSource) {
-      default:
-      case Constants.SOURCE_LOCAL_CONFIG:
-        items = rule.itemsLocal || [];
-        break;
-
-      case Constants.SOURCE_FILE: {
-        if (!rule.itemsFile) {
-          items = [];
-        }
-        else {
-          const response = await sendToHost({
-            command: Constants.HOST_COMMAND_FETCH,
-            params: {
-              path: rule.itemsFile
-            }
-          });
-          items = response ? response.contents.trim().split(/[\s,|]+/).filter(part => !!part) : [];
-        }
-        break;
-      };
-    }
-    userRulesById[rule.id].items = items;
-  }));
-  return [userRules, userRulesById];
-}
-
-export function saveUserRules(rules) {
-  const baseRulesById = {};
-  for (const rule of configs.baseRules) {
-    baseRulesById[rule.id] = rule;
-  }
-
-  const toBeSavedRules = [];
-  const toBeSavedRulesById = {};
-  for (const rule of rules) {
-    const toBeSaved = toBeSavedRulesById[rule.id] = {};
-    Object.assign(toBeSaved, rule);
-    delete toBeSaved.$lockedKeys;
-
-    const baseRule = baseRulesById[rule.id];
-    if (baseRule) {
-      for (const [key, value] of Object.entries(baseRule)) {
-        if (key == 'id')
-          continue;
-        if (JSON.stringify(toBeSaved[key]) == JSON.stringify(value))
-          delete toBeSaved[key];
-      }
-    }
-
-    if (Object.keys(toBeSaved).length > 1)
-      toBeSavedRules.push(toBeSaved);
-  }
-
-  configs.userRules = toBeSavedRules;
-}
-
 export function log(message, ...args) {
   if (!configs || !configs.debug)
     return;
@@ -349,6 +262,14 @@ export async function sendToHost(message) {
   }
 }
 
+export async function readFile(path) {
+  const response = await sendToHost({
+    command: Constants.HOST_COMMAND_FETCH,
+    params: { path },
+  });
+  return response && response.contents;
+}
+
 
 export function toDOMDocumentFragment(source, parent) {
   const range = document.createRange();
@@ -361,10 +282,6 @@ export function toDOMDocumentFragment(source, parent) {
 
 export function sanitizeForHTMLText(text) {
   return String(text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
-
-export function sanitizeRegExpSource(source) {
-  return source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 export function clone(object) {

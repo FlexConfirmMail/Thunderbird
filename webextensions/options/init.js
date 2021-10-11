@@ -7,12 +7,9 @@
 
 import {
   configs,
-  loadUserRules,
-  saveUserRules,
   sendToHost,
   sanitizeForHTMLText,
   toDOMDocumentFragment,
-  clone,
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
 import Options from '/extlib/Options.js';
@@ -20,6 +17,7 @@ import '/extlib/l10n.js';
 import * as Dialog from '/extlib/dialog.js';
 import { DOMUpdater } from '/extlib/dom-updater.js';
 import RichConfirm from '/extlib/RichConfirm.js';
+import { MatchingRules } from '/common/matching-rules.js';
 
 const CONFIRMATION_TYPES = [
   'attentionDomains',
@@ -29,12 +27,20 @@ const CONFIRMATION_TYPES = [
   'blockedDomains',
 ];
 
+let mMatchingRules;
+
 const options = new Options(configs);
 
 function onConfigChanged(key) {
   switch (key) {
     case 'debug':
       document.documentElement.classList.toggle('debugging', configs.debug);
+      break;
+
+    case 'baseRules':
+    case 'userRules':
+    case 'overrideRules':
+      mMatchingRules = new MatchingRules(configs);
       break;
   }
 }
@@ -97,9 +103,6 @@ async function chooseFile({ title, role, displayName, pattern, fileName }) {
   return response ? response.path.trim() : '';
 }
 
-
-let mUserRules;
-let mUserRulesById;
 
 function safeAttrValue(value) {
   return JSON.stringify(sanitizeForHTMLText(String(value)));
@@ -173,7 +176,7 @@ function hiddenIfLocked(rule, key) {
 
 function rebuildUserRulesUI() {
   const sections = [];
-  for (const rule of mUserRules) {
+  for (const rule of mMatchingRules.all) {
     const id = rule.id;
     if (!id)
       continue;
@@ -345,7 +348,7 @@ function rebuildUserRulesUI() {
   const container = document.querySelector('#userRulesContainer');
   DOMUpdater.update(container, toDOMDocumentFragment(sections.join(''), container));
 
-  for (const rule of mUserRules) {
+  for (const rule of mMatchingRules.all) {
     const id = rule.id;
     if (!id)
       continue;
@@ -390,20 +393,16 @@ function exitUserRuleNameEdit(field) {
 function moveUpRule(id) {
   if (!configs.allowRearrangeRules)
     return;
-  const index = mUserRules.findIndex(rule => rule.id == id);
-  const toBeMoved = mUserRules.splice(index, 1);
-  mUserRules.splice(index - 1, 0, ...toBeMoved);
-  saveUserRules(mUserRules);
+  mMatchingRules.moveUp(id);
+  configs.userRules = mMatchingRules.exportUserRules();
   rebuildUserRulesUI();
 }
 
 function moveDownRule(id) {
   if (!configs.allowRearrangeRules)
     return;
-  const index = mUserRules.findIndex(rule => rule.id == id);
-  const toBeMoved = mUserRules.splice(index, 1);
-  mUserRules.splice(index + 1, 0, ...toBeMoved);
-  saveUserRules(mUserRules);
+  mMatchingRules.moveDown(id);
+  configs.userRules = mMatchingRules.exportUserRules();
   rebuildUserRulesUI();
 }
 
@@ -417,7 +416,7 @@ async function removeRule(id) {
       modal: true,
       type:  'common-dialog',
       url:   '/resources/blank.html',
-      message: browser.i18n.getMessage('config_userRules_remove_confirmMessage', [mUserRulesById[id].name]),
+      message: browser.i18n.getMessage('config_userRules_remove_confirmMessage', [mMatchingRules.get(id).name]),
       buttons: [
         browser.i18n.getMessage('config_userRules_remove_accept'),
         browser.i18n.getMessage('config_userRules_remove_cancel')
@@ -430,13 +429,12 @@ async function removeRule(id) {
   if (result.buttonIndex != 0)
     return;
 
-  delete mUserRulesById[id];
-  mUserRules = mUserRules.filter(rule => rule.id != id);
+  mMatchingRules.remove(id);
   rebuildUserRulesUI();
 }
 
 async function chooseItemsFile(id) {
-  const rule = mUserRulesById[id];
+  const rule = mMatchingRules.get(id);
   const path = await chooseFile({
     title:       browser.i18n.getMessage(`config_userRule_itemsFile_button_dialogTitle_${getMatchTargetSuffix(rule.matchTarget)}`),
     role:        `${id}FileChoose`,
@@ -578,7 +576,7 @@ function reserveToSaveUserRuleChange(field) {
   else {
     value = field.value;
   }
-  mUserRulesById[id][key] = value;
+  mMatchingRules.get(id)[key] = value;
   throttledSaveUserRules();
 }
 
@@ -597,20 +595,13 @@ function throttledSaveUserRules() {
     clearTimeout(throttledSaveUserRules.timer);
   throttledSaveUserRules.timer = setTimeout(() => {
     throttledSaveUserRules.timer = null;
-    saveUserRules(mUserRules);
+    configs.userRules = mMatchingRules.exportUserRules();
   }, 50);
 }
 throttledSaveUserRules.timer = null;
 
 function onUserRuleAdded(_event) {
-  const newRule = {
-    ...clone(Constants.BASE_RULE),
-    id: `rule-${Date.now()}-${parseInt(Math.random() * 56632)}`,
-    enabled: true,
-    $lockedKeys: [],
-  };
-  mUserRules.push(newRule);
-  mUserRulesById[newRule.id] = newRule;
+  const newRule = mMatchingRules.add();
 
   rebuildUserRulesUI();
 
@@ -688,10 +679,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     messageField.placeholder = browser.i18n.getMessage(messageField.dataset.defaultMessageKey, ['$S']);
   }
 
-
-  const [userRules, userRulesById] = loadUserRules();
-  mUserRules     = userRules;
-  mUserRulesById = userRulesById;
+  mMatchingRules = new MatchingRules(configs);
 
   const userRulesContainer = document.querySelector('#userRulesContainer');
   userRulesContainer.addEventListener('click',   onUserRuleClick);

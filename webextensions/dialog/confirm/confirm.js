@@ -12,16 +12,16 @@ import * as Dialog from '/extlib/dialog.js';
 import {
   configs,
   log,
-  sanitizeRegExpSource,
+  readFile,
 } from '/common/common.js';
 
 import * as Constants from '/common/constants.js';
 import * as ResizableBox from '/common/resizable-box.js';
+import { MatchingRules } from '/common/matching-rules.js';
 import { AttachmentClassifier } from '/common/attachment-classifier.js';
 
 let mParams;
-let mHighlightRecipientsRulesMatcher;
-let mHighlightAttachmentsRulesMatcher;
+let mMatchingRules;
 let mAttentionDomains;
 let mAttachmentClassifier;
 
@@ -82,33 +82,13 @@ configs.$loaded.then(async () => {
   mParams = await Dialog.getParams();
   log('confirmation dialog initialize ', mParams);
 
-  mHighlightRecipientsRulesMatcher  = [];
-  mHighlightAttachmentsRulesMatcher = [];
-  for (const rule of mParams.rules) {
-    if (rule.highlight == Constants.HIGHLIGHT_NEVER ||
-        (rule.highlight == Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS &&
-         mParams.attachments.length == 0))
-      continue;
+  mMatchingRules = new MatchingRules(configs);
+  await mMatchingRules.populate(readFile);
 
-    switch (rule.matchTarget) {
-      case Constants.MATCH_TO_RECIPIENT_DOMAIN:
-        mHighlightRecipientsRulesMatcher.push(rule.id);
-        break;
-
-      case Constants.MATCH_TO_ATTACHMENT_NAME:
-      case Constants.MATCH_TO_ATTACHMENT_SUFFIX:
-        mHighlightAttachmentsRulesMatcher.push(rule.id);
-        break;
-    }
-  }
-  mHighlightRecipientsRulesMatcher  = mHighlightRecipientsRulesMatcher.length > 0 &&
-    new RegExp(`^(${mHighlightRecipientsRulesMatcher.map(sanitizeRegExpSource).join('|')})$`, 'm');
-  mHighlightAttachmentsRulesMatcher = mHighlightAttachmentsRulesMatcher.length > 0 &&
-    new RegExp(`^(${mHighlightAttachmentsRulesMatcher.map(sanitizeRegExpSource).join('|')})$`, 'm');
 
   mAttentionDomains = mParams.attentionDomains;
   mAttachmentClassifier = new AttachmentClassifier({
-    rules: mParams.rules,
+    rules:              mMatchingRules.all,
     attentionSuffixes:  mParams.attentionSuffixes,
     attentionSuffixes2: mParams.attentionSuffixes2,
     attentionTerms:     mParams.attentionTerms
@@ -211,7 +191,7 @@ function initExternals() {
     groupCount++;
 
     const domainRow = createDomainRow(domain);
-    if (recipients.some(recipient => (mHighlightRecipientsRulesMatcher && mHighlightRecipientsRulesMatcher.test(recipient.matchedRules.join('\n'))) || recipient.isAttentionDomain))
+    if (recipients.some(recipient => mMatchingRules.hasHighlightRecipientRule(recipient.matchedRules, mParams.attachments) || recipient.isAttentionDomain))
       domainRow.classList.add('attention');
     mExternalsList.appendChild(domainRow);
 
@@ -269,8 +249,7 @@ function initAttachments() {
     const hasAttentionSuffix2 = mAttachmentClassifier.hasAttentionSuffix2(attachment.name);
     const hasAttentionTerm = mAttachmentClassifier.hasAttentionTerm(attachment.name);
     log('check attachment: ', attachment, { hasAttentionSuffix, hasAttentionSuffix2, hasAttentionTerm });
-    if ((mHighlightAttachmentsRulesMatcher &&
-         mHighlightAttachmentsRulesMatcher.test(mAttachmentClassifier.getMatchedRules(attachment.name).join('\n'))) ||
+    if (mMatchingRules.hasHighlightAttachmentRule(mAttachmentClassifier.getMatchedRules(attachment.name))  ||
         hasAttentionSuffix ||
         hasAttentionSuffix2 ||
         hasAttentionTerm)
@@ -284,7 +263,7 @@ function createRecipientRow(recipient) {
   row.setAttribute('title', foldLongTooltipText(`${recipient.type}: ${recipient.recipient}`));
   row.classList.add('recipient');
   row.lastChild.classList.add('flexible');
-  if (mHighlightRecipientsRulesMatcher.test(recipient.matchedRules.join('\n')) ||
+  if (mMatchingRules.hasHighlightRecipientRule(recipient.matchedRules, mParams.attachments) ||
       recipient.isAttentionDomain)
     row.classList.add('attention');
   return row;
@@ -440,41 +419,39 @@ async function confirmedWithRules() {
     ...mAttachmentClassifier.classify(mParams.attachments),
   };
   for (const [id, matchedTargets] of Object.entries(matched)) {
-    const rule = mParams.rulesById[id];
-    if (!rule ||
-        matchedTargets.length == 0 ||
-        !(rule.action == Constants.ACTION_RECONFIRM_ALWAYS ||
-          (rule.action == Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS &&
-           mParams.attachments.length > 0))) {
-      log('confirmedWithRules: skip confirmation ', id);
-      continue;
-    }
-
-    let result;
-    try {
-      result = await RichConfirm.show({
-        modal: true,
-        type:  'common-dialog',
-        url:   '/resources/blank.html',
-        title: rule.confirmTitle,
-        message: rule.confirmMessage.replace(/[\%\$]s/i, matchedTargets.map(matchedTarget => matchedTarget.address || matchedTarget.name).join('\n')),
-        buttons: [
-          browser.i18n.getMessage('reconfirmAccept'),
-          browser.i18n.getMessage('reconfirmCancel')
-        ]
-      });
-    }
-    catch(_error) {
-      result = { buttonIndex: -1 };
-    }
-    log('confirmedWithRules: result.buttonIndex = ', result.buttonIndex);
-    switch (result.buttonIndex) {
-      case 0:
-        continue;
-      default:
-        log(' => canceled');
-        return false;
-    }
+    const confirmed = await mMatchingRules.tryReconfirm(id, {
+      targets: matchedTargets,
+      async confirm({ title, message }) {
+        let result;
+        try {
+          result = await RichConfirm.show({
+            modal: true,
+            type:  'common-dialog',
+            url:   '/resources/blank.html',
+            title,
+            message,
+            buttons: [
+              browser.i18n.getMessage('reconfirmAccept'),
+              browser.i18n.getMessage('reconfirmCancel'),
+            ],
+          });
+        }
+        catch(_error) {
+          result = { buttonIndex: -1 };
+        }
+        log('confirmedWithRules: result.buttonIndex = ', result.buttonIndex);
+        switch (result.buttonIndex) {
+          case 0:
+            return true;;
+          default:
+            log(' => canceled');
+            return false;
+        }
+      },
+      attachments: mParams.attachments,
+    });
+    if (!confirmed)
+      return false;
   }
   return true;
 }
