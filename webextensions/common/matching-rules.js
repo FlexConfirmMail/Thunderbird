@@ -6,6 +6,7 @@
 'use strict';
 
 import * as Constants from './constants.js';
+import * as RecipientParser from './recipient-parser.js';
 
 const BASE_RULE = {
   id:             '', // arbitrary unique string (auto generated)
@@ -27,7 +28,6 @@ export class MatchingRules {
     this.$userRules     = user     || userRules;
     this.$overrideRules = override || overrideRules;
     this.$load();
-    this.$prepareRuleMatchers();
   }
 
   $load() {
@@ -58,34 +58,39 @@ export class MatchingRules {
     this.$rulesById = mergedRulesById;
   }
 
-  $prepareRuleMatchers() {
-    const highlightRecipientsRulesAll           = [];
-    const highlightRecipientsRulesNoAttachment  = [];
-    const highlightAttachmentsRulesAll          = [];
+  get $matchedDomainSets() {
+    if (!this._$matchedDomainSets)
+      this.$prepareMatchers();
+    return this._$matchedDomainSets;
+  }
 
-    for (const rule of this.all) {
-      if (rule.highlight == Constants.HIGHLIGHT_NEVER)
-        continue;
+  get $attachmentMatchers() {
+    if (!this._$attachmentMatchers)
+      this.$prepareMatchers();
+    return this._$attachmentMatchers;
+  }
 
+  $prepareMatchers() {
+    this._$matchedDomainSets = {};
+    this._$attachmentMatchers = {};
+    for (const rule of this.$rules) {
       switch (rule.matchTarget) {
         case Constants.MATCH_TO_RECIPIENT_DOMAIN:
-          highlightRecipientsRulesAll.push(rule.id);
-          if (rule.highlight != Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS)
-            highlightRecipientsRulesNoAttachment.push(rule.id);
+          this._$matchedDomainSets[rule.id] = new Set((rule.items || []).map(domain => domain.toLowerCase().replace(/^@/, '')));
           break;
 
         case Constants.MATCH_TO_ATTACHMENT_NAME:
+          this._$attachmentMatchers[rule.id] = new RegExp(`(${rule.items.join('|')})`, 'i');
+          break;
+
         case Constants.MATCH_TO_ATTACHMENT_SUFFIX:
-          highlightAttachmentsRulesAll.push(rule.id);
+          this._$attachmentMatchers[rule.id] = new RegExp(`\\.(${rule.items.map(suffix => suffix.replace(/^\./, '')).join('|')})$`, 'i');
+          break;
+
+        default:
           break;
       }
     }
-    this.$highlightRecipientsRulesMatcherAll = highlightRecipientsRulesAll.length > 0 &&
-      new RegExp(`^(${highlightRecipientsRulesAll.map(sanitizeRegExpSource).join('|')})$`, 'm');
-    this.$highlightRecipientsRulesNoAttachment = highlightRecipientsRulesNoAttachment.length > 0 &&
-      new RegExp(`^(${highlightRecipientsRulesNoAttachment.map(sanitizeRegExpSource).join('|')})$`, 'm');
-    this.$highlightAttachmentsRulesMatcher = highlightAttachmentsRulesAll.length > 0 &&
-      new RegExp(`^(${highlightAttachmentsRulesAll.map(sanitizeRegExpSource).join('|')})$`, 'm');
   }
 
   get all() {
@@ -128,6 +133,9 @@ export class MatchingRules {
   }
 
   async populate(fileReader) {
+    if (this.$populated)
+      return;
+
     await Promise.all(this.all.map(async rule => {
       let items = [];
       switch (rule.itemsSource) {
@@ -149,6 +157,8 @@ export class MatchingRules {
       }
       this.$rulesById[rule.id].items = items;
     }));
+
+    this.$populated = true;
   }
 
   exportUserRules() {
@@ -181,86 +191,207 @@ export class MatchingRules {
     return toBeSavedRules;
   }
 
-  hasHighlightRecipientRule(ruleIds, attachments = []) {
-    if (attachments.length == 0)
-      return this.$highlightRecipientsRulesNoAttachment && this.$highlightRecipientsRulesNoAttachment.test(ruleIds.join('\n'));
+  $classifyRecipients(recipients, filter) {
+    const classified = {};
+    for (const recipient of recipients) {
+      const parsedRecipient = typeof recipient == 'string' ? RecipientParser.parse(recipient) : recipient;
 
-    return this.$highlightRecipientsRulesMatcherAll && this.$highlightRecipientsRulesMatcherAll.test(ruleIds.join('\n'));
+      for (const [id, domains] of Object.entries(this.$matchedDomainSets)) {
+        if (!domains.has(parsedRecipient.domain))
+          continue;
+
+        const rule = this.get(id);
+        if (!filter(rule))
+          continue;
+
+        const classifiedRecipients = classified[id] || new Set();
+        classifiedRecipients.add(parsedRecipient);
+        classified[id] = classifiedRecipients;
+      }
+    }
+    return Object.fromEntries(
+      Object.entries(classified)
+        .map(([id, recipients]) => [id, Array.from(recipients)])
+    );
   }
 
-  hasHighlightAttachmentRule(ruleIds) {
-    return this.$highlightAttachmentsRulesMatcher && this.$highlightAttachmentsRulesMatcher.test(ruleIds.join('\n'));
+  getHighlightedRecipientAddresses(recipients, attachments = []) {
+    const classified = this.$classifyRecipients(
+      recipients,
+      rule => (
+        rule.highlight == Constants.HIGHLIGHT_ALWAYS ||
+        (rule.highlight == Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS &&
+         attachments.length > 0)
+      )
+    );
+    return new Set(Object.entries(classified).map(([_ruleId, recipients]) => recipients.map(recipient => recipient.address)).flat());
   }
 
-  shouldReconfirm(ruleId, attachments = []) {
-    const rule = this.get(ruleId);
-    if (!rule)
-      return false;
+  classifyReconfirmRecipients(recipients, attachments = []) {
+    return this.$classifyRecipients(
+      recipients,
+      rule => (
+        rule.action == Constants.ACTION_RECONFIRM_ALWAYS ||
+        (rule.action == Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS &&
+         attachments.length > 0)
+      )
+    );
+  }
 
-    if (rule.action == Constants.ACTION_RECONFIRM_ALWAYS)
-      return true;
+  classifyBlockRecipients(recipients, attachments = []) {
+    return this.$classifyRecipients(
+      recipients,
+      rule => (
+        rule.action == Constants.ACTION_BLOCK_ALWAYS ||
+        (rule.action == Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS &&
+         attachments.length > 0)
+      )
+    );
+  }
 
-    if (rule.action == Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS)
-      return attachments.length > 0;
+  $classifyAttachments(attachments, filter) {
+    const classified = {};
+    for (const attachment of attachments) {
+      for (const [id, matcher] of Object.entries(this.$attachmentMatchers)) {
+        if (!matcher.test(attachment.name))
+          continue;
+
+        const rule = this.get(id);
+        if (!filter(rule))
+          continue;
+
+        const classifiedAttachments = classified[id] || new Set();
+        classifiedAttachments.add(attachment);
+        classified[id] = classifiedAttachments;
+      }
+    }
+    return Object.fromEntries(
+      Object.entries(classified)
+        .map(([id, attachments]) => [id, Array.from(attachments)])
+    );
+  }
+
+  getHighlightedAttachmentNames(attachments) {
+    const classified = this.$classifyAttachments(
+      attachments,
+      rule => (
+        rule.highlight == Constants.HIGHLIGHT_ALWAYS ||
+        (rule.highlight == Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS &&
+         attachments.length > 0)
+      )
+    );
+    return new Set(Object.entries(classified).map(([_ruleId, attachments]) => attachments.map(attachment => attachment.name)).flat());
+  }
+
+  classifyReconfirmAttachments(attachments) {
+    return this.$classifyAttachments(
+      attachments,
+      rule => (
+        rule.action == Constants.ACTION_RECONFIRM_ALWAYS ||
+        (rule.action == Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS &&
+         attachments.length > 0)
+      )
+    );
+  }
+
+  classifyBlockAttachments(attachments) {
+    return this.$classifyAttachments(
+      attachments,
+      rule => (
+        rule.action == Constants.ACTION_BLOCK_ALWAYS ||
+        (rule.action == Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS &&
+         attachments.length > 0)
+      )
+    );
+  }
+
+  async tryReconfirm({ recipients, attachments, confirm }) {
+    for (const [ruleId, classifiedRecipients] of Object.entries(this.classifyReconfirmRecipients(recipients, attachments))) {
+      const rule = this.get(ruleId);
+      if (!rule ||
+          classifiedRecipients.length == 0)
+        continue;
+
+      let confirmed;
+      try {
+        confirmed = await confirm({
+          title:      rule.confirmTitle,
+          message:    rule.confirmMessage.replace(/[\%\$]s/i, classifiedRecipients.map(recipient => recipient.address).join('\n')),
+          recipients: classifiedRecipients,
+        });
+      }
+      catch(error) {
+        console.error(error);
+        confirmed = false;
+      }
+      if (!confirmed)
+        return false;
+    }
+
+    for (const [ruleId, classifiedAttachments] of Object.entries(this.classifyReconfirmAttachments(attachments))) {
+      const rule = this.get(ruleId);
+      if (!rule ||
+          classifiedAttachments.length == 0)
+        continue;
+
+      let confirmed;
+      try {
+        confirmed = await confirm({
+          title:       rule.confirmTitle,
+          message:     rule.confirmMessage.replace(/[\%\$]s/i, classifiedAttachments.map(attachment => attachment.name).join('\n')),
+          attachments: classifiedAttachments,
+        });
+      }
+      catch(error) {
+        console.error(error);
+        confirmed = false;
+      }
+      if (!confirmed)
+        return false;
+    }
 
     return false;
   }
 
-  async tryReconfirm(ruleId, { targets, confirm, attachments }) {
-    const rule = this.get(ruleId);
-    if (!rule ||
-        targets.length == 0 ||
-        !this.shouldReconfirm(ruleId, attachments)) {
+  async tryBlock({ recipients, attachments, alert }) {
+    for (const [ruleId, classifiedRecipients] of Object.entries(this.classifyBlockRecipients(recipients, attachments))) {
+      const rule = this.get(ruleId);
+      if (!rule ||
+          classifiedRecipients.length == 0)
+        continue;
+
+      try {
+        await alert({
+          title:      rule.confirmTitle,
+          message:    rule.confirmMessage.replace(/[\%\$]s/i, classifiedRecipients.map(recipient => recipient.address).join('\n')),
+          recipients: classifiedRecipients,
+        });
+      }
+      catch(error) {
+        console.error(error);
+      }
       return true;
     }
 
-    try {
-      return confirm({
-        title:   rule.confirmTitle,
-        message: rule.confirmMessage.replace(/[\%\$]s/i, targets.map(target => target.address || target.name).join('\n')),
-      });
-    }
-    catch(error) {
-      console.error(error);
-    }
-    return false;
-  }
+    for (const [ruleId, classifiedAttachments] of Object.entries(this.classifyBlockAttachments(attachments))) {
+      const rule = this.get(ruleId);
+      if (!rule ||
+          classifiedAttachments.length == 0)
+        continue;
 
-  shouldBlock(ruleId, attachments = []) {
-    const rule = this.get(ruleId);
-    if (!rule)
-      return false;
-
-    if (rule.action == Constants.ACTION_BLOCK_ALWAYS)
+      try {
+        await alert({
+          title:       rule.confirmTitle,
+          message:     rule.confirmMessage.replace(/[\%\$]s/i, classifiedAttachments.map(attachment => attachment.name).join('\n')),
+          attachments: classifiedAttachments,
+        });
+      }
+      catch(error) {
+        console.error(error);
+      }
       return true;
-
-    if (rule.action == Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS)
-      return attachments.length > 0;
+    }
 
     return false;
   }
-
-  async tryBlock(ruleId, { targets, alert, attachments }) {
-    const rule = this.get(ruleId);
-    if (!rule ||
-        targets.length == 0 ||
-        !this.shouldBlock(ruleId, attachments)) {
-      return false;
-    }
-
-    try {
-      await alert({
-        title:   rule.confirmTitle,
-        message: rule.confirmMessage.replace(/[\%\$]s/i, targets.map(target => target.address || target.name || target).join('\n')),
-      });
-    }
-    catch(error) {
-      console.error(error);
-    }
-    return true;
-  }
-}
-
-function sanitizeRegExpSource(source) {
-  return source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

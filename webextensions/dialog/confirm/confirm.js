@@ -42,14 +42,6 @@ const mCancelButton        = document.querySelector('#cancel');
 function onConfigChange(key) {
   const value = configs[key];
   switch (key) {
-    case 'attentionDomainsHighlightMode':
-      document.documentElement.classList.toggle('highlight-attention-domains', (
-        value == Constants.HIGHLIGHT_ALWAYS ||
-        (value == Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS &&
-         mParams.attachments.length > 0)
-      ));
-      break;
-
     case 'highlightExternalDomains':
       document.documentElement.classList.toggle('highlight-external-domains', value);
       break;
@@ -88,13 +80,11 @@ configs.$loaded.then(async () => {
 
   mAttentionDomains = mParams.attentionDomains;
   mAttachmentClassifier = new AttachmentClassifier({
-    rules:              mMatchingRules.all,
     attentionSuffixes:  mParams.attentionSuffixes,
     attentionSuffixes2: mParams.attentionSuffixes2,
     attentionTerms:     mParams.attentionTerms
   });
 
-  onConfigChange('attentionDomainsHighlightMode');
   onConfigChange('highlightExternalDomains');
   onConfigChange('largeFontSizeForAddresses');
   onConfigChange('emphasizeRecipientType');
@@ -156,8 +146,13 @@ function initInternals() {
   mInternalsList.addEventListener('change', _event => {
     mInternalsAllCheck.checked = isAllChecked(mInternalsList);
   });
+  const highlightedAddresses = mMatchingRules.getHighlightedRecipientAddresses(mParams.internals, mParams.attachments);
   for (const recipient of mParams.internals) {
-    mInternalsList.appendChild(createRecipientRow(recipient));
+    const row = createRecipientRow(recipient);
+    if (highlightedAddresses.has(recipient.address) ||
+        recipient.isAttentionDomain)
+      row.classList.add('attention');
+    mInternalsList.appendChild(row);
   }
 }
 
@@ -186,12 +181,14 @@ function initExternals() {
     recipientsOfDomain.set(recipient.domain, recipients);
   }
 
+
   let groupCount = 0;
   for (const [domain, recipients] of recipientsOfDomain.entries()) {
     groupCount++;
 
+    const highlightedAddresses = mMatchingRules.getHighlightedRecipientAddresses(recipients, mParams.attachments);
     const domainRow = createDomainRow(domain);
-    if (recipients.some(recipient => mMatchingRules.hasHighlightRecipientRule(recipient.matchedRules, mParams.attachments) || recipient.isAttentionDomain))
+    if (recipients.some(recipient => highlightedAddresses.has(recipient.address) || recipient.isAttentionDomain))
       domainRow.classList.add('attention');
     mExternalsList.appendChild(domainRow);
 
@@ -200,6 +197,9 @@ function initExternals() {
       const row = createRecipientRow(recipient);
       row.dataset.domain = domain;
       row.classList.add(domainClass);
+      if (highlightedAddresses.has(recipient.address) ||
+          recipient.isAttentionDomain)
+        row.classList.add('attention');
       mExternalsList.appendChild(row);
     }
   }
@@ -243,13 +243,14 @@ function initAttachments() {
   mAttachmentsList.addEventListener('change', _event => {
     mAttachmentsAllCheck.checked = isAllChecked(mAttachmentsList);
   });
+  const highlightedAttachmentNames = mMatchingRules.getHighlightedAttachmentNames(mParams.attachments);
   for (const attachment of mParams.attachments) {
     const row = createAttachmentRow(attachment);
     const hasAttentionSuffix = mAttachmentClassifier.hasAttentionSuffix(attachment.name);
     const hasAttentionSuffix2 = mAttachmentClassifier.hasAttentionSuffix2(attachment.name);
     const hasAttentionTerm = mAttachmentClassifier.hasAttentionTerm(attachment.name);
     log('check attachment: ', attachment, { hasAttentionSuffix, hasAttentionSuffix2, hasAttentionTerm });
-    if (mMatchingRules.hasHighlightAttachmentRule(mAttachmentClassifier.getMatchedRules(attachment.name))  ||
+    if (highlightedAttachmentNames.has(attachment.name)  ||
         hasAttentionSuffix ||
         hasAttentionSuffix2 ||
         hasAttentionTerm)
@@ -263,9 +264,6 @@ function createRecipientRow(recipient) {
   row.setAttribute('title', foldLongTooltipText(`${recipient.type}: ${recipient.recipient}`));
   row.classList.add('recipient');
   row.lastChild.classList.add('flexible');
-  if (mMatchingRules.hasHighlightRecipientRule(recipient.matchedRules, mParams.attachments) ||
-      recipient.isAttentionDomain)
-    row.classList.add('attention');
   return row;
 }
 
@@ -414,46 +412,38 @@ async function confirmedMultipleRecipientDomains() {
 }
 
 async function confirmedWithRules() {
-  const matched = {
-    ...mParams.matchedRecipients,
-    ...mAttachmentClassifier.classify(mParams.attachments),
-  };
-  for (const [id, matchedTargets] of Object.entries(matched)) {
-    const confirmed = await mMatchingRules.tryReconfirm(id, {
-      targets: matchedTargets,
-      async confirm({ title, message }) {
-        let result;
-        try {
-          result = await RichConfirm.show({
-            modal: true,
-            type:  'common-dialog',
-            url:   '/resources/blank.html',
-            title,
-            message,
-            buttons: [
-              browser.i18n.getMessage('reconfirmAccept'),
-              browser.i18n.getMessage('reconfirmCancel'),
-            ],
-          });
-        }
-        catch(_error) {
-          result = { buttonIndex: -1 };
-        }
-        log('confirmedWithRules: result.buttonIndex = ', result.buttonIndex);
-        switch (result.buttonIndex) {
-          case 0:
-            return true;;
-          default:
-            log(' => canceled');
-            return false;
-        }
-      },
-      attachments: mParams.attachments,
-    });
-    if (!confirmed)
-      return false;
-  }
-  return true;
+  const confirmed = await mMatchingRules.tryReconfirm({
+    recipients: [...mParams.internals, ...mParams.externals],
+    attachments: mParams.attachments,
+    async confirm({ title, message }) {
+      let result;
+      try {
+        result = await RichConfirm.show({
+          modal: true,
+          type:  'common-dialog',
+          url:   '/resources/blank.html',
+          title,
+          message,
+          buttons: [
+            browser.i18n.getMessage('reconfirmAccept'),
+            browser.i18n.getMessage('reconfirmCancel'),
+          ],
+        });
+      }
+      catch(_error) {
+        result = { buttonIndex: -1 };
+      }
+      log('confirmedWithRules: result.buttonIndex = ', result.buttonIndex);
+      switch (result.buttonIndex) {
+        case 0:
+          return true;;
+        default:
+          log(' => canceled');
+          return false;
+      }
+    },
+  });
+  return confirmed;
 }
 
 async function confirmAttentionDomains() {

@@ -17,7 +17,6 @@ import {
 import * as Constants from '/common/constants.js';
 import { MatchingRules } from '/common/matching-rules.js';
 import { RecipientClassifier } from '/common/recipient-classifier.js';
-import { AttachmentClassifier } from '/common/attachment-classifier.js';
 
 import * as ListUtils from './list-utils.js';
 
@@ -257,7 +256,6 @@ async function needConfirmationOnModified(tab, details) {
 
 async function tryConfirm(tab, details, opener) {
   log('tryConfirm: ', tab, details, opener);
-  const matchingRules = new MatchingRules(configs);
   const [
     to, cc, bcc,
     attentionDomains, attentionSuffixes, attentionSuffixes2, attentionTerms,
@@ -269,12 +267,10 @@ async function tryConfirm(tab, details, opener) {
     getAttentionSuffixes(),
     getAttentionSuffixes2(),
     getAttentionTerms(),
-    matchingRules.populate(readFile),
   ]);
   log('attention list: ', { attentionDomains, attentionSuffixes, attentionSuffixes2, attentionTerms });
   const classifier = new RecipientClassifier({
     internalDomains: configs.internalDomains || [],
-    rules: matchingRules.all,
     attentionDomains,
   });
   const classifiedTo = classifier.classify(to);
@@ -306,15 +302,6 @@ async function tryConfirm(tab, details, opener) {
   }
 
   log('show confirmation ', tab, details);
-
-  const matched = {};
-  for (const classified of [classifiedTo, classifiedCc, classifiedBcc]) {
-    for (const [id, recipients] of Object.entries(classified.matched)) {
-      const merged = matched[id] || [];
-      merged.push(...recipients);
-      matched[id] = merged;
-    }
-  }
 
   const dialogParams = {
     url:    '/dialog/confirm/confirm.html',
@@ -353,10 +340,6 @@ async function tryConfirm(tab, details, opener) {
         ...classifiedCc.externals.map(recipient => ({ ...recipient, type: 'Cc' })),
         ...classifiedBcc.externals.map(recipient => ({ ...recipient, type: 'Bcc' }))
       ],
-      matchedRecipients: Object.fromEntries(
-        Object.entries(matched)
-          .map(([id, recipients]) => [id, Array.from(new Set(recipients))])
-      ),
       attachments: details.attachments || await browser.compose.listAttachments(tab.id),
       attentionDomains,
       attentionSuffixes,
@@ -460,68 +443,31 @@ async function shouldBlock(tab, details) {
     getBlockedDomains(),
     matchingRules.populate(readFile),
   ]);
+
+  const blockedByRule = await matchingRules.tryBlock({
+    recipients: [...to, ...cc, ...bcc],
+    attachments,
+    alert: async ({ title, message }) => {
+      return RichConfirm.showInPopup(tab.windowId, {
+        modal: !configs.debug,
+        type:  'common-dialog',
+        url:   '/resources/blank.html',
+        title,
+        message,
+        buttons: [
+          browser.i18n.getMessage('alertBlockedAccept'),
+        ],
+      });
+    },
+  });
+  if (blockedByRule)
+    return true;
+
   log('block list: ', { blockedDomains });
   const recipientClassifier = new RecipientClassifier({
-    rules: matchingRules.all,
     blockedDomains,
   });
-  const { matched, blocked } = recipientClassifier.classify([...to, ...cc, ...bcc]);
-
-  for (const [id, recipients] of Object.entries(matched)) {
-    const blocked = await matchingRules.tryBlock(id, {
-      targets: [...new Set(recipients.map(recipient => recipient.address))],
-      async alert({ title, message }) {
-        try {
-          await RichConfirm.show({
-            modal: true,
-            type:  'common-dialog',
-            url:   '/resources/blank.html',
-            title,
-            message,
-            buttons: [
-              browser.i18n.getMessage('alertBlockedAccept'),
-            ],
-          });
-        }
-        catch(_error) {
-        }
-      },
-      attachments,
-    });
-    if (blocked)
-      return true;
-  }
-
-  const attachmentsClassifier = new AttachmentClassifier({
-    rules: matchingRules.all,
-  });
-  const matchedAttachments = attachmentsClassifier.classify(attachments);
-
-  for (const [id, attachments] of Object.entries(matchedAttachments)) {
-    const blocked = await matchingRules.tryBlock(id, {
-      targets: [...new Set(attachments.map(attachment => attachment.name))],
-      async alert({ title, message }) {
-        try {
-          await RichConfirm.show({
-            modal: true,
-            type:  'common-dialog',
-            url:   '/resources/blank.html',
-            title,
-            message,
-            buttons: [
-              browser.i18n.getMessage('alertBlockedAccept'),
-            ],
-          });
-        }
-        catch(_error) {
-        }
-      },
-      attachments,
-    });
-    if (blocked)
-      return true;
-  }
-
+  const { blocked } = recipientClassifier.classify([...to, ...cc, ...bcc]);
   if (!configs.blockedDomainsEnabled ||
       blocked.length == 0)
     return false;

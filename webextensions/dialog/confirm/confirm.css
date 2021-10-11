@@ -156,7 +156,7 @@ hr.splitter {
   padding-left: 0.5em;
 }
 
-:root.highlight-attention-domains .listbox#externals .row.attention,
+.listbox#externals .row.attention,
 .listbox#attachments .row.attention {
   color: red;
   font-weight bold;
@@ -175,7 +175,7 @@ hr.splitter {
   font-size: 160%;
 }
 
-:root.highlight-external-domains.highlight-attention-domains .listbox#externals .row.attention label {
+:root.highlight-external-domains .listbox#externals .row.attention label {
   text-shadow: 0 0 5px var(--text-shadow-color),
                0 0 5px var(--text-shadow-color),
                0 0 5px var(--text-shadow-color),
