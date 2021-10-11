@@ -11,7 +11,6 @@ import RichConfirm from '/extlib/RichConfirm.js';
 import {
   configs,
   log,
-  sendToHost,
   readFile,
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
@@ -258,20 +257,13 @@ async function tryConfirm(tab, details, opener) {
   log('tryConfirm: ', tab, details, opener);
   const [
     to, cc, bcc,
-    attentionDomains, attentionSuffixes, attentionSuffixes2, attentionTerms,
   ] = await Promise.all([
     ListUtils.populateListAddresses(details.to),
     ListUtils.populateListAddresses(details.cc),
     ListUtils.populateListAddresses(details.bcc),
-    getAttentionDomains(),
-    getAttentionSuffixes(),
-    getAttentionSuffixes2(),
-    getAttentionTerms(),
   ]);
-  log('attention list: ', { attentionDomains, attentionSuffixes, attentionSuffixes2, attentionTerms });
   const classifier = new RecipientClassifier({
     internalDomains: configs.internalDomains || [],
-    attentionDomains,
   });
   const classifiedTo = classifier.classify(to);
   const classifiedCc = classifier.classify(cc);
@@ -341,110 +333,23 @@ async function tryConfirm(tab, details, opener) {
         ...classifiedBcc.externals.map(recipient => ({ ...recipient, type: 'Bcc' }))
       ],
       attachments: details.attachments || await browser.compose.listAttachments(tab.id),
-      attentionDomains,
-      attentionSuffixes,
-      attentionSuffixes2,
-      attentionTerms
     }
   );
 }
-
-async function getAttentionDomains() {
-  switch (configs.attentionDomainsSource) {
-    default:
-    case Constants.SOURCE_LOCAL_CONFIG:
-      return configs.attentionDomains || [];
-
-    case Constants.SOURCE_FILE: {
-      if (!configs.attentionDomainsFile)
-        return [];
-      const response = await sendToHost({
-        command: Constants.HOST_COMMAND_FETCH,
-        params: {
-          path: configs.attentionDomainsFile
-        }
-      });
-      return response ? response.contents.trim().split(/[\s,|]+/).filter(part => !!part) : [];
-    };
-  }
-}
-
-async function getAttentionSuffixes() {
-  switch (configs.attentionSuffixesSource) {
-    default:
-    case Constants.SOURCE_LOCAL_CONFIG:
-      return configs.attentionSuffixes || [];
-
-    case Constants.SOURCE_FILE: {
-      if (!configs.attentionSuffixesFile)
-        return [];
-      const response = await sendToHost({
-        command: Constants.HOST_COMMAND_FETCH,
-        params: {
-          path: configs.attentionSuffixesFile
-        }
-      });
-      return response ? response.contents.trim().split(/[\s,|]+/).filter(part => !!part) : [];
-    };
-  }
-}
-
-async function getAttentionSuffixes2() {
-  switch (configs.attentionSuffixes2Source) {
-    default:
-    case Constants.SOURCE_LOCAL_CONFIG:
-      return configs.attentionSuffixes2 || [];
-
-    case Constants.SOURCE_FILE: {
-      if (!configs.attentionSuffixes2File)
-        return [];
-      const response = await sendToHost({
-        command: Constants.HOST_COMMAND_FETCH,
-        params: {
-          path: configs.attentionSuffixes2File
-        }
-      });
-      return response ? response.contents.trim().split(/[\s,|]+/).filter(part => !!part) : [];
-    };
-  }
-}
-
-async function getAttentionTerms() {
-  switch (configs.attentionTermsSource) {
-    default:
-    case Constants.SOURCE_LOCAL_CONFIG:
-      return configs.attentionTerms || [];
-
-    case Constants.SOURCE_FILE: {
-      if (!configs.attentionTermsFile)
-        return [];
-      const response = await sendToHost({
-        command: Constants.HOST_COMMAND_FETCH,
-        params: {
-          path: configs.attentionTermsFile
-        }
-      });
-      return response ? response.contents.trim().split(/[\s,|]+/).filter(part => !!part) : [];
-    };
-  }
-}
-
 
 async function shouldBlock(tab, details) {
   const matchingRules = new MatchingRules(configs);
   const [
     to, cc, bcc, attachments,
-    blockedDomains,
   ] = await Promise.all([
     ListUtils.populateListAddresses(details.to),
     ListUtils.populateListAddresses(details.cc),
     ListUtils.populateListAddresses(details.bcc),
     details.attachments || browser.compose.listAttachments(tab.id),
-    getBlockedDomains(),
     matchingRules.populate(readFile),
   ]);
 
-  const blockedByRule = await matchingRules.tryBlock({
+  const blocked = await matchingRules.tryBlock({
     recipients: [...to, ...cc, ...bcc],
     attachments,
     alert: async ({ title, message }) => {
@@ -460,60 +365,7 @@ async function shouldBlock(tab, details) {
       });
     },
   });
-  if (blockedByRule)
-    return true;
-
-  log('block list: ', { blockedDomains });
-  const recipientClassifier = new RecipientClassifier({
-    blockedDomains,
-  });
-  const { blocked } = recipientClassifier.classify([...to, ...cc, ...bcc]);
-  if (!configs.blockedDomainsEnabled ||
-      blocked.length == 0)
-    return false;
-
-  try {
-    const blockedRecipients = [...new Set(blocked.map(recipient => recipient.address))];
-    const message = (
-      configs.blockedDomainsDialogMessage.replace(/[\%\$]s/i, blockedRecipients.join('\n')) ||
-      browser.i18n.getMessage('alertBlockedDomainsMessage', [blockedRecipients.join('\n')])
-    );
-    await RichConfirm.showInPopup(tab.windowId, {
-      modal: !configs.debug,
-      type:  'common-dialog',
-      url:   '/resources/blank.html',
-      title: configs.blockedDomainsDialogTitle || browser.i18n.getMessage('alertBlockedDomainsTitle'),
-      message,
-      buttons: [
-        browser.i18n.getMessage('alertBlockedDomainsAccept'),
-      ]
-    });
-  }
-  catch(error) {
-    console.error(error);
-  }
-
-  return true;
-}
-
-async function getBlockedDomains() {
-  switch (configs.blockedDomainsSource) {
-    default:
-    case Constants.SOURCE_LOCAL_CONFIG:
-      return configs.blockedDomains || [];
-
-    case Constants.SOURCE_FILE: {
-      if (!configs.blockedDomainsFile)
-        return [];
-      const response = await sendToHost({
-        command: Constants.HOST_COMMAND_FETCH,
-        params: {
-          path: configs.blockedDomainsFile
-        }
-      });
-      return response ? response.contents.trim().split(/[\s,|]+/).filter(part => !!part) : [];
-    };
-  }
+  return blocked;
 }
 
 

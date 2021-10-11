@@ -15,15 +15,11 @@ import {
   readFile,
 } from '/common/common.js';
 
-import * as Constants from '/common/constants.js';
 import * as ResizableBox from '/common/resizable-box.js';
 import { MatchingRules } from '/common/matching-rules.js';
-import { AttachmentClassifier } from '/common/attachment-classifier.js';
 
 let mParams;
 let mMatchingRules;
-let mAttentionDomains;
-let mAttachmentClassifier;
 
 const mTopMessage          = document.querySelector('#top-message');
 const mInternalsAllCheck   = document.querySelector('#internalsAll');
@@ -77,14 +73,6 @@ configs.$loaded.then(async () => {
   mMatchingRules = new MatchingRules(configs);
   await mMatchingRules.populate(readFile);
 
-
-  mAttentionDomains = mParams.attentionDomains;
-  mAttachmentClassifier = new AttachmentClassifier({
-    attentionSuffixes:  mParams.attentionSuffixes,
-    attentionSuffixes2: mParams.attentionSuffixes2,
-    attentionTerms:     mParams.attentionTerms
-  });
-
   onConfigChange('highlightExternalDomains');
   onConfigChange('largeFontSizeForAddresses');
   onConfigChange('emphasizeRecipientType');
@@ -107,11 +95,7 @@ configs.$loaded.then(async () => {
   Dialog.initButton(mAcceptButton, async _event => {
     if (!isAllChecked() ||
         !(await confirmedMultipleRecipientDomains()) ||
-        !(await confirmedWithRules()) ||
-        !(await confirmAttentionDomains()) ||
-        !(await confirmAttentionTerms()) ||
-        !(await confirmAttentionSuffixes()) ||
-        !(await confirmAttentionSuffixes2()))
+        !(await confirmedWithRules()))
       return;
 
     Dialog.accept();
@@ -149,8 +133,7 @@ function initInternals() {
   const highlightedAddresses = mMatchingRules.getHighlightedRecipientAddresses(mParams.internals, mParams.attachments);
   for (const recipient of mParams.internals) {
     const row = createRecipientRow(recipient);
-    if (highlightedAddresses.has(recipient.address) ||
-        recipient.isAttentionDomain)
+    if (highlightedAddresses.has(recipient.address))
       row.classList.add('attention');
     mInternalsList.appendChild(row);
   }
@@ -188,7 +171,7 @@ function initExternals() {
 
     const highlightedAddresses = mMatchingRules.getHighlightedRecipientAddresses(recipients, mParams.attachments);
     const domainRow = createDomainRow(domain);
-    if (recipients.some(recipient => highlightedAddresses.has(recipient.address) || recipient.isAttentionDomain))
+    if (recipients.some(recipient => highlightedAddresses.has(recipient.address)))
       domainRow.classList.add('attention');
     mExternalsList.appendChild(domainRow);
 
@@ -197,8 +180,7 @@ function initExternals() {
       const row = createRecipientRow(recipient);
       row.dataset.domain = domain;
       row.classList.add(domainClass);
-      if (highlightedAddresses.has(recipient.address) ||
-          recipient.isAttentionDomain)
+      if (highlightedAddresses.has(recipient.address))
         row.classList.add('attention');
       mExternalsList.appendChild(row);
     }
@@ -246,14 +228,7 @@ function initAttachments() {
   const highlightedAttachmentNames = mMatchingRules.getHighlightedAttachmentNames(mParams.attachments);
   for (const attachment of mParams.attachments) {
     const row = createAttachmentRow(attachment);
-    const hasAttentionSuffix = mAttachmentClassifier.hasAttentionSuffix(attachment.name);
-    const hasAttentionSuffix2 = mAttachmentClassifier.hasAttentionSuffix2(attachment.name);
-    const hasAttentionTerm = mAttachmentClassifier.hasAttentionTerm(attachment.name);
-    log('check attachment: ', attachment, { hasAttentionSuffix, hasAttentionSuffix2, hasAttentionTerm });
-    if (highlightedAttachmentNames.has(attachment.name)  ||
-        hasAttentionSuffix ||
-        hasAttentionSuffix2 ||
-        hasAttentionTerm)
+    if (highlightedAttachmentNames.has(attachment.name))
       row.classList.add('attention');
     mAttachmentsList.appendChild(row);
   }
@@ -444,171 +419,4 @@ async function confirmedWithRules() {
     },
   });
   return confirmed;
-}
-
-async function confirmAttentionDomains() {
-  const mode = configs.attentionDomainsConfirmationMode;
-  const shouldConfirm = (
-    mode == Constants.ACTION_RECONFIRM_ALWAYS ||
-    (mode == Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS &&
-     mParams.attachments.length > 0)
-  );
-  log('confirmAttentionDomains shouldConfirm = ', shouldConfirm);
-  if (!shouldConfirm)
-    return true;
-
-  const attentionDomains = new Set(mAttentionDomains.map(domain => domain.toLowerCase()));
-  const attentionRecipients = mParams.externals.filter(recipient => attentionDomains.has(recipient.domain.toLowerCase())).map(recipient => recipient.address);
-  log('confirmAttentionDomains attentionRecipients = ', attentionRecipients);
-  if (attentionRecipients.length == 0)
-    return true;
-
-  const message = (
-    configs.attentionDomainsDialogMessage.replace(/[\%\$]s/i, attentionRecipients.join('\n')) ||
-    browser.i18n.getMessage('confirmAttentionDomainsMessage', [attentionRecipients.join('\n')])
-  );
-  let result;
-  try {
-    result = await RichConfirm.show({
-      modal: true,
-      type:  'common-dialog',
-      url:   '/resources/blank.html',
-      title: configs.attentionDomainsDialogTitle || browser.i18n.getMessage('confirmAttentionDomainsTitle'),
-      message,
-      buttons: [
-        browser.i18n.getMessage('confirmAttentionDomainsAccept'),
-        browser.i18n.getMessage('confirmAttentionDomainsCancel')
-      ]
-    });
-  }
-  catch(_error) {
-    result = { buttonIndex: -1 };
-  }
-  log('confirmAttentionDomains result.buttonIndex = ', result.buttonIndex);
-  switch (result.buttonIndex) {
-    case 0:
-      return true;
-    default:
-      return false;
-  }
-}
-
-async function confirmAttentionTerms() {
-  log('confirmAttentionTerms shouldConfirm = ', configs.attentionTermsConfirm);
-  if (!configs.attentionTermsConfirm)
-    return true;
-
-  const attentionAttachments = mParams.attachments.filter(attachment => mAttachmentClassifier.hasAttentionTerm(attachment.name)).map(attachment => attachment.name);
-  log('confirmAttentionTerms attentionAttachments = ', attentionAttachments);
-  if (attentionAttachments.length == 0)
-    return true;
-
-  const message = (
-    configs.attentionTermsDialogMessage.replace(/[\%\$]s/i, attentionAttachments.join('\n')) ||
-    browser.i18n.getMessage('confirmAttentionTermsMessage', [attentionAttachments.join('\n')])
-  );
-  let result;
-  try {
-    result = await RichConfirm.show({
-      modal: true,
-      type:  'common-dialog',
-      url:   '/resources/blank.html',
-      title: configs.attentionTermsDialogTitle || browser.i18n.getMessage('confirmAttentionTermsTitle'),
-      message,
-      buttons: [
-        browser.i18n.getMessage('confirmAttentionTermsAccept'),
-        browser.i18n.getMessage('confirmAttentionTermsCancel')
-      ]
-    });
-  }
-  catch(_error) {
-    result = { buttonIndex: -1 };
-  }
-  log('confirmAttentionTerms result.buttonIndex = ', result.buttonIndex);
-  switch (result.buttonIndex) {
-    case 0:
-      return true;
-    default:
-      return false;
-  }
-}
-
-async function confirmAttentionSuffixes() {
-  log('confirmAttentionSuffixes shouldConfirm = ', configs.attentionSuffixesConfirm);
-  if (!configs.attentionSuffixesConfirm)
-    return true;
-
-  const attentionAttachments = mParams.attachments.filter(attachment => mAttachmentClassifier.hasAttentionSuffix(attachment.name)).map(attachment => attachment.name);
-  log('confirmAttentionSuffixes attentionAttachments = ', attentionAttachments);
-  if (attentionAttachments.length == 0)
-    return true;
-
-  const message = (
-    configs.attentionSuffixesDialogMessage.replace(/[\%\$]s/i, attentionAttachments.join('\n')) ||
-    browser.i18n.getMessage('confirmAttentionSuffixesMessage', [attentionAttachments.join('\n')])
-  );
-  let result;
-  try {
-    result = await RichConfirm.show({
-      modal: true,
-      type:  'common-dialog',
-      url:   '/resources/blank.html',
-      title: configs.attentionSuffixesDialogTitle || browser.i18n.getMessage('confirmAttentionSuffixesTitle'),
-      message,
-      buttons: [
-        browser.i18n.getMessage('confirmAttentionSuffixesAccept'),
-        browser.i18n.getMessage('confirmAttentionSuffixesCancel')
-      ]
-    });
-  }
-  catch(_error) {
-    result = { buttonIndex: -1 };
-  }
-  log('confirmAttentionSuffixes result.buttonIndex = ', result.buttonIndex);
-  switch (result.buttonIndex) {
-    case 0:
-      return true;
-    default:
-      return false;
-  }
-}
-
-async function confirmAttentionSuffixes2() {
-  log('confirmAttentionSuffixes2 shouldConfirm = ', configs.attentionSuffixes2Confirm);
-  if (!configs.attentionSuffixes2Confirm)
-    return true;
-
-  const attentionAttachments = mParams.attachments.filter(attachment => mAttachmentClassifier.hasAttentionSuffix2(attachment.name)).map(attachment => attachment.name);
-  log('confirmAttentionSuffixes2 attentionAttachments = ', attentionAttachments);
-  if (attentionAttachments.length == 0)
-    return true;
-
-  const message = (
-    configs.attentionSuffixes2DialogMessage.replace(/[\%\$]s/i, attentionAttachments.join('\n')) ||
-    browser.i18n.getMessage('confirmAttentionSuffixes2Message', [attentionAttachments.join('\n')])
-  );
-  let result;
-  try {
-    result = await RichConfirm.show({
-      modal: true,
-      type:  'common-dialog',
-      url:   '/resources/blank.html',
-      title: configs.attentionSuffixes2DialogTitle || browser.i18n.getMessage('confirmAttentionSuffixes2Title'),
-      message,
-      buttons: [
-        browser.i18n.getMessage('confirmAttentionSuffixes2Accept'),
-        browser.i18n.getMessage('confirmAttentionSuffixes2Cancel')
-      ]
-    });
-  }
-  catch(_error) {
-    result = { buttonIndex: -1 };
-  }
-  log('confirmAttentionSuffixes2 result.buttonIndex = ', result.buttonIndex);
-  switch (result.buttonIndex) {
-    case 0:
-      return true;
-    default:
-      return false;
-  }
 }
