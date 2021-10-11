@@ -12,6 +12,7 @@ import {
   configs,
   log,
   readFile,
+  clone,
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
 import { MatchingRules } from '/common/matching-rules.js';
@@ -430,7 +431,7 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
 });
 
 
-const CONFIGS_VERSION = 2;
+const CONFIGS_VERSION = 3;
 
 configs.$loaded.then(async () => {
   switch (configs.configsVersion) {
@@ -466,6 +467,95 @@ configs.$loaded.then(async () => {
           (configs.blockedDomains.length > 0 ||
            configs.blockedDomainsFile))
         configs.blockedDomainsEnabled = true;
+
+    case 2:
+      const matchingRules = new MatchingRules(configs);
+      const beforeUserRules = clone(matchingRules.exportUserRules());
+      const migratedRules = {
+        builtInAttentionDomains: {},
+        builtInAttentionSuffixes: {},
+        builtInAttentionSuffixes2: {},
+        builtInAttentionTerms: {},
+        builtInBlockedDomains: {},
+      };
+
+      if (configs.attentionDomainsHighlightMode !== null)
+        migratedRules.builtInAttentionDomains.highlight = configs.attentionDomainsHighlightMode;
+      if (configs.attentionDomainsConfirmationMode !== null)
+        migratedRules.builtInAttentionDomains.action = configs.attentionDomainsConfirmationMode;
+      if (configs.attentionDomains !== null)
+        migratedRules.builtInAttentionDomains.itemsLocal = configs.attentionDomains;
+      if (configs.attentionDomainsSource !== null)
+        migratedRules.builtInAttentionDomains.itemsSource = configs.attentionDomainsSource;
+      if (configs.attentionDomainsFile !== null)
+        migratedRules.builtInAttentionDomains.itemsFile = configs.attentionDomainsFile;
+      if (configs.attentionDomainsDialogTitle !== null)
+        migratedRules.builtInAttentionDomains.dialogTitle = configs.attentionDomainsDialogTitle;
+      if (configs.attentionDomainsDialogMessage !== null)
+        migratedRules.builtInAttentionDomains.dialogMessage = configs.attentionDomainsDialogMessage;
+
+      if (configs.attentionSuffixesConfirm !== null)
+        migratedRules.builtInAttentionSuffixes.action = configs.attentionSuffixesConfirm ? Constants.ACTION_RECONFIRM_ALWAYS : Constants.ACTION_NONE;
+      if (configs.attentionSuffixes !== null)
+        migratedRules.builtInAttentionSuffixes.itemsLocal = configs.attentionSuffixes;
+      if (configs.attentionDomainsSource !== null)
+        migratedRules.builtInAttentionSuffixes.itemsSource = configs.attentionSuffixesSource;
+      if (configs.attentionDomainsFile !== null)
+        migratedRules.builtInAttentionSuffixes.itemsFile = configs.attentionSuffixesFile;
+      if (configs.attentionDomainsDialogTitle !== null)
+        migratedRules.builtInAttentionSuffixes.dialogTitle = configs.attentionSuffixesDialogTitle;
+      if (configs.attentionDomainsDialogMessage !== null)
+        migratedRules.builtInAttentionSuffixes.dialogMessage = configs.attentionSuffixesDialogMessage;
+
+      if (configs.attentionSuffixes2Confirm !== null)
+        migratedRules.builtInAttentionSuffixes2.action = configs.attentionSuffixes2Confirm ? Constants.ACTION_RECONFIRM_ALWAYS : Constants.ACTION_NONE;
+      if (configs.attentionSuffixes2 !== null)
+        migratedRules.builtInAttentionSuffixes2.itemsLocal = configs.attentionSuffixes2;
+      if (configs.attentionSuffixes2Source !== null)
+        migratedRules.builtInAttentionSuffixes2.itemsSource = configs.attentionSuffixes2Source;
+      if (configs.attentionSuffixes2File !== null)
+        migratedRules.builtInAttentionSuffixes2.itemsFile = configs.attentionSuffixes2File;
+      if (configs.attentionSuffixes2DialogTitle !== null)
+        migratedRules.builtInAttentionSuffixes2.dialogTitle = configs.attentionSuffixes2DialogTitle;
+      if (configs.attentionSuffixes2DialogMessage !== null)
+        migratedRules.builtInAttentionSuffixes2.dialogMessage = configs.attentionSuffixes2DialogMessage;
+
+      if (configs.attentionTermsConfirm !== null)
+        migratedRules.builtInAttentionTerms.action = configs.attentionTermsConfirm ? Constants.ACTION_RECONFIRM_ALWAYS : Constants.ACTION_NONE;
+      if (configs.attentionTerms !== null)
+        migratedRules.builtInAttentionTerms.itemsLocal = configs.attentionTerms;
+      if (configs.attentionTermsSource !== null)
+        migratedRules.builtInAttentionTerms.itemsSource = configs.attentionTermsSource;
+      if (configs.attentionTermsFile !== null)
+        migratedRules.builtInAttentionTerms.itemsFile = configs.attentionTermsFile;
+      if (configs.attentionTermsDialogTitle !== null)
+        migratedRules.builtInAttentionTerms.dialogTitle = configs.attentionTermsDialogTitle;
+      if (configs.attentionTermsDialogMessage !== null)
+        migratedRules.builtInAttentionTerms.dialogMessage = configs.attentionTermsDialogMessage;
+
+      if (configs.blockedDomainsEnabled !== null)
+        migratedRules.builtInAttentionTerms.action = configs.blockedDomainsEnabled ? Constants.ACTION_RECONFIRM_ALWAYS : Constants.ACTION_NONE;
+      if (configs.blockedDomains !== null)
+        migratedRules.builtInAttentionTerms.itemsLocal = configs.blockedDomains;
+      if (configs.blockedDomainsSource !== null)
+        migratedRules.builtInAttentionTerms.itemsSource = configs.blockedDomainsSource;
+      if (configs.blockedDomainsFile !== null)
+        migratedRules.builtInAttentionTerms.itemsFile = configs.blockedDomainsFile;
+      if (configs.blockedDomainsDialogTitle !== null)
+        migratedRules.builtInAttentionTerms.dialogTitle = configs.blockedDomainsDialogTitle;
+      if (configs.blockedDomainsDialogMessage !== null)
+        migratedRules.builtInAttentionTerms.dialogMessage = configs.blockedDomainsDialogMessage;
+
+      for (const [id, migratedProperties] of Object.entries(migratedRules)) {
+        const rule = matchingRules.get(id);
+        for (const [key, value] of Object.entries(migratedProperties)) {
+          rule[key] = value;
+        }
+      }
+
+      const exported = matchingRules.exportUserRules();
+      if (JSON.stringify(beforeUserRules) != JSON.stringify(exported))
+        configs.userRules = exported;
 
     default:
       break;
