@@ -7,6 +7,20 @@
 
 import * as Constants from './constants.js';
 
+const BASE_RULE = {
+  id:             '', // arbitrary unique string (auto generated)
+  name:           '', // arbitrary visible name in the UI
+  enabled:        true, // true (enabled) or false (disabled),
+  matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN, // | Constants.MATCH_TO_ATTACHMENT_NAME | Constants.MATCH_TO_ATTACHMENT_SUFFIX
+  highlight:      Constants.HIGHLIGHT_NEVER, // | Constants.HIGHLIGHT_ALWAYS | Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS
+  action:         Constants.ACTION_NONE, // | Constants.ACTION_RECONFIRM_ALWAYS | Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS | Constants.ACTION_BLOCK
+  itemsSource:    Constants.SOURCE_LOCAL_CONFIG, // | Constants.SOURCE_FILE
+  itemsLocal:     [], // array of strings
+  itemsFile:      '', // path to a text file: UTF-8, LF separated
+  confirmTitle:   '', // string
+  confirmMessage: '', // string
+};
+
 export class MatchingRules {
   constructor({ base, baseRules, user, userRules, override, overrideRules }) {
     this.$baseRules     = base     || baseRules;
@@ -28,7 +42,7 @@ export class MatchingRules {
         let merged = mergedRulesById[id];
         if (!merged) {
           merged = mergedRulesById[id] = {
-            ...JSON.parse(JSON.stringify(Constants.BASE_RULE)),
+            ...JSON.parse(JSON.stringify(BASE_RULE)),
             id,
             $lockedKeys: [],
           };
@@ -84,7 +98,7 @@ export class MatchingRules {
 
   add(params = {}) {
     const rule = {
-      ...JSON.parse(JSON.stringify(Constants.BASE_RULE)),
+      ...JSON.parse(JSON.stringify(BASE_RULE)),
       ...params,
       id: `rule-${Date.now()}-${parseInt(Math.random() * 56632)}`,
       enabled: true,

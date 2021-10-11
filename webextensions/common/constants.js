@@ -39,17 +39,3 @@ export const ACTION_BLOCK_ONLY_WITH_ATTACHMENTS     = 4;
 
 export const SOURCE_LOCAL_CONFIG = 0;
 export const SOURCE_FILE = 1;
-
-export const BASE_RULE = {
-  id:             '', // arbitrary unique string (auto generated)
-  name:           '', // arbitrary visible name in the UI
-  enabled:        true, // true (enabled) or false (disabled),
-  matchTarget:    MATCH_TO_RECIPIENT_DOMAIN, // | Constants.MATCH_TO_ATTACHMENT_NAME | Constants.MATCH_TO_ATTACHMENT_SUFFIX
-  highlight:      HIGHLIGHT_NEVER, // | Constants.HIGHLIGHT_ALWAYS | Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS
-  action:         ACTION_NONE, // | Constants.ACTION_RECONFIRM_ALWAYS | Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS | Constants.ACTION_BLOCK
-  itemsSource:    SOURCE_LOCAL_CONFIG, // | Constants.SOURCE_FILE
-  itemsLocal:     [], // array of strings
-  itemsFile:      '', // path to a text file: UTF-8, LF separated
-  confirmTitle:   '', // string
-  confirmMessage: '', // string
-};
