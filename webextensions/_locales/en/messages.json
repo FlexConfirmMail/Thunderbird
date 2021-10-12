@@ -5,7 +5,7 @@
 
   "confirmDialogTitle": { "message": "Confirm E-mail addresses." },
   "confirmDialogInternalsCaption": { "message": "Your domain addresses" },
-  "confirmDialogExternalsCaption": { "message": "Other domain addresses" },
+  "confirmDialogExternalsCaption": { "message": "External domain addresses" },
   "confirmDialogSubjectCaption": { "message": "Subject: " },
   "confirmDialogBodyCaption": { "message": "Body" },
   "confirmDialogAttachmentsCaption": { "message": "Attachments" },
@@ -101,7 +101,7 @@
   "config_minConfirmationRecipientsCount_label_after": { "message": "or fewer recipient(s) (*0 means &quot;always confirm&quot;)" },
   "config_confirmMultipleRecipientDomains_label": { "message": "Confirm when there are multiple domains in To/Cc recipients" },
   "config_allowCheckAllInternals_label": { "message": "Allow to make all internal recipients to be checked with one checkbox" },
-  "config_allowCheckAllExternals_label": { "message": "Allow to make all foreign recipients to be checked with one checkbox" },
+  "config_allowCheckAllExternals_label": { "message": "Allow to make all external recipients to be checked with one checkbox" },
 
 
   "config_userRules_caption":              { "message": "More Rules" },
@@ -133,20 +133,20 @@
   "config_userRule_highlight_never":              { "message": "Never" },
   "config_userRule_highlight_always":             { "message": "Always" },
   "config_userRule_highlight_withAttachments":    { "message": "Only when there is any attachment" },
-  "config_userRule_highlight_externals":          { "message": "Only when there is any foreign recipient" },
-  "config_userRule_highlight_externalsWithAttachments": { "message": "Only when there is any foreign recipient and attachment" },
+  "config_userRule_highlight_externals":          { "message": "Only when there is any external recipient" },
+  "config_userRule_highlight_externalsWithAttachments": { "message": "Only when there is any external recipient and attachment" },
 
   "config_userRule_action_caption_recipient":        { "message": "When there is any matched recipient:" },
   "config_userRule_action_caption_attachment":       { "message": "When there is any matched attachment:" },
   "config_userRule_action_none":                     { "message": "(Do nothing)" },
   "config_userRule_action_reconfirmAlways":          { "message": "Re-confirm always" },
   "config_userRule_action_reconfirmWithAttachments": { "message": "Re-confirm only when there is any attachment" },
-  "config_userRule_action_reconfirmExternals":       { "message": "Re-confirm only when there is any foreign recipient" },
-  "config_userRule_action_reconfirmExternalsWithAttachments": { "message": "Re-confirm only when there is any foreign recipient and attachment" },
+  "config_userRule_action_reconfirmExternals":       { "message": "Re-confirm only when there is any external recipient" },
+  "config_userRule_action_reconfirmExternalsWithAttachments": { "message": "Re-confirm only when there is any external recipient and attachment" },
   "config_userRule_action_blockAlways":              { "message": "Disallow to send messages always" },
   "config_userRule_action_blockWithAttachments":     { "message": "Disallow to send messages only when there is any attachment" },
-  "config_userRule_action_blockExternals":           { "message": "Disallow to send messages only when there is any foreign recipient" },
-  "config_userRule_action_blockExternalsWithAttachments": { "message": "Disallow to send messages only when there is any foreign recipient and attachment" },
+  "config_userRule_action_blockExternals":           { "message": "Disallow to send messages only when there is any external recipient" },
+  "config_userRule_action_blockExternalsWithAttachments": { "message": "Disallow to send messages only when there is any external recipient and attachment" },
 
   "config_userRule_itemsLocal_caption":                      { "message": "Use a manually managed list" },
   "config_userRule_itemsLocal_placeholder_recipientDomain":  { "message": "Input a domain name per line (e.g. example.com)" },
@@ -167,14 +167,14 @@
   "config_userRule_confirmMessage_caption_attachmentSuffix": { "message": "Message for confirmation (\\\"%S\\\" will be filled with attachment names):" },
 
 
-  "config_attentionDomains_caption": { "message": "Specially alerted foreign domains in recipients" },
+  "config_attentionDomains_caption": { "message": "Specially alerted external domains in recipients" },
 
-  "config_attentionDomainsSource_caption": { "message": "Specially alerted foreign domains" },
+  "config_attentionDomainsSource_caption": { "message": "Specially alerted external domains" },
   "config_attentionDomains_label": { "message": "Use the manually managed list" },
   "config_attentionDomains_input_placeholder": { "message": "Input domain names per line (e.g. example.com)" },
   "config_attentionDomainsFile_label": { "message": "Use a list given as a file" },
   "config_attentionDomainsFile_button_label": { "message": "Choose…" },
-  "config_attentionDomainsFile_button_dialogTitle": { "message": "Choose a list of specially alerted foreign domains in recipients" },
+  "config_attentionDomainsFile_button_dialogTitle": { "message": "Choose a list of specially alerted external domains in recipients" },
   "config_attentionDomainsFile_button_dialogDisplayName": { "message": "List File" },
   "config_attentionDomainsFile_input_placeholder": { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\domains.txt)" },
   "config_attentionDomainsDialogMessage_label": { "message": "Message for confirmation (\"%S\" will be filled with recipients):" },
@@ -207,7 +207,7 @@
 
   "config_requireCheckAttachment_label": { "message": "Require check attachments" },
 
-  "config_attentionSuffixesConfirm_label": { "message": "Confirm me again before send, if there is any attachment with one of these extensions in a message to foreign domains" },
+  "config_attentionSuffixesConfirm_label": { "message": "Confirm me again before send, if there is any attachment with one of these extensions in a message to external domains" },
   "config_attentionSuffixes_label": { "message": "Use the manually managed list" },
   "config_attentionSuffixes_input_placeholder": { "message": "Input file extensions per line (e.g. .exe, .pdf)" },
   "config_attentionSuffixesFile_label": { "message": "Use a list given as a file" },
@@ -217,7 +217,7 @@
   "config_attentionSuffixesFile_input_placeholder": { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\suffixes.txt)" },
   "config_attentionSuffixesDialogMessage_label": { "message": "Message for confirmation (\"%S\" will be filled with attachment file names):" },
 
-  "config_attentionSuffixes2Confirm_label": { "message": "Confirm me more again before send, if there is any attachment with one of these extensions in a message to foreign domains" },
+  "config_attentionSuffixes2Confirm_label": { "message": "Confirm me more again before send, if there is any attachment with one of these extensions in a message to external domains" },
   "config_attentionSuffixes2_label": { "message": "Use the manually managed list" },
   "config_attentionSuffixes2_input_placeholder": { "message": "Input file extensions per line (e.g. .exe, .pdf)" },
   "config_attentionSuffixes2File_label": { "message": "Use a list given as a file" },
@@ -227,7 +227,7 @@
   "config_attentionSuffixes2File_input_placeholder": { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\suffixes.txt)" },
   "config_attentionSuffixes2DialogMessage_label": { "message": "Message for confirmation (\"%S\" will be filled with attachment file names):" },
 
-  "config_attentionTermsConfirm_label": { "message": "Confirm me again before send, if there is any attachment name with one of these terms in a message to foreign domains" },
+  "config_attentionTermsConfirm_label": { "message": "Confirm me again before send, if there is any attachment name with one of these terms in a message to external domains" },
   "config_attentionTerms_label": { "message": "Use the manually managed list" },
   "config_attentionTerms_input_placeholder": { "message": "Input a term per line (e.g. important, confidential)" },
   "config_attentionTermsFile_label": { "message": "Use a list given as a file" },
