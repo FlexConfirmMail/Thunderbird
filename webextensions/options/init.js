@@ -315,10 +315,10 @@ function rebuildUserRulesUI() {
                     <option id=${safeAttrValue('userRule-ui-action-option-reconfirmExternals:' + id)}
                             value="${Constants.ACTION_RECONFIRM_ONLY_EXTERNALS}"
                            >${safeLocalizedText('config_userRule_action_reconfirmExternals')}</option>
-                    <option id=${safeAttrValue('userRule-ui-action-option-blockExternalsWithAttachments:' + id)}
+                    <option id=${safeAttrValue('userRule-ui-action-option-reconfirmExternalsWithAttachments:' + id)}
                             value="${Constants.ACTION_RECONFIRM_ONLY_EXTERNALS_WITH_ATTACHMENTS}"
                             ${rule.matchTarget != Constants.MATCH_TO_RECIPIENT_DOMAIN ? 'disabled class="hidden"' : ''}
-                           >${safeLocalizedText('config_userRule_action_blockExternalsWithAttachments')}</option>
+                           >${safeLocalizedText('config_userRule_action_reconfirmExternalsWithAttachments')}</option>
                     <option id=${safeAttrValue('userRule-ui-action-option-separator2:' + id)}
                             ${rule.matchTarget != Constants.MATCH_TO_RECIPIENT_DOMAIN ? 'class="hidden"' : ''}
                             disabled="true">-------------------------------------</option>
