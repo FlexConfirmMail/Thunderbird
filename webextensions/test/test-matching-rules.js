@@ -193,6 +193,14 @@ const RULES = [
     matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
     highlight:   Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS,
     itemsLocal:  ['highlighted-attachment.example.com', '@highlighted-attachment.clear-code.com'] },
+  { id:          'highlighted by recipient domain only foreign',
+    matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+    highlight:   Constants.HIGHLIGHT_ONLY_EXTERNALS,
+    itemsLocal:  ['highlighted-foreign.example.com', '@highlighted-foreign.clear-code.com'] },
+  { id:          'highlighted by recipient domain only foreign with attachment',
+    matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+    highlight:   Constants.HIGHLIGHT_ONLY_EXTERNALS_WITH_ATTACHMENTS,
+    itemsLocal:  ['highlighted-foreign-attachment.example.com', '@highlighted-foreign-attachment.clear-code.com'] },
   { id:          'reconfirmed by recipient domain always',
     matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
     action:      Constants.ACTION_RECONFIRM_ALWAYS,
@@ -201,6 +209,14 @@ const RULES = [
     matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
     action:      Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS,
     itemsLocal:  ['reconfirmed-attachment.example.com', '@reconfirmed-attachment.clear-code.com'] },
+  { id:          'reconfirmed by recipient domain only foreign',
+    matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+    action:      Constants.ACTION_RECONFIRM_ONLY_EXTERNALS,
+    itemsLocal:  ['reconfirmed-foreign.example.com', '@reconfirmed-foreign.clear-code.com'] },
+  { id:          'reconfirmed by recipient domain only foreign with attachment',
+    matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+    action:      Constants.ACTION_RECONFIRM_ONLY_EXTERNALS_WITH_ATTACHMENTS,
+    itemsLocal:  ['reconfirmed-foreign-attachment.example.com', '@reconfirmed-foreign-attachment.clear-code.com'] },
   { id:          'blocked by recipient domain always',
     matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
     action:      Constants.ACTION_BLOCK_ALWAYS,
@@ -209,32 +225,64 @@ const RULES = [
     matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
     action:      Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS,
     itemsLocal:  ['blocked-attachment.example.com', '@blocked-attachment.clear-code.com'] },
+  { id:          'blocked by recipient domain only foreign',
+    matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+    action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS,
+    itemsLocal:  ['blocked-foreign.example.com', '@blocked-foreign.clear-code.com'] },
+  { id:          'blocked by recipient domain only foreign with attachment',
+    matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+    action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS,
+    itemsLocal:  ['blocked-foreign-attachment.example.com', '@blocked-foreign-attachment.clear-code.com'] },
 
   { id:          'highlighted by attachment name',
     matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
     highlight:   Constants.HIGHLIGHT_ALWAYS,
     itemsLocal:  ['highlighted-name'] },
+  { id:          'highlighted by attachment name only foreign',
+    matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
+    highlight:   Constants.HIGHLIGHT_ONLY_EXTERNALS,
+    itemsLocal:  ['highlighted-foreign-name'] },
   { id:          'reconfirmed by attachment name',
     matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
     action:      Constants.ACTION_RECONFIRM_ALWAYS,
     itemsLocal:  ['reconfirmed-name'] },
+  { id:          'reconfirmed by attachment name only foreign',
+    matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
+    action:      Constants.ACTION_RECONFIRM_ONLY_EXTERNALS,
+    itemsLocal:  ['reconfirmed-foreign-name'] },
   { id:          'blocked by attachment name',
     matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
     action:      Constants.ACTION_BLOCK_ALWAYS,
     itemsLocal:  ['blocked-name'] },
+  { id:          'blocked by attachment name only foreign',
+    matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
+    action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS,
+    itemsLocal:  ['blocked-foreign-name'] },
 
   { id:          'highlighted by attachment suffix',
     matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
     highlight:   Constants.HIGHLIGHT_ALWAYS,
     itemsLocal:  ['highlighted-ext'] },
+  { id:          'highlighted by attachment suffix only foreign',
+    matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
+    highlight:   Constants.HIGHLIGHT_ONLY_EXTERNALS,
+    itemsLocal:  ['highlighted-foreign-ext'] },
   { id:          'reconfirmed by attachment suffix',
     matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
     action:      Constants.ACTION_RECONFIRM_ALWAYS,
     itemsLocal:  ['reconfirmed-ext'] },
+  { id:          'reconfirmed by attachment suffix only foreign',
+    matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
+    action:      Constants.ACTION_RECONFIRM_ONLY_EXTERNALS,
+    itemsLocal:  ['reconfirmed-foreign-ext'] },
   { id:          'blocked by attachment suffix',
     matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
     action:      Constants.ACTION_BLOCK_ALWAYS,
     itemsLocal:  ['.blocked-ext'] },
+  { id:          'blocked by attachment suffix only foreign',
+    matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
+    action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS,
+    itemsLocal:  ['.blocked-foreign-ext'] },
 ];
 
 const RECIPIENTS_HIGHLIGHTED_ALWAYS = [
@@ -247,6 +295,16 @@ const RECIPIENTS_HIGHLIGHTED_WITH_ATTACHMENTS = [
   'uppercase@HIGHLIGHTED-ATTACHMENT.CLEAR-CODE.COM',
   'mixedcase@HiGhLiGhTeD-aTtAcHmEnT.ExAmPlE.cOm',
 ];
+const RECIPIENTS_HIGHLIGHTED_EXTERNALS = [
+  'lowercase@highlighted-foreign.example.com',
+  'uppercase@HIGHLIGHTED-FOREIGN.CLEAR-CODE.COM',
+  'mixedcase@HiGhLiGhTeD-fOrEiGn.ExAmPlE.cOm',
+];
+const RECIPIENTS_HIGHLIGHTED_EXTERNALS_WITH_ATTACHMENTS = [
+  'lowercase@highlighted-foreign-attachment.example.com',
+  'uppercase@HIGHLIGHTED-FOREIGN-ATTACHMENT.CLEAR-CODE.COM',
+  'mixedcase@HiGhLiGhTeD-fOrEiGn-aTtAcHmEnT.ExAmPlE.cOm',
+];
 const RECIPIENTS_RECONFIRMED_ALWAYS = [
   'lowercase@reconfirmed-always.example.com',
   'uppercase@RECONFIRMED-ALWAYS.CLEAR-CODE.COM',
@@ -256,6 +314,16 @@ const RECIPIENTS_RECONFIRMED_WITH_ATTACHMENTS = [
   'lowercase@reconfirmed-attachment.example.com',
   'uppercase@RECONFIRMED-ATTACHMENT.CLEAR-CODE.COM',
   'mixedcase@ReCoNfIrMeD-aTtAcHmEnT.ExAmPlE.cOm',
+];
+const RECIPIENTS_RECONFIRMED_EXTERNALS = [
+  'lowercase@reconfirmed-foreign.example.com',
+  'uppercase@RECONFIRMED-FOREIGN.CLEAR-CODE.COM',
+  'mixedcase@ReCoNfIrMeD-fOrEiGn.ExAmPlE.cOm',
+];
+const RECIPIENTS_RECONFIRMED_EXTERNALS_WITH_ATTACHMENTS = [
+  'lowercase@reconfirmed-foreign-attachment.example.com',
+  'uppercase@RECONFIRMED-FOREIGN-ATTACHMENT.CLEAR-CODE.COM',
+  'mixedcase@ReCoNfIrMeD-fOrEiGn-aTtAcHmEnT.ExAmPlE.cOm',
 ];
 const RECIPIENTS_BLOCKED_ALWAYS = [
   'lowercase@blocked-always.example.com',
@@ -267,6 +335,16 @@ const RECIPIENTS_BLOCKED_WITH_ATTACHMENTS = [
   'uppercase@BLOCKED-ATTACHMENT.CLEAR-CODE.COM',
   'mixedcase@BlOcKeD-aTtAcHmEnT.ExAmPlE.cOm',
 ];
+const RECIPIENTS_BLOCKED_EXTERNALS = [
+  'lowercase@blocked-foreign.example.com',
+  'uppercase@BLOCKED-FOREIGN.CLEAR-CODE.COM',
+  'mixedcase@BlOcKeD-fOrEiGn.ExAmPlE.cOm',
+];
+const RECIPIENTS_BLOCKED_EXTERNALS_WITH_ATTACHMENTS = [
+  'lowercase@blocked-foreign-attachment.example.com',
+  'uppercase@BLOCKED-FOREIGN-ATTACHMENT.CLEAR-CODE.COM',
+  'mixedcase@BlOcKeD-fOrEiGn-aTtAcHmEnT.ExAmPlE.cOm',
+];
 
 const RECIPIENTS = [
   'none@example.com',
@@ -276,10 +354,16 @@ const RECIPIENTS = [
   'mixedcase@NoNe.ExAmPlE.cOm',
   ...RECIPIENTS_HIGHLIGHTED_ALWAYS,
   ...RECIPIENTS_HIGHLIGHTED_WITH_ATTACHMENTS,
+  ...RECIPIENTS_HIGHLIGHTED_EXTERNALS,
+  ...RECIPIENTS_HIGHLIGHTED_EXTERNALS_WITH_ATTACHMENTS,
   ...RECIPIENTS_RECONFIRMED_ALWAYS,
   ...RECIPIENTS_RECONFIRMED_WITH_ATTACHMENTS,
+  ...RECIPIENTS_RECONFIRMED_EXTERNALS,
+  ...RECIPIENTS_RECONFIRMED_EXTERNALS_WITH_ATTACHMENTS,
   ...RECIPIENTS_BLOCKED_ALWAYS,
   ...RECIPIENTS_BLOCKED_WITH_ATTACHMENTS,
+  ...RECIPIENTS_BLOCKED_EXTERNALS,
+  ...RECIPIENTS_BLOCKED_EXTERNALS_WITH_ATTACHMENTS,
   'address-like@highlighted-always.clear-code.com <address-like@exmaple.com>',
   'address-like@reconfirm-alwaysc.lear-code.com <address-like@example.org>',
   'address-like@blocked-always.com <address-like@clear-code.com>',
@@ -293,24 +377,48 @@ const ATTACHMENTS_HIGHLIGHTED_NAME = [
   'middle-hIgHlIgHtEd-name-middle',
   'end-HIGHlighted-name',
 ];
+const ATTACHMENTS_HIGHLIGHTED_NAME_EXTERNALS = [
+  'HiGhLiGhTeD-foreign-name-start',
+  'middle-hIgHlIgHtEd-foreign-name-middle',
+  'end-HIGHlighted-foreign-name',
+];
 const ATTACHMENTS_RECONFIRMED_NAME = [
   'ReCoNfIrMeD-name-attachment-start',
   'middle-rEcOnFiRmEd-name-middle',
   'end-REconfirmed-name',
+];
+const ATTACHMENTS_RECONFIRMED_NAME_EXTERNALS = [
+  'ReCoNfIrMeD-foreign-name-attachment-start',
+  'middle-rEcOnFiRmEd-foreign-name-middle',
+  'end-REconfirmed-foreign-name',
 ];
 const ATTACHMENTS_BLOCKED_NAME = [
   'bLoCkEd-name-start',
   'middle-BlOcKeD-name-middle',
   'end-blockED-name',
 ];
+const ATTACHMENTS_BLOCKED_NAME_EXTERNALS = [
+  'bLoCkEd-foreign-name-start',
+  'middle-BlOcKeD-foreign-name-middle',
+  'end-blockED-foreign-name',
+];
 const ATTACHMENTS_HIGHLIGHTED_SUFFIX = [
   'basename.HiGhLiGhTeD-ext',
+];
+const ATTACHMENTS_HIGHLIGHTED_SUFFIX_EXTERNALS = [
+  'basename.HiGhLiGhTeD-foreign-ext',
 ];
 const ATTACHMENTS_RECONFIRMED_SUFFIX = [
   'basename.rEcOnFiRmEd-ext',
 ];
+const ATTACHMENTS_RECONFIRMED_SUFFIX_EXTERNALS = [
+  'basename.rEcOnFiRmEd-foreign-ext',
+];
 const ATTACHMENTS_BLOCKED_SUFFIX = [
   'basename.blockED-ext',
+];
+const ATTACHMENTS_BLOCKED_SUFFIX_EXTERNALS = [
+  'basename.blockED-foreign-ext',
 ];
 
 const ATTACHMENTS = [
@@ -321,20 +429,26 @@ const ATTACHMENTS = [
   'end-NOwhere',
 
   ...ATTACHMENTS_HIGHLIGHTED_NAME,
+  ...ATTACHMENTS_HIGHLIGHTED_NAME_EXTERNALS,
   ...ATTACHMENTS_RECONFIRMED_NAME,
+  ...ATTACHMENTS_RECONFIRMED_NAME_EXTERNALS,
   ...ATTACHMENTS_BLOCKED_NAME,
+  ...ATTACHMENTS_BLOCKED_NAME_EXTERNALS,
 
   ...ATTACHMENTS_HIGHLIGHTED_SUFFIX,
   'hIgHlIgHtEd-ext.ext',
   'basename.HIGHlighted-ext.ext',
+  ...ATTACHMENTS_HIGHLIGHTED_SUFFIX_EXTERNALS,
 
   ...ATTACHMENTS_RECONFIRMED_SUFFIX,
   'ReCoNfIrMeD-ext.ext',
   'REconfirmed-ext.ext',
+  ...ATTACHMENTS_RECONFIRMED_SUFFIX_EXTERNALS,
 
   ...ATTACHMENTS_BLOCKED_SUFFIX,
   'basename.bLoCkEd-ext-start.ext',
   'BlOcKeD-ext-middle.ext',
+  ...ATTACHMENTS_BLOCKED_SUFFIX_EXTERNALS,
 ].map(attachment => ({ name: attachment }));
 
 function recipientsToAddresses(classified) {
@@ -359,6 +473,7 @@ export async function test_classifyRecipients() {
     [
       ...RECIPIENTS_HIGHLIGHTED_ALWAYS,
       'address-like@highlighted-always.CLEAR-code.com',
+      ...RECIPIENTS_HIGHLIGHTED_EXTERNALS,
     ],
     [...matchingRules.getHighlightedRecipientAddresses({
       externals:   RECIPIENTS,
@@ -370,6 +485,8 @@ export async function test_classifyRecipients() {
       ...RECIPIENTS_HIGHLIGHTED_ALWAYS,
       'address-like@highlighted-always.CLEAR-code.com',
       ...RECIPIENTS_HIGHLIGHTED_WITH_ATTACHMENTS,
+      ...RECIPIENTS_HIGHLIGHTED_EXTERNALS,
+      ...RECIPIENTS_HIGHLIGHTED_EXTERNALS_WITH_ATTACHMENTS,
     ],
     [...matchingRules.getHighlightedRecipientAddresses({
       externals:   RECIPIENTS,
@@ -383,6 +500,7 @@ export async function test_classifyRecipients() {
         ...RECIPIENTS_RECONFIRMED_ALWAYS,
         'address-like@reconfirmed-always.CLEAR-code.com',
       ],
+      'reconfirmed by recipient domain only foreign': RECIPIENTS_RECONFIRMED_EXTERNALS,
     },
     recipientsToAddresses(matchingRules.classifyReconfirmRecipients({
       externals:   RECIPIENTS,
@@ -396,6 +514,8 @@ export async function test_classifyRecipients() {
         'address-like@reconfirmed-always.CLEAR-code.com',
       ],
       'reconfirmed by recipient domain only with attachment': RECIPIENTS_RECONFIRMED_WITH_ATTACHMENTS,
+      'reconfirmed by recipient domain only foreign': RECIPIENTS_RECONFIRMED_EXTERNALS,
+      'reconfirmed by recipient domain only foreign with attachment': RECIPIENTS_RECONFIRMED_EXTERNALS_WITH_ATTACHMENTS,
     },
     recipientsToAddresses(matchingRules.classifyReconfirmRecipients({
       externals:   RECIPIENTS,
@@ -409,6 +529,7 @@ export async function test_classifyRecipients() {
         ...RECIPIENTS_BLOCKED_ALWAYS,
         'address-like@blocked-always.example.com',
       ],
+      'blocked by recipient domain only foreign': RECIPIENTS_BLOCKED_EXTERNALS,
     },
     recipientsToAddresses(matchingRules.classifyBlockRecipients({
       externals:   RECIPIENTS,
@@ -422,6 +543,8 @@ export async function test_classifyRecipients() {
         'address-like@blocked-always.example.com',
       ],
       'blocked by recipient domain only with attachment': RECIPIENTS_BLOCKED_WITH_ATTACHMENTS,
+      'blocked by recipient domain only foreign': RECIPIENTS_BLOCKED_EXTERNALS,
+      'blocked by recipient domain only foreign with attachment': RECIPIENTS_BLOCKED_EXTERNALS_WITH_ATTACHMENTS,
     },
     recipientsToAddresses(matchingRules.classifyBlockRecipients({
       externals:   RECIPIENTS,
@@ -439,7 +562,22 @@ export async function test_classifyAttachments() {
       ...ATTACHMENTS_HIGHLIGHTED_NAME,
       ...ATTACHMENTS_HIGHLIGHTED_SUFFIX,
     ],
-    [...matchingRules.getHighlightedAttachmentNames(ATTACHMENTS)]
+    [...matchingRules.getHighlightedAttachmentNames({
+      attachments: ATTACHMENTS,
+      hasExternal: false,
+    })]
+  );
+  is(
+    [
+      ...ATTACHMENTS_HIGHLIGHTED_NAME,
+      ...ATTACHMENTS_HIGHLIGHTED_NAME_EXTERNALS,
+      ...ATTACHMENTS_HIGHLIGHTED_SUFFIX,
+      ...ATTACHMENTS_HIGHLIGHTED_SUFFIX_EXTERNALS,
+    ],
+    [...matchingRules.getHighlightedAttachmentNames({
+      attachments: ATTACHMENTS,
+      hasExternal: true,
+    })]
   );
 
   is(
@@ -449,6 +587,26 @@ export async function test_classifyAttachments() {
       ],
       'reconfirmed by attachment suffix': [
         ...ATTACHMENTS_RECONFIRMED_SUFFIX,
+      ],
+    },
+    attachmentsToNames(matchingRules.classifyReconfirmAttachments({
+      attachments: ATTACHMENTS,
+      hasExternal: false,
+    }))
+  );
+  is(
+    {
+      'reconfirmed by attachment name': [
+        ...ATTACHMENTS_RECONFIRMED_NAME,
+      ],
+      'reconfirmed by attachment name only foreign': [
+        ...ATTACHMENTS_RECONFIRMED_NAME_EXTERNALS,
+      ],
+      'reconfirmed by attachment suffix': [
+        ...ATTACHMENTS_RECONFIRMED_SUFFIX,
+      ],
+      'reconfirmed by attachment suffix only foreign': [
+        ...ATTACHMENTS_RECONFIRMED_SUFFIX_EXTERNALS,
       ],
     },
     attachmentsToNames(matchingRules.classifyReconfirmAttachments({
@@ -464,6 +622,26 @@ export async function test_classifyAttachments() {
       ],
       'blocked by attachment suffix': [
         ...ATTACHMENTS_BLOCKED_SUFFIX,
+      ],
+    },
+    attachmentsToNames(matchingRules.classifyBlockAttachments({
+      attachments: ATTACHMENTS,
+      hasExternal: false,
+    }))
+  );
+  is(
+    {
+      'blocked by attachment name': [
+        ...ATTACHMENTS_BLOCKED_NAME,
+      ],
+      'blocked by attachment name only foreign': [
+        ...ATTACHMENTS_BLOCKED_NAME_EXTERNALS,
+      ],
+      'blocked by attachment suffix': [
+        ...ATTACHMENTS_BLOCKED_SUFFIX,
+      ],
+      'blocked by attachment suffix only foreign': [
+        ...ATTACHMENTS_BLOCKED_SUFFIX_EXTERNALS,
       ],
     },
     attachmentsToNames(matchingRules.classifyBlockAttachments({
