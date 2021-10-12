@@ -27,15 +27,21 @@ export const MATCH_TO_RECIPIENT_DOMAIN  = 0;
 export const MATCH_TO_ATTACHMENT_NAME   = 1;
 export const MATCH_TO_ATTACHMENT_SUFFIX = 2;
 
-export const HIGHLIGHT_NEVER = 0;
-export const HIGHLIGHT_ALWAYS = 1;
-export const HIGHLIGHT_ONLY_WITH_ATTACHMENTS = 2;
+export const HIGHLIGHT_NEVER                           = 0;
+export const HIGHLIGHT_ALWAYS                          = 1;
+export const HIGHLIGHT_ONLY_WITH_ATTACHMENTS           = 2;
+export const HIGHLIGHT_ONLY_EXTERNALS                  = 3;
+export const HIGHLIGHT_ONLY_EXTERNALS_WITH_ATTACHMENTS = 4;
 
-export const ACTION_NONE                           = 0;
-export const ACTION_RECONFIRM_ALWAYS                = 1;
-export const ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS = 2;
-export const ACTION_BLOCK_ALWAYS                    = 3;
-export const ACTION_BLOCK_ONLY_WITH_ATTACHMENTS     = 4;
+export const ACTION_NONE                                      = 0;
+export const ACTION_RECONFIRM_ALWAYS                          = 1;
+export const ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS           = 2;
+export const ACTION_RECONFIRM_ONLY_EXTERNALS                  = 3;
+export const ACTION_RECONFIRM_ONLY_EXTERNALS_WITH_ATTACHMENTS = 4;
+export const ACTION_BLOCK_ALWAYS                              = 10;
+export const ACTION_BLOCK_ONLY_WITH_ATTACHMENTS               = 20;
+export const ACTION_BLOCK_ONLY_EXTERNALS                      = 30;
+export const ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS     = 40;
 
 export const SOURCE_LOCAL_CONFIG = 0;
 export const SOURCE_FILE = 1;

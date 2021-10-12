@@ -128,19 +128,27 @@
   "config_userRule_matchTarget_attachmentName":   { "message": "Attachment Names" },
   "config_userRule_matchTarget_attachmentSuffix": { "message": "Attachment Suffixes" },
 
+  "config_userRule_forExternalsOnly_label":       { "message": "Through cases if there is no external recipient" },
+
   "config_userRule_highlight_caption_recipient":  { "message": "Highlight matched recipients:" },
   "config_userRule_highlight_caption_attachment": { "message": "Highlight matched attachments:" },
   "config_userRule_highlight_never":              { "message": "Never" },
   "config_userRule_highlight_always":             { "message": "Always" },
   "config_userRule_highlight_withAttachments":    { "message": "Only when there is any attachment" },
+  "config_userRule_highlight_externals":          { "message": "Only when there is any external recipient" },
+  "config_userRule_highlight_externalsWithAttachments": { "message": "Only when there is any external recipient and attachment" },
 
   "config_userRule_action_caption_recipient":        { "message": "When there is any matched recipient:" },
   "config_userRule_action_caption_attachment":       { "message": "When there is any matched attachment:" },
   "config_userRule_action_none":                     { "message": "(Do nothing)" },
   "config_userRule_action_reconfirmAlways":          { "message": "Re-confirm always" },
   "config_userRule_action_reconfirmWithAttachments": { "message": "Re-confirm only when there is any attachment" },
+  "config_userRule_action_reconfirmExternals":       { "message": "Re-confirm only when there is any external recipient" },
+  "config_userRule_action_reconfirmExternalsWithAttachments": { "message": "Re-confirm only when there is any external recipient and attachment" },
   "config_userRule_action_blockAlways":              { "message": "Disallow to send messages always" },
   "config_userRule_action_blockWithAttachments":     { "message": "Disallow to send messages only when there is any attachment" },
+  "config_userRule_action_blockExternals":           { "message": "Disallow to send messages only when there is any external recipient" },
+  "config_userRule_action_blockExternalsWithAttachments": { "message": "Disallow to send messages only when there is any external recipient and attachment" },
 
   "config_userRule_itemsLocal_caption":                      { "message": "Use a manually managed list" },
   "config_userRule_itemsLocal_placeholder_recipientDomain":  { "message": "Input a domain name per line (e.g. example.com)" },

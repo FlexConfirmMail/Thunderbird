@@ -284,6 +284,13 @@ function rebuildUserRulesUI() {
                             value="${Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS}"
                             ${rule.matchTarget != Constants.MATCH_TO_RECIPIENT_DOMAIN ? 'disabled class="hidden"' : ''}
                            >${safeLocalizedText('config_userRule_highlight_withAttachments')}</option>
+                    <option id=${safeAttrValue('userRule-ui-highlight-option-externals:' + id)}
+                            value="${Constants.HIGHLIGHT_ONLY_EXTERNALS}"
+                           >${safeLocalizedText('config_userRule_highlight_externals')}</option>
+                    <option id=${safeAttrValue('userRule-ui-highlight-option-externalsWithAttachments:' + id)}
+                            value="${Constants.HIGHLIGHT_ONLY_EXTERNALS_WITH_ATTACHMENTS}"
+                            ${rule.matchTarget != Constants.MATCH_TO_RECIPIENT_DOMAIN ? 'disabled class="hidden"' : ''}
+                           >${safeLocalizedText('config_userRule_highlight_externalsWithAttachments')}</option>
                   </select></label></p>
 
         <p id=${safeAttrValue('userRule-ui-action-container:' + id)}
@@ -305,6 +312,13 @@ function rebuildUserRulesUI() {
                             value="${Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS}"
                             ${rule.matchTarget != Constants.MATCH_TO_RECIPIENT_DOMAIN ? 'disabled class="hidden"' : ''}
                            >${safeLocalizedText('config_userRule_action_reconfirmWithAttachments')}</option>
+                    <option id=${safeAttrValue('userRule-ui-action-option-reconfirmExternals:' + id)}
+                            value="${Constants.ACTION_RECONFIRM_ONLY_EXTERNALS}"
+                           >${safeLocalizedText('config_userRule_action_reconfirmExternals')}</option>
+                    <option id=${safeAttrValue('userRule-ui-action-option-blockExternalsWithAttachments:' + id)}
+                            value="${Constants.ACTION_RECONFIRM_ONLY_EXTERNALS_WITH_ATTACHMENTS}"
+                            ${rule.matchTarget != Constants.MATCH_TO_RECIPIENT_DOMAIN ? 'disabled class="hidden"' : ''}
+                           >${safeLocalizedText('config_userRule_action_blockExternalsWithAttachments')}</option>
                     <option id=${safeAttrValue('userRule-ui-action-option-separator2:' + id)}
                             ${rule.matchTarget != Constants.MATCH_TO_RECIPIENT_DOMAIN ? 'class="hidden"' : ''}
                             disabled="true">-------------------------------------</option>
@@ -315,6 +329,13 @@ function rebuildUserRulesUI() {
                             value="${Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS}"
                             ${rule.matchTarget != Constants.MATCH_TO_RECIPIENT_DOMAIN ? 'disabled class="hidden"' : ''}
                            >${safeLocalizedText('config_userRule_action_blockWithAttachments')}</option>
+                    <option id=${safeAttrValue('userRule-ui-action-option-blockExternals:' + id)}
+                            value="${Constants.ACTION_BLOCK_ONLY_EXTERNALS}"
+                           >${safeLocalizedText('config_userRule_action_blockExternals')}</option>
+                    <option id=${safeAttrValue('userRule-ui-action-option-blockExternalsWithAttachments:' + id)}
+                            value="${Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS}"
+                            ${rule.matchTarget != Constants.MATCH_TO_RECIPIENT_DOMAIN ? 'disabled class="hidden"' : ''}
+                           >${safeLocalizedText('config_userRule_action_blockExternalsWithAttachments')}</option>
                   </select></label></p>
         <p id=${safeAttrValue('userRule-ui-confirmTitle-container:' + id)}
            class="sub ${rule.action == Constants.ACTION_NONE ||

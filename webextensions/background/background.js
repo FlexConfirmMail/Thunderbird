@@ -449,7 +449,7 @@ configs.$loaded.then(async () => {
       if (configs.attentionSuffixDialogMessage && !configs.attentionSuffixesDialogMessage)
         configs.attentionSuffixesDialogMessage = configs.attentionSuffixDialogMessage;
 
-    case 1:
+    case 1: {
       const allLocalData = await browser.storage.local.get(null);
       if (!('attentionSuffixesConfirm' in allLocalData) &&
           (configs.attentionSuffixes.length > 0 ||
@@ -467,8 +467,9 @@ configs.$loaded.then(async () => {
           (configs.blockedDomains.length > 0 ||
            configs.blockedDomainsFile))
         configs.blockedDomainsEnabled = true;
+    }
 
-    case 2:
+    case 2: {
       const matchingRules = new MatchingRules(configs);
       const beforeUserRules = clone(matchingRules.exportUserRules());
       const migratedRules = {
@@ -495,7 +496,7 @@ configs.$loaded.then(async () => {
         migratedRules.builtInAttentionDomains.dialogMessage = configs.attentionDomainsDialogMessage;
 
       if (configs.attentionSuffixesConfirm !== null)
-        migratedRules.builtInAttentionSuffixes.action = configs.attentionSuffixesConfirm ? Constants.ACTION_RECONFIRM_ALWAYS : Constants.ACTION_NONE;
+        migratedRules.builtInAttentionSuffixes.action = configs.attentionSuffixesConfirm ? Constants.ACTION_RECONFIRM_ONLY_EXTERNALS : Constants.ACTION_NONE;
       if (configs.attentionSuffixes !== null)
         migratedRules.builtInAttentionSuffixes.itemsLocal = configs.attentionSuffixes;
       if (configs.attentionDomainsSource !== null)
@@ -508,7 +509,7 @@ configs.$loaded.then(async () => {
         migratedRules.builtInAttentionSuffixes.dialogMessage = configs.attentionSuffixesDialogMessage;
 
       if (configs.attentionSuffixes2Confirm !== null)
-        migratedRules.builtInAttentionSuffixes2.action = configs.attentionSuffixes2Confirm ? Constants.ACTION_RECONFIRM_ALWAYS : Constants.ACTION_NONE;
+        migratedRules.builtInAttentionSuffixes2.action = configs.attentionSuffixes2Confirm ? Constants.ACTION_RECONFIRM_ONLY_EXTERNALS : Constants.ACTION_NONE;
       if (configs.attentionSuffixes2 !== null)
         migratedRules.builtInAttentionSuffixes2.itemsLocal = configs.attentionSuffixes2;
       if (configs.attentionSuffixes2Source !== null)
@@ -521,7 +522,7 @@ configs.$loaded.then(async () => {
         migratedRules.builtInAttentionSuffixes2.dialogMessage = configs.attentionSuffixes2DialogMessage;
 
       if (configs.attentionTermsConfirm !== null)
-        migratedRules.builtInAttentionTerms.action = configs.attentionTermsConfirm ? Constants.ACTION_RECONFIRM_ALWAYS : Constants.ACTION_NONE;
+        migratedRules.builtInAttentionTerms.action = configs.attentionTermsConfirm ? Constants.ACTION_RECONFIRM_ONLY_EXTERNALS : Constants.ACTION_NONE;
       if (configs.attentionTerms !== null)
         migratedRules.builtInAttentionTerms.itemsLocal = configs.attentionTerms;
       if (configs.attentionTermsSource !== null)
@@ -556,6 +557,7 @@ configs.$loaded.then(async () => {
       const exported = matchingRules.exportUserRules();
       if (JSON.stringify(beforeUserRules) != JSON.stringify(exported))
         configs.userRules = exported;
+    }
 
     default:
       break;

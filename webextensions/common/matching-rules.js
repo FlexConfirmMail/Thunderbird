@@ -12,10 +12,10 @@ const BASE_RULE = {
   id:             '', // arbitrary unique string (auto generated)
   name:           '', // arbitrary visible name in the UI
   enabled:        true, // true (enabled) or false (disabled),
-  matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN, // | Constants.MATCH_TO_ATTACHMENT_NAME | Constants.MATCH_TO_ATTACHMENT_SUFFIX
-  highlight:      Constants.HIGHLIGHT_NEVER, // | Constants.HIGHLIGHT_ALWAYS | Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS
-  action:         Constants.ACTION_NONE, // | Constants.ACTION_RECONFIRM_ALWAYS | Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS | Constants.ACTION_BLOCK
-  itemsSource:    Constants.SOURCE_LOCAL_CONFIG, // | Constants.SOURCE_FILE
+  matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN,
+  highlight:      Constants.HIGHLIGHT_NEVER,
+  action:         Constants.ACTION_NONE,
+  itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
   itemsLocal:     [], // array of strings
   itemsFile:      '', // path to a text file: UTF-8, LF separated
   confirmTitle:   '', // string
