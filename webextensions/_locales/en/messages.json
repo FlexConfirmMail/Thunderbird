@@ -168,75 +168,14 @@
 
 
   "config_attentionDomains_caption": { "message": "Specially alerted external domains in recipients" },
-
-  "config_attentionDomainsSource_caption": { "message": "Specially alerted external domains" },
-  "config_attentionDomains_label": { "message": "Use the manually managed list" },
-  "config_attentionDomains_input_placeholder": { "message": "Input domain names per line (e.g. example.com)" },
-  "config_attentionDomainsFile_label": { "message": "Use a list given as a file" },
-  "config_attentionDomainsFile_button_label": { "message": "Choose…" },
-  "config_attentionDomainsFile_button_dialogTitle": { "message": "Choose a list of specially alerted external domains in recipients" },
-  "config_attentionDomainsFile_button_dialogDisplayName": { "message": "List File" },
-  "config_attentionDomainsFile_input_placeholder": { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\domains.txt)" },
-  "config_attentionDomainsDialogMessage_label": { "message": "Message for confirmation (\"%S\" will be filled with recipients):" },
-
-  "config_attentionDomainsHighlightMode_caption": { "message": "Highlight recipients of these domains" },
-  "config_attentionDomainsHighlightMode_always_label": { "message": "Always" },
-  "config_attentionDomainsHighlightMode_withAttachments_label": { "message": "Only when there is any attachment" },
-  "config_attentionDomainsHighlightMode_never_label": { "message": "Never" },
-
-  "config_attentionDomainsConfirmationMode_caption": { "message": "Re-confirmation when there is any recipient with one of these domains" },
-  "config_attentionDomainsConfirmationMode_always_label": { "message": "Always" },
-  "config_attentionDomainsConfirmationMode_withAttachments_label": { "message": "Only when there is any attachment" },
-  "config_attentionDomainsConfirmationMode_never_label": { "message": "Never" },
-
-
   "config_blockedDomains_caption": { "message": "Blocked domains in recipients" },
-
-  "config_blockedDomainsEnabled": { "message": "Disallow to send messages including any recipient with these domains" },
-  "config_blockedDomains_label": { "message": "Use the manually managed list" },
-  "config_blockedDomains_input_placeholder": { "message": "Input domain names per line (e.g. example.com)" },
-  "config_blockedDomainsFile_label": { "message": "Use a list given as a file" },
-  "config_blockedDomainsFile_button_label": { "message": "Choose…" },
-  "config_blockedDomainsFile_button_dialogTitle": { "message": "Choose a list of blocked domains in recipients" },
-  "config_blockedDomainsFile_button_dialogDisplayName": { "message": "List File" },
-  "config_blockedDomainsFile_input_placeholder": { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\domains.txt)" },
-  "config_blockedDomainsDialogMessage_label": { "message": "Message for alert (\"%S\" will be filled with recipients):" },
-
+  "config_attentionSuffixesConfirm_label": { "message": "Confirm me again before send, if there is any attachment with one of these extensions in a message to external domains" },
+  "config_attentionSuffixes2Confirm_label": { "message": "Confirm me more again before send, if there is any attachment with one of these extensions in a message to external domains" },
+  "config_attentionTermsConfirm_label": { "message": "Confirm me again before send, if there is any attachment name with one of these terms in a message to external domains" },
 
   "config_attachments_caption": { "message": "Attachments" },
 
   "config_requireCheckAttachment_label": { "message": "Require check attachments" },
-
-  "config_attentionSuffixesConfirm_label": { "message": "Confirm me again before send, if there is any attachment with one of these extensions in a message to external domains" },
-  "config_attentionSuffixes_label": { "message": "Use the manually managed list" },
-  "config_attentionSuffixes_input_placeholder": { "message": "Input file extensions per line (e.g. .exe, .pdf)" },
-  "config_attentionSuffixesFile_label": { "message": "Use a list given as a file" },
-  "config_attentionSuffixesFile_button_label": { "message": "Choose…" },
-  "config_attentionSuffixesFile_button_dialogTitle": { "message": "Choose a list of extensions in attachment names requiring reconfirmation" },
-  "config_attentionSuffixesFile_button_dialogDisplayName": { "message": "List File" },
-  "config_attentionSuffixesFile_input_placeholder": { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\suffixes.txt)" },
-  "config_attentionSuffixesDialogMessage_label": { "message": "Message for confirmation (\"%S\" will be filled with attachment file names):" },
-
-  "config_attentionSuffixes2Confirm_label": { "message": "Confirm me more again before send, if there is any attachment with one of these extensions in a message to external domains" },
-  "config_attentionSuffixes2_label": { "message": "Use the manually managed list" },
-  "config_attentionSuffixes2_input_placeholder": { "message": "Input file extensions per line (e.g. .exe, .pdf)" },
-  "config_attentionSuffixes2File_label": { "message": "Use a list given as a file" },
-  "config_attentionSuffixes2File_button_label": { "message": "Choose…" },
-  "config_attentionSuffixes2File_button_dialogTitle": { "message": "Choose a list of extensions in attachment names requiring reconfirmation" },
-  "config_attentionSuffixes2File_button_dialogDisplayName": { "message": "List File" },
-  "config_attentionSuffixes2File_input_placeholder": { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\suffixes.txt)" },
-  "config_attentionSuffixes2DialogMessage_label": { "message": "Message for confirmation (\"%S\" will be filled with attachment file names):" },
-
-  "config_attentionTermsConfirm_label": { "message": "Confirm me again before send, if there is any attachment name with one of these terms in a message to external domains" },
-  "config_attentionTerms_label": { "message": "Use the manually managed list" },
-  "config_attentionTerms_input_placeholder": { "message": "Input a term per line (e.g. important, confidential)" },
-  "config_attentionTermsFile_label": { "message": "Use a list given as a file" },
-  "config_attentionTermsFile_button_label": { "message": "Choose…" },
-  "config_attentionTermsFile_button_dialogTitle": { "message": "Choose a list of terms in attachment names requiring reconfirmation" },
-  "config_attentionTermsFile_button_dialogDisplayName": { "message": "List File" },
-  "config_attentionTermsFile_input_placeholder": { "message": "Path to the file (e.g. \\\\FileServer\\Shared\\suffixes.txt)" },
-  "config_attentionTermsDialogMessage_label": { "message": "Message for confirmation (\"%S\" will be filled with attachment file names):" },
-
   "config_requireReinputAttachmentNames_label": { "message": "Require to input file names of attachments, if there is any other domain recipient" },
   "config_allowCheckAllAttachments_label": { "message": "Allow to make all attachments to be checked with one checkbox" },
 
