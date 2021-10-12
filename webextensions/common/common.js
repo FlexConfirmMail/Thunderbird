@@ -48,14 +48,14 @@ export const configs = new Configs({
       enabled:        false,
       matchTarget:    Constants.MATCH_TO_ATTACHMENT_SUFFIX,
       itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
-      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixesTitle', ['$S']),
+      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixesTitle', ['%S']),
     },
     {
       id:             'builtInAttentionSuffixes2',
       name:           browser.i18n.getMessage('config_attentionSuffixes2Confirm_label'),
       enabled:        false,
       matchTarget:    Constants.MATCH_TO_ATTACHMENT_SUFFIX,
-      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixes2Message', ['$S']),
+      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixes2Message', ['%S']),
     },
     {
       id:             'builtInAttentionTerms',
@@ -70,7 +70,7 @@ export const configs = new Configs({
       enabled:        false,
       matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN,
       action:         Constants.ACTION_BLOCK,
-      confirmMessage: browser.i18n.getMessage('alertBlockedDomainsMessage', ['$S']),
+      confirmMessage: browser.i18n.getMessage('alertBlockedDomainsMessage', ['%S']),
     },
     */
   ], // don't expose this to the options UI!
@@ -86,7 +86,7 @@ export const configs = new Configs({
       itemsLocal:     [],
       itemsFile:      '',
       confirmTitle:   browser.i18n.getMessage('confirmAttentionDomainsTitle'),
-      confirmMessage: browser.i18n.getMessage('confirmAttentionDomainsMessage', ['$S']),
+      confirmMessage: browser.i18n.getMessage('confirmAttentionDomainsMessage', ['%S']),
     },
     {
       id:             'builtInAttentionSuffixes',
@@ -99,7 +99,7 @@ export const configs = new Configs({
       itemsLocal:     [],
       itemsFile:      '',
       confirmTitle:   browser.i18n.getMessage('confirmAttentionSuffixesTitle'),
-      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixesMessage', ['$S']),
+      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixesMessage', ['%S']),
     },
     {
       id:             'builtInAttentionSuffixes2',
@@ -112,7 +112,7 @@ export const configs = new Configs({
       itemsLocal:     [],
       itemsFile:      '',
       confirmTitle:   browser.i18n.getMessage('confirmAttentionSuffixes2Title'),
-      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixes2Message', ['$S']),
+      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixes2Message', ['%S']),
     },
     {
       id:             'builtInAttentionTerms',
@@ -125,7 +125,7 @@ export const configs = new Configs({
       itemsLocal:     [],
       itemsFile:      '',
       confirmTitle:   browser.i18n.getMessage('confirmAttentionTermsTitle'),
-      confirmMessage: browser.i18n.getMessage('confirmAttentionTermsMessage', ['$S']),
+      confirmMessage: browser.i18n.getMessage('confirmAttentionTermsMessage', ['%S']),
     },
     {
       id:             'builtInBlockedDomains',
@@ -138,7 +138,7 @@ export const configs = new Configs({
       itemsLocal:     [],
       itemsFile:      '',
       confirmTitle:   browser.i18n.getMessage('alertBlockedDomainsTitle'),
-      confirmMessage: browser.i18n.getMessage('alertBlockedDomainsMessage', ['$S']),
+      confirmMessage: browser.i18n.getMessage('alertBlockedDomainsMessage', ['%S']),
     },
   ],
 
