@@ -297,12 +297,12 @@ const RECIPIENTS_HIGHLIGHTED_WITH_ATTACHMENTS = [
 ];
 const RECIPIENTS_HIGHLIGHTED_EXTERNALS = [
   'lowercase@highlighted-external.example.com',
-  'uppercase@HIGHLIGHTED-EXETRNAL.CLEAR-CODE.COM',
+  'uppercase@HIGHLIGHTED-EXTERNAL.CLEAR-CODE.COM',
   'mixedcase@HiGhLiGhTeD-eXtErNaL.ExAmPlE.cOm',
 ];
 const RECIPIENTS_HIGHLIGHTED_EXTERNALS_WITH_ATTACHMENTS = [
   'lowercase@highlighted-external-attachment.example.com',
-  'uppercase@HIGHLIGHTED-EXETRNAL-ATTACHMENT.CLEAR-CODE.COM',
+  'uppercase@HIGHLIGHTED-EXTERNAL-ATTACHMENT.CLEAR-CODE.COM',
   'mixedcase@HiGhLiGhTeD-eXtErNaL-aTtAcHmEnT.ExAmPlE.cOm',
 ];
 const RECIPIENTS_RECONFIRMED_ALWAYS = [
@@ -317,12 +317,12 @@ const RECIPIENTS_RECONFIRMED_WITH_ATTACHMENTS = [
 ];
 const RECIPIENTS_RECONFIRMED_EXTERNALS = [
   'lowercase@reconfirmed-external.example.com',
-  'uppercase@RECONFIRMED-EXETRNAL.CLEAR-CODE.COM',
+  'uppercase@RECONFIRMED-EXTERNAL.CLEAR-CODE.COM',
   'mixedcase@ReCoNfIrMeD-eXtErNaL.ExAmPlE.cOm',
 ];
 const RECIPIENTS_RECONFIRMED_EXTERNALS_WITH_ATTACHMENTS = [
   'lowercase@reconfirmed-external-attachment.example.com',
-  'uppercase@RECONFIRMED-EXETRNAL-ATTACHMENT.CLEAR-CODE.COM',
+  'uppercase@RECONFIRMED-EXTERNAL-ATTACHMENT.CLEAR-CODE.COM',
   'mixedcase@ReCoNfIrMeD-eXtErNaL-aTtAcHmEnT.ExAmPlE.cOm',
 ];
 const RECIPIENTS_BLOCKED_ALWAYS = [
@@ -337,12 +337,12 @@ const RECIPIENTS_BLOCKED_WITH_ATTACHMENTS = [
 ];
 const RECIPIENTS_BLOCKED_EXTERNALS = [
   'lowercase@blocked-external.example.com',
-  'uppercase@BLOCKED-EXETRNAL.CLEAR-CODE.COM',
+  'uppercase@BLOCKED-EXTERNAL.CLEAR-CODE.COM',
   'mixedcase@BlOcKeD-eXtErNaL.ExAmPlE.cOm',
 ];
 const RECIPIENTS_BLOCKED_EXTERNALS_WITH_ATTACHMENTS = [
   'lowercase@blocked-external-attachment.example.com',
-  'uppercase@BLOCKED-EXETRNAL-ATTACHMENT.CLEAR-CODE.COM',
+  'uppercase@BLOCKED-EXTERNAL-ATTACHMENT.CLEAR-CODE.COM',
   'mixedcase@BlOcKeD-eXtErNaL-aTtAcHmEnT.ExAmPlE.cOm',
 ];
 
