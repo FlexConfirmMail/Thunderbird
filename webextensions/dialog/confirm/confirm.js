@@ -130,7 +130,10 @@ function initInternals() {
   mInternalsList.addEventListener('change', _event => {
     mInternalsAllCheck.checked = isAllChecked(mInternalsList);
   });
-  const highlightedAddresses = mMatchingRules.getHighlightedRecipientAddresses(mParams.internals, mParams.attachments);
+  const highlightedAddresses = mMatchingRules.getHighlightedRecipientAddresses({
+    internals:   mParams.internals,
+    attachments: mParams.attachments,
+  });
   for (const recipient of mParams.internals) {
     const row = createRecipientRow(recipient);
     if (highlightedAddresses.has(recipient.address))
@@ -169,7 +172,10 @@ function initExternals() {
   for (const [domain, recipients] of recipientsOfDomain.entries()) {
     groupCount++;
 
-    const highlightedAddresses = mMatchingRules.getHighlightedRecipientAddresses(recipients, mParams.attachments);
+    const highlightedAddresses = mMatchingRules.getHighlightedRecipientAddresses({
+      externals:   recipients,
+      attachments: mParams.attachments,
+    });
     const domainRow = createDomainRow(domain);
     if (recipients.some(recipient => highlightedAddresses.has(recipient.address)))
       domainRow.classList.add('attention');
@@ -225,7 +231,10 @@ function initAttachments() {
   mAttachmentsList.addEventListener('change', _event => {
     mAttachmentsAllCheck.checked = isAllChecked(mAttachmentsList);
   });
-  const highlightedAttachmentNames = mMatchingRules.getHighlightedAttachmentNames(mParams.attachments);
+  const highlightedAttachmentNames = mMatchingRules.getHighlightedAttachmentNames({
+    attachments: mParams.attachments,
+    hasExternal: mParams.externals.length > 0,
+  });
   for (const attachment of mParams.attachments) {
     const row = createAttachmentRow(attachment);
     if (highlightedAttachmentNames.has(attachment.name))
@@ -388,7 +397,8 @@ async function confirmedMultipleRecipientDomains() {
 
 async function confirmedWithRules() {
   const confirmed = await mMatchingRules.tryReconfirm({
-    recipients: [...mParams.internals, ...mParams.externals],
+    internals:   mParams.internals,
+    externals:   mParams.externals,
     attachments: mParams.attachments,
     async confirm({ title, message }) {
       let result;

@@ -254,6 +254,29 @@ async function needConfirmationOnModified(tab, details) {
 }
 
 
+function classifyRecipients({ to, cc, bcc }) {
+  const classifier = new RecipientClassifier({
+    internalDomains: configs.internalDomains || [],
+  });
+  const classifiedTo = classifier.classify(to);
+  const classifiedCc = classifier.classify(cc);
+  const classifiedBcc = classifier.classify(bcc);
+  log('classified results: ', { classifiedTo, classifiedCc, classifiedBcc });
+
+  return {
+    internals: new Set([
+      ...classifiedTo.internals.map(recipient => ({ ...recipient, type: 'To' })),
+      ...classifiedCc.internals.map(recipient => ({ ...recipient, type: 'Cc' })),
+      ...classifiedBcc.internals.map(recipient => ({ ...recipient, type: 'Bcc' })),
+    ]),
+    externals: new Set([
+      ...classifiedTo.externals.map(recipient => ({ ...recipient, type: 'To' })),
+      ...classifiedCc.externals.map(recipient => ({ ...recipient, type: 'Cc' })),
+      ...classifiedBcc.externals.map(recipient => ({ ...recipient, type: 'Bcc' })),
+    ]),
+  };
+}
+
 async function tryConfirm(tab, details, opener) {
   log('tryConfirm: ', tab, details, opener);
   const [
@@ -263,32 +286,17 @@ async function tryConfirm(tab, details, opener) {
     ListUtils.populateListAddresses(details.cc),
     ListUtils.populateListAddresses(details.bcc),
   ]);
-  const classifier = new RecipientClassifier({
-    internalDomains: configs.internalDomains || [],
-  });
-  const classifiedTo = classifier.classify(to);
-  const classifiedCc = classifier.classify(cc);
-  const classifiedBcc = classifier.classify(bcc);
-  log('classified results: ', { classifiedTo, classifiedCc, classifiedBcc });
 
-  const allInternals = new Set([
-    ...classifiedTo.internals,
-    ...classifiedCc.internals,
-    ...classifiedBcc.internals
-  ]);
-  const allExternals = new Set([
-    ...classifiedTo.externals,
-    ...classifiedCc.externals,
-    ...classifiedBcc.externals
-  ]);
+  const { internals, externals } = classifyRecipients({ to, cc, bcc });
+
   if (configs.skipConfirmationForInternalMail &&
-      allExternals.size == 0) {
+      externals.size == 0) {
     log('skip confirmation because there is no external recipient');
     return;
   }
-  if (allInternals.size + allExternals.size <= configs.minConfirmationRecipientsCount) {
+  if (internals.size + externals.size <= configs.minConfirmationRecipientsCount) {
     log('skip confirmation because there is too few recipients ',
-        allInternals.size + allExternals.size,
+        internals.size + externals.size,
         '<=',
         configs.minRecipientsCount);
     return;
@@ -323,16 +331,8 @@ async function tryConfirm(tab, details, opener) {
     dialogParams,
     {
       details,
-      internals: [
-        ...classifiedTo.internals.map(recipient => ({ ...recipient, type: 'To' })),
-        ...classifiedCc.internals.map(recipient => ({ ...recipient, type: 'Cc' })),
-        ...classifiedBcc.internals.map(recipient => ({ ...recipient, type: 'Bcc' }))
-      ],
-      externals: [
-        ...classifiedTo.externals.map(recipient => ({ ...recipient, type: 'To' })),
-        ...classifiedCc.externals.map(recipient => ({ ...recipient, type: 'Cc' })),
-        ...classifiedBcc.externals.map(recipient => ({ ...recipient, type: 'Bcc' }))
-      ],
+      internals: Array.from(internals),
+      externals: Array.from(externals),
       attachments: details.attachments || await browser.compose.listAttachments(tab.id),
     }
   );
@@ -350,8 +350,11 @@ async function shouldBlock(tab, details) {
     matchingRules.populate(readFile),
   ]);
 
+  const { internals, externals } = classifyRecipients({ to, cc, bcc });
+
   const blocked = await matchingRules.tryBlock({
-    recipients: [...to, ...cc, ...bcc],
+    internals,
+    externals,
     attachments,
     alert: async ({ title, message }) => {
       return RichConfirm.showInPopup(tab.windowId, {

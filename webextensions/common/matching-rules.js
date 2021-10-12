@@ -197,9 +197,10 @@ export class MatchingRules {
     return toBeSavedRules;
   }
 
-  $classifyRecipients(recipients, filter) {
+  $classifyRecipients(internals, externals, filter) {
     const classified = {};
-    for (const recipient of recipients) {
+    for (const recipients of [internals, externals]) {
+      for (const recipient of recipients) {
       const parsedRecipient = typeof recipient == 'string' ? RecipientParser.parse(recipient) : recipient;
 
       for (const [id, domains] of Object.entries(this.$matchedDomainSets)) {
@@ -207,12 +208,13 @@ export class MatchingRules {
           continue;
 
         const rule = this.get(id);
-        if (!filter(rule))
+        if (!filter(rule, recipients === externals))
           continue;
 
         const classifiedRecipients = classified[id] || new Set();
         classifiedRecipients.add(parsedRecipient);
         classified[id] = classifiedRecipients;
+      }
       }
     }
     return Object.fromEntries(
@@ -221,36 +223,54 @@ export class MatchingRules {
     );
   }
 
-  getHighlightedRecipientAddresses(recipients, attachments = []) {
+  getHighlightedRecipientAddresses({ internals, externals, attachments } = {}) {
     const classified = this.$classifyRecipients(
-      recipients,
-      rule => (
+      internals,
+      externals,
+      (rule, isExternal) => (
         rule.highlight == Constants.HIGHLIGHT_ALWAYS ||
         (rule.highlight == Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS &&
-         attachments.length > 0)
+         attachments && attachments.length > 0) ||
+        (rule.highlight == Constants.HIGHLIGHT_ONLY_EXTERNALS &&
+         isExternal) ||
+        (rule.highlight == Constants.HIGHLIGHT_ONLY_EXTERNALS_WITH_ATTACHMENTS &&
+         isExternal &&
+         attachments && attachments.length > 0)
       )
     );
     return new Set(Object.entries(classified).map(([_ruleId, recipients]) => recipients.map(recipient => recipient.address)).flat());
   }
 
-  classifyReconfirmRecipients(recipients, attachments = []) {
+  classifyReconfirmRecipients({ internals, externals, attachments } = {}) {
     return this.$classifyRecipients(
-      recipients,
-      rule => (
+      internals,
+      externals,
+      (rule, isExternal) => (
         rule.action == Constants.ACTION_RECONFIRM_ALWAYS ||
         (rule.action == Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS &&
-         attachments.length > 0)
+         attachments && attachments.length > 0) ||
+        (rule.action == Constants.ACTION_RECONFIRM_ONLY_EXTERNALS &&
+         isExternal) ||
+        (rule.action == Constants.ACTION_RECONFIRM_ONLY_EXTERNALS_WITH_ATTACHMENTS &&
+         isExternal &&
+         attachments && attachments.length > 0)
       )
     );
   }
 
-  classifyBlockRecipients(recipients, attachments = []) {
+  classifyBlockRecipients({ internals, externals, attachments } = {}) {
     return this.$classifyRecipients(
-      recipients,
-      rule => (
+      internals,
+      externals,
+      (rule, isExternal) => (
         rule.action == Constants.ACTION_BLOCK_ALWAYS ||
         (rule.action == Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS &&
-         attachments.length > 0)
+         attachments && attachments.length > 0) ||
+        (rule.action == Constants.ACTION_BLOCK_ONLY_EXTERNALS &&
+         isExternal) ||
+        (rule.action == Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS &&
+         isExternal &&
+         attachments && attachments.length > 0)
       )
     );
   }
@@ -277,36 +297,51 @@ export class MatchingRules {
     );
   }
 
-  getHighlightedAttachmentNames(attachments) {
+  getHighlightedAttachmentNames({ attachments, hasExternal } = {}) {
     const classified = this.$classifyAttachments(
       attachments,
       rule => (
         rule.highlight == Constants.HIGHLIGHT_ALWAYS ||
         (rule.highlight == Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS &&
-         attachments.length > 0)
+         attachments && attachments.length > 0) ||
+        (rule.highlight == Constants.HIGHLIGHT_ONLY_EXTERNALS &&
+         hasExternal) ||
+        (rule.highlight == Constants.HIGHLIGHT_ONLY_EXTERNALS_WITH_ATTACHMENTS &&
+         hasExternal &&
+         attachments && attachments.length > 0)
       )
     );
     return new Set(Object.entries(classified).map(([_ruleId, attachments]) => attachments.map(attachment => attachment.name)).flat());
   }
 
-  classifyReconfirmAttachments(attachments) {
+  classifyReconfirmAttachments({ attachments, hasExternal } = {}) {
     return this.$classifyAttachments(
       attachments,
       rule => (
         rule.action == Constants.ACTION_RECONFIRM_ALWAYS ||
         (rule.action == Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS &&
-         attachments.length > 0)
+         attachments && attachments.length > 0) ||
+        (rule.action == Constants.ACTION_RECONFIRM_ONLY_EXTERNALS &&
+         hasExternal) ||
+        (rule.action == Constants.ACTION_RECONFIRM_ONLY_EXTERNALS_WITH_ATTACHMENTS &&
+         hasExternal &&
+         attachments && attachments.length > 0)
       )
     );
   }
 
-  classifyBlockAttachments(attachments) {
+  classifyBlockAttachments({ attachments, hasExternal } = {}) {
     return this.$classifyAttachments(
       attachments,
       rule => (
         rule.action == Constants.ACTION_BLOCK_ALWAYS ||
         (rule.action == Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS &&
-         attachments.length > 0)
+         attachments && attachments.length > 0) ||
+        (rule.action == Constants.ACTION_BLOCK_ONLY_EXTERNALS &&
+         hasExternal) ||
+        (rule.action == Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS &&
+         hasExternal &&
+         attachments && attachments.length > 0)
       )
     );
   }

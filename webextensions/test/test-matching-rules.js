@@ -360,7 +360,10 @@ export async function test_classifyRecipients() {
       ...RECIPIENTS_HIGHLIGHTED_ALWAYS,
       'address-like@highlighted-always.CLEAR-code.com',
     ],
-    [...matchingRules.getHighlightedRecipientAddresses(RECIPIENTS, [])]
+    [...matchingRules.getHighlightedRecipientAddresses({
+      externals:   RECIPIENTS,
+      attachments: [],
+    })]
   );
   is(
     [
@@ -368,7 +371,10 @@ export async function test_classifyRecipients() {
       'address-like@highlighted-always.CLEAR-code.com',
       ...RECIPIENTS_HIGHLIGHTED_WITH_ATTACHMENTS,
     ],
-    [...matchingRules.getHighlightedRecipientAddresses(RECIPIENTS, ATTACHMENTS)]
+    [...matchingRules.getHighlightedRecipientAddresses({
+      externals:   RECIPIENTS,
+      attachments: ATTACHMENTS,
+    })]
   );
 
   is(
@@ -378,7 +384,10 @@ export async function test_classifyRecipients() {
         'address-like@reconfirmed-always.CLEAR-code.com',
       ],
     },
-    recipientsToAddresses(matchingRules.classifyReconfirmRecipients(RECIPIENTS, []))
+    recipientsToAddresses(matchingRules.classifyReconfirmRecipients({
+      externals:   RECIPIENTS,
+      attachments: [],
+    }))
   );
   is(
     {
@@ -388,7 +397,10 @@ export async function test_classifyRecipients() {
       ],
       'reconfirmed by recipient domain only with attachment': RECIPIENTS_RECONFIRMED_WITH_ATTACHMENTS,
     },
-    recipientsToAddresses(matchingRules.classifyReconfirmRecipients(RECIPIENTS, ATTACHMENTS))
+    recipientsToAddresses(matchingRules.classifyReconfirmRecipients({
+      externals:   RECIPIENTS,
+      attachments: ATTACHMENTS,
+    }))
   );
 
   is(
@@ -398,7 +410,10 @@ export async function test_classifyRecipients() {
         'address-like@blocked-always.example.com',
       ],
     },
-    recipientsToAddresses(matchingRules.classifyBlockRecipients(RECIPIENTS, []))
+    recipientsToAddresses(matchingRules.classifyBlockRecipients({
+      externals:   RECIPIENTS,
+      attachments: [],
+    }))
   );
   is(
     {
@@ -408,7 +423,10 @@ export async function test_classifyRecipients() {
       ],
       'blocked by recipient domain only with attachment': RECIPIENTS_BLOCKED_WITH_ATTACHMENTS,
     },
-    recipientsToAddresses(matchingRules.classifyBlockRecipients(RECIPIENTS, ATTACHMENTS))
+    recipientsToAddresses(matchingRules.classifyBlockRecipients({
+      externals:   RECIPIENTS,
+      attachments: ATTACHMENTS,
+    }))
   );
 }
 
@@ -433,7 +451,10 @@ export async function test_classifyAttachments() {
         ...ATTACHMENTS_RECONFIRMED_SUFFIX,
       ],
     },
-    attachmentsToNames(matchingRules.classifyReconfirmAttachments(ATTACHMENTS))
+    attachmentsToNames(matchingRules.classifyReconfirmAttachments({
+      attachments: ATTACHMENTS,
+      hasExternal: true,
+    }))
   );
 
   is(
@@ -445,6 +466,9 @@ export async function test_classifyAttachments() {
         ...ATTACHMENTS_BLOCKED_SUFFIX,
       ],
     },
-    attachmentsToNames(matchingRules.classifyBlockAttachments(ATTACHMENTS))
+    attachmentsToNames(matchingRules.classifyBlockAttachments({
+      attachments: ATTACHMENTS,
+      hasExternal: true,
+    }))
   );
 }
