@@ -495,8 +495,10 @@ configs.$loaded.then(async () => {
       if (configs.attentionDomainsDialogMessage !== null)
         migratedRules.builtInAttentionDomains.dialogMessage = configs.attentionDomainsDialogMessage;
 
-      if (configs.attentionSuffixesConfirm !== null)
+      if (configs.attentionSuffixesConfirm !== null) {
+        migratedRules.builtInAttentionSuffixes.enabled = true;
         migratedRules.builtInAttentionSuffixes.action = configs.attentionSuffixesConfirm ? Constants.ACTION_RECONFIRM_ONLY_EXTERNALS : Constants.ACTION_NONE;
+      }
       if (configs.attentionSuffixes !== null)
         migratedRules.builtInAttentionSuffixes.itemsLocal = configs.attentionSuffixes;
       if (configs.attentionDomainsSource !== null)
@@ -508,8 +510,10 @@ configs.$loaded.then(async () => {
       if (configs.attentionDomainsDialogMessage !== null)
         migratedRules.builtInAttentionSuffixes.dialogMessage = configs.attentionSuffixesDialogMessage;
 
-      if (configs.attentionSuffixes2Confirm !== null)
+      if (configs.attentionSuffixes2Confirm !== null) {
+        migratedRules.builtInAttentionSuffixes2.enabled = true;
         migratedRules.builtInAttentionSuffixes2.action = configs.attentionSuffixes2Confirm ? Constants.ACTION_RECONFIRM_ONLY_EXTERNALS : Constants.ACTION_NONE;
+      }
       if (configs.attentionSuffixes2 !== null)
         migratedRules.builtInAttentionSuffixes2.itemsLocal = configs.attentionSuffixes2;
       if (configs.attentionSuffixes2Source !== null)
@@ -521,8 +525,10 @@ configs.$loaded.then(async () => {
       if (configs.attentionSuffixes2DialogMessage !== null)
         migratedRules.builtInAttentionSuffixes2.dialogMessage = configs.attentionSuffixes2DialogMessage;
 
-      if (configs.attentionTermsConfirm !== null)
+      if (configs.attentionTermsConfirm !== null) {
+        migratedRules.builtInAttentionTerms.enabled = true;
         migratedRules.builtInAttentionTerms.action = configs.attentionTermsConfirm ? Constants.ACTION_RECONFIRM_ONLY_EXTERNALS : Constants.ACTION_NONE;
+      }
       if (configs.attentionTerms !== null)
         migratedRules.builtInAttentionTerms.itemsLocal = configs.attentionTerms;
       if (configs.attentionTermsSource !== null)
@@ -534,8 +540,10 @@ configs.$loaded.then(async () => {
       if (configs.attentionTermsDialogMessage !== null)
         migratedRules.builtInAttentionTerms.dialogMessage = configs.attentionTermsDialogMessage;
 
-      if (configs.blockedDomainsEnabled !== null)
+      if (configs.blockedDomainsEnabled !== null) {
+        migratedRules.builtInBlockedDomains.enabled = true;
         migratedRules.builtInBlockedDomains.action = configs.blockedDomainsEnabled ? Constants.ACTION_RECONFIRM_ALWAYS : Constants.ACTION_NONE;
+      }
       if (configs.blockedDomains !== null)
         migratedRules.builtInBlockedDomains.itemsLocal = configs.blockedDomains;
       if (configs.blockedDomainsSource !== null)
