@@ -142,7 +142,7 @@ export const configs = new Configs({
     },
   ],
 
-  c: null,
+  attentionDomainsHighlightMode: null,
   attentionDomainsConfirmationMode: null,
   attentionDomains: null,
   attentionDomainsSource: null,
