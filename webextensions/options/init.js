@@ -19,14 +19,6 @@ import { DOMUpdater } from '/extlib/dom-updater.js';
 import RichConfirm from '/extlib/RichConfirm.js';
 import { MatchingRules } from '/common/matching-rules.js';
 
-const CONFIRMATION_TYPES = [
-  'attentionDomains',
-  'attentionSuffixes',
-  'attentionSuffixes2',
-  'attentionTerms',
-  'blockedDomains',
-];
-
 let mMatchingRules;
 
 const options = new Options(configs);
@@ -623,60 +615,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   for (const textarea of document.querySelectorAll('textarea.array-type-config')) {
     initArrayTypeTextArea(textarea);
-  }
-
-  for (const base of CONFIRMATION_TYPES) {
-    const capitalizedBase = base.replace(/^./, matched => matched.toUpperCase());
-
-    const section = document.querySelector(`#${base}Fields`);
-    const heading = section.querySelector('legend');
-    const checkbox = heading.querySelector('input[type="checkbox"]');
-    if (checkbox) {
-      section.classList.add('collapsible');
-      if (!checkbox.checked)
-        section.classList.add('collapsed');
-      heading.addEventListener('click', () => {
-        checkbox.checked = !checkbox.checked;
-        section.classList.toggle('collapsed', !checkbox.checked);
-      });
-      checkbox.addEventListener('change', () => {
-        section.classList.toggle('collapsed', !checkbox.checked);
-      });
-    }
-
-    const listField = document.querySelector(`#${base}Field`);
-    listField.classList.toggle(
-      'locked',
-      configs.$isLocked(base) ||
-      (configs.$isLocked(`${base}Soruce`) &&
-       configs[`${base}Soruce`] == Constants.SOURCE_FILE)
-    );
-    if (listField.classList.contains('locked'))
-      listField.disabled = true;
-
-    const fileField = document.querySelector(`#${base}File`);
-    fileField.classList.toggle(
-      'locked',
-      configs.$isLocked(`#${base}File`) ||
-      (configs.$isLocked(`${base}Soruce`) &&
-       configs[`${base}Soruce`] == Constants.SOURCE_LOCAL_CONFIG)
-    );
-    Dialog.initButton(document.querySelector(`#${base}FileChoose`), async _event => {
-      const path = await chooseFile({
-        title:       browser.i18n.getMessage(`config_${base}File_button_dialogTitle`),
-        role:        `${capitalizedBase}FileChoose`,
-        displayName: `${browser.i18n.getMessage(`config_${base}File_button_dialogDisplayName`)} (*.*)`,
-        pattern:     '*.*',
-        fileName:    fileField.value || ''
-      });
-      if (path)
-        configs[`${base}File`] = fileField.value = path;
-    });
-    if (fileField.classList.contains('locked'))
-      fileField.disabled = true;
-
-    const messageField = document.querySelector(`#${base}DialogMessage`);
-    messageField.placeholder = browser.i18n.getMessage(messageField.dataset.defaultMessageKey, ['$S']);
   }
 
   mMatchingRules = new MatchingRules(configs);
