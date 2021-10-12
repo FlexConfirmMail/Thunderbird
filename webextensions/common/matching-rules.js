@@ -200,6 +200,8 @@ export class MatchingRules {
   $classifyRecipients(internals, externals, filter) {
     const classified = {};
     for (const recipients of [internals, externals]) {
+      if (!recipients)
+        continue;
       for (const recipient of recipients) {
       const parsedRecipient = typeof recipient == 'string' ? RecipientParser.parse(recipient) : recipient;
 
@@ -276,6 +278,8 @@ export class MatchingRules {
   }
 
   $classifyAttachments(attachments, filter) {
+    if (!attachments)
+      return {};
     const classified = {};
     for (const attachment of attachments) {
       for (const [id, matcher] of Object.entries(this.$attachmentMatchers)) {
