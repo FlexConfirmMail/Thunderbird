@@ -494,9 +494,9 @@ configs.$loaded.then(async () => {
       if (configs.attentionDomainsFile !== null)
         migratedRules.builtInAttentionDomains.itemsFile = configs.attentionDomainsFile;
       if (configs.attentionDomainsDialogTitle !== null)
-        migratedRules.builtInAttentionDomains.dialogTitle = configs.attentionDomainsDialogTitle;
+        migratedRules.builtInAttentionDomains.confirmTitle = configs.attentionDomainsDialogTitle;
       if (configs.attentionDomainsDialogMessage !== null)
-        migratedRules.builtInAttentionDomains.dialogMessage = configs.attentionDomainsDialogMessage;
+        migratedRules.builtInAttentionDomains.confirmMessage = configs.attentionDomainsDialogMessage;
 
       if (configs.attentionSuffixesConfirm !== null) {
         migratedRules.builtInAttentionSuffixes.enabled = true;
@@ -509,9 +509,9 @@ configs.$loaded.then(async () => {
       if (configs.attentionDomainsFile !== null)
         migratedRules.builtInAttentionSuffixes.itemsFile = configs.attentionSuffixesFile;
       if (configs.attentionDomainsDialogTitle !== null)
-        migratedRules.builtInAttentionSuffixes.dialogTitle = configs.attentionSuffixesDialogTitle;
+        migratedRules.builtInAttentionSuffixes.confirmTitle = configs.attentionSuffixesDialogTitle;
       if (configs.attentionDomainsDialogMessage !== null)
-        migratedRules.builtInAttentionSuffixes.dialogMessage = configs.attentionSuffixesDialogMessage;
+        migratedRules.builtInAttentionSuffixes.confirmMessage = configs.attentionSuffixesDialogMessage;
 
       if (configs.attentionSuffixes2Confirm !== null) {
         migratedRules.builtInAttentionSuffixes2.enabled = true;
@@ -524,9 +524,9 @@ configs.$loaded.then(async () => {
       if (configs.attentionSuffixes2File !== null)
         migratedRules.builtInAttentionSuffixes2.itemsFile = configs.attentionSuffixes2File;
       if (configs.attentionSuffixes2DialogTitle !== null)
-        migratedRules.builtInAttentionSuffixes2.dialogTitle = configs.attentionSuffixes2DialogTitle;
+        migratedRules.builtInAttentionSuffixes2.confirmTitle = configs.attentionSuffixes2DialogTitle;
       if (configs.attentionSuffixes2DialogMessage !== null)
-        migratedRules.builtInAttentionSuffixes2.dialogMessage = configs.attentionSuffixes2DialogMessage;
+        migratedRules.builtInAttentionSuffixes2.confirmMessage = configs.attentionSuffixes2DialogMessage;
 
       if (configs.attentionTermsConfirm !== null) {
         migratedRules.builtInAttentionTerms.enabled = true;
@@ -539,13 +539,13 @@ configs.$loaded.then(async () => {
       if (configs.attentionTermsFile !== null)
         migratedRules.builtInAttentionTerms.itemsFile = configs.attentionTermsFile;
       if (configs.attentionTermsDialogTitle !== null)
-        migratedRules.builtInAttentionTerms.dialogTitle = configs.attentionTermsDialogTitle;
+        migratedRules.builtInAttentionTerms.confirmTitle = configs.attentionTermsDialogTitle;
       if (configs.attentionTermsDialogMessage !== null)
-        migratedRules.builtInAttentionTerms.dialogMessage = configs.attentionTermsDialogMessage;
+        migratedRules.builtInAttentionTerms.confirmMessage = configs.attentionTermsDialogMessage;
 
       if (configs.blockedDomainsEnabled !== null) {
         migratedRules.builtInBlockedDomains.enabled = true;
-        migratedRules.builtInBlockedDomains.action = configs.blockedDomainsEnabled ? Constants.ACTION_RECONFIRM_ALWAYS : Constants.ACTION_NONE;
+        migratedRules.builtInBlockedDomains.action = configs.blockedDomainsEnabled ? Constants.ACTION_BLOCK_ALWAYS : Constants.ACTION_NONE;
       }
       if (configs.blockedDomains !== null)
         migratedRules.builtInBlockedDomains.itemsLocal = configs.blockedDomains;
@@ -554,9 +554,9 @@ configs.$loaded.then(async () => {
       if (configs.blockedDomainsFile !== null)
         migratedRules.builtInBlockedDomains.itemsFile = configs.blockedDomainsFile;
       if (configs.blockedDomainsDialogTitle !== null)
-        migratedRules.builtInBlockedDomains.dialogTitle = configs.blockedDomainsDialogTitle;
+        migratedRules.builtInBlockedDomains.confirmTitle = configs.blockedDomainsDialogTitle;
       if (configs.blockedDomainsDialogMessage !== null)
-        migratedRules.builtInBlockedDomains.dialogMessage = configs.blockedDomainsDialogMessage;
+        migratedRules.builtInBlockedDomains.confirmMessage = configs.blockedDomainsDialogMessage;
 
       for (const [id, migratedProperties] of Object.entries(migratedRules)) {
         const rule = matchingRules.get(id);
