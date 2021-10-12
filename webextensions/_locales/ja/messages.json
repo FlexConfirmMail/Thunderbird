@@ -162,9 +162,9 @@
   "config_userRule_itemsFile_input_placeholder_attachmentName":    { "message": "ファイルのパスを入力（例：\\\\FileServer\\Shared\\terms.txt）" },
   "config_userRule_itemsFile_input_placeholder_attachmentSuffix":  { "message": "ファイルのパスを入力（例：\\\\FileServer\\Shared\\suffixes.txt）" },
   "config_userRule_confirmTitle_caption":                    { "message": "警告のタイトル:" },
-  "config_userRule_confirmMessage_caption_recipientDomain":  { "message": "警告のメッセージ (\\\"%S\\\" と書いた位置に宛先が入ります):" },
-  "config_userRule_confirmMessage_caption_attachmentName":   { "message": "警告のメッセージ (\\\"%S\\\" と書いた位置に添付ファイル名が入ります):" },
-  "config_userRule_confirmMessage_caption_attachmentSuffix": { "message": "警告のメッセージ (\\\"%S\\\" と書いた位置に添付ファイル名が入ります):" },
+  "config_userRule_confirmMessage_caption_recipientDomain":  { "message": "警告のメッセージ (\"%S\" と書いた位置に宛先が入ります):" },
+  "config_userRule_confirmMessage_caption_attachmentName":   { "message": "警告のメッセージ (\"%S\" と書いた位置に添付ファイル名が入ります):" },
+  "config_userRule_confirmMessage_caption_attachmentSuffix": { "message": "警告のメッセージ (\"%S\" と書いた位置に添付ファイル名が入ります):" },
 
 
   "config_attentionDomains_caption": { "message": "特別に注意が必要な外部ドメインの宛先" },
