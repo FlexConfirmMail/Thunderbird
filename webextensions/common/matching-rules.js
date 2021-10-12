@@ -203,20 +203,20 @@ export class MatchingRules {
       if (!recipients)
         continue;
       for (const recipient of recipients) {
-      const parsedRecipient = typeof recipient == 'string' ? RecipientParser.parse(recipient) : recipient;
+        const parsedRecipient = typeof recipient == 'string' ? RecipientParser.parse(recipient) : recipient;
 
-      for (const [id, domains] of Object.entries(this.$matchedDomainSets)) {
-        if (!domains.has(parsedRecipient.domain))
-          continue;
+        for (const [id, domains] of Object.entries(this.$matchedDomainSets)) {
+          if (!domains.has(parsedRecipient.domain))
+            continue;
 
-        const rule = this.get(id);
-        if (!filter(rule, recipients === externals))
-          continue;
+          const rule = this.get(id);
+          if (!filter(rule, recipients === externals))
+            continue;
 
-        const classifiedRecipients = classified[id] || new Set();
-        classifiedRecipients.add(parsedRecipient);
-        classified[id] = classifiedRecipients;
-      }
+          const classifiedRecipients = classified[id] || new Set();
+          classifiedRecipients.add(parsedRecipient);
+          classified[id] = classifiedRecipients;
+        }
       }
     }
     return Object.fromEntries(
