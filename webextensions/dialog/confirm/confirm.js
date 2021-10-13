@@ -396,6 +396,7 @@ async function confirmedMultipleRecipientDomains() {
 }
 
 async function confirmedWithRules() {
+  log('confirmedWithRules');
   const confirmed = await mMatchingRules.tryReconfirm({
     internals:   mParams.internals,
     externals:   mParams.externals,
@@ -428,5 +429,6 @@ async function confirmedWithRules() {
       }
     },
   });
+  log('confirmedWithRules confirmed = ', confirmed);
   return confirmed;
 }

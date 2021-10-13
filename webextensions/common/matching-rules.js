@@ -395,7 +395,7 @@ export class MatchingRules {
         return false;
     }
 
-    return false;
+    return true;
   }
 
   async tryBlock({ recipients, attachments, alert }) {
