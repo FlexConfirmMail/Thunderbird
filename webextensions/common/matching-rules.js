@@ -222,33 +222,6 @@ export class MatchingRules {
     return toBeSavedRules;
   }
 
-  $classifyRecipients(internals, externals, filter) {
-    const classified = {};
-    for (const recipients of [internals, externals]) {
-      if (!recipients)
-        continue;
-      for (const recipient of recipients) {
-        const parsedRecipient = typeof recipient == 'string' ? RecipientParser.parse(recipient) : recipient;
-
-        for (const [id, domains] of Object.entries(this.$matchedDomainSets)) {
-          if (!domains.has(parsedRecipient.domain))
-            continue;
-
-          const rule = this.get(id);
-          if (!filter(rule, recipients === externals))
-            continue;
-
-          const classifiedRecipients = classified[id] || new Set();
-          classifiedRecipients.add(parsedRecipient);
-          classified[id] = classifiedRecipients;
-        }
-      }
-    }
-    return Object.fromEntries(
-      Object.entries(classified)
-        .map(([id, recipients]) => [id, Array.from(recipients)])
-    );
-  }
 
   $shouldHighlight(rule, { hasAttachment, hasExternal } = {}) {
     return (
@@ -286,6 +259,35 @@ export class MatchingRules {
       (rule.action == Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS &&
        hasExternal &&
        hasAttachment)
+    );
+  }
+
+
+  $classifyRecipients(internals, externals, filter) {
+    const classified = {};
+    for (const recipients of [internals, externals]) {
+      if (!recipients)
+        continue;
+      for (const recipient of recipients) {
+        const parsedRecipient = typeof recipient == 'string' ? RecipientParser.parse(recipient) : recipient;
+
+        for (const [id, domains] of Object.entries(this.$matchedDomainSets)) {
+          if (!domains.has(parsedRecipient.domain))
+            continue;
+
+          const rule = this.get(id);
+          if (!filter(rule, recipients === externals))
+            continue;
+
+          const classifiedRecipients = classified[id] || new Set();
+          classifiedRecipients.add(parsedRecipient);
+          classified[id] = classifiedRecipients;
+        }
+      }
+    }
+    return Object.fromEntries(
+      Object.entries(classified)
+        .map(([id, recipients]) => [id, Array.from(recipients)])
     );
   }
 
@@ -328,6 +330,7 @@ export class MatchingRules {
         })
     );
   }
+
 
   $classifyAttachments(attachments, filter) {
     if (!attachments)
@@ -386,6 +389,7 @@ export class MatchingRules {
         })
     );
   }
+
 
   async tryReconfirm({ internals, externals, attachments, subject, body, confirm }) {
     for (const [ruleId, classifiedRecipients] of Object.entries(this.classifyReconfirmRecipients({ internals, externals, attachments }))) {
