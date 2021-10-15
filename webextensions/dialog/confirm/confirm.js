@@ -20,6 +20,8 @@ import { MatchingRules } from '/common/matching-rules.js';
 
 let mParams;
 let mMatchingRules;
+let mBodyText;
+let mBodyHTML;
 
 const mTopMessage          = document.querySelector('#top-message');
 const mInternalsAllCheck   = document.querySelector('#internalsAll');

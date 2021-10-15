@@ -157,7 +157,8 @@ hr.splitter {
 }
 
 .listbox#externals .row.attention,
-.listbox#attachments .row.attention {
+.listbox#attachments .row.attention,
+#subjectField.attention {
   color: red;
   font-weight bold;
 }
