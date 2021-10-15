@@ -598,4 +598,44 @@ export class MatchingRules {
 
     return false;
   }
+
+  shouldHighlightSubject(subject, { hasExternal, hasAttachment } = {}) {
+    if (!subject)
+      return false;
+
+    for (const [ruleId, matcher] of Object.entries(this.$subjectMatchers)) {
+      const rule = this.get(ruleId);
+      if (!rule ||
+          !rule.enabled ||
+          !this.$shouldHighlight(rule, { hasExternal, hasAttachment }))
+        continue;
+      const matched = subject.match(matcher);
+      if (!matched || matched.length == 0)
+        continue;
+
+      return true;
+    }
+
+    return false;
+  }
+
+  shouldHighlightBody(body, { hasExternal, hasAttachment } = {}) {
+    if (!body)
+      return false;
+
+    for (const [ruleId, matcher] of Object.entries(this.$bodyMatchers)) {
+      const rule = this.get(ruleId);
+      if (!rule ||
+          !rule.enabled ||
+          !this.$shouldHighlight(rule, { hasExternal, hasAttachment }))
+        continue;
+      const matched = body.match(matcher);
+      if (!matched || matched.length == 0)
+        continue;
+
+      return true;
+    }
+
+    return false;
+  }
 }

@@ -442,6 +442,8 @@ const RULES = [
   ...RECIPIENT_DOMAIN_RULES,
   ...ATTACHMENT_NAME_RULES,
   ...ATTACHMENT_SUFFIX_RULES,
+  ...SUBJECT_RULES,
+  ...BODY_RULES,
 ];
 
 const RECONFIRM_ACTIONS = new Set([
@@ -454,6 +456,8 @@ const RECONFIRM_RULES = [
   ...RECIPIENT_DOMAIN_RULES,
   ...ATTACHMENT_NAME_RULES,
   ...ATTACHMENT_SUFFIX_RULES,
+  ...SUBJECT_RULES,
+  ...BODY_RULES,
 ].filter(rule => RECONFIRM_ACTIONS.has(rule.action));
 
 const BLOCK_ACTIONS = new Set([
@@ -466,6 +470,8 @@ const BLOCK_RULES = [
   ...RECIPIENT_DOMAIN_RULES,
   ...ATTACHMENT_NAME_RULES,
   ...ATTACHMENT_SUFFIX_RULES,
+  ...SUBJECT_RULES,
+  ...BODY_RULES,
 ].filter(rule => BLOCK_ACTIONS.has(rule.action));
 
 
@@ -844,6 +850,8 @@ export async function test_tryReconfirm_confirmed() {
   const confirmed = await matchingRules.tryReconfirm({
     externals: RECIPIENTS,
     attachments: ATTACHMENTS,
+    subject: 'reconfirmed-always reconfirmed-attachment reconfirmed-external reconfirmed-both-external-attachment',
+    body: 'reconfirmed-always reconfirmed-attachment reconfirmed-external reconfirmed-both-external-attachment',
     confirm: () => {
       confirmationCount++;
       return true;
@@ -862,6 +870,8 @@ export async function test_tryReconfirm_notConfirmed() {
   const confirmed = await matchingRules.tryReconfirm({
     externals: RECIPIENTS,
     attachments: ATTACHMENTS,
+    subject: 'reconfirmed-always reconfirmed-attachment reconfirmed-external reconfirmed-both-external-attachment',
+    body: 'reconfirmed-always reconfirmed-attachment reconfirmed-external reconfirmed-both-external-attachment',
     confirm: () => {
       confirmationCount++;
       return false;
@@ -881,6 +891,8 @@ export async function test_tryBlock_blocked() {
   const blocked = await matchingRules.tryBlock({
     externals: RECIPIENTS,
     attachments: ATTACHMENTS,
+    subject: 'blocked-always blocked-attachment blocked-external blocked-both-external-attachment',
+    body: 'blocked-always blocked-attachment blocked-external blocked-both-external-attachment',
     alert: () => {
       alertCount++;
     },
@@ -903,4 +915,35 @@ export async function test_tryBlock_notBlocked() {
   ng(blocked);
   is(0,
      alertCount);
+}
+
+
+export async function test_shouldHighlightSubject() {
+  const matchingRules = new MatchingRules({ base: RULES });
+  await matchingRules.populate();
+
+  ok(await matchingRules.shouldHighlightSubject(
+    'highlighted-always highlighted-attachment highlighted-external highlighted-both-external-attachment',
+    { hasExternal: true, hasAttachment: true }
+  ));
+
+  ng(await matchingRules.shouldHighlightSubject(
+    '',
+    { hasExternal: true, hasAttachment: true }
+  ));
+}
+
+export async function test_shouldHighlightBody() {
+  const matchingRules = new MatchingRules({ base: RULES });
+  await matchingRules.populate();
+
+  ok(await matchingRules.shouldHighlightBody(
+    'highlighted-always highlighted-attachment highlighted-external highlighted-both-external-attachment',
+    { hasExternal: true, hasAttachment: true }
+  ));
+
+  ng(await matchingRules.shouldHighlightBody(
+    '',
+    { hasExternal: true, hasAttachment: true }
+  ));
 }
