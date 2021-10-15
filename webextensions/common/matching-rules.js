@@ -276,7 +276,8 @@ export class MatchingRules {
             continue;
 
           const rule = this.get(id);
-          if (!filter(rule, recipients === externals))
+          if (!rule.enabled ||
+              !filter(rule, recipients === externals))
             continue;
 
           const classifiedRecipients = classified[id] || new Set();
@@ -342,7 +343,8 @@ export class MatchingRules {
           continue;
 
         const rule = this.get(id);
-        if (!filter(rule))
+        if (!rule.enabled ||
+            !filter(rule))
           continue;
 
         const classifiedAttachments = classified[id] || new Set();
@@ -395,6 +397,7 @@ export class MatchingRules {
     for (const [ruleId, classifiedRecipients] of Object.entries(this.classifyReconfirmRecipients({ internals, externals, attachments }))) {
       const rule = this.get(ruleId);
       if (!rule ||
+          !rule.enabled ||
           classifiedRecipients.length == 0)
         continue;
 
@@ -418,6 +421,7 @@ export class MatchingRules {
     for (const [ruleId, classifiedAttachments] of Object.entries(this.classifyReconfirmAttachments({ attachments, hasExternal }))) {
       const rule = this.get(ruleId);
       if (!rule ||
+          !rule.enabled ||
           classifiedAttachments.length == 0)
         continue;
 
@@ -441,6 +445,7 @@ export class MatchingRules {
       for (const [ruleId, matcher] of Object.entries(this.$subjectMatchers)) {
         const rule = this.get(ruleId);
         if (!rule ||
+            !rule.enabled ||
             !this.$shouldReconfirm(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
           continue;
         const matched = subject.match(matcher);
@@ -469,6 +474,7 @@ export class MatchingRules {
       for (const [ruleId, matcher] of Object.entries(this.$bodyMatchers)) {
         const rule = this.get(ruleId);
         if (!rule ||
+            !rule.enabled ||
             !this.$shouldReconfirm(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
           continue;
         const matched = body.match(matcher);
@@ -500,6 +506,7 @@ export class MatchingRules {
     for (const [ruleId, classifiedRecipients] of Object.entries(this.classifyBlockRecipients({ internals, externals, attachments }))) {
       const rule = this.get(ruleId);
       if (!rule ||
+          !rule.enabled ||
           classifiedRecipients.length == 0)
         continue;
 
@@ -520,6 +527,7 @@ export class MatchingRules {
     for (const [ruleId, classifiedAttachments] of Object.entries(this.classifyBlockAttachments({ attachments, hasExternal }))) {
       const rule = this.get(ruleId);
       if (!rule ||
+          !rule.enabled ||
           classifiedAttachments.length == 0)
         continue;
 
@@ -540,6 +548,7 @@ export class MatchingRules {
       for (const [ruleId, matcher] of Object.entries(this.$subjectMatchers)) {
         const rule = this.get(ruleId);
         if (!rule ||
+            !rule.enabled ||
             !this.$shouldBlock(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
           continue;
         const matched = subject.match(matcher);
@@ -565,6 +574,7 @@ export class MatchingRules {
       for (const [ruleId, matcher] of Object.entries(this.$bodyMatchers)) {
         const rule = this.get(ruleId);
         if (!rule ||
+            !rule.enabled ||
             !this.$shouldBlock(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
           continue;
         const matched = body.match(matcher);
