@@ -353,26 +353,26 @@ async function shouldBlock(tab, details) {
   const { internals, externals } = classifyRecipients({ to, cc, bcc });
 
   try {
-  const blocked = await matchingRules.tryBlock({
-    internals,
-    externals,
-    attachments,
-    subject: details.subject,
-    body: details.body,
-    alert: async ({ title, message }) => {
-      return RichConfirm.showInPopup(tab.windowId, {
-        modal: !configs.debug,
-        type:  'common-dialog',
-        url:   '/resources/blank.html',
-        title,
-        message,
-        buttons: [
-          browser.i18n.getMessage('alertBlockedAccept'),
-        ],
-      });
-    },
-  });
-  return blocked;
+    const blocked = await matchingRules.tryBlock({
+      internals,
+      externals,
+      attachments,
+      subject: details.subject,
+      body: details.body,
+      alert: async ({ title, message }) => {
+        return RichConfirm.showInPopup(tab.windowId, {
+          modal: !configs.debug,
+          type:  'common-dialog',
+          url:   '/resources/blank.html',
+          title,
+          message,
+          buttons: [
+            browser.i18n.getMessage('alertBlockedAccept'),
+          ],
+        });
+      },
+    });
+    return blocked;
   }
   catch(error) {
     console.error(error);
