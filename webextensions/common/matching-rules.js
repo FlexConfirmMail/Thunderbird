@@ -124,13 +124,16 @@ export class MatchingRules {
   }
 
   add(params = {}) {
+    const id = `rule-${Date.now()}-${parseInt(Math.random() * 56632)}`;
     const rule = {
-      id: `rule-${Date.now()}-${parseInt(Math.random() * 56632)}`,
+      id,
       ...JSON.parse(JSON.stringify(BASE_RULE)),
       ...params,
       enabled: true,
       $lockedKeys: [],
     };
+    if (!rule.id)
+      rule.id = id;
     this.$rules.push(rule);
     this.$rulesById[rule.id] = rule;
 
