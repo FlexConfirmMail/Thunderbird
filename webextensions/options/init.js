@@ -97,7 +97,7 @@ async function chooseFile({ title, role, displayName, pattern, fileName }) {
 
 
 function safeAttrValue(value) {
-  return JSON.stringify(sanitizeForHTMLText(String(value)));
+  return JSON.stringify(sanitizeForHTMLText(String(value))).replace(/\\\\/g, '\\');
 }
 
 function safeLocalizedValue(key) {
