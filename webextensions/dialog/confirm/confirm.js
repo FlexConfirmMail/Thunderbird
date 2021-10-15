@@ -73,6 +73,12 @@ configs.$loaded.then(async () => {
   mMatchingRules = new MatchingRules(configs);
   await mMatchingRules.populate(readFile);
 
+  // The given message source has a "meta" tag with charset, but the body is already decoded.
+  // We need to extract only its body part and render it with a Unicode encoding.
+  const tree = (new DOMParser()).parseFromString(mParams.details.body, 'text/html');
+  mBodyText = tree.querySelector('body').textContent;
+  mBodyHTML = tree.querySelector('body').outerHTML;
+
   onConfigChange('highlightExternalDomains');
   onConfigChange('largeFontSizeForAddresses');
   onConfigChange('emphasizeRecipientType');
@@ -202,15 +208,21 @@ function initBodyBlock() {
   mSubjectCheck.closest('div').classList.toggle('hidden', !configs.requireCheckSubject);
   if (configs.requireCheckSubject) {
     mSubjectField.textContent = mParams.details.subject;
+    const highlighted = mMatchingRules.shouldHighlightSubject(mParams.details.subject, {
+      hasExternal:   mParams.externals.length > 0,
+      hasAttachment: mParams.attachments.length > 0,
+    });
+    mSubjectField.classList.toggle('attention', highlighted);
   }
 
   mBodyCheck.closest('div').classList.toggle('hidden', !configs.requireCheckBody);
   if (configs.requireCheckBody) {
-    // The given message source has a "meta" tag with charset, but the body is already decoded.
-    // We need to extract only its body part and render it with a Unicode encoding.
-    const tree = (new DOMParser()).parseFromString(mParams.details.body, 'text/html');
-    const bodySource = tree.querySelector('body').outerHTML;
-    const source = `<!DOCTYPE html><html><meta charset="UTF-8">${bodySource}</html>`;
+    const highlighted = mMatchingRules.shouldHighlightBody(mBodyText, {
+      hasExternal:   mParams.externals.length > 0,
+      hasAttachment: mParams.attachments.length > 0,
+    });
+    const styles = highlighted ? '<style type="text/css">:root { color: red; font-weight: bold; }</style>' : '';
+    const source = `<!DOCTYPE html><html><meta charset="UTF-8">${styles}${mBodyHTML}</html>`;
     mBodyField.src = `data:text/html,${encodeURIComponent(source)}`;
   }
 }
@@ -402,7 +414,7 @@ async function confirmedWithRules() {
     externals:   mParams.externals,
     attachments: mParams.attachments,
     subject:     mParams.details.subject,
-    body:        mParams.details.body,
+    body:        mBodyText,
     async confirm({ title, message }) {
       let result;
       try {

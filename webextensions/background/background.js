@@ -463,19 +463,23 @@ configs.$loaded.then(async () => {
     case 1: {
       const allLocalData = await browser.storage.local.get(null);
       if (!('attentionSuffixesConfirm' in allLocalData) &&
-          (configs.attentionSuffixes.length > 0 ||
+          ((configs.attentionSuffixes &&
+            configs.attentionSuffixes.length > 0) ||
            configs.attentionSuffixesFile))
         configs.attentionSuffixesConfirm = true;
       if (!('attentionSuffixes2Confirm' in allLocalData) &&
-          (configs.attentionSuffixes2.length > 0 ||
+          ((configs.attentionSuffixes2 &&
+            configs.attentionSuffixes2.length > 0) ||
            configs.attentionSuffixes2File))
         configs.attentionSuffixes2Confirm = true;
       if (!('attentionTermsConfirm' in allLocalData) &&
-          (configs.attentionTerms.length > 0 ||
+          ((configs.attentionTerms &&
+            configs.attentionTerms.length > 0) ||
            configs.attentionTermsFile))
         configs.attentionTermsConfirm = true;
       if (!('blockedDomainsEnabled' in allLocalData) &&
-          (configs.blockedDomains.length > 0 ||
+          ((configs.blockedDomains &&
+            configs.blockedDomains.length > 0) ||
            configs.blockedDomainsFile))
         configs.blockedDomainsEnabled = true;
     }
