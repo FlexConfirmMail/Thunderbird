@@ -352,6 +352,7 @@ async function shouldBlock(tab, details) {
 
   const { internals, externals } = classifyRecipients({ to, cc, bcc });
 
+  try {
   const blocked = await matchingRules.tryBlock({
     internals,
     externals,
@@ -372,6 +373,11 @@ async function shouldBlock(tab, details) {
     },
   });
   return blocked;
+  }
+  catch(error) {
+    console.error(error);
+  }
+  return false;
 }
 
 
