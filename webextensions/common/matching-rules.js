@@ -434,10 +434,10 @@ export class MatchingRules {
     }
 
     if (subject) {
-      for (const [ruleId, matcher] of this.$subjectMatchers) {
+      for (const [ruleId, matcher] of Object.entries(this.$subjectMatchers)) {
         const rule = this.get(ruleId);
         if (!rule ||
-            !this.shouldReconfirm(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
+            !this.$shouldReconfirm(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
           continue;
         const matched = subject.match(matcher);
         if (!matched || matched.length == 0)
@@ -445,10 +445,11 @@ export class MatchingRules {
 
         let confirmed;
         try {
+          const terms = [...new Set(matched)];
           confirmed = await confirm({
             title:   rule.confirmTitle,
-            message: rule.confirmMessage.replace(/[\%\$]s/i, [...new Set(matched)].join('\n')),
-            terms:   [...new Set(matched)],
+            message: rule.confirmMessage.replace(/[\%\$]s/i, terms.join('\n')),
+            terms,
           });
         }
         catch(error) {
@@ -461,10 +462,10 @@ export class MatchingRules {
     }
 
     if (body) {
-      for (const [ruleId, matcher] of this.$bodyMatchers) {
+      for (const [ruleId, matcher] of Object.entries(this.$bodyMatchers)) {
         const rule = this.get(ruleId);
         if (!rule ||
-            !this.shouldReconfirm(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
+            !this.$shouldReconfirm(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
           continue;
         const matched = body.match(matcher);
         if (!matched || matched.length == 0)
@@ -472,10 +473,11 @@ export class MatchingRules {
 
         let confirmed;
         try {
+          const terms = [...new Set(matched)];
           confirmed = await confirm({
             title:   rule.confirmTitle,
-            message: rule.confirmMessage.replace(/[\%\$]s/i, [...new Set(matched)].join('\n')),
-            terms:   [...new Set(matched)],
+            message: rule.confirmMessage.replace(/[\%\$]s/i, terms.join('\n')),
+            terms,
           });
         }
         catch(error) {
@@ -531,20 +533,21 @@ export class MatchingRules {
     }
 
     if (subject) {
-      for (const [ruleId, matcher] of this.$subjectMatchers) {
+      for (const [ruleId, matcher] of Object.entries(this.$subjectMatchers)) {
         const rule = this.get(ruleId);
         if (!rule ||
-            !this.shouldBlock(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
+            !this.$shouldBlock(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
           continue;
         const matched = subject.match(matcher);
         if (!matched || matched.length == 0)
           continue;
 
         try {
+          const terms = [...new Set(matched)];
           await alert({
             title:   rule.confirmTitle,
-            message: rule.confirmMessage.replace(/[\%\$]s/i, [...new Set(matched)].join('\n')),
-            terms:   [...new Set(matched)],
+            message: rule.confirmMessage.replace(/[\%\$]s/i, terms.join('\n')),
+            terms,
           });
         }
         catch(error) {
@@ -555,20 +558,21 @@ export class MatchingRules {
     }
 
     if (body) {
-      for (const [ruleId, matcher] of this.$bodyMatchers) {
+      for (const [ruleId, matcher] of Object.entries(this.$bodyMatchers)) {
         const rule = this.get(ruleId);
         if (!rule ||
-            !this.shouldBlock(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
+            !this.$shouldBlock(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
           continue;
         const matched = body.match(matcher);
         if (!matched || matched.length == 0)
           continue;
 
         try {
+          const terms = [...new Set(matched)];
           await alert({
             title:   rule.confirmTitle,
-            message: rule.confirmMessage.replace(/[\%\$]s/i, [...new Set(matched)].join('\n')),
-            terms:   [...new Set(matched)],
+            message: rule.confirmMessage.replace(/[\%\$]s/i, terms.join('\n')),
+            terms,
           });
         }
         catch(error) {
