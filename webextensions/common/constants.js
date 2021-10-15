@@ -28,6 +28,7 @@ export const MATCH_TO_ATTACHMENT_NAME   = 1;
 export const MATCH_TO_ATTACHMENT_SUFFIX = 2;
 export const MATCH_TO_SUBJECT           = 3;
 export const MATCH_TO_BODY              = 4;
+export const MATCH_TO_SUBJECT_OR_BODY   = 5;
 
 export const HIGHLIGHT_NEVER                           = 0;
 export const HIGHLIGHT_ALWAYS                          = 1;

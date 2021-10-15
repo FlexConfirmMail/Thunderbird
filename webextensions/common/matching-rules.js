@@ -109,6 +109,11 @@ export class MatchingRules {
           this._$bodyMatchers[rule.id] = new RegExp(`(${rule.items.join('|')})`, 'gi');
           break;
 
+        case Constants.MATCH_TO_SUBJECT_OR_BODY:
+          this._$subjectMatchers[rule.id] = new RegExp(`(${rule.items.join('|')})`, 'gi');
+          this._$bodyMatchers[rule.id] = new RegExp(`(${rule.items.join('|')})`, 'gi');
+          break;
+
         default:
           break;
       }
@@ -404,6 +409,7 @@ export class MatchingRules {
       let confirmed;
       try {
         confirmed = await confirm({
+          rule,
           title:      rule.confirmTitle,
           message:    rule.confirmMessage.replace(/[\%\$]s/i, classifiedRecipients.map(recipient => recipient.address).join('\n')),
           recipients: classifiedRecipients,
@@ -428,6 +434,7 @@ export class MatchingRules {
       let confirmed;
       try {
         confirmed = await confirm({
+          rule,
           title:       rule.confirmTitle,
           message:     rule.confirmMessage.replace(/[\%\$]s/i, classifiedAttachments.map(attachment => attachment.name).join('\n')),
           attachments: classifiedAttachments,
@@ -441,13 +448,19 @@ export class MatchingRules {
         return false;
     }
 
+    const processedRules = new Set();
+
     if (subject) {
       for (const [ruleId, matcher] of Object.entries(this.$subjectMatchers)) {
         const rule = this.get(ruleId);
         if (!rule ||
+            processedRules.has(rule) ||
             !rule.enabled ||
             !this.$shouldReconfirm(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
           continue;
+
+        processedRules.add(rule);
+
         const matched = subject.match(matcher);
         if (!matched || matched.length == 0)
           continue;
@@ -456,6 +469,7 @@ export class MatchingRules {
         try {
           const terms = [...new Set(matched)];
           confirmed = await confirm({
+            rule,
             title:   rule.confirmTitle,
             message: rule.confirmMessage.replace(/[\%\$]s/i, terms.join('\n')),
             terms,
@@ -474,9 +488,13 @@ export class MatchingRules {
       for (const [ruleId, matcher] of Object.entries(this.$bodyMatchers)) {
         const rule = this.get(ruleId);
         if (!rule ||
+            processedRules.has(rule) ||
             !rule.enabled ||
             !this.$shouldReconfirm(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
           continue;
+
+        processedRules.add(rule);
+
         const matched = body.match(matcher);
         if (!matched || matched.length == 0)
           continue;
@@ -485,6 +503,7 @@ export class MatchingRules {
         try {
           const terms = [...new Set(matched)];
           confirmed = await confirm({
+            rule,
             title:   rule.confirmTitle,
             message: rule.confirmMessage.replace(/[\%\$]s/i, terms.join('\n')),
             terms,
@@ -512,6 +531,7 @@ export class MatchingRules {
 
       try {
         await alert({
+          rule,
           title:      rule.confirmTitle,
           message:    rule.confirmMessage.replace(/[\%\$]s/i, classifiedRecipients.map(recipient => recipient.address).join('\n')),
           recipients: classifiedRecipients,
@@ -533,6 +553,7 @@ export class MatchingRules {
 
       try {
         await alert({
+          rule,
           title:       rule.confirmTitle,
           message:     rule.confirmMessage.replace(/[\%\$]s/i, classifiedAttachments.map(attachment => attachment.name).join('\n')),
           attachments: classifiedAttachments,
@@ -544,13 +565,19 @@ export class MatchingRules {
       return true;
     }
 
+    const processedRules = new Set();
+
     if (subject) {
       for (const [ruleId, matcher] of Object.entries(this.$subjectMatchers)) {
         const rule = this.get(ruleId);
         if (!rule ||
+            processedRules.has(rule) ||
             !rule.enabled ||
             !this.$shouldBlock(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
           continue;
+
+        processedRules.add(rule);
+
         const matched = subject.match(matcher);
         if (!matched || matched.length == 0)
           continue;
@@ -558,6 +585,7 @@ export class MatchingRules {
         try {
           const terms = [...new Set(matched)];
           await alert({
+            rule,
             title:   rule.confirmTitle,
             message: rule.confirmMessage.replace(/[\%\$]s/i, terms.join('\n')),
             terms,
@@ -574,9 +602,13 @@ export class MatchingRules {
       for (const [ruleId, matcher] of Object.entries(this.$bodyMatchers)) {
         const rule = this.get(ruleId);
         if (!rule ||
+            processedRules.has(rule) ||
             !rule.enabled ||
             !this.$shouldBlock(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
           continue;
+
+        processedRules.add(rule);
+
         const matched = body.match(matcher);
         if (!matched || matched.length == 0)
           continue;
@@ -584,6 +616,7 @@ export class MatchingRules {
         try {
           const terms = [...new Set(matched)];
           await alert({
+            rule,
             title:   rule.confirmTitle,
             message: rule.confirmMessage.replace(/[\%\$]s/i, terms.join('\n')),
             terms,

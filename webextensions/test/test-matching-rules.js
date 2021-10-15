@@ -194,6 +194,11 @@ const NO_REACTION_RULES = [
     highlight:   Constants.HIGHLIGHT_NEVER,
     action:      Constants.ACTION_NONE,
     itemsLocal:  ['never'] },
+  { id:          'nothing matched to subject and body',
+    matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
+    highlight:   Constants.HIGHLIGHT_NEVER,
+    action:      Constants.ACTION_NONE,
+    itemsLocal:  ['never'] },
 ];
 
 const DISABLED_RULES = [
@@ -224,6 +229,12 @@ const DISABLED_RULES = [
   { id:          'nothing matched to body',
     enabled:     false,
     matchTarget: Constants.MATCH_TO_BODY,
+    highlight:   Constants.HIGHLIGHT_ALWAYS,
+    action:      Constants.ACTION_BLOCK_ALWAYS,
+    itemsLocal:  ['never'] },
+  { id:          'nothing matched to subject and body',
+    enabled:     false,
+    matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
     highlight:   Constants.HIGHLIGHT_ALWAYS,
     action:      Constants.ACTION_BLOCK_ALWAYS,
     itemsLocal:  ['never'] },
@@ -436,6 +447,57 @@ const BODY_RULES = [
     itemsLocal:  ['blocked-both-external-attachment'] },
 ];
 
+const SUBJECT_OR_BODY_RULES = [
+  { id:          'highlighted by subject or body always',
+    matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
+    highlight:   Constants.HIGHLIGHT_ALWAYS,
+    itemsLocal:  ['highlight-always'] },
+  { id:          'highlighted by subject or body only with attachment',
+    matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
+    highlight:   Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS,
+    itemsLocal:  ['highlighted-attachment'] },
+  { id:          'highlighted by subject or body only external',
+    matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
+    highlight:   Constants.HIGHLIGHT_ONLY_EXTERNALS,
+    itemsLocal:  ['highlighted-external'] },
+  { id:          'highlighted by subject or body only external with attachment',
+    matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
+    highlight:   Constants.HIGHLIGHT_ONLY_EXTERNALS_WITH_ATTACHMENTS,
+    itemsLocal:  ['highlighted-both-external-attachment'] },
+  { id:          'reconfirmed by subject or body always',
+    matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
+    action:      Constants.ACTION_RECONFIRM_ALWAYS,
+    itemsLocal:  ['reconfirmed-always'] },
+  { id:          'reconfirmed by subject or body only with attachment',
+    matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
+    action:      Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS,
+    itemsLocal:  ['reconfirmed-attachment'] },
+  { id:          'reconfirmed by subject or body only external',
+    matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
+    action:      Constants.ACTION_RECONFIRM_ONLY_EXTERNALS,
+    itemsLocal:  ['reconfirmed-external'] },
+  { id:          'reconfirmed by subject or body only external with attachment',
+    matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
+    action:      Constants.ACTION_RECONFIRM_ONLY_EXTERNALS_WITH_ATTACHMENTS,
+    itemsLocal:  ['reconfirmed-both-external-attachment'] },
+  { id:          'blocked by subject or body always',
+    matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
+    action:      Constants.ACTION_BLOCK_ALWAYS,
+    itemsLocal:  ['blocked-always'] },
+  { id:          'blocked by subject or body only with attachment',
+    matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
+    action:      Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS,
+    itemsLocal:  ['blocked-attachment'] },
+  { id:          'blocked by subject or body only external',
+    matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
+    action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS,
+    itemsLocal:  ['blocked-external'] },
+  { id:          'blocked by subject or body only external with attachment',
+    matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
+    action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS,
+    itemsLocal:  ['blocked-both-external-attachment'] },
+];
+
 const RULES = [
   ...NO_REACTION_RULES,
   ...DISABLED_RULES,
@@ -444,6 +506,7 @@ const RULES = [
   ...ATTACHMENT_SUFFIX_RULES,
   ...SUBJECT_RULES,
   ...BODY_RULES,
+  ...SUBJECT_OR_BODY_RULES,
 ];
 
 const RECONFIRM_ACTIONS = new Set([
@@ -458,6 +521,7 @@ const RECONFIRM_RULES = [
   ...ATTACHMENT_SUFFIX_RULES,
   ...SUBJECT_RULES,
   ...BODY_RULES,
+  ...SUBJECT_OR_BODY_RULES,
 ].filter(rule => RECONFIRM_ACTIONS.has(rule.action));
 
 const BLOCK_ACTIONS = new Set([
@@ -472,6 +536,7 @@ const BLOCK_RULES = [
   ...ATTACHMENT_SUFFIX_RULES,
   ...SUBJECT_RULES,
   ...BODY_RULES,
+  ...SUBJECT_OR_BODY_RULES,
 ].filter(rule => BLOCK_ACTIONS.has(rule.action));
 
 
@@ -562,6 +627,7 @@ const RECIPIENTS = [
   'address-like@clear-code.com <address-like@blocked-always.example.com>',
 ].map(RecipientParser.parse);
 
+
 const ATTACHMENTS_HIGHLIGHTED_NAME = [
   'HiGhLiGhTeD-name-start',
   'middle-hIgHlIgHtEd-name-middle',
@@ -641,6 +707,7 @@ const ATTACHMENTS = [
   ...ATTACHMENTS_BLOCKED_SUFFIX_EXTERNALS,
 ].map(attachment => ({ name: attachment }));
 
+
 function recipientsToAddresses(classified) {
   return Object.fromEntries(
     Object.entries(classified)
@@ -654,6 +721,7 @@ function attachmentsToNames(classified) {
       .map(([id, attachments]) => [id, attachments.map(attachment => attachment.name)])
   );
 }
+
 
 export async function test_classifyRecipients() {
   const matchingRules = new MatchingRules({ base: RULES });

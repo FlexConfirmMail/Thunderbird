@@ -120,6 +120,8 @@ function getMatchTargetSuffix(target) {
       return 'subject';
     case Constants.MATCH_TO_BODY:
       return 'body';
+    case Constants.MATCH_TO_SUBJECT_OR_BODY:
+      return 'subjectOrBody';
   }
   return 'general';
 }
@@ -229,6 +231,9 @@ function rebuildUserRulesUI() {
                       <option id=${safeAttrValue('userRule-ui-matchTarget-option-body:' + id)}
                               value="${Constants.MATCH_TO_BODY}"
                              >${safeLocalizedText('config_userRule_matchTarget_body')}</option>
+                      <option id=${safeAttrValue('userRule-ui-matchTarget-option-subjectOrBody:' + id)}
+                              value="${Constants.MATCH_TO_SUBJECT_OR_BODY}"
+                             >${safeLocalizedText('config_userRule_matchTarget_subjectOrBody')}</option>
                     </select></label></p>
           <button id=${safeAttrValue('userRule-ui-button-moveUp:' + id)}
                   class="userRule-button-moveUp ${configs.allowRearrangeRules ? '' : 'hidden'}"
