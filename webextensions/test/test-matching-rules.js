@@ -9,7 +9,7 @@ import * as Constants from '../common/constants.js';
 import { MatchingRules } from '../common/matching-rules.js';
 import * as RecipientParser from '../common/recipient-parser.js';
 import { assert } from 'tiny-esm-test-runner';
-const { is } = assert;
+const { is, ok, ng } = assert;
 
 
 export async function test_load_and_export() {
@@ -168,7 +168,7 @@ export async function test_populate() {
 }
 
 
-const RULES = [
+const NO_MATCH_RULES = [
   { id:          'nothing matched to recipient domain',
     matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
     highlight:   Constants.HIGHLIGHT_NEVER,
@@ -184,7 +184,9 @@ const RULES = [
     highlight:   Constants.HIGHLIGHT_NEVER,
     action:      Constants.ACTION_NONE,
     itemsLocal:  ['none-without-dot', '.none-with-dot'] },
+];
 
+const RECIPIENT_DOMAIN_RULES = [
   { id:          'highlighted by recipient domain always',
     matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
     highlight:   Constants.HIGHLIGHT_ALWAYS,
@@ -233,7 +235,9 @@ const RULES = [
     matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
     action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS,
     itemsLocal:  ['blocked-external-attachment.example.com', '@blocked-external-attachment.clear-code.com'] },
+];
 
+const ATTACHMENT_NAME_RULES = [
   { id:          'highlighted by attachment name',
     matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
     highlight:   Constants.HIGHLIGHT_ALWAYS,
@@ -258,7 +262,9 @@ const RULES = [
     matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
     action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS,
     itemsLocal:  ['blocked-external-name'] },
+];
 
+const ATTACHMENT_SUFFIX_RULES = [
   { id:          'highlighted by attachment suffix',
     matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
     highlight:   Constants.HIGHLIGHT_ALWAYS,
@@ -284,6 +290,38 @@ const RULES = [
     action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS,
     itemsLocal:  ['.blocked-external-ext'] },
 ];
+
+const RULES = [
+  ...NO_MATCH_RULES,
+  ...RECIPIENT_DOMAIN_RULES,
+  ...ATTACHMENT_NAME_RULES,
+  ...ATTACHMENT_SUFFIX_RULES,
+];
+
+const RECONFIRM_ACTIONS = new Set([
+  Constants.ACTION_RECONFIRM_ALWAYS,
+  Constants.ACTION_RECONFIRM_ONLY_EXTERNALS,
+  Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS,
+  Constants.ACTION_RECONFIRM_ONLY_EXTERNALS_WITH_ATTACHMENTS,
+]);
+const RECONFIRM_RULES = [
+  ...RECIPIENT_DOMAIN_RULES,
+  ...ATTACHMENT_NAME_RULES,
+  ...ATTACHMENT_SUFFIX_RULES,
+].filter(rule => RECONFIRM_ACTIONS.has(rule.action));
+
+const BLOCK_ACTIONS = new Set([
+  Constants.ACTION_BLOCK_ALWAYS,
+  Constants.ACTION_BLOCK_ONLY_EXTERNALS,
+  Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS,
+  Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS,
+]);
+const BLOCK_RULES = [
+  ...RECIPIENT_DOMAIN_RULES,
+  ...ATTACHMENT_NAME_RULES,
+  ...ATTACHMENT_SUFFIX_RULES,
+].filter(rule => BLOCK_ACTIONS.has(rule.action));
+
 
 const RECIPIENTS_HIGHLIGHTED_ALWAYS = [
   'lowercase@highlighted-always.example.com',
@@ -649,4 +687,74 @@ export async function test_classifyAttachments() {
       hasExternal: true,
     }))
   );
+}
+
+
+export async function test_tryReconfirm_confirmed() {
+  const matchingRules = new MatchingRules({ base: RULES });
+  await matchingRules.populate();
+
+  let confirmationCount = 0;
+  const confirmed = await matchingRules.tryReconfirm({
+    externals: RECIPIENTS,
+    attachments: ATTACHMENTS,
+    confirm: () => {
+      confirmationCount++;
+      return true;
+    },
+  });
+  ok(confirmed);
+  is(RECONFIRM_RULES.length,
+     confirmationCount);
+}
+
+export async function test_tryReconfirm_notConfirmed() {
+  const matchingRules = new MatchingRules({ base: RULES });
+  await matchingRules.populate();
+
+  let confirmationCount = 0;
+  const confirmed = await matchingRules.tryReconfirm({
+    externals: RECIPIENTS,
+    attachments: ATTACHMENTS,
+    confirm: () => {
+      confirmationCount++;
+      return false;
+    },
+  });
+  ng(confirmed);
+  is(1,
+     confirmationCount);
+}
+
+
+export async function test_tryBlock_blocked() {
+  const matchingRules = new MatchingRules({ base: RULES });
+  await matchingRules.populate();
+
+  let alertCount = 0;
+  const blocked = await matchingRules.tryBlock({
+    externals: RECIPIENTS,
+    attachments: ATTACHMENTS,
+    alert: () => {
+      alertCount++;
+    },
+  });
+  ok(blocked);
+  is(1,
+     alertCount);
+}
+
+export async function test_tryBlock_notBlocked() {
+  const matchingRules = new MatchingRules({ base: RULES });
+  await matchingRules.populate();
+
+  let alertCount = 0;
+  const blocked = await matchingRules.tryBlock({
+    alert: () => {
+      alertCount++;
+    },
+  });
+  ng(blocked);
+  is(0,
+     alertCount);
 }
