@@ -116,8 +116,12 @@ function getMatchTargetSuffix(target) {
       return 'attachmentName';
     case Constants.MATCH_TO_ATTACHMENT_SUFFIX:
       return 'attachmentSuffix';
+    case Constants.MATCH_TO_SUBJECT:
+      return 'subject';
+    case Constants.MATCH_TO_BODY:
+      return 'body';
   }
-  return 'unknown';
+  return 'general';
 }
 
 function getMatchTargetTypeSuffix(target) {
@@ -128,7 +132,7 @@ function getMatchTargetTypeSuffix(target) {
     case Constants.MATCH_TO_ATTACHMENT_SUFFIX:
       return 'attachment';
   }
-  return 'unknown';
+  return 'general';
 }
 
 function setUserRuleFieldValue(query, value) {
@@ -219,6 +223,12 @@ function rebuildUserRulesUI() {
                       <option id=${safeAttrValue('userRule-ui-matchTarget-option-attachmentSuffix:' + id)}
                               value="${Constants.MATCH_TO_ATTACHMENT_SUFFIX}"
                              >${safeLocalizedText('config_userRule_matchTarget_attachmentSuffix')}</option>
+                      <option id=${safeAttrValue('userRule-ui-matchTarget-option-subject:' + id)}
+                              value="${Constants.MATCH_TO_SUBJECT}"
+                             >${safeLocalizedText('config_userRule_matchTarget_subject')}</option>
+                      <option id=${safeAttrValue('userRule-ui-matchTarget-option-body:' + id)}
+                              value="${Constants.MATCH_TO_BODY}"
+                             >${safeLocalizedText('config_userRule_matchTarget_body')}</option>
                     </select></label></p>
           <button id=${safeAttrValue('userRule-ui-button-moveUp:' + id)}
                   class="userRule-button-moveUp ${configs.allowRearrangeRules ? '' : 'hidden'}"

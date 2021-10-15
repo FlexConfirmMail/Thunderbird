@@ -70,9 +70,23 @@ export class MatchingRules {
     return this._$attachmentMatchers;
   }
 
+  get $subjectMatchers() {
+    if (!this._$subjectMatchers)
+      this.$prepareMatchers();
+    return this._$subjectMatchers;
+  }
+
+  get $bodyMatchers() {
+    if (!this._$bodyMatchers)
+      this.$prepareMatchers();
+    return this._$bodyMatchers;
+  }
+
   $prepareMatchers() {
     this._$matchedDomainSets = {};
     this._$attachmentMatchers = {};
+    this._$subjectMatchers = {};
+    this._$bodyMatchers = {};
     for (const rule of this.$rules) {
       switch (rule.matchTarget) {
         case Constants.MATCH_TO_RECIPIENT_DOMAIN:
@@ -85,6 +99,14 @@ export class MatchingRules {
 
         case Constants.MATCH_TO_ATTACHMENT_SUFFIX:
           this._$attachmentMatchers[rule.id] = new RegExp(`\\.(${rule.items.map(suffix => suffix.replace(/^\./, '')).join('|')})$`, 'i');
+          break;
+
+        case Constants.MATCH_TO_SUBJECT:
+          this._$subjectMatchers[rule.id] = new RegExp(`(${rule.items.join('|')})`, 'gi');
+          break;
+
+        case Constants.MATCH_TO_BODY:
+          this._$bodyMatchers[rule.id] = new RegExp(`(${rule.items.join('|')})`, 'gi');
           break;
 
         default:
@@ -225,55 +247,82 @@ export class MatchingRules {
     );
   }
 
+  $shouldHighlight(rule, { hasAttachment, hasExternal } = {}) {
+    return (
+      rule.highlight == Constants.HIGHLIGHT_ALWAYS ||
+      (rule.highlight == Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS &&
+       hasAttachment) ||
+      (rule.highlight == Constants.HIGHLIGHT_ONLY_EXTERNALS &&
+       hasExternal) ||
+      (rule.highlight == Constants.HIGHLIGHT_ONLY_EXTERNALS_WITH_ATTACHMENTS &&
+       hasExternal &&
+       hasAttachment)
+    );
+  }
+
+  $shouldReconfirm(rule, { hasAttachment, hasExternal } = {}) {
+    return (
+      rule.action == Constants.ACTION_RECONFIRM_ALWAYS ||
+      (rule.action == Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS &&
+       hasAttachment) ||
+      (rule.action == Constants.ACTION_RECONFIRM_ONLY_EXTERNALS &&
+       hasExternal) ||
+      (rule.action == Constants.ACTION_RECONFIRM_ONLY_EXTERNALS_WITH_ATTACHMENTS &&
+       hasExternal &&
+       hasAttachment)
+    );
+  }
+
+  $shouldBlock(rule, { hasAttachment, hasExternal } = {}) {
+    return (
+      rule.action == Constants.ACTION_BLOCK_ALWAYS ||
+      (rule.action == Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS &&
+       hasAttachment) ||
+      (rule.action == Constants.ACTION_BLOCK_ONLY_EXTERNALS &&
+       hasExternal) ||
+      (rule.action == Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS &&
+       hasExternal &&
+       hasAttachment)
+    );
+  }
+
   getHighlightedRecipientAddresses({ internals, externals, attachments } = {}) {
+    const hasAttachment = attachments && attachments.length > 0;
     const classified = this.$classifyRecipients(
       internals,
       externals,
-      (rule, isExternal) => (
-        rule.highlight == Constants.HIGHLIGHT_ALWAYS ||
-        (rule.highlight == Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS &&
-         attachments && attachments.length > 0) ||
-        (rule.highlight == Constants.HIGHLIGHT_ONLY_EXTERNALS &&
-         isExternal) ||
-        (rule.highlight == Constants.HIGHLIGHT_ONLY_EXTERNALS_WITH_ATTACHMENTS &&
-         isExternal &&
-         attachments && attachments.length > 0)
-      )
+      (rule, isExternal) =>
+        this.$shouldHighlight(rule, {
+          hasAttachment,
+          hasExternal: isExternal,
+        })
     );
     return new Set(Object.entries(classified).map(([_ruleId, recipients]) => recipients.map(recipient => recipient.address)).flat());
   }
 
   classifyReconfirmRecipients({ internals, externals, attachments } = {}) {
+    const hasAttachment = attachments && attachments.length > 0;
     return this.$classifyRecipients(
       internals,
       externals,
-      (rule, isExternal) => (
-        rule.action == Constants.ACTION_RECONFIRM_ALWAYS ||
-        (rule.action == Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS &&
-         attachments && attachments.length > 0) ||
-        (rule.action == Constants.ACTION_RECONFIRM_ONLY_EXTERNALS &&
-         isExternal) ||
-        (rule.action == Constants.ACTION_RECONFIRM_ONLY_EXTERNALS_WITH_ATTACHMENTS &&
-         isExternal &&
-         attachments && attachments.length > 0)
-      )
+      (rule, isExternal) =>
+        this.$shouldReconfirm(rule, {
+          hasAttachment,
+          hasExternal: isExternal,
+        })
     );
   }
 
   classifyBlockRecipients({ internals, externals, attachments } = {}) {
+    const hasAttachment = attachments && attachments.length > 0;
     return this.$classifyRecipients(
       internals,
       externals,
-      (rule, isExternal) => (
-        rule.action == Constants.ACTION_BLOCK_ALWAYS ||
-        (rule.action == Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS &&
-         attachments && attachments.length > 0) ||
-        (rule.action == Constants.ACTION_BLOCK_ONLY_EXTERNALS &&
-         isExternal) ||
-        (rule.action == Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS &&
-         isExternal &&
-         attachments && attachments.length > 0)
-      )
+      (rule, isExternal) =>
+        this.$shouldBlock(rule, {
+          hasAttachment,
+          hasExternal: isExternal,
+        })
     );
   }
 
@@ -304,16 +353,11 @@ export class MatchingRules {
   getHighlightedAttachmentNames({ attachments, hasExternal } = {}) {
     const classified = this.$classifyAttachments(
       attachments,
-      rule => (
-        rule.highlight == Constants.HIGHLIGHT_ALWAYS ||
-        (rule.highlight == Constants.HIGHLIGHT_ONLY_WITH_ATTACHMENTS &&
-         attachments && attachments.length > 0) ||
-        (rule.highlight == Constants.HIGHLIGHT_ONLY_EXTERNALS &&
-         hasExternal) ||
-        (rule.highlight == Constants.HIGHLIGHT_ONLY_EXTERNALS_WITH_ATTACHMENTS &&
-         hasExternal &&
-         attachments && attachments.length > 0)
-      )
+      rule =>
+        this.$shouldHighlight(rule, {
+          hasAttachment: attachments && attachments.length > 0,
+          hasExternal,
+        }),
     );
     return new Set(Object.entries(classified).map(([_ruleId, attachments]) => attachments.map(attachment => attachment.name)).flat());
   }
@@ -321,37 +365,27 @@ export class MatchingRules {
   classifyReconfirmAttachments({ attachments, hasExternal } = {}) {
     return this.$classifyAttachments(
       attachments,
-      rule => (
-        rule.action == Constants.ACTION_RECONFIRM_ALWAYS ||
-        (rule.action == Constants.ACTION_RECONFIRM_ONLY_WITH_ATTACHMENTS &&
-         attachments && attachments.length > 0) ||
-        (rule.action == Constants.ACTION_RECONFIRM_ONLY_EXTERNALS &&
-         hasExternal) ||
-        (rule.action == Constants.ACTION_RECONFIRM_ONLY_EXTERNALS_WITH_ATTACHMENTS &&
-         hasExternal &&
-         attachments && attachments.length > 0)
-      )
+      rule =>
+        this.$shouldReconfirm(rule, {
+          hasAttachment: true,
+          hasExternal,
+        })
     );
   }
 
   classifyBlockAttachments({ attachments, hasExternal } = {}) {
     return this.$classifyAttachments(
       attachments,
-      rule => (
-        rule.action == Constants.ACTION_BLOCK_ALWAYS ||
-        (rule.action == Constants.ACTION_BLOCK_ONLY_WITH_ATTACHMENTS &&
-         attachments && attachments.length > 0) ||
-        (rule.action == Constants.ACTION_BLOCK_ONLY_EXTERNALS &&
-         hasExternal) ||
-        (rule.action == Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS &&
-         hasExternal &&
-         attachments && attachments.length > 0)
-      )
+      rule =>
+        this.$shouldBlock(rule, {
+          hasAttachment: true,
+          hasExternal,
+        })
     );
   }
 
-  async tryReconfirm({ recipients, attachments, confirm }) {
-    for (const [ruleId, classifiedRecipients] of Object.entries(this.classifyReconfirmRecipients(recipients, attachments))) {
+  async tryReconfirm({ internals, externals, attachments, subject, body, confirm }) {
+    for (const [ruleId, classifiedRecipients] of Object.entries(this.classifyReconfirmRecipients({ internals, externals, attachments }))) {
       const rule = this.get(ruleId);
       if (!rule ||
           classifiedRecipients.length == 0)
@@ -373,7 +407,8 @@ export class MatchingRules {
         return false;
     }
 
-    for (const [ruleId, classifiedAttachments] of Object.entries(this.classifyReconfirmAttachments(attachments))) {
+    const hasExternal = externals && externals.length > 0;
+    for (const [ruleId, classifiedAttachments] of Object.entries(this.classifyReconfirmAttachments({ attachments, hasExternal }))) {
       const rule = this.get(ruleId);
       if (!rule ||
           classifiedAttachments.length == 0)
@@ -393,13 +428,67 @@ export class MatchingRules {
       }
       if (!confirmed)
         return false;
+    }
+
+    if (subject) {
+      for (const [ruleId, matcher] of this.$subjectMatchers) {
+        const rule = this.get(ruleId);
+        if (!rule ||
+            !this.shouldReconfirm(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
+          continue;
+        const matched = subject.match(matcher);
+        if (!matched || matched.length == 0)
+          continue;
+
+        let confirmed;
+        try {
+          confirmed = await confirm({
+            title:   rule.confirmTitle,
+            message: rule.confirmMessage.replace(/[\%\$]s/i, [...new Set(matched)].join('\n')),
+            terms:   [...new Set(matched)],
+          });
+        }
+        catch(error) {
+          console.error(error);
+          confirmed = false;
+        }
+        if (!confirmed)
+          return false;
+      }
+    }
+
+    if (body) {
+      for (const [ruleId, matcher] of this.$bodyMatchers) {
+        const rule = this.get(ruleId);
+        if (!rule ||
+            !this.shouldReconfirm(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
+          continue;
+        const matched = body.match(matcher);
+        if (!matched || matched.length == 0)
+          continue;
+
+        let confirmed;
+        try {
+          confirmed = await confirm({
+            title:   rule.confirmTitle,
+            message: rule.confirmMessage.replace(/[\%\$]s/i, [...new Set(matched)].join('\n')),
+            terms:   [...new Set(matched)],
+          });
+        }
+        catch(error) {
+          console.error(error);
+          confirmed = false;
+        }
+        if (!confirmed)
+          return false;
+      }
     }
 
     return true;
   }
 
-  async tryBlock({ recipients, attachments, alert }) {
-    for (const [ruleId, classifiedRecipients] of Object.entries(this.classifyBlockRecipients(recipients, attachments))) {
+  async tryBlock({ internals, externals, attachments, subject, body, alert }) {
+    for (const [ruleId, classifiedRecipients] of Object.entries(this.classifyBlockRecipients({ internals, externals, attachments }))) {
       const rule = this.get(ruleId);
       if (!rule ||
           classifiedRecipients.length == 0)
@@ -418,7 +507,8 @@ export class MatchingRules {
       return true;
     }
 
-    for (const [ruleId, classifiedAttachments] of Object.entries(this.classifyBlockAttachments(attachments))) {
+    const hasExternal = externals && externals.length > 0;
+    for (const [ruleId, classifiedAttachments] of Object.entries(this.classifyBlockAttachments({ attachments, hasExternal }))) {
       const rule = this.get(ruleId);
       if (!rule ||
           classifiedAttachments.length == 0)
@@ -435,6 +525,54 @@ export class MatchingRules {
         console.error(error);
       }
       return true;
+    }
+
+    if (subject) {
+      for (const [ruleId, matcher] of this.$subjectMatchers) {
+        const rule = this.get(ruleId);
+        if (!rule ||
+            !this.shouldBlock(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
+          continue;
+        const matched = subject.match(matcher);
+        if (!matched || matched.length == 0)
+          continue;
+
+        try {
+          await alert({
+            title:   rule.confirmTitle,
+            message: rule.confirmMessage.replace(/[\%\$]s/i, [...new Set(matched)].join('\n')),
+            terms:   [...new Set(matched)],
+          });
+        }
+        catch(error) {
+          console.error(error);
+        }
+        return true;
+      }
+    }
+
+    if (body) {
+      for (const [ruleId, matcher] of this.$bodyMatchers) {
+        const rule = this.get(ruleId);
+        if (!rule ||
+            !this.shouldBlock(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
+          continue;
+        const matched = body.match(matcher);
+        if (!matched || matched.length == 0)
+          continue;
+
+        try {
+          await alert({
+            title:   rule.confirmTitle,
+            message: rule.confirmMessage.replace(/[\%\$]s/i, [...new Set(matched)].join('\n')),
+            terms:   [...new Set(matched)],
+          });
+        }
+        catch(error) {
+          console.error(error);
+        }
+        return true;
+      }
     }
 
     return false;

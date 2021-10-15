@@ -356,6 +356,8 @@ async function shouldBlock(tab, details) {
     internals,
     externals,
     attachments,
+    subject: details.subject,
+    body: details.body,
     alert: async ({ title, message }) => {
       return RichConfirm.showInPopup(tab.windowId, {
         modal: !configs.debug,

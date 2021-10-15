@@ -401,6 +401,8 @@ async function confirmedWithRules() {
     internals:   mParams.internals,
     externals:   mParams.externals,
     attachments: mParams.attachments,
+    subject:     mParams.details.subject,
+    body:        mParams.details.body,
     async confirm({ title, message }) {
       let result;
       try {

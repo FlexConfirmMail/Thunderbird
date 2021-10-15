@@ -26,6 +26,8 @@ export const CLIPBOARD_STATE_UNSAFE = (1 << 0) | (1 << 1);
 export const MATCH_TO_RECIPIENT_DOMAIN  = 0;
 export const MATCH_TO_ATTACHMENT_NAME   = 1;
 export const MATCH_TO_ATTACHMENT_SUFFIX = 2;
+export const MATCH_TO_SUBJECT           = 3;
+export const MATCH_TO_BODY              = 4;
 
 export const HIGHLIGHT_NEVER                           = 0;
 export const HIGHLIGHT_ALWAYS                          = 1;
