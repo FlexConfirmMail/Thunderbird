@@ -50,6 +50,9 @@ For example, if you use the [`policies.json`](https://github.com/mozilla/policy-
 }
 ```
 
+It will help you to create such an managed storage manifest with exported configs: Flex Confirm Mail options => "Development" => Check "Debug mode" => "All Configs" => "Export".
+(Please remind that you should remove `"debug":true` from the managed manifest.)
+
 ## For Developers
 
 ### How to run automated unittest?
