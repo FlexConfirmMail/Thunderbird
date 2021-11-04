@@ -2,28 +2,70 @@
 
 This is an extended version of the addon "Confirm Mail". You can define "exceptions" for confirmation.
 
-## Exceptional Domains
+## For Regular Users
 
-You can define exceptions of "foreign" domains, via the configuration dialog or the preference `net.nyail.tanabec.confirm-mail.exceptional-domains`. If you put some domains to the list and you try to send a mail to an address listed in the exceptional domains list, then an extra confirmation dialog will be shown. The message of the confirmation dialog can be customized via two preferences: `net.nyail.tanabec.confirm-mail.exceptionalDomain.title` and `net.nyail.tanabec.confirm-mail.exceptionalDomain.message`. It will be useful in a case like: your SMTP server always encrypts your mail automatically but there are some exceptions.
+You can define "exceptions" and "extra conditions" for confirmation of message sending operation. Some features depend on the native messaging host, please download/install it from [the latest release page](https://github.com/clear-code/flex-confirm-mail/releases/latest).
 
-## Exceptional Suffixes
+This has an intelligent reconfirmation mode: *reconfirms only on cases with higher risk of miss-sending *, for example; there are added recipients, message body is copied from another existing message sent to different recipients, very long text is copied from external application, and so on.
+Moreover this has ability to show more reconfirmations with various conditions.
 
-You can define exceptions of attachments, via the configuration dialog or the preference `net.nyail.tanabec.confirm-mail.exceptional-suffixes`. If you put some "extension"s to the list and you try to send a mail with an attachment including a suffix listed in the preference, then an extra confirmation dialog will be shown. The message of the confirmation dialog can be customized via two preferences: `net.nyail.tanabec.confirm-mail.exceptionalSuffix.title` and `net.nyail.tanabec.confirm-mail.exceptionalSuffix.message`. It will be useful in a case like: your SMTP server always encrypts attachments but there are some exceptions.
+And, this has a "delayed send" feature also, like "send after 5 seconds after confirmation". This will give you one more chance to cancel sending.
 
-## How to run automated unittest?
+### Exceptional Domains
+
+If you put some domains to the "exceptional domains" list and you try to send a mail to an address in the list, an extra confirmation dialog will be shown. It will be useful in a case like: your SMTP server always encrypts your mail automatically but there are some exceptions.
+
+### Exceptional Attachment Suffixes
+
+If you put some "file extension"s to the "exceptional attachment suffixes" list and you try to send a mail with an attachment including a suffix in the list, an extra confirmation dialog will be shown. It will be useful in a case like: your SMTP server always encrypts attachments but there are some exception file types.
+
+### Exceptional Keywords for Attachment Filenames
+
+If you put some notifiable keywords to the "exceptional attachment names" list and you try to send a mail with an attachment including a term in the list, an extra confirmation dialog will be shown. It will be useful in a case like: your company has a policy to use special terms like "confidential" for some special attachemnt files.
+
+### Blocked domains
+
+If you put some dangerous domains to the "blocked domains" list and you try to send a mail with an attachment including a term in the list, the operation will be canceled always. It will be useful in a case like: your company maintains a list of dangerous recipient domains.
+
+## For System Administrators
+
+This addon supports [Managed Storage](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_manifests#managed_storage_manifests).
+You can override any [configs](https://github.com/clear-code/flex-confirm-mail/blob/08d59d82f282ac86bb809ab11d560f2107c59fde/webextensions/common/common.js#L14-L233) via managed storage manifest.
+For example, if you use the [`policies.json`](https://github.com/mozilla/policy-templates):
+
+```json
+{
+  "policies": {
+    "3rdparty": {
+      "Extensions": {
+        "flexible-confirm-mail@clear-code.com": {
+          "internalDomains": [
+            "clear-code.com"
+          ],
+          "skipConfirmationForInternalMail": true
+        }
+      }
+    }
+  }
+}
+```
+
+## For Developers
+
+### How to run automated unittest?
 
 1. Create an XPI including unittest, with the command `make unittest`.
 2. Install the built XPI.
 3. Open the browser console or the developer tool for the Thunderbird itself.
 4. Run `openDialog('chrome://confirm-mail/content/unittest/testRunner.html', '_blank', 'chrome,all')`.
 
-## How to do manual test?
+### How to do manual test?
 
 1. Open `sample.eml` with Thunderbird.
 2. Hit Ctrl-E to edit the mail as a new message.
 3. Try to send it.
 
-## How to build the native messaging host and its installer?
+### How to build the native messaging host and its installer?
 
 On Windows 10 + WSL:
 
