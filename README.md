@@ -30,8 +30,8 @@ If you put some dangerous domains to the "blocked domains" list and you try to s
 ## For System Administrators
 
 This addon supports [Managed Storage](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_manifests#managed_storage_manifests).
-You can override any [configs](https://github.com/clear-code/flex-confirm-mail/blob/08d59d82f282ac86bb809ab11d560f2107c59fde/webextensions/common/common.js#L14-L233) via managed storage manifest.
-For example, if you use the [`policies.json`](https://github.com/mozilla/policy-templates):
+You can override any [configs](https://github.com/clear-code/flex-confirm-mail/blob/08d59d82f282ac86bb809ab11d560f2107c59fde/webextensions/common/common.js#L14-L233) via GPO, [`policies.json`](https://github.com/mozilla/policy-templates) and/or managed storage manifest.
+For example, if you use the `policies.json`:
 
 ```json
 {
