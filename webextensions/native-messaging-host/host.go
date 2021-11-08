@@ -18,7 +18,7 @@ import (
 	"os"
 )
 
-const VERSION = "3.0.10";
+const VERSION = "4.0.2";
 
 type RequestParams struct {
 	Path             string `json:path`
