@@ -272,7 +272,7 @@ export class MatchingRules {
   $classifyRecipients(internals, externals, filter) {
     const classified = {};
     for (const recipients of [internals, externals]) {
-      if (!recipients)
+      if (!recipients || recipients.length == 0)
         continue;
       for (const recipient of recipients) {
         const parsedRecipient = typeof recipient == 'string' ? RecipientParser.parse(recipient) : recipient;
