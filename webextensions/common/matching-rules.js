@@ -181,11 +181,12 @@ export class MatchingRules {
           break;
 
         case Constants.SOURCE_FILE: {
-          if (!rule.itemsFile) {
+          if (!rule.itemsFile ||
+              typeof fileReader != 'function') {
             items = [];
           }
           else {
-            const contents = fileReader(rule.itemsFile);
+            const contents = await fileReader(rule.itemsFile);
             items = contents ? contents.trim().split(/[\s,|]+/).filter(part => !!part) : [];
           }
           break;

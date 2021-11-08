@@ -149,7 +149,7 @@ export async function test_populate() {
     ],
   });
   const requestedFiles = [];
-  await matchingRules.populate(path => {
+  await matchingRules.populate(async path => {
     requestedFiles.push(path);
     return 'file';
   });
