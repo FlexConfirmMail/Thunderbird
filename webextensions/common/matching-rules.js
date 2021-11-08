@@ -460,11 +460,11 @@ export class MatchingRules {
             !this.$shouldReconfirm(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
           continue;
 
-        processedRules.add(rule);
-
         const matched = subject.match(matcher);
         if (!matched || matched.length == 0)
           continue;
+
+        processedRules.add(rule);
 
         let confirmed;
         try {
@@ -494,11 +494,11 @@ export class MatchingRules {
             !this.$shouldReconfirm(rule, { hasAttachment: attachments && attachments.length > 0, hasExternal }))
           continue;
 
-        processedRules.add(rule);
-
         const matched = body.match(matcher);
         if (!matched || matched.length == 0)
           continue;
+
+        processedRules.add(rule);
 
         let confirmed;
         try {
