@@ -5,15 +5,17 @@
 */
 'use strict';
 
-import '/extlib/l10n.js';
+import l10n from '/extlib/l10n.js';
 import RichConfirm from '/extlib/RichConfirm.js';
 import * as Dialog from '/extlib/dialog.js';
 
 import {
   configs,
   log,
+  toDOMDocumentFragment,
   readFile,
 } from '/common/common.js';
+import * as Constants from '/common/constants.js';
 
 import * as ResizableBox from '/common/resizable-box.js';
 import { MatchingRules } from '/common/matching-rules.js';
@@ -23,19 +25,19 @@ let mMatchingRules;
 let mBodyText;
 let mBodyHTML;
 
-const mTopMessage          = document.querySelector('#top-message');
-const mInternalsAllCheck   = document.querySelector('#internalsAll');
-const mInternalsList       = document.querySelector('#internals');
-const mExternalsAllCheck   = document.querySelector('#externalsAll');
-const mExternalsList       = document.querySelector('#externals');
-const mSubjectCheck        = document.querySelector('#subject');
-const mSubjectField        = document.querySelector('#subjectField');
-const mBodyCheck           = document.querySelector('#body');
-const mBodyField           = document.querySelector('#bodyField');
-const mAttachmentsAllCheck = document.querySelector('#attachmentsAll');
-const mAttachmentsList     = document.querySelector('#attachments');
-const mAcceptButton        = document.querySelector('#accept');
-const mCancelButton        = document.querySelector('#cancel');
+let mTopMessage;
+let mInternalsAllCheck;
+let mInternalsList;
+let mExternalsAllCheck;
+let mExternalsList;
+let mSubjectCheck;
+let mSubjectField;
+//let mBodyCheck;
+let mBodyField;
+let mAttachmentsAllCheck;
+let mAttachmentsList;
+let mAcceptButton;
+let mCancelButton;
 
 function onConfigChange(key) {
   const value = configs[key];
@@ -68,7 +70,67 @@ function onConfigChange(key) {
 }
 configs.$addObserver(onConfigChange);
 
+const FIELDS_SOURCE = {};
+FIELDS_SOURCE[Constants.CONFIRMATION_FIELD_INTERNALS] = `
+  <fieldset id="internalsContainer" class="flex-box"
+    ><legend><label><input id="internalsAll" type="checkbox" class="all-checkbox">__MSG_confirmDialogInternalsCaption__</label></legend
+    ><div id="internals" class="flex-box listbox"></div
+  ></fieldset>
+`.trim();
+FIELDS_SOURCE[Constants.CONFIRMATION_FIELD_EXTERNALS] = `
+  <fieldset id="externalsContainer" class="flex-box"
+    ><legend><label><input id="externalsAll" type="checkbox" class="all-checkbox">__MSG_confirmDialogExternalsCaption__</label></legend
+    ><div id="externals" class="flex-box listbox"></div
+  ></fieldset>
+`.trim();
+FIELDS_SOURCE[Constants.CONFIRMATION_FIELD_SUBJECT] = `
+  <div id="subjectContainer"><label><input id="subject" type="checkbox">__MSG_confirmDialogSubjectCaption__<span id="subjectField"></span></label></div>
+`.trim();
+FIELDS_SOURCE[Constants.CONFIRMATION_FIELD_BODY] = `
+  <div id="bodyContainer" class="flex-box"
+    ><div><label><input id="body" type="checkbox">__MSG_confirmDialogBodyCaption__</label></div
+    ><iframe id="bodyField"
+             class="flex-box"></iframe
+  ></div>
+`.trim();
+FIELDS_SOURCE[Constants.CONFIRMATION_FIELD_ATTACHMENTS] = `
+  <fieldset id="attachmentsContainer" class="flex-box"
+    ><legend><label><input id="attachmentsAll" type="checkbox" class="all-checkbox">__MSG_confirmDialogAttachmentsCaption__</label></legend
+    ><div id="attachments" class="flex-box listbox"></div
+  ></fieldset>
+`.trim();
+
+function buildFields() {
+  const sources = [];
+  for (const key of new Set([...configs.confirmDialogFields, ...Object.keys(FIELDS_SOURCE)])) {
+    const source = FIELDS_SOURCE[key];
+    if (!source)
+      continue;
+    sources.push(source);
+  }
+  const container = document.querySelector('#fields');
+  container.appendChild(toDOMDocumentFragment(sources.join('<hr class="splitter">'), container));
+
+  mTopMessage          = document.querySelector('#top-message');
+  mInternalsAllCheck   = document.querySelector('#internalsAll');
+  mInternalsList       = document.querySelector('#internals');
+  mExternalsAllCheck   = document.querySelector('#externalsAll');
+  mExternalsList       = document.querySelector('#externals');
+  mSubjectCheck        = document.querySelector('#subject');
+  mSubjectField        = document.querySelector('#subjectField');
+  //mBodyCheck           = document.querySelector('#body');
+  mBodyField           = document.querySelector('#bodyField');
+  mAttachmentsAllCheck = document.querySelector('#attachmentsAll');
+  mAttachmentsList     = document.querySelector('#attachments');
+  mAcceptButton        = document.querySelector('#accept');
+  mCancelButton        = document.querySelector('#cancel');
+
+  l10n.updateDocument();
+}
+
 configs.$loaded.then(async () => {
+  buildFields();
+
   mParams = await Dialog.getParams();
   log('confirmation dialog initialize ', mParams);
 
@@ -90,6 +152,7 @@ configs.$loaded.then(async () => {
 
   initInternals();
   initExternals();
+  initSubjectBlock();
   initBodyBlock();
   initAttachments();
 
@@ -201,13 +264,8 @@ function initExternals() {
   }
 }
 
-function initBodyBlock() {
-  log('initBodyBlock ', mParams.details.body);
-  const container = document.querySelector('#bodyAndSubjectContainer');
-  container.classList.toggle('hidden', !configs.requireCheckSubject && !configs.requireCheckBody);
-  container.classList.toggle('flex-box', configs.requireCheckBody);
-  container.previousElementSibling.classList.toggle('hidden', container.classList.contains('hidden')); // splitter
-
+function initSubjectBlock() {
+  log('initSubjectBlock ', mParams.details.subject);
   mSubjectCheck.closest('div').classList.toggle('hidden', !configs.requireCheckSubject);
   if (configs.requireCheckSubject) {
     mSubjectField.textContent = mParams.details.subject;
@@ -217,7 +275,10 @@ function initBodyBlock() {
     });
     mSubjectField.classList.toggle('attention', highlighted);
   }
+}
 
+function initBodyBlock() {
+  log('initSubjectBlock ', mParams.details.body);
   document.querySelector('#bodyContainer').classList.toggle('hidden', !configs.requireCheckBody);
   if (configs.requireCheckBody) {
     const highlighted = mMatchingRules.shouldHighlightBody(mBodyText, {

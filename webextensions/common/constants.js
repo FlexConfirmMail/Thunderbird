@@ -48,3 +48,9 @@ export const ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS     = 40;
 
 export const SOURCE_LOCAL_CONFIG = 0;
 export const SOURCE_FILE = 1;
+
+export const CONFIRMATION_FIELD_INTERNALS   = 'internals';
+export const CONFIRMATION_FIELD_EXTERNALS   = 'externals';
+export const CONFIRMATION_FIELD_SUBJECT     = 'subject';
+export const CONFIRMATION_FIELD_BODY        = 'body';
+export const CONFIRMATION_FIELD_ATTACHMENTS = 'attachments';

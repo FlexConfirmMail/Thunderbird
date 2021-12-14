@@ -206,6 +206,14 @@ export const configs = new Configs({
 
   showLastNameFirst: browser.i18n.getMessage('showLastNameFirst') == 'true', // simulates mail.addr_book.lastnamefirst
 
+  confirmDialogFields: [
+    Constants.CONFIRMATION_FIELD_INTERNALS,
+    Constants.CONFIRMATION_FIELD_EXTERNALS,
+    Constants.CONFIRMATION_FIELD_SUBJECT,
+    Constants.CONFIRMATION_FIELD_BODY,
+    Constants.CONFIRMATION_FIELD_ATTACHMENTS,
+  ],
+
   confirmDialogWidth: 680,
   confirmDialogHeight: 600,
   confirmDialogLeft: null,
