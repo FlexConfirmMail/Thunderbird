@@ -1,0 +1,167 @@
+{
+  "policies": {
+    "3rdparty": {
+      "Extensions": {
+        "flexible-confirm-mail@clear-code.com": {
+          "// 宛先": 0,
+
+          "// 送信前の宛先確認: 0=確認しない, 1=常に確認, 2=宛先が変更された時だけ確認": 0,
+          "// 0 = no confirm, 1 = always confirm, 2 = confirm only when modified": 0,
+          "confirmationMode": 1,
+            "confirmationMode:locked": false,
+
+          "// 組織内として扱うメールアドレスのドメイン名": 0,
+          "internalDomains": [
+            "example.com",
+            "sub.example.com"
+          ],
+            "internalDomains:locked": false,
+
+          "// すべての宛先が登録済みドメインのメール送信時は確認ダイアログを表示しない": 0,
+          "skipConfirmationForInternalMail": true,
+            "skipConfirmationForInternalMail:locked": false,
+
+          "// 宛先がN件以下の場合は確認ダイアログを表示しない（※0で常に確認）": 0,
+          "minConfirmationRecipientsCount": 0,
+            "minConfirmationRecipientsCount:locked": false,
+
+          "// ToまたはCcの宛先に複数のドメインが含まれる場合に警告する": 0,
+          "confirmMultipleRecipientDomains": false,
+            "confirmMultipleRecipientDomains:locked": false,
+
+          "// 組織内の宛先の一括チェックを許可": 0,
+          "allowCheckAllInternals": true,
+            "allowCheckAllInternals:locked": false,
+
+          "// 外部の宛先の一括チェックを許可": 0,
+          "allowCheckAllExternals": false,
+            "allowCheckAllExternals:locked": false,
+
+
+          "// 特別に注意が必要な外部ドメインの宛先": 0,
+
+          "// 特別に注意が必要な外部ドメイン: 0=手動編集のリストを使用, 1=ファイル形式のリストを使用": 0,
+          "// 0 = define domains here, 1 = use file type list": 0,
+          "attentionDomainsSource": 0,
+            "attentionDomainsSource:locked": false,
+
+          "// 手動編集の外部ドメイン一覧": 0,
+          "attentionDomains": [
+            "example.org",
+            "example.jp"
+          ],
+            "attentionDomains:locked": false,
+
+          "// ファイル形式の外部ドメイン一覧のパス": 0,
+          "attentionDomainsFile": "",
+            "attentionDomainsFile:locked": false,
+
+          "// これらのドメインに該当する宛先の強調表示: 0=強調表示しない, 1=常に強調表示, 2=添付ファイルがある時だけ強調表示": 0,
+          "// 0 = no highlight, 1 = always highlight, 2 = highlight only when there is any attachment": 0,
+          "attentionDomainsHighlightMode": 1,
+            "attentionDomainsHighlightMode:locked": false,
+
+          "// これらのドメインに該当する宛先がある場合の送信確認後の再警告: 0=再度警告しない, 1=常に再度警告する, 2=添付ファイルがある時だけ再度警告する": 0,
+          "// 0 = no confirm, 1 = always confirm, 2 = confirm only when there is any attachment": 0,
+          "attentionDomainsConfirmationMode": 1,
+            "attentionDomainsConfirmationMode:locked": false,
+
+
+          "// 添付ファイル": 0,
+
+          "// これらの拡張子を持つファイルが外部ドメイン宛のメールに添付されている場合は再度警告する": 0,
+          "attentionSuffixesConfirm": true,
+            "attentionSuffixesConfirm:locked": false,
+
+          "// 特別に注意が必要な拡張子: 0=手動編集のリストを使用, 1=ファイル形式のリストを使用": 0,
+          "attentionSuffixesSource": 0,
+            "attentionSuffixesSource:locked": false,
+
+          "// 手動編集の拡張子一覧": 0,
+          "attentionSuffixes": [
+            ".txt",
+            ".pdf"
+          ],
+            "attentionSuffixes:locked": false,
+
+          "// ファイル形式の拡張子一覧のパス": 0,
+          "attentionSuffixesFile": "",
+            "attentionSuffixesFile:locked": false,
+
+          "// 宛先に外部ドメインのアドレスがある場合、添付ファイル名の手動での入力を求める": 0,
+          "requireReinputAttachmentNames": false,
+            "requireReinputAttachmentNames:locked": false,
+
+          "// 添付ファイルのチェックボックスの一括制御を許可": 0,
+          "allowCheckAllAttachments": false,
+            "allowCheckAllAttachments:locked": false,
+
+
+          "// その他": 0,
+
+          "// [送信]ボタンを押してからN秒間のカウントダウン後に実際に送信する": 0,
+          "showCountdown": false,
+            "showCountdown:locked": false,
+
+          "// カウントダウン秒数": 0,
+          "countdownSeconds": 5,
+            "countdownSeconds:locked": false,
+
+          "// カウントを飛ばしてすぐに送信することを許容する": 0,
+          "countdownAllowSkip": true,
+            "countdownAllowSkip:locked": false,
+
+          "// 件名の確認を求める": 0,
+          "requireCheckSubject": false,
+            "requireCheckSubject:locked": false,
+
+          "// メール本文の確認を求める": 0,
+          "requireCheckBody": false,
+            "requireCheckBody:locked": false,
+
+          "// 外部ドメインの宛先のアドレスを強調表示する": 0,
+          "highlightExternalDomains": false,
+            "highlightExternalDomains:locked": false,
+
+          "// メールアドレスを大きなフォントサイズで表示する": 0,
+          "largeFontSizeForAddresses": false,
+            "largeFontSizeForAddresses:locked": false,
+
+          "// 確認のダイアログを常に大きなサイズで開く": 0,
+          "alwaysLargeDialog": false,
+            "alwaysLargeDialog:locked": false,
+
+          "// 確認のダイアログの冒頭メッセージ": 0,
+          "topMessage": "",
+            "topMessage:locked": false,
+
+          "// メッセージを強調表示する": 0,
+          "emphasizeTopMessage": false,
+            "emphasizeTopMessage:locked": false,
+
+          "// 宛先の種別（To/Cc/Bcc）を強調表示する": 0,
+          "emphasizeRecipientType": false,
+            "emphasizeRecipientType:locked": false,
+
+
+          "// 例外外部ドメインの再確認ダイアログの文言": 0,
+          "attentionDomainDialogMessage": "",
+            "attentionDomainDialogMessage:locked": false,
+
+          "// 例外拡張子の再確認ダイアログの文言": 0,
+          "attentionSuffixDialogMessage": "",
+            "attentionSuffixDialogMessage:locked": false,
+
+          "// 宛先に複数ドメインが含まれる場合の再確認ダイアログの文言": 0,
+          "confirmMultipleRecipientDomainsDialogMessage": "",
+            "confirmMultipleRecipientDomainsDialogMessage:locked": false,
+
+
+          "// デバッグモード": 0,
+          "debug": false,
+            "debug:locked": false
+        }
+      }
+    }
+  }
+}

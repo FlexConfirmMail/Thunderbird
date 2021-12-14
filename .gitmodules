@@ -4,3 +4,18 @@
 [submodule "extlib/fxaddonlib-prefs"]
 	path = extlib/fxaddonlib-prefs
 	url = https://github.com/piroor/fxaddonlib-prefs.git
+[submodule "submodules/webextensions-lib-configs"]
+	path = submodules/webextensions-lib-configs
+	url = https://github.com/piroor/webextensions-lib-configs.git
+[submodule "submodules/webextensions-lib-l10n"]
+	path = submodules/webextensions-lib-l10n
+	url = https://github.com/piroor/webextensions-lib-l10n.git
+[submodule "submodules/webextensions-lib-options"]
+	path = submodules/webextensions-lib-options
+	url = https://github.com/piroor/webextensions-lib-options.git
+[submodule "submodules/webextensions-lib-rich-confirm"]
+	path = submodules/webextensions-lib-rich-confirm
+	url = https://github.com/piroor/webextensions-lib-rich-confirm.git
+[submodule "submodules/webextensions-lib-dialog"]
+	path = submodules/webextensions-lib-dialog
+	url = https://gitlab.com/clear-code/webextensions-lib-dialog.git
