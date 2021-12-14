@@ -88,12 +88,12 @@ configs.$loaded.then(async () => {
   onConfigChange('topMessage');
   onConfigChange('debug');
 
-  ResizableBox.init(configs.confirmDialogBoxSizes);
-
   initInternals();
   initExternals();
   initBodyBlock();
   initAttachments();
+
+  ResizableBox.init(configs.confirmDialogBoxSizes);
 
   mAcceptButton.disabled = !isAllChecked();
   document.addEventListener('change', _event => {
@@ -205,6 +205,7 @@ function initBodyBlock() {
   log('initBodyBlock ', mParams.details.body);
   const container = document.querySelector('#bodyAndSubjectContainer');
   container.classList.toggle('hidden', !configs.requireCheckSubject && !configs.requireCheckBody);
+  container.classList.toggle('flex-box', configs.requireCheckBody);
   container.previousElementSibling.classList.toggle('hidden', container.classList.contains('hidden')); // splitter
 
   mSubjectCheck.closest('div').classList.toggle('hidden', !configs.requireCheckSubject);
@@ -217,7 +218,7 @@ function initBodyBlock() {
     mSubjectField.classList.toggle('attention', highlighted);
   }
 
-  mBodyCheck.closest('div').classList.toggle('hidden', !configs.requireCheckBody);
+  document.querySelector('#bodyContainer').classList.toggle('hidden', !configs.requireCheckBody);
   if (configs.requireCheckBody) {
     const highlighted = mMatchingRules.shouldHighlightBody(mBodyText, {
       hasExternal:   mParams.externals.length > 0,

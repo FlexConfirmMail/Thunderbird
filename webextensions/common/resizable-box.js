@@ -52,9 +52,10 @@ function findPreviousResizableBox(splitter) {
   let box = splitter.previousElementSibling;
   do {
     const style = window.getComputedStyle(box, null);
-    if (style.display != 'none' &&
+    if (box.classList.contains('flex-box') &&
+        style.display != 'none' &&
         style.visibility != 'collapse')
-      break;;
+      break;
     box = box.previousElementSibling;
   } while (box);
   return box;
@@ -64,9 +65,10 @@ function findNextResizableBox(splitter) {
   let box = splitter.nextElementSibling;
   do {
     const style = window.getComputedStyle(box, null);
-    if (style.display != 'none' &&
+    if (box.classList.contains('flex-box') &&
+        style.display != 'none' &&
         style.visibility != 'collapse')
-      break;;
+      break;
     box = box.nextElementSibling;
   } while (box);
   return box;
