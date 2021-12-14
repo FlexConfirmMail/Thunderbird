@@ -39,7 +39,7 @@
 	<hbox>
 		<description id="top-message" flex="1"/>
 	</hbox>
-	<vbox flex="1">
+	<vbox id="fields" flex="1">
 	<groupbox id="yourDomains" flex="1" height="150" persist="height">
 		<label class="check_each" value="&confirm.dialog.yourdomain.label;"/>
 		<checkbox label="&confirm.dialog.yourdomain.label;"
@@ -57,7 +57,7 @@
 		<richlistbox id="otherDomainsList" flex="1">
 		</richlistbox>
 	</groupbox>
-	<splitter id="bodySeparator"/>
+	<splitter/>
 	<vbox flex="2" id="bodyContainer" persist="height">
 	<checkbox id="subjectCheck"
 	          oncommand="checkAllChecked();"/>

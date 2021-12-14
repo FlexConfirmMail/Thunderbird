@@ -254,8 +254,9 @@ function startup() {
 
 	let subjectIsVisible = setupSubject();
 	let bodyIsVisible = setupBodyField();
-	document.getElementById('bodySeparator').setAttribute('hidden', !subjectIsVisible && !bodyIsVisible);
-	document.getElementById('bodyContainer').setAttribute('hidden', !subjectIsVisible && !bodyIsVisible);
+	const bodyContainer = document.getElementById('bodyContainer');
+	bodyContainer.previousSibling.setAttribute('hidden', !subjectIsVisible && !bodyIsVisible);
+	bodyContainer.setAttribute('hidden', !subjectIsVisible && !bodyIsVisible);
 
 	setupAttachmentList(AttachmentManager.getAttachmentList());
 
@@ -795,6 +796,27 @@ function doCancel(){
 
 document.documentElement.addEventListener("dialogaccept", doOK);
 document.documentElement.addEventListener("dialogcancel", doCancel);
+
+window.addEventListener('DOMContentLoaded', () => {
+	const { prefs } = Components.utils.import('resource://confirm-mail-modules/lib/prefs.js', {});
+	const fields = Array.from(
+		new Set([...prefs.getPref('net.nyail.tanabec.confirm-mail.confirmationFields').split(','), ...'yourDomains,otherDomains,bodyContainer,fileNames'.split(',')]),
+		id => document.querySelector(`#${id}`)
+	).filter(field => !!field);
+	const splitters = [...document.querySelectorAll('#fields > splitter')];
+	if (fields.length - 1 != splitters.length)
+		throw new Error('mismatched count of resizable boxes and splitters');
+
+	let count = 0;
+	while (fields.length > 0) {
+		const field = fields.shift();
+		if (field)
+			field.ordinal = count++;
+		const splitter = splitters.shift();
+		if (splitter)
+			splitter.ordinal = count++;
+	}
+}, { once: true });
 
 
 // Workaround for an odd bug: Thunderbird fails to load splitter.css on the initial loading, so we need to load it manually with delay.

@@ -54,3 +54,5 @@ pref("net.nyail.tanabec.confirm-mail.countdown.time", "5");
 pref("net.nyail.tanabec.confirm-mail.countdown.allowSkip", true);
 pref("net.nyail.tanabec.confirm-mail.countdown.allowSkip.always", false);
 
+pref("net.nyail.tanabec.confirm-mail.confirmationFields", "yourDomains,otherDomains,bodyContainer,fileNames");
+
