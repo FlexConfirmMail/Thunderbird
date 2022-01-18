@@ -23,6 +23,9 @@
     "page": "/options/options.html",
     "open_in_tab": true
   },
+  "icons": {
+    "32": "/resources/icon2.svg"
+  },
   "default_locale": "en",
   "applications": {
     "gecko": {
