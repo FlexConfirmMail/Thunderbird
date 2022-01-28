@@ -4,7 +4,7 @@ This is an extended version of the addon "Confirm Mail". You can define "excepti
 
 ## For Regular Users
 
-You can define "exceptions" and "extra conditions" for confirmation of message sending operation. Some features depend on the native messaging host, please download/install it from [the latest release page](https://github.com/clear-code/flex-confirm-mail/releases/latest).
+You can define "exceptions" and "extra conditions" for confirmation of message sending operation. Some features depend on the native messaging host, please download/install it from [the latest release page for 3.x and later](https://github.com/clear-code/flex-confirm-mail/releases/latest) ([4.0.2](https://github.com/clear-code/flex-confirm-mail/releases/tag/4.0.2) for example).
 
 This has an intelligent reconfirmation mode: *reconfirms only on cases with higher risk of miss-sending *, for example; there are added recipients, message body is copied from another existing message sent to different recipients, very long text is copied from external application, and so on.
 Moreover this has ability to show more reconfirmations with various conditions.
