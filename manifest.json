@@ -9,7 +9,7 @@
   },
   "name": "Flex Confirm Mail",
   "description": "Confirm mailaddress and attachments based on flexible rules.",
-  "version": "2.2.4",
+  "version": "2.2.5",
 
   "legacy": {
     "type": "xul",
