@@ -17,64 +17,23 @@ export const configs = new Configs({
   internalDomains: [],
 
   /*
-    Items of "baseRules" and "overrideRules" should have properties same to
+    Items of "baseRules", "overrideBaseRules", and "overrideRules" should have properties same to
     items of "userRules".
     FCM should work as:
       1. Load "baseRules" to a "merged object".
-      2. Merge items and properties of "userRules" to the merged object.
-      3. Merge items and properties of "overrideRules" to the merged object.
-      4. Build options UI / do confirmation based on rules described in the merged object.
-      5. Save values only changed from the baseRule to "userRules".
-    So, company users (system admins) may lock "baseRules" and "overrideRules"
+      2. Merge items and properties of "overrideBaseRules" to the merged object.
+      3. Merge items and properties of "userRules" to the merged object.
+      4. Merge items and properties of "overrideRules" to the merged object.
+      5. Build options UI / do confirmation based on rules described in the merged object.
+      6. Save values only changed from the baseRule to "userRules".
+    So, company users (system admins) may lock "baseRules", "overrideBaseRules" and "overrideRules"
     with partial properties to provide fixed fields.
     For more detailed behaviors, see "matching-rules.js".
   */
   allowAddRules: true, // don't expose this to the options UI!
   allowRemoveRules: true, // don't expose this to the options UI!
   allowRearrangeRules: true, // don't expose this to the options UI!
-  baseRules: [], // don't expose this to the options UI!
-  overrideRules: [
-    /*
-    {
-      id:             'builtInAttentionDomains',
-      name:           browser.i18n.getMessage('config_attentionDomains_caption'),
-      enabled:        true,
-      matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN,
-      itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
-    },
-    {
-      id:             'builtInAttentionSuffixes',
-      name:           browser.i18n.getMessage('config_attentionSuffixesConfirm_label'),
-      enabled:        false,
-      matchTarget:    Constants.MATCH_TO_ATTACHMENT_SUFFIX,
-      itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
-      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixesTitle', ['%S']),
-    },
-    {
-      id:             'builtInAttentionSuffixes2',
-      name:           browser.i18n.getMessage('config_attentionSuffixes2Confirm_label'),
-      enabled:        false,
-      matchTarget:    Constants.MATCH_TO_ATTACHMENT_SUFFIX,
-      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixes2Message', ['%S']),
-    },
-    {
-      id:             'builtInAttentionTerms',
-      name:           browser.i18n.getMessage('config_attentionTermsConfirm_label'),
-      enabled:        false,
-      matchTarget:    Constants.MATCH_TO_ATTACHMENT_NAME,
-      highlight:      Constants.HIGHLIGHT_NEVER,
-    },
-    {
-      id:             'builtInBlockedDomains',
-      name:           browser.i18n.getMessage('config_blockedDomains_caption'),
-      enabled:        false,
-      matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN,
-      action:         Constants.ACTION_BLOCK,
-      confirmMessage: browser.i18n.getMessage('alertBlockedDomainsMessage', ['%S']),
-    },
-    */
-  ], // don't expose this to the options UI!
-  userRules: [
+  baseRules: [ // don't expose this to the options UI!
     {
       id:             'builtInAttentionDomains',
       name:           browser.i18n.getMessage('config_attentionDomains_caption'),
@@ -141,6 +100,49 @@ export const configs = new Configs({
       confirmMessage: browser.i18n.getMessage('alertBlockedDomainsMessage', ['%S']),
     },
   ],
+  overrideBaseRules: [], // don't expose this to the options UI!
+  overrideRules: [ // don't expose this to the options UI!
+    /*
+    {
+      id:             'builtInAttentionDomains',
+      name:           browser.i18n.getMessage('config_attentionDomains_caption'),
+      enabled:        true,
+      matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN,
+      itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
+    },
+    {
+      id:             'builtInAttentionSuffixes',
+      name:           browser.i18n.getMessage('config_attentionSuffixesConfirm_label'),
+      enabled:        false,
+      matchTarget:    Constants.MATCH_TO_ATTACHMENT_SUFFIX,
+      itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
+      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixesTitle', ['%S']),
+    },
+    {
+      id:             'builtInAttentionSuffixes2',
+      name:           browser.i18n.getMessage('config_attentionSuffixes2Confirm_label'),
+      enabled:        false,
+      matchTarget:    Constants.MATCH_TO_ATTACHMENT_SUFFIX,
+      confirmMessage: browser.i18n.getMessage('confirmAttentionSuffixes2Message', ['%S']),
+    },
+    {
+      id:             'builtInAttentionTerms',
+      name:           browser.i18n.getMessage('config_attentionTermsConfirm_label'),
+      enabled:        false,
+      matchTarget:    Constants.MATCH_TO_ATTACHMENT_NAME,
+      highlight:      Constants.HIGHLIGHT_NEVER,
+    },
+    {
+      id:             'builtInBlockedDomains',
+      name:           browser.i18n.getMessage('config_blockedDomains_caption'),
+      enabled:        false,
+      matchTarget:    Constants.MATCH_TO_RECIPIENT_DOMAIN,
+      action:         Constants.ACTION_BLOCK,
+      confirmMessage: browser.i18n.getMessage('alertBlockedDomainsMessage', ['%S']),
+    },
+    */
+  ],
+  userRules: [],
 
   attentionDomainsHighlightMode: null,
   attentionDomainsConfirmationMode: null,

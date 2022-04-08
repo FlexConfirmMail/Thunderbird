@@ -23,23 +23,22 @@ const BASE_RULE = {
 };
 
 export class MatchingRules {
-  constructor({ base, baseRules, user, userRules, override, overrideRules } = {}) {
+  constructor({ base, baseRules, overrideBase, overrideBaseRules, user, userRules, override, overrideRules } = {}) {
     this.$baseRules     = base     || baseRules     || [];
+    this.$overrideBaseRules = overrideBase || overrideBaseRules || [];
+    this.$mergedBaseRulesById = {};
     this.$userRules     = user     || userRules     || [];
     this.$overrideRules = override || overrideRules || [];
     this.$load();
   }
 
   $load() {
-    const baseRulesById   = {};
     const mergedRules     = [];
     const mergedRulesById = {};
-    for (const rules of [this.$baseRules, this.$userRules, this.$overrideRules]) {
+    for (const rules of [this.$baseRules, this.$overrideBaseRules, this.$userRules, this.$overrideRules]) {
       const locked = rules === this.$overrideRules;
       for (const rule of rules) {
         const id = rule.id;
-        if (rules === this.$baseRules)
-          baseRulesById[id] = rule;
         if (!id)
           continue;
         let merged = mergedRulesById[id];
@@ -52,11 +51,9 @@ export class MatchingRules {
           mergedRules.push(merged);
         }
         Object.assign(merged, rule);
-        // allow to use "baseRules" to partially override built-in rules
-        if (id.startsWith('builtIn') &&
-            !locked &&
-            rules === this.$userRules)
-          Object.assign(merged, baseRulesById[id]);
+        if (rules === this.$baseRules ||
+            rules === this.$overrideBaseRules)
+          this.$mergedBaseRulesById[id] = JSON.parse(JSON.stringify(merged));
         if (locked) {
           merged.$lockedKeys.push(...Object.keys(rule).filter(key => key != 'id'));
         }
@@ -207,11 +204,6 @@ export class MatchingRules {
   }
 
   exportUserRules() {
-    const baseRulesById = {};
-    for (const rule of this.$baseRules) {
-      baseRulesById[rule.id] = rule;
-    }
-
     const toBeSavedRules = [];
     const toBeSavedRulesById = {};
     for (const rule of this.all) {
@@ -219,7 +211,7 @@ export class MatchingRules {
       Object.assign(toBeSaved, rule);
       delete toBeSaved.$lockedKeys;
 
-      const baseRule = baseRulesById[rule.id];
+      const baseRule = this.$mergedBaseRulesById[rule.id];
       if (baseRule) {
         for (const [key, value] of Object.entries(baseRule)) {
           if (key == 'id')
