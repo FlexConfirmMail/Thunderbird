@@ -30,6 +30,7 @@ function onConfigChanged(key) {
       break;
 
     case 'baseRules':
+    case 'overrideBaseRules':
     case 'userRules':
     case 'overrideRules':
       mMatchingRules = new MatchingRules(configs);
