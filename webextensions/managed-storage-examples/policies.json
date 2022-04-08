@@ -156,6 +156,16 @@
           "confirmMultipleRecipientDomainsDialogMessage": "",
             "confirmMultipleRecipientDomainsDialogMessage:locked": false,
 
+          "// ダイアログの内容の並び順": 0,
+          "confirmDialogFields": [
+            "internals",
+            "externals",
+            "subject",
+            "body",
+            "attachments"
+          ],
+            "confirmDialogFields:locked": false,
+
 
           "// デバッグモード": 0,
           "debug": false,
