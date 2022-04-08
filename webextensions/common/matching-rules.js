@@ -31,12 +31,15 @@ export class MatchingRules {
   }
 
   $load() {
+    const baseRulesById   = {};
     const mergedRules     = [];
     const mergedRulesById = {};
     for (const rules of [this.$baseRules, this.$userRules, this.$overrideRules]) {
       const locked = rules === this.$overrideRules;
       for (const rule of rules) {
         const id = rule.id;
+        if (rules === this.$baseRules)
+          baseRulesById[id] = rule;
         if (!id)
           continue;
         let merged = mergedRulesById[id];
@@ -49,6 +52,11 @@ export class MatchingRules {
           mergedRules.push(merged);
         }
         Object.assign(merged, rule);
+        // allow to use "baseRules" to partially override built-in rules
+        if (id.startsWith('builtIn') &&
+            !locked &&
+            rules === this.$userRules)
+          Object.assign(merged, baseRulesById[id]);
         if (locked) {
           merged.$lockedKeys.push(...Object.keys(rule).filter(key => key != 'id'));
         }
