@@ -20,6 +20,10 @@ export async function test_load_and_export() {
       { id:          'user',
         itemsLocal:  ['base'] },
     ],
+    overrideBaseRules: [
+      { id:          'base',
+        itemsLocal:  ['overrideBase'] }
+    ],
     userRules: [
       { id:          'user',
         itemsLocal:  ['user'] },
@@ -40,7 +44,7 @@ export async function test_load_and_export() {
         highlight:      Constants.HIGHLIGHT_NEVER,
         action:         Constants.ACTION_NONE,
         itemsSource:    Constants.SOURCE_LOCAL_CONFIG,
-        itemsLocal:     ['base'],
+        itemsLocal:     ['overrideBase'],
         itemsFile:      '/path/fo/base/overridden',
         confirmTitle:   '',
         confirmMessage: '',
