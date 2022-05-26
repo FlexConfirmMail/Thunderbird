@@ -107,7 +107,7 @@
   "config_userRules_caption":              { "message": "附加规则" },
   "config_userRules_add":                  { "message": "新规则" },
   "config_userRules_remove_label":         { "message": "×" },
-  "config_userRules_remove_tooltiptext":   { "message": "删除规则。" },
+  "config_userRules_remove_tooltiptext":   { "message": "删除规则" },
   "config_userRules_remove_confirmMessage": { "message": "你真的想删除「$NAME$」吗？",
     "placeholders": {
       "name": { "content": "$1", "example": "rule name" }
@@ -176,7 +176,7 @@
   "config_userRule_itemsFile_input_placeholder_body":              { "message": "输入文件的路径（例子：\\\\FileServer\\Shared\\suffixes.txt）" },
   "config_userRule_itemsFile_input_placeholder_subjectOrBody":     { "message": "输入文件的路径（例子：\\\\FileServer\\Shared\\suffixes.txt）" },
   "config_userRule_confirmTitle_caption":                    { "message": "警告标题:" },
-  "config_userRule_confirmMessage_caption_recipientDomain":  { "message": "警告信息 (该地址被放置在标有 \"%S\" 的位置。" },
+  "config_userRule_confirmMessage_caption_recipientDomain":  { "message": "警告信息 (该地址被放置在标有 \"%S\" 的位置):" },
   "config_userRule_confirmMessage_caption_attachmentName":   { "message": "警告信息 (附件名称被放置在标有 \"%S\" 的位置):" },
   "config_userRule_confirmMessage_caption_attachmentSuffix": { "message": "警告信息 (附件名称被放置在标有 \"%S\" 的位置):" },
   "config_userRule_confirmMessage_caption_subject":          { "message": "警告信息 (该词被放置在标有 \"%S\" 的位置):" },
