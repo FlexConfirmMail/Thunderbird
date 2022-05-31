@@ -73,8 +73,8 @@
 
 
   "countdownDialogTitle": { "message": "倒计时" },
-  "countdownDialogMessage_before": { "message": "" },
-  "countdownDialogMessage_after": { "message": "秒内发送电子邮件" },
+  "countdownDialogMessage_before": { "message": "\u200b" },
+  "countdownDialogMessage_after": { "message": "秒后发送" },
   "countdownDialogSkip": { "message": "现在发送" },
   "countdownDialogCancel": { "message": "取消" },
 
