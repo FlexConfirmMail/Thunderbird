@@ -15,7 +15,7 @@ let mResizableBoxCount = 0;
 const mResizableBoxes = new Map();
 
 export function init(sizes) {
-  mSizes = (sizes && typeof sizes == 'object') ? sizes : {};
+  mSizes = (sizes && typeof sizes == 'object') ? JSON.parse(JSON.stringify(sizes)) : {};
 
   for (const splitter of document.querySelectorAll('hr.splitter')) {
     const previousBox = findPreviousResizableBox(splitter);
