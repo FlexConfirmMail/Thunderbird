@@ -1,5 +1,5 @@
 {
-  "extensionName": { "message": "Flex Confirm Mail" },
+  "extensionName": { "message": "FlexConfirmMail" },
   "extensionDescription": { "message": "Confirm mailaddress and attachments based on flexible rules." },
 
 
@@ -82,7 +82,7 @@
   "showLastNameFirst": { "message": "false" },
 
 
-  "config_title": { "message": "Flex Confirm Mail Options" },
+  "config_title": { "message": "FlexConfirmMail Options" },
 
   "config_recipients_caption": { "message": "Recipients" },
 

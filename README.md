@@ -1,4 +1,4 @@
-# Flex Confirm Mail
+# FlexConfirmMail
 
 This is an extended version of the addon "Confirm Mail". You can define "exceptions" for confirmation.
 
@@ -50,7 +50,7 @@ For example, if you use the `policies.json`:
 }
 ```
 
-It will help you to create such an managed storage manifest with exported configs: Flex Confirm Mail options => "Development" => Check "Debug mode" => "All Configs" => "Export".
+It will help you to create such an managed storage manifest with exported configs: FlexConfirmMail options => "Development" => Check "Debug mode" => "All Configs" => "Export".
 (Please remind that you should remove `"debug":true` from the managed manifest.)
 
 ## For Developers

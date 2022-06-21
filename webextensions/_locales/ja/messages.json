@@ -1,5 +1,5 @@
 {
-  "extensionName": { "message": "Flex Confirm Mail" },
+  "extensionName": { "message": "FlexConfirmMail" },
   "extensionDescription": { "message": "柔軟なルールに基づいて、送信前に宛先のアドレスや添付ファイルの確認を行うようにします。" },
 
 
@@ -82,7 +82,7 @@
   "showLastNameFirst": { "message": "true" },
 
 
-  "config_title": { "message": "Flex Confirm Mailの設定" },
+  "config_title": { "message": "FlexConfirmMailの設定" },
 
   "config_recipients_caption": { "message": "宛先" },
 
