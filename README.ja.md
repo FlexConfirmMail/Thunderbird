@@ -1,4 +1,4 @@
-# Flex Confirm Mail
+# FlexConfirmMail
 
 このアドオンは「Confirm Mail」の改造版です。メール送信時の確認の「例外」を定義する事ができます。
 

@@ -1,5 +1,5 @@
 {
-  "product": "Flex Confirm Mail Native Messaging Host",
+  "product": "FlexConfirmMail Native Messaging Host",
   "company": "ClearCode Inc.",
   "license": "",
   "upgrade-code": "1483d792-4f48-4810-8e61-c0f7894d60f2",
@@ -24,7 +24,7 @@
     ]
   },
   "choco": {
-    "description": "Native Messaging Host for Flex Confirm Mail",
+    "description": "Native Messaging Host for FlexConfirmMail",
     "project-url": "https://github.com/clear-code/flex-confirm-mail",
     "tags": "thunderbird addon",
     "license-url": "https://github.com/clear-code/flex-confirm-mail/blob/master/webextensions/native-messaging-host/LICENSE"

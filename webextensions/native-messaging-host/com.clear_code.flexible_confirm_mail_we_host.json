@@ -1,6 +1,6 @@
 {
   "name": "com.clear_code.flexible_confirm_mail_we_host",
-  "description": "Flex Confirm Mail Native Messaging Host",
+  "description": "FlexConfirmMail Native Messaging Host",
   "path": "host.exe",
   "type": "stdio",
   "allowed_extensions": [
