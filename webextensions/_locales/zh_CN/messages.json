@@ -1,5 +1,5 @@
 {
-  "extensionName": { "message": "Flex Confirm Mail" },
+  "extensionName": { "message": "FlexConfirmMail" },
   "extensionDescription": { "message": "确保在发送前根据灵活的规则检查目的地地址和附件" },
 
 
@@ -82,7 +82,7 @@
   "showLastNameFirst": { "message": "true" },
 
 
-  "config_title": { "message": "设置Flex Confirm Mail" },
+  "config_title": { "message": "设置FlexConfirmMail" },
 
   "config_recipients_caption": { "message": "目的地" },
 
