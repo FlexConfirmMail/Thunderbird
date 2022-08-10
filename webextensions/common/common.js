@@ -292,32 +292,32 @@ export async function applyOutlookGPOConfigs() {
   if (!response)
     return;
 
-  if (response.hasCountdownAllowSkip)
-    configs.countdownAllowSkip = response.countdownAllowSkip;
+  if (response.HasCountdownAllowSkip)
+    configs.countdownAllowSkip = response.CountdownAllowSkip;
 
-  if (response.hasShowCountdown)
-    configs.showCountdown = response.showCountdown;
+  if (response.HasShowCountdown)
+    configs.showCountdown = response.ShowCountdown;
 
-  if (response.hasCountdownSeconds)
-    configs.countdownSeconds = response.countdownSeconds;
+  if (response.HasCountdownSeconds)
+    configs.countdownSeconds = response.CountdownSeconds;
 
-  if (response.hasSkipConfirmationForInternalMail)
-    configs.skipConfirmationForInternalMail = response.skipConfirmationForInternalMail;
+  if (response.HasSkipConfirmationForInternalMail)
+    configs.skipConfirmationForInternalMail = response.SkipConfirmationForInternalMail;
 
-  if (response.hasConfirmMultipleRecipientDomains)
-    configs.confirmMultipleRecipientDomains = response.confirmMultipleRecipientDomains;
+  if (response.HasConfirmMultipleRecipientDomains)
+    configs.confirmMultipleRecipientDomains = response.ConfirmMultipleRecipientDomains;
 
-  if (response.hasMinConfirmMultipleRecipientDomainsCount)
-    configs.minConfirmMultipleRecipientDomainsCount = response.minConfirmMultipleRecipientDomainsCount;
+  if (response.HasMinConfirmMultipleRecipientDomainsCount)
+    configs.minConfirmMultipleRecipientDomainsCount = response.MinConfirmMultipleRecipientDomainsCount;
 
-  if (response.hasFixedInternalDomains)
+  if (response.HasFixedInternalDomains)
     configs.fixedInternalDomains = response.fixedInternalDomains;
 
 /*
-  if (response.hasBuiltInAttentionDomainsItems)
+  if (response.HasBuiltInAttentionDomainsItems)
     configs.builtInAttentionDomainsItems = response.builtInAttentionDomainsItems;
 
-  if (response.hasBuiltInAttentionTermsItems)
+  if (response.HasBuiltInAttentionTermsItems)
     configs.builtInAttentionTermsItems = response.builtInAttentionTermsItems;
 */
 }
