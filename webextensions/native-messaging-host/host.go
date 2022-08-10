@@ -14,6 +14,7 @@ import (
 	"github.com/harry1453/go-common-file-dialog/cfdutil"
 	rotatelogs "github.com/lestrrat/go-file-rotatelogs"
 	"github.com/lhside/chrome-go"
+	"golang.org/x/sys/windows/registry"
 	"io/ioutil"
 	"log"
 	"os"
@@ -112,11 +113,15 @@ func main() {
 		LogForDebug("logRotationTime:" + fmt.Sprint(logRotationTime))
 	}
 
+	LogForInfo("Command:" + request.Command)
+
 	switch command := request.Command; command {
 	case "fetch":
 		FetchAndRespond(request.Params.Path)
 	case "choose-file":
 		ChooseFileAndRespond(request.Params)
+	case "outlook-gpo-configs":
+		FetchOutlookGPOConfigsAndResponse()
 	default: // just echo
 		err = chrome.Post(rawRequest, os.Stdout)
 		if err != nil {
@@ -190,4 +195,93 @@ func ChooseFile(params RequestParams) (path string, errorMessage string) {
 		return "", err.Error()
 	}
 	return result, ""
+}
+
+
+func ReadIntegerRegValue(base registry.Key, valueName string) (data uint64) {
+	keyPath := `SOFTWARE\Policies\FlexConfirmMail\Default`
+	key, err := registry.OpenKey(base,
+		keyPath,
+		registry.QUERY_VALUE)
+	if err != nil {
+		LogForDebug("Failed to open key " + keyPath)
+		log.Fatal(err)
+	}
+	defer key.Close()
+
+	data, _, err = key.GetIntegerValue(valueName)
+	if err != nil {
+		LogForDebug("Failed to get data of the value " + valueName + " from key " + keyPath)
+		log.Fatal(err)
+	}
+	return
+}
+
+func ReadStringsRegValue(base registry.Key, valueName string) (data []string) {
+	keyPath := `SOFTWARE\Policies\FlexConfirmMail\Default`
+	key, err := registry.OpenKey(base,
+		keyPath,
+		registry.QUERY_VALUE)
+	if err != nil {
+		LogForDebug("Failed to open key " + keyPath)
+		log.Fatal(err)
+	}
+	defer key.Close()
+
+	data, _, err = key.GetStringsValue(valueName)
+	if err != nil {
+		LogForDebug("Failed to get data of the value " + valueName + " from key " + keyPath)
+		log.Fatal(err)
+	}
+	return
+}
+
+type OutlookGPOConfigs struct {
+	CountAllowSkip   uint64   `json:CountAllowSkip`
+	CountEnabled     uint64   `json:CountEnabled`
+	CountSeconds     uint64   `json:CountSeconds`
+	MainSkipIfNoExt  uint64   `json:MainSkipIfNoExt`
+	SafeBccEnabled   uint64   `json:SafeBccEnabled`
+	SafeBccThreshold uint64   `json:SafeBccThreshold`
+	TrustedDomains   []string `json:TrustedDomains`
+	UnsafeDomains    []string `json:UnsafeDomains`
+	UnsafeFiles      []string `json:UnsafeFiles`
+}
+
+func ReadOutlookGPOConfigs(base registry.Key) (configs *OutlookGPOConfigs) {
+	countAllowSkip := ReadIntegerRegValue(base, "CountAllowSkip")
+	countEnabled := ReadIntegerRegValue(base, "CountEnabled")
+	countSeconds := ReadIntegerRegValue(base, "CountSeconds")
+	mainSkipIfNoExt := ReadIntegerRegValue(base, "MainSkipIfNoExt")
+	safeBccEnabled := ReadIntegerRegValue(base, "SafeBccEnabled")
+	safeBccThreshold := ReadIntegerRegValue(base, "SafeBccThreshold")
+	trustedDomains := ReadStringsRegValue(base, "TrustedDomains")
+	unsafeDomains := ReadStringsRegValue(base, "UnsafeDomains")
+	unsafeFiles := ReadStringsRegValue(base, "UnsafeFiles")
+
+	configs = &OutlookGPOConfigs{
+		countAllowSkip,
+		countEnabled,
+		countSeconds,
+		mainSkipIfNoExt,
+		safeBccEnabled,
+		safeBccThreshold,
+		trustedDomains,
+		unsafeDomains,
+		unsafeFiles,
+	}
+
+	return
+}
+
+func FetchOutlookGPOConfigsAndResponse() {
+	configs := ReadOutlookGPOConfigs(registry.LOCAL_MACHINE)
+	body, err := json.Marshal(configs)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = chrome.Post(body, os.Stdout)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
