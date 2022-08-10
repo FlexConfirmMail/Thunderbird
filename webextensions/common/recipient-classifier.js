@@ -9,7 +9,21 @@ import * as RecipientParser from './recipient-parser.js';
 
 export class RecipientClassifier {
   constructor({ internalDomains } = {}) {
-    this.$internalDomainsSet = new Set((internalDomains || []).map(domain => domain.toLowerCase().replace(/^@/, '')));
+    const uniqueDomains = new Set(
+      (internalDomains || [])
+        .map(domain => domain.toLowerCase().replace(/^(-?)@/, '$1'))
+        .filter(domain => !domain.startsWith('#'))
+    );
+    const negativeItems = new Set(
+      [...uniqueDomains]
+        .filter(domain => domain.startsWith('-'))
+        .map(domain => domain.replace(/^-/, ''))
+    );
+    for (const negativeItem of negativeItems) {
+      uniqueDomains.delete(negativeItem);
+      uniqueDomains.delete(`-${negativeItem}`);
+    }
+    this.$internalDomainsSet = uniqueDomains;
     this.classify = this.classify.bind(this);
   }
 
