@@ -198,14 +198,14 @@ func ChooseFile(params RequestParams) (path string, errorMessage string) {
 }
 
 
-func ReadIntegerRegValue(base registry.Key, valueName string) (data uint64) {
-	keyPath := `SOFTWARE\Policies\FlexConfirmMail\Default`
+func ReadIntegerRegValue(base registry.Key, keyPath string, valueName string) (data uint64, errorMessage string) {
 	key, err := registry.OpenKey(base,
 		keyPath,
 		registry.QUERY_VALUE)
 	if err != nil {
 		LogForDebug("Failed to open key " + keyPath)
 		log.Fatal(err)
+		return 0, err.Error()
 	}
 	defer key.Close()
 
@@ -213,18 +213,19 @@ func ReadIntegerRegValue(base registry.Key, valueName string) (data uint64) {
 	if err != nil {
 		LogForDebug("Failed to get data of the value " + valueName + " from key " + keyPath)
 		log.Fatal(err)
+		return 0, err.Error()
 	}
-	return
+	return data, ""
 }
 
-func ReadStringsRegValue(base registry.Key, valueName string) (data []string) {
-	keyPath := `SOFTWARE\Policies\FlexConfirmMail\Default`
+func ReadStringsRegValue(base registry.Key, keyPath string, valueName string) (data []string, errorMessage string) {
 	key, err := registry.OpenKey(base,
 		keyPath,
 		registry.QUERY_VALUE)
 	if err != nil {
 		LogForDebug("Failed to open key " + keyPath)
 		log.Fatal(err)
+		return nil, err.Error()
 	}
 	defer key.Close()
 
@@ -232,51 +233,70 @@ func ReadStringsRegValue(base registry.Key, valueName string) (data []string) {
 	if err != nil {
 		LogForDebug("Failed to get data of the value " + valueName + " from key " + keyPath)
 		log.Fatal(err)
+		return nil, err.Error()
 	}
-	return
+	return data, ""
 }
 
-type OutlookGPOConfigs struct {
-	CountAllowSkip   uint64   `json:CountAllowSkip`
-	CountEnabled     uint64   `json:CountEnabled`
-	CountSeconds     uint64   `json:CountSeconds`
-	MainSkipIfNoExt  uint64   `json:MainSkipIfNoExt`
-	SafeBccEnabled   uint64   `json:SafeBccEnabled`
-	SafeBccThreshold uint64   `json:SafeBccThreshold`
-	TrustedDomains   []string `json:TrustedDomains`
-	UnsafeDomains    []string `json:UnsafeDomains`
-	UnsafeFiles      []string `json:UnsafeFiles`
+type TbStyleConfigs struct {
+	CountdownAllowSkip                      bool     `json:countdownAllowSkip`
+	ShowCountdown                           bool     `json:showCountdown`
+	CountdownSeconds                        uint64   `json:countdownSeconds`
+	SkipConfirmationForInternalMail         bool     `json:skipConfirmationForInternalMail`
+	ConfirmMultipleRecipientDomains         bool     `json:confirmMultipleRecipientDomains`
+	MinConfirmMultipleRecipientDomainsCount uint64   `json:minConfirmMultipleRecipientDomainsCount`
+	FixedInternalDomains                    []string `json:fixedInternalDomains`
+	BuiltInAttentionDomainsItems            []string `json:builtInAttentionDomainsItems`
+	BuiltInAttentionTermsItems              []string `json:builtInAttentionTermsItems`
 }
 
-func ReadOutlookGPOConfigs(base registry.Key) (configs *OutlookGPOConfigs) {
-	countAllowSkip := ReadIntegerRegValue(base, "CountAllowSkip")
-	countEnabled := ReadIntegerRegValue(base, "CountEnabled")
-	countSeconds := ReadIntegerRegValue(base, "CountSeconds")
-	mainSkipIfNoExt := ReadIntegerRegValue(base, "MainSkipIfNoExt")
-	safeBccEnabled := ReadIntegerRegValue(base, "SafeBccEnabled")
-	safeBccThreshold := ReadIntegerRegValue(base, "SafeBccThreshold")
-	trustedDomains := ReadStringsRegValue(base, "TrustedDomains")
-	unsafeDomains := ReadStringsRegValue(base, "UnsafeDomains")
-	unsafeFiles := ReadStringsRegValue(base, "UnsafeFiles")
-
-	configs = &OutlookGPOConfigs{
-		countAllowSkip,
-		countEnabled,
-		countSeconds,
-		mainSkipIfNoExt,
-		safeBccEnabled,
-		safeBccThreshold,
-		trustedDomains,
-		unsafeDomains,
-		unsafeFiles,
+func ReadAndApplyOutlookGPOConfigs(base registry.Key, keyPath string, configs *TbStyleConfigs) {
+	countAllowSkip, err := ReadIntegerRegValue(base, keyPath, "CountAllowSkip")
+	if err != "" {
+		configs.CountdownAllowSkip = countAllowSkip == 1
 	}
-
-	return
+	countEnabled, err := ReadIntegerRegValue(base, keyPath, "CountEnabled")
+	if err != "" {
+		configs.ShowCountdown = countEnabled == 1
+	}
+	countSeconds, err := ReadIntegerRegValue(base, keyPath, "CountSeconds")
+	if err != "" {
+		configs.CountdownSeconds = countSeconds
+	}
+	mainSkipIfNoExt, err := ReadIntegerRegValue(base, keyPath, "MainSkipIfNoExt")
+	if err != "" {
+		configs.SkipConfirmationForInternalMail = mainSkipIfNoExt == 1
+	}
+	safeBccEnabled, err := ReadIntegerRegValue(base, keyPath, "SafeBccEnabled")
+	if err != "" {
+		configs.ConfirmMultipleRecipientDomains = safeBccEnabled == 1
+	}
+	safeBccThreshold, err := ReadIntegerRegValue(base, keyPath, "SafeBccThreshold")
+	if err != "" {
+		configs.MinConfirmMultipleRecipientDomainsCount = safeBccThreshold
+	}
+	trustedDomains, err := ReadStringsRegValue(base, keyPath, "TrustedDomains")
+	if err != "" {
+		configs.FixedInternalDomains = trustedDomains
+	}
+	unsafeDomains, err := ReadStringsRegValue(base, keyPath, "UnsafeDomains")
+	if err != "" {
+		configs.BuiltInAttentionDomainsItems = unsafeDomains
+	}
+	unsafeFiles, err := ReadStringsRegValue(base, keyPath, "UnsafeFiles")
+	if err != "" {
+		configs.BuiltInAttentionTermsItems = unsafeFiles
+	}
 }
 
 func FetchOutlookGPOConfigsAndResponse() {
-	configs := ReadOutlookGPOConfigs(registry.LOCAL_MACHINE)
-	body, err := json.Marshal(configs)
+	response := TbStyleConfigs{}
+
+	defaultKeyPath := `SOFTWARE\Policies\FlexConfirmMail\Default`
+	ReadAndApplyOutlookGPOConfigs(registry.LOCAL_MACHINE, defaultKeyPath, &response)
+	ReadAndApplyOutlookGPOConfigs(registry.CURRENT_USER, defaultKeyPath, &response)
+
+	body, err := json.Marshal(response)
 	if err != nil {
 		log.Fatal(err)
 	}
