@@ -198,42 +198,22 @@ func ChooseFile(params RequestParams) (path string, errorMessage string) {
 }
 
 
-func ReadIntegerRegValue(base registry.Key, keyPath string, valueName string) (data uint64, errorMessage string) {
-	key, err := registry.OpenKey(base,
-		keyPath,
-		registry.QUERY_VALUE)
+func ReadIntegerRegValue(key registry.Key, valueName string) (data uint64, errorMessage string) {
+	data, _, err := key.GetIntegerValue(valueName)
 	if err != nil {
-		LogForDebug("Failed to open key " + keyPath)
-		log.Fatal(err)
-		return 0, err.Error()
-	}
-	defer key.Close()
-
-	data, _, err = key.GetIntegerValue(valueName)
-	if err != nil {
-		LogForDebug("Failed to get data of the value " + valueName + " from key " + keyPath)
+		LogForDebug("Failed to get data of the value " + valueName)
 		log.Fatal(err)
 		return 0, err.Error()
 	}
 	return data, ""
 }
 
-func ReadStringsRegValue(base registry.Key, keyPath string, valueName string) (data []string, errorMessage string) {
-	key, err := registry.OpenKey(base,
-		keyPath,
-		registry.QUERY_VALUE)
+func ReadStringsRegValue(key registry.Key, valueName string) (data []string, errorMessage string) {
+	data, _, err := key.GetStringsValue(valueName)
 	if err != nil {
-		LogForDebug("Failed to open key " + keyPath)
+		LogForDebug("Failed to get data of the value " + valueName)
 		log.Fatal(err)
-		return nil, err.Error()
-	}
-	defer key.Close()
-
-	data, _, err = key.GetStringsValue(valueName)
-	if err != nil {
-		LogForDebug("Failed to get data of the value " + valueName + " from key " + keyPath)
-		log.Fatal(err)
-		return nil, err.Error()
+		return data, err.Error()
 	}
 	return data, ""
 }
@@ -251,40 +231,50 @@ type TbStyleConfigs struct {
 }
 
 func ReadAndApplyOutlookGPOConfigs(base registry.Key, keyPath string, configs *TbStyleConfigs) {
-	countAllowSkip, err := ReadIntegerRegValue(base, keyPath, "CountAllowSkip")
-	if err != "" {
+	key, err := registry.OpenKey(base,
+		keyPath,
+		registry.QUERY_VALUE)
+	if err != nil {
+		LogForDebug("Failed to open key " + keyPath)
+		log.Fatal(err)
+		return
+	}
+	defer key.Close()
+
+	countAllowSkip, errMsg := ReadIntegerRegValue(key, "CountAllowSkip")
+	if errMsg != "" {
 		configs.CountdownAllowSkip = countAllowSkip == 1
 	}
-	countEnabled, err := ReadIntegerRegValue(base, keyPath, "CountEnabled")
-	if err != "" {
+	countEnabled, errMsg := ReadIntegerRegValue(key, "CountEnabled")
+	if errMsg != "" {
 		configs.ShowCountdown = countEnabled == 1
 	}
-	countSeconds, err := ReadIntegerRegValue(base, keyPath, "CountSeconds")
-	if err != "" {
+	countSeconds, errMsg := ReadIntegerRegValue(key, "CountSeconds")
+	if errMsg != "" {
 		configs.CountdownSeconds = countSeconds
 	}
-	mainSkipIfNoExt, err := ReadIntegerRegValue(base, keyPath, "MainSkipIfNoExt")
-	if err != "" {
+	mainSkipIfNoExt, errMsg := ReadIntegerRegValue(key, "MainSkipIfNoExt")
+	if errMsg != "" {
 		configs.SkipConfirmationForInternalMail = mainSkipIfNoExt == 1
 	}
-	safeBccEnabled, err := ReadIntegerRegValue(base, keyPath, "SafeBccEnabled")
-	if err != "" {
+	safeBccEnabled, errMsg := ReadIntegerRegValue(key, "SafeBccEnabled")
+	if errMsg != "" {
 		configs.ConfirmMultipleRecipientDomains = safeBccEnabled == 1
 	}
-	safeBccThreshold, err := ReadIntegerRegValue(base, keyPath, "SafeBccThreshold")
-	if err != "" {
+	safeBccThreshold, errMsg := ReadIntegerRegValue(key, "SafeBccThreshold")
+	if errMsg != "" {
 		configs.MinConfirmMultipleRecipientDomainsCount = safeBccThreshold
 	}
-	trustedDomains, err := ReadStringsRegValue(base, keyPath, "TrustedDomains")
-	if err != "" {
+	trustedDomains, errMsg := ReadStringsRegValue(key, "TrustedDomains")
+	if errMsg != "" {
 		configs.FixedInternalDomains = trustedDomains
 	}
-	unsafeDomains, err := ReadStringsRegValue(base, keyPath, "UnsafeDomains")
-	if err != "" {
+	unsafeDomains, errMsg := ReadStringsRegValue(key, "UnsafeDomains")
+	if errMsg != "" {
 		configs.BuiltInAttentionDomainsItems = unsafeDomains
 	}
-	unsafeFiles, err := ReadStringsRegValue(base, keyPath, "UnsafeFiles")
-	if err != "" {
+	unsafeFiles, errMsg := ReadStringsRegValue(key, "UnsafeFiles")
+	if errMsg != "" {
 		configs.BuiltInAttentionTermsItems = unsafeFiles
 	}
 }
@@ -293,7 +283,9 @@ func FetchOutlookGPOConfigsAndResponse() {
 	response := TbStyleConfigs{}
 
 	defaultKeyPath := `SOFTWARE\Policies\FlexConfirmMail\Default`
+	LogForDebug(`Read GPO configs from HKLM\` + defaultKeyPath)
 	ReadAndApplyOutlookGPOConfigs(registry.LOCAL_MACHINE, defaultKeyPath, &response)
+	LogForDebug(`Read GPO configs from HKCU\` + defaultKeyPath)
 	ReadAndApplyOutlookGPOConfigs(registry.CURRENT_USER, defaultKeyPath, &response)
 
 	body, err := json.Marshal(response)
