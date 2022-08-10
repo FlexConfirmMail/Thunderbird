@@ -256,7 +256,10 @@ async function needConfirmationOnModified(tab, details) {
 
 function classifyRecipients({ to, cc, bcc }) {
   const classifier = new RecipientClassifier({
-    internalDomains: configs.internalDomains || [],
+    internalDomains: [
+      ...(configs.fixedInternalDomains || []),
+      ...(configs.internalDomains || []),
+    ],
   });
   const classifiedTo = classifier.classify(to);
   const classifiedCc = classifier.classify(cc);

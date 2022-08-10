@@ -654,6 +654,10 @@ window.addEventListener('DOMContentLoaded', async () => {
     initArrayTypeTextArea(textarea);
   }
 
+  const fixedInternalDomainsField = document.querySelector('#fixedInternalDomainsField');
+  fixedInternalDomainsField.style.height = `calc(1.2em * ${configs.fixedInternalDomains.length})`;
+  fixedInternalDomainsField.classList.toggle('hidden', configs.fixedInternalDomains.length == 0);
+
   mMatchingRules = new MatchingRules(configs);
 
   const userRulesContainer = document.querySelector('#userRulesContainer');

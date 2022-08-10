@@ -17,6 +17,12 @@
           ],
             "internalDomains:locked": false,
 
+          "// ユーザーによるカスタマイズを許容せず、常に組織内として扱うメールアドレスのドメイン名": 0,
+          "fixedInternalDomains": [
+            "fixed.example.com"
+          ],
+            "fixedInternalDomains:locked": false,
+
           "// すべての宛先が登録済みドメインのメール送信時は確認ダイアログを表示しない": 0,
           "skipConfirmationForInternalMail": true,
             "skipConfirmationForInternalMail:locked": false,

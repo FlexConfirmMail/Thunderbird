@@ -115,6 +115,14 @@ li textarea {
   width: calc(100% - 2em);
 }
 
+textarea#fixedInternalDomainsField {
+  border: 0 none;
+  line-height: 1.2;
+  min-height: 0;
+  padding: 0;
+  resize: none;
+}
+
 
 input[type="text"].filepath {
   flex-grow: 1;
