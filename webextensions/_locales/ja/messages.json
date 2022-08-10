@@ -95,6 +95,7 @@
 
   "config_internalDomains_caption": { "message": "組織内として扱うメールアドレスのドメイン名" },
   "config_internalDomains_input_placeholder": { "message": "ドメイン名を1行ずつ入力（例：example.com）" },
+  "config_fixedInternalDomains_label": { "message": "システム管理者によって、以下のドメインが組織内ドメインとして指定されています。ドメイン名の先頭に「-」をつけると、ドメインを除外することができます。" },
 
   "config_skipConfirmationForInternalMail_label": { "message": "すべての宛先が登録済みドメインのメール送信時は確認ダイアログを表示しない" },
   "config_minConfirmationRecipientsCount_label_before": { "message": "宛先が" },

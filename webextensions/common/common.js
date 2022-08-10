@@ -15,6 +15,7 @@ export const configs = new Configs({
   lastClipboardData: null,
   acceptablePastedTextLength: 100,
   internalDomains: [],
+  fixedInternalDomains: [],
 
   /*
     Items of "baseRules", "overrideBaseRules", and "overrideRules" should have properties same to

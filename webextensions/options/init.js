@@ -654,9 +654,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     initArrayTypeTextArea(textarea);
   }
 
+
+  document.querySelector('#fixedInternalDomainsFieldLabel').classList.toggle('hidden', configs.fixedInternalDomains.length == 0);
   const fixedInternalDomainsField = document.querySelector('#fixedInternalDomainsField');
   fixedInternalDomainsField.style.height = `calc(1.2em * ${configs.fixedInternalDomains.length})`;
   fixedInternalDomainsField.classList.toggle('hidden', configs.fixedInternalDomains.length == 0);
+
 
   mMatchingRules = new MatchingRules(configs);
 
