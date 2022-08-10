@@ -198,7 +198,7 @@ test_classifyAddresses.parameters = {
       ],
       externals: [
         'bbb@example.net',
-        'ccc@example.net',
+        'ccc@#example.net',
       ],
     }
   },
@@ -209,14 +209,15 @@ test_classifyAddresses.parameters = {
     ],
     internalDomains: [
       'example.com',
+      '-@example.com',
       'example.net',
       '-example.net',
     ],
     expected: {
       internals: [
-        'aaa@example.com',
       ],
       externals: [
+        'aaa@example.com',
         'bbb@example.net',
       ],
     }
