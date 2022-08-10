@@ -300,9 +300,11 @@ const RECIPIENT_DOMAIN_RULES = [
   { id:          'highlighted by recipient domain always, but disabled by negative modifier',
     matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
     highlight:   Constants.HIGHLIGHT_ALWAYS,
-    itemsLocal:  ['never-highlighted-with-negative-modifier.example.com',
-                  '@never-highlighted-with-negative-modifier.clear-code.com',
-                  '-never-highlighted-with-negative-modifier.clear-code.com'] },
+    itemsLocal:  [
+      'never-highlighted-with-negative-modifier.example.com',
+      '@never-highlighted-with-negative-modifier.clear-code.com',
+      '-never-highlighted-with-negative-modifier.clear-code.com',
+    ] },
 ];
 
 const ATTACHMENT_NAME_RULES = [
