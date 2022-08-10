@@ -202,7 +202,7 @@ func ReadIntegerRegValue(key registry.Key, valueName string) (data uint64, error
 	data, _, err := key.GetIntegerValue(valueName)
 	if err != nil {
 		LogForDebug("Failed to get data of the value " + valueName)
-		log.Fatal(err)
+		//log.Fatal(err)
 		return 0, err.Error()
 	}
 	return data, ""
@@ -212,7 +212,7 @@ func ReadStringsRegValue(key registry.Key, valueName string) (data []string, err
 	data, _, err := key.GetStringsValue(valueName)
 	if err != nil {
 		LogForDebug("Failed to get data of the value " + valueName)
-		log.Fatal(err)
+		//log.Fatal(err)
 		return data, err.Error()
 	}
 	return data, ""
@@ -236,7 +236,7 @@ func ReadAndApplyOutlookGPOConfigs(base registry.Key, keyPath string, configs *T
 		registry.QUERY_VALUE)
 	if err != nil {
 		LogForDebug("Failed to open key " + keyPath)
-		log.Fatal(err)
+		//log.Fatal(err)
 		return
 	}
 	defer key.Close()
