@@ -99,7 +99,8 @@
   "config_skipConfirmationForInternalMail_label": { "message": "在发送所有目的地为注册域名的电子邮件时，没有确认对话" },
   "config_minConfirmationRecipientsCount_label_before": { "message": "如果有" },
   "config_minConfirmationRecipientsCount_label_after": { "message": "个或更少的目的地，则不显示确认对话（设置为0，表示总是检查）" },
-  "config_confirmMultipleRecipientDomains_label": { "message": "当收件人或抄送对象包含一个以上的域时发出警告" },
+  "config_minConfirmMultipleRecipientDomainsCount_label_before": { "message": "当收件人或抄送对象包含" },
+  "config_minConfirmMultipleRecipientDomainsCount_label_after": { "message": "以上的域时发出警告" },
   "config_allowCheckAllInternals_label": { "message": "允许对组织中的目的地进行批量检查" },
   "config_allowCheckAllExternals_label": { "message": "允许对外部目的地进行批量检查" },
 

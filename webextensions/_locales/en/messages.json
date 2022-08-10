@@ -99,7 +99,8 @@
   "config_skipConfirmationForInternalMail_label": { "message": "Skip confirmation if all recipients are internals" },
   "config_minConfirmationRecipientsCount_label_before": { "message": "Skip confirmation if there are/is only" },
   "config_minConfirmationRecipientsCount_label_after": { "message": "or fewer recipient(s) (*0 means &quot;always confirm&quot;)" },
-  "config_confirmMultipleRecipientDomains_label": { "message": "Confirm when there are multiple domains in To/Cc recipients" },
+  "config_minConfirmMultipleRecipientDomainsCount_label_before": { "message": "Confirm when there are" },
+  "config_minConfirmMultipleRecipientDomainsCount_label_after": { "message": "or more domains in To/Cc recipients" },
   "config_allowCheckAllInternals_label": { "message": "Allow to make all internal recipients to be checked with one checkbox" },
   "config_allowCheckAllExternals_label": { "message": "Allow to make all external recipients to be checked with one checkbox" },
 

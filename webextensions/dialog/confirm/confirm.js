@@ -438,7 +438,7 @@ async function confirmedMultipleRecipientDomains() {
 
   const domains = new Set(mParams.externals.filter(recipient => recipient.type != 'Bcc').map(recipient => recipient.domain));
   log('confirmedMultipleRecipientDomains domains = ', domains);
-  if (domains.size <= 1)
+  if (domains.size < configs.minConfirmMultipleRecipientDomainsCount)
     return true;
 
   const message = (

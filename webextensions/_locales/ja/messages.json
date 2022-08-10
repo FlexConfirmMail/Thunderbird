@@ -99,7 +99,8 @@
   "config_skipConfirmationForInternalMail_label": { "message": "すべての宛先が登録済みドメインのメール送信時は確認ダイアログを表示しない" },
   "config_minConfirmationRecipientsCount_label_before": { "message": "宛先が" },
   "config_minConfirmationRecipientsCount_label_after": { "message": "件以下の場合は確認ダイアログを表示しない（※0で常に確認）" },
-  "config_confirmMultipleRecipientDomains_label": { "message": "ToまたはCcの宛先に複数のドメインが含まれる場合に警告する" },
+  "config_minConfirmMultipleRecipientDomainsCount_label_before": { "message": "ToまたはCcの宛先に" },
+  "config_minConfirmMultipleRecipientDomainsCount_label_after": { "message": "個以上のドメインが含まれる場合に警告する" },
   "config_allowCheckAllInternals_label": { "message": "組織内の宛先の一括チェックを許可" },
   "config_allowCheckAllExternals_label": { "message": "外部の宛先の一括チェックを許可" },
 

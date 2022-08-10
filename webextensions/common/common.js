@@ -183,6 +183,7 @@ export const configs = new Configs({
   skipConfirmationForInternalMail: false,
 
   confirmMultipleRecipientDomains: false,
+  minConfirmMultipleRecipientDomainsCount: 2,
   minConfirmationRecipientsCount: 0,
   confirmMultipleRecipientDomainsDialogTitle: '',
   confirmMultipleRecipientDomainsDialogMessage: '',
