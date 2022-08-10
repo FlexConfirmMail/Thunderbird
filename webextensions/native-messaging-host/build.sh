@@ -39,6 +39,7 @@ build_host() {
     prepare_dependency github.com/google/uuid
   prepare_dependency github.com/mitchellh/gox
   prepare_dependency github.com/lhside/chrome-go
+  prepare_dependency github.com/lestrrat/go-file-rotatelogs
   mkdir -p "$temp_src"
   ln -s "$dist_dir" "$temp_src/host"
 

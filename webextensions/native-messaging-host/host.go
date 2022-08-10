@@ -12,13 +12,38 @@ import (
 	"fmt"
 	"github.com/harry1453/go-common-file-dialog/cfd"
 	"github.com/harry1453/go-common-file-dialog/cfdutil"
+	rotatelogs "github.com/lestrrat/go-file-rotatelogs"
 	"github.com/lhside/chrome-go"
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
+	"time"
 )
 
 const VERSION = "4.0.8";
+
+
+var DebugLogs []string
+var Logging bool
+var Debug bool
+
+func LogForInfo(message string) {
+	DebugLogs = append(DebugLogs, message)
+	if Logging {
+		fmt.Fprintf(os.Stderr, "[info] "+message+"\n")
+		log.Print(message + "\r\n")
+	}
+}
+
+func LogForDebug(message string) {
+	DebugLogs = append(DebugLogs, message)
+	if Logging && Debug {
+		fmt.Fprintf(os.Stderr, "[debug] "+message+"\n")
+		log.Print(message + "\r\n")
+	}
+}
+
 
 type RequestParams struct {
 	Path             string `json:path`
@@ -30,8 +55,12 @@ type RequestParams struct {
 	Pattern          string `json:pattern`
 }
 type Request struct {
-	Command string        `json:"command"`
-	Params  RequestParams `json:"params"`
+	Logging          bool          `json:"logging"`
+	Debug            bool          `json:"debug"`
+	LogRotationCount int           `json:"logRotationCount"`
+	LogRotationTime  int           `json:"logRotationTime"`
+	Command          string        `json:"command"`
+	Params           RequestParams `json:"params"`
 }
 
 func main() {
@@ -48,9 +77,39 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	request := &Request{}
+	request := &Request{
+		Logging: false,
+		Debug: false,
+		LogRotationCount: 7,
+		LogRotationTime: 24,
+	}
 	if err := json.Unmarshal(rawRequest, request); err != nil {
 		log.Fatal(err)
+	}
+
+	Logging = request.Logging
+	Debug = request.Debug
+	if Logging {
+		logfileDir := os.ExpandEnv(`${temp}`)
+		logRotationTime := time.Duration(request.LogRotationTime) * time.Hour
+		logRotationCount := request.LogRotationCount
+		maxAge := time.Duration(-1)
+		// for debugging
+		//logRotationTime = time.Duration(request.LogRotationTime) * time.Minute
+		rotateLog, err := rotatelogs.New(filepath.Join(logfileDir, "com.clear_code.flexible_confirm_mail_we_host.log.%Y%m%d%H%M.txt"),
+			rotatelogs.WithMaxAge(maxAge),
+			rotatelogs.WithRotationTime(logRotationTime),
+			rotatelogs.WithRotationCount(logRotationCount),
+		)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer rotateLog.Close()
+
+		log.SetOutput(rotateLog)
+		log.SetFlags(log.Ldate | log.Ltime)
+		LogForDebug("logRotationCount:" + fmt.Sprint(logRotationCount))
+		LogForDebug("logRotationTime:" + fmt.Sprint(logRotationTime))
 	}
 
 	switch command := request.Command; command {
