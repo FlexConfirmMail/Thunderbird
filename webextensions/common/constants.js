@@ -13,6 +13,7 @@ export const TYPE_MESSAGE_DISPLAY_SOMETHING_COPIED = 'message-display-something-
 export const HOST_ID = 'com.clear_code.flexible_confirm_mail_we_host';
 export const HOST_COMMAND_FETCH = 'fetch';
 export const HOST_COMMAND_CHOOSE_FILE = 'choose-file';
+export const HOST_COMMAND_FETCH_OUTLOOK_GPO_CONFIGS = 'outlook-gpo-configs';
 
 export const CONFIRMATION_MODE_NEVER = 0;
 export const CONFIRMATION_MODE_ALWAYS = 1;

@@ -263,6 +263,8 @@ export function log(message, ...args) {
 
 export async function sendToHost(message) {
   try {
+    message.loggging = message.loggging && configs.debug;
+    message.debug = message.debug && configs.debug;
     const response = await browser.runtime.sendNativeMessage(Constants.HOST_ID, message);
     if (!response || typeof response != 'object')
       throw new Error(`invalid response: ${String(response)}`);
@@ -280,6 +282,44 @@ export async function readFile(path) {
     params: { path },
   });
   return response && response.contents;
+}
+
+export async function applyOutlookGPOConfigs() {
+  const response = await sendToHost({
+    command: Constants.HOST_COMMAND_FETCH_OUTLOOK_GPO_CONFIGS,
+  });
+  log('applyOutlookGPOConfigs ', response);
+  if (!response)
+    return;
+
+  if (response.hasCountdownAllowSkip)
+    configs.countdownAllowSkip = response.countdownAllowSkip;
+
+  if (response.hasShowCountdown)
+    configs.showCountdown = response.showCountdown;
+
+  if (response.hasCountdownSeconds)
+    configs.countdownSeconds = response.countdownSeconds;
+
+  if (response.hasSkipConfirmationForInternalMail)
+    configs.skipConfirmationForInternalMail = response.skipConfirmationForInternalMail;
+
+  if (response.hasConfirmMultipleRecipientDomains)
+    configs.confirmMultipleRecipientDomains = response.confirmMultipleRecipientDomains;
+
+  if (response.hasMinConfirmMultipleRecipientDomainsCount)
+    configs.minConfirmMultipleRecipientDomainsCount = response.minConfirmMultipleRecipientDomainsCount;
+
+  if (response.hasFixedInternalDomains)
+    configs.fixedInternalDomains = response.fixedInternalDomains;
+
+/*
+  if (response.hasBuiltInAttentionDomainsItems)
+    configs.builtInAttentionDomainsItems = response.builtInAttentionDomainsItems;
+
+  if (response.hasBuiltInAttentionTermsItems)
+    configs.builtInAttentionTermsItems = response.builtInAttentionTermsItems;
+*/
 }
 
 

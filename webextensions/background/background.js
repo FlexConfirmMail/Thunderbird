@@ -12,6 +12,7 @@ import {
   configs,
   log,
   readFile,
+  applyOutlookGPOConfigs,
   clone,
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
@@ -342,6 +343,8 @@ async function tryConfirm(tab, details, opener) {
 }
 
 async function shouldBlock(tab, details) {
+  await applyOutlookGPOConfigs();
+
   const matchingRules = new MatchingRules(configs);
   const [
     to, cc, bcc, attachments,
