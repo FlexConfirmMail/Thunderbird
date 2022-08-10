@@ -95,7 +95,21 @@ export class MatchingRules {
     for (const rule of this.$rules) {
       switch (rule.matchTarget) {
         case Constants.MATCH_TO_RECIPIENT_DOMAIN:
-          this._$matchedDomainSets[rule.id] = new Set((rule.items || []).map(domain => domain.toLowerCase().replace(/^@/, '')));
+          const uniqueDomains = new Set(
+            (rule.items || [])
+              .map(domain => domain.toLowerCase().replace(/^(-?)@/, '$1'))
+              .filter(domain => !domain.startsWith('#')) // reject commented out items
+          );
+          const negativeItems = new Set(
+            [...uniqueDomains]
+              .filter(domain => domain.startsWith('-'))
+              .map(domain => domain.replace(/^-/, ''))
+          );
+          for (const negativeItem of negativeItems) {
+            uniqueDomains.delete(negativeItem);
+            uniqueDomains.delete(`-${negativeItem}`);
+          }
+          this._$matchedDomainSets[rule.id] = uniqueDomains;
           break;
 
         case Constants.MATCH_TO_ATTACHMENT_NAME:

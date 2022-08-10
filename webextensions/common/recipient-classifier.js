@@ -12,7 +12,7 @@ export class RecipientClassifier {
     const uniqueDomains = new Set(
       (internalDomains || [])
         .map(domain => domain.toLowerCase().replace(/^(-?)@/, '$1'))
-        .filter(domain => !domain.startsWith('#'))
+        .filter(domain => !domain.startsWith('#')) // reject commented out items
     );
     const negativeItems = new Set(
       [...uniqueDomains]
