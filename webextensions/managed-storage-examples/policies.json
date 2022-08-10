@@ -25,9 +25,11 @@
           "minConfirmationRecipientsCount": 0,
             "minConfirmationRecipientsCount:locked": false,
 
-          "// ToまたはCcの宛先に複数のドメインが含まれる場合に警告する": 0,
+          "// ToまたはCcの宛先にN個以上のドメインが含まれる場合に警告する": 0,
           "confirmMultipleRecipientDomains": false,
             "confirmMultipleRecipientDomains:locked": false,
+          "minConfirmMultipleRecipientDomainsCount": 2,
+            "minConfirmMultipleRecipientDomainsCount:locked": false,
 
           "// 組織内の宛先の一括チェックを許可": 0,
           "allowCheckAllInternals": true,
