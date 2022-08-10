@@ -293,6 +293,16 @@ const RECIPIENT_DOMAIN_RULES = [
     matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
     action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS,
     itemsLocal:  ['blocked-external-attachment.example.com', '@blocked-external-attachment.clear-code.com'] },
+  { id:          'highlighted by recipient domain always, but disabled by comment',
+    matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+    highlight:   Constants.HIGHLIGHT_ALWAYS,
+    itemsLocal:  ['#never-highlighted-with-comment.example.com'] },
+  { id:          'highlighted by recipient domain always, but disabled by negative modifier',
+    matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+    highlight:   Constants.HIGHLIGHT_ALWAYS,
+    itemsLocal:  ['never-highlighted-with-negative-modifier.example.com',
+                  '@never-highlighted-with-negative-modifier.clear-code.com',
+                  '-never-highlighted-with-negative-modifier.clear-code.com'] },
 ];
 
 const ATTACHMENT_NAME_RULES = [
@@ -604,6 +614,12 @@ const RECIPIENTS_BLOCKED_EXTERNALS_WITH_ATTACHMENTS = [
   'uppercase@BLOCKED-EXTERNAL-ATTACHMENT.CLEAR-CODE.COM',
   'mixedcase@BlOcKeD-eXtErNaL-aTtAcHmEnT.ExAmPlE.cOm',
 ];
+const RECIPIENTS_NOT_HIGHLIGHTED_WITH_COMMENT = [
+  'address@never-highlighted-with-comment.example.com',
+];
+const RECIPIENTS_NOT_HIGHLIGHTED_WITH_NEGATIVE_MODIFIER = [
+  'address@never-highlighted-with-negative-modifier.clear-code.com',
+];
 
 const RECIPIENTS = [
   'none@example.com',
@@ -623,6 +639,8 @@ const RECIPIENTS = [
   ...RECIPIENTS_BLOCKED_WITH_ATTACHMENTS,
   ...RECIPIENTS_BLOCKED_EXTERNALS,
   ...RECIPIENTS_BLOCKED_EXTERNALS_WITH_ATTACHMENTS,
+  ...RECIPIENTS_NOT_HIGHLIGHTED_WITH_COMMENT,
+  ...RECIPIENTS_NOT_HIGHLIGHTED_WITH_NEGATIVE_MODIFIER,
   'address-like@highlighted-always.clear-code.com <address-like@exmaple.com>',
   'address-like@reconfirm-alwaysc.lear-code.com <address-like@example.org>',
   'address-like@blocked-always.com <address-like@clear-code.com>',

@@ -182,6 +182,45 @@ test_classifyAddresses.parameters = {
       ],
     }
   },
+  'support comment in domains list': {
+    recipients: [
+      'aaa@example.com',
+      'bbb@example.net',
+      'ccc@#example.net',
+    ],
+    internalDomains: [
+      'example.com',
+      '#example.net',
+    ],
+    expected: {
+      internals: [
+        'aaa@example.com',
+      ],
+      externals: [
+        'bbb@example.net',
+        'ccc@example.net',
+      ],
+    }
+  },
+  'support negative modifier in domains list': {
+    recipients: [
+      'aaa@example.com',
+      'bbb@example.net',
+    ],
+    internalDomains: [
+      'example.com',
+      'example.net',
+      '-example.net',
+    ],
+    expected: {
+      internals: [
+        'aaa@example.com',
+      ],
+      externals: [
+        'bbb@example.net',
+      ],
+    }
+  },
 };
 export function test_classifyAddresses({ recipients, internalDomains, expected }) {
   const classifier = new RecipientClassifier({ internalDomains });
