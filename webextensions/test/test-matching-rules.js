@@ -540,6 +540,7 @@ const RECONFIRM_RULES = [
   ...SUBJECT_OR_BODY_RULES,
 ].filter(rule => RECONFIRM_ACTIONS.has(rule.action));
 
+/*
 const BLOCK_ACTIONS = new Set([
   Constants.ACTION_BLOCK_ALWAYS,
   Constants.ACTION_BLOCK_ONLY_EXTERNALS,
@@ -554,6 +555,7 @@ const BLOCK_RULES = [
   ...BODY_RULES,
   ...SUBJECT_OR_BODY_RULES,
 ].filter(rule => BLOCK_ACTIONS.has(rule.action));
+*/
 
 
 const RECIPIENTS_HIGHLIGHTED_ALWAYS = [
