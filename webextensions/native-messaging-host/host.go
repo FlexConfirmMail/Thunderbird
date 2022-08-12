@@ -300,48 +300,43 @@ func ReadAndApplyOutlookGPOConfigs(base registry.Key, keyPath string, configs *T
 	}
 	defer key.Close()
 
-	countAllowSkip, errMsg := ReadIntegerRegValue(key, "CountAllowSkip")
-	if errMsg != "" {
-		configs.CountdownAllowSkip = countAllowSkip == 1
-		configs.HasCountdownAllowSkip = true
-	}
 	countEnabled, errMsg := ReadIntegerRegValue(key, "CountEnabled")
-	if errMsg != "" {
+	if errMsg == "" {
 		configs.ShowCountdown = countEnabled == 1
 		configs.HasCountdownAllowSkip = true
 	}
 	countSeconds, errMsg := ReadIntegerRegValue(key, "CountSeconds")
-	if errMsg != "" {
+	if errMsg == "" {
 		configs.CountdownSeconds = countSeconds
 		configs.HasCountdownAllowSkip = true
 	}
 	mainSkipIfNoExt, errMsg := ReadIntegerRegValue(key, "MainSkipIfNoExt")
-	if errMsg != "" {
+	if errMsg == "" {
 		configs.SkipConfirmationForInternalMail = mainSkipIfNoExt == 1
 		configs.HasSkipConfirmationForInternalMail = true
 	}
 	safeBccEnabled, errMsg := ReadIntegerRegValue(key, "SafeBccEnabled")
-	if errMsg != "" {
+	if errMsg == "" {
 		configs.ConfirmMultipleRecipientDomains = safeBccEnabled == 1
 		configs.HasConfirmMultipleRecipientDomains = true
 	}
 	safeBccThreshold, errMsg := ReadIntegerRegValue(key, "SafeBccThreshold")
-	if errMsg != "" {
+	if errMsg == "" {
 		configs.MinConfirmMultipleRecipientDomainsCount = safeBccThreshold
 		configs.HasMinConfirmMultipleRecipientDomainsCount = true
 	}
 	trustedDomains, errMsg := ReadStringsRegValue(key, "TrustedDomains")
-	if errMsg != "" {
+	if errMsg == "" {
 		configs.FixedInternalDomains = trustedDomains
 		configs.HasFixedInternalDomains = true
 	}
 	unsafeDomains, errMsg := ReadStringsRegValue(key, "UnsafeDomains")
-	if errMsg != "" {
+	if errMsg == "" {
 		configs.BuiltInAttentionDomainsItems = unsafeDomains
 		configs.HasBuiltInAttentionDomainsItems = true
 	}
 	unsafeFiles, errMsg := ReadStringsRegValue(key, "UnsafeFiles")
-	if errMsg != "" {
+	if errMsg == "" {
 		configs.BuiltInAttentionTermsItems = unsafeFiles
 		configs.HasBuiltInAttentionTermsItems = true
 	}
