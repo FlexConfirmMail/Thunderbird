@@ -67,6 +67,7 @@ type Request struct {
 func main() {
 	shouldReportVersion := flag.Bool("v", false, "version information")
 	commandLineCommand := flag.String("c", "", "command to run")
+	commandLineCommandParams := flag.String("p", "", "parameters for the command (JSON string)")
 	flag.Parse()
 
 	log.SetOutput(os.Stderr)
@@ -77,10 +78,28 @@ func main() {
 	}
 	if *commandLineCommand != "" {
 		switch *commandLineCommand {
-		//case "fetch":
-		//	FetchAndRespond(request.Params.Path)
-		//case "choose-file":
-		//	ChooseFileAndRespond(request.Params)
+		case "fetch":
+			if *commandLineCommandParams == "" {
+				fmt.Println(`missing required params via -p option, like: -p "{\"path":\"c:\\path\\to\\file\"}"`)
+				return
+			}
+			var params RequestParams
+			err := json.Unmarshal([]byte(*commandLineCommandParams), &params)
+			if err != nil {
+				log.Fatal(err)
+			}
+			FetchAndRespond(params.Path)
+		case "choose-file":
+			if *commandLineCommandParams == "" {
+				fmt.Println(`missing required params via -p option, like: -p "{\"title\":\"dialog title\",\"role\":\"role\",\"fileName\":\"txt\",\"displayName\":\"name of the filter\",\"pattern\":\"matching file pattern\"}" (or simply: -p \"{}\")`)
+				return
+			}
+			var params RequestParams
+			err := json.Unmarshal([]byte(*commandLineCommandParams), &params)
+			if err != nil {
+				log.Fatal(err)
+			}
+			ChooseFileAndRespond(params)
 		case "outlook-gpo-configs":
 			FetchOutlookGPOConfigsAndResponse()
 		default:
