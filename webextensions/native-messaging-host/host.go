@@ -68,6 +68,7 @@ func main() {
 	shouldReportVersion := flag.Bool("v", false, "version information")
 	commandLineCommand := flag.String("c", "", "command to run")
 	commandLineCommandParams := flag.String("p", "", "parameters for the command (JSON string)")
+	commandLineDebug := flag.Bool("d", false, "debug mode")
 	flag.Parse()
 
 	log.SetOutput(os.Stderr)
@@ -77,6 +78,10 @@ func main() {
 		return
 	}
 	if *commandLineCommand != "" {
+		if *commandLineDebug == true {
+			Logging = true
+			Debug = true
+		}
 		switch *commandLineCommand {
 		case "fetch":
 			if *commandLineCommandParams == "" {
