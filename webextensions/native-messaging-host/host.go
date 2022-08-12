@@ -19,6 +19,8 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -250,6 +252,7 @@ func ReadIntegerRegValue(key registry.Key, valueName string) (data uint64, error
 		//log.Fatal(err)
 		return 0, err.Error()
 	}
+	LogForDebug("Successfully got data of the value " + valueName + ": " + strconv.FormatUint(data,10))
 	return data, ""
 }
 
@@ -260,6 +263,7 @@ func ReadStringsRegValue(key registry.Key, valueName string) (data []string, err
 		//log.Fatal(err)
 		return data, err.Error()
 	}
+	LogForDebug("Successfully got data of the value " + valueName + ": " + strings.Join(data, " "))
 	return data, ""
 }
 
