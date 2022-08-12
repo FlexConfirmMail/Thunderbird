@@ -65,14 +65,29 @@ type Request struct {
 }
 
 func main() {
-	shouldReportVersion := flag.Bool("v", false, "v")
+	shouldReportVersion := flag.Bool("v", false, "version information")
+	commandLineCommand := flag.String("c", "", "command to run")
 	flag.Parse()
+
+	log.SetOutput(os.Stderr)
+
 	if *shouldReportVersion == true {
 		fmt.Println(VERSION)
 		return
 	}
-
-	log.SetOutput(os.Stderr)
+	if *commandLineCommand != "" {
+		switch *commandLineCommand {
+		//case "fetch":
+		//	FetchAndRespond(request.Params.Path)
+		//case "choose-file":
+		//	ChooseFileAndRespond(request.Params)
+		case "outlook-gpo-configs":
+			FetchOutlookGPOConfigsAndResponse()
+		default:
+			fmt.Println("unknown command: " + *commandLineCommand)
+		}
+		return
+	}
 
 	rawRequest, err := chrome.Receive(os.Stdin)
 	if err != nil {
