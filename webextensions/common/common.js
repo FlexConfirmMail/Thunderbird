@@ -311,14 +311,14 @@ export async function applyOutlookGPOConfigs() {
     configs.minConfirmMultipleRecipientDomainsCount = response.MinConfirmMultipleRecipientDomainsCount;
 
   if (response.HasFixedInternalDomains)
-    configs.fixedInternalDomains = response.fixedInternalDomains;
+    configs.fixedInternalDomains = response.FixedInternalDomains || [];
 
 /*
   if (response.HasBuiltInAttentionDomainsItems)
-    configs.builtInAttentionDomainsItems = response.builtInAttentionDomainsItems;
+    configs.builtInAttentionDomainsItems = response.BuiltInAttentionDomainsItems || [];
 
   if (response.HasBuiltInAttentionTermsItems)
-    configs.builtInAttentionTermsItems = response.builtInAttentionTermsItems;
+    configs.builtInAttentionTermsItems = response.BuiltInAttentionTermsItems || [];
 */
 }
 

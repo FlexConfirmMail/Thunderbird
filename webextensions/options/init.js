@@ -8,6 +8,7 @@
 import {
   configs,
   sendToHost,
+  applyOutlookGPOConfigs,
   sanitizeForHTMLText,
   toDOMDocumentFragment,
 } from '/common/common.js';
@@ -640,6 +641,7 @@ function onUserRuleAdded(_event) {
 
 window.addEventListener('DOMContentLoaded', async () => {
   await configs.$loaded;
+  await applyOutlookGPOConfigs();
 
   /* This always fails even if the native messaging host is available...
   const response = await sendToHost({ command: 'echo' });

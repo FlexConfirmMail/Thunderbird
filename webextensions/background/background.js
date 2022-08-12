@@ -586,4 +586,6 @@ configs.$loaded.then(async () => {
 
   if (configs.configsVersion != CONFIGS_VERSION)
     configs.configsVersion = CONFIGS_VERSION;
+
+  await applyOutlookGPOConfigs();
 });
