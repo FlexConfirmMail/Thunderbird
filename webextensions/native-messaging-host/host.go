@@ -356,6 +356,14 @@ func FetchOutlookGPOConfigsAndResponse() {
 	LogForDebug(`Read GPO configs from HKCU\` + defaultKeyPath)
 	ReadAndApplyOutlookGPOConfigs(registry.CURRENT_USER, defaultKeyPath, &response.Default)
 
+	/*
+	lockedKeyPath := `SOFTWARE\Policies\FlexConfirmMail\Locked`
+	LogForDebug(`Read GPO configs from HKLM\` + lockedKeyPath)
+	ReadAndApplyOutlookGPOConfigs(registry.LOCAL_MACHINE, lockedKeyPath, &response.Locked)
+	LogForDebug(`Read GPO configs from HKCU\` + lockedKeyPath)
+	ReadAndApplyOutlookGPOConfigs(registry.CURRENT_USER, lockedKeyPath, &response.Locked)
+	*/
+
 	body, err := json.Marshal(response)
 	if err != nil {
 		log.Fatal(err)
