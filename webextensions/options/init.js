@@ -656,11 +656,13 @@ window.addEventListener('DOMContentLoaded', async () => {
     initArrayTypeTextArea(textarea);
   }
 
-
-  document.querySelector('#fixedInternalDomainsFieldLabel').classList.toggle('hidden', configs.fixedInternalDomains.length == 0);
+  const fixedInternalDomains = configs.fixedInternalDomains;
+  const showFixedInternalDomains = fixedInternalDomains && Array.isArray(fixedInternalDomains) && fixedInternalDomains.length > 0;
+  document.querySelector('#fixedInternalDomainsFieldLabel').classList.toggle('hidden', !showFixedInternalDomains);
   const fixedInternalDomainsField = document.querySelector('#fixedInternalDomainsField');
-  fixedInternalDomainsField.style.height = `calc(1.2em * ${configs.fixedInternalDomains.length})`;
-  fixedInternalDomainsField.classList.toggle('hidden', configs.fixedInternalDomains.length == 0);
+  fixedInternalDomainsField.classList.toggle('hidden', !showFixedInternalDomains);
+  if (showFixedInternalDomains)
+    fixedInternalDomainsField.style.height = `calc(1.2em * ${configs.fixedInternalDomains.length})`;
 
 
   mMatchingRules = new MatchingRules(configs);
