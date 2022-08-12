@@ -286,8 +286,14 @@ export async function readFile(path) {
 
 
 function applyOutlookGPOConfig(response, key) {
-  const remoteKey = `${key.charAt(0).toUpperCase()}{key.slice(1)}`;
-  const localKey = `${key.charAt(0).toLowerCase()}{key.slice(1)}`;
+  const remoteKey = `${key.charAt(0).toUpperCase()}${key.slice(1)}`;
+  const localKey = `${key.charAt(0).toLowerCase()}${key.slice(1)}`;
+  log(`applyOutlookGPOConfigRuleItems: ${localKey} from ${remoteKey}`, {
+    default:    response.Default[remoteKey],
+    hasDefault: response.Default[`Has${remoteKey}`],
+    locked:     response.Locked[remoteKey],
+    hasLocked:  response.Locked[`Has${remoteKey}`],
+  });
   if (response.Default[`Has${remoteKey}`])
     configs.$default[localKey] = response[remoteKey];
   if (response.Locked[`Has${remoteKey}`]) {
@@ -297,34 +303,58 @@ function applyOutlookGPOConfig(response, key) {
 }
 
 function applyOutlookGPOConfigRuleItems(response, id) {
-  const remoteKey = `${id.charAt(0).toUpperCase()}{id.slice(1)}Items`;
+  const remoteKey = `${id.charAt(0).toUpperCase()}${id.slice(1)}Items`;
+  log(`applyOutlookGPOConfigRuleItems: ${id} from ${remoteKey}`, {
+    default:    response.Default[remoteKey],
+    hasDefault: response.Default[`Has${remoteKey}`],
+    locked:     response.Locked[remoteKey],
+    hasLocked:  response.Locked[`Has${remoteKey}`],
+  });
   if (response.Default[`Has${remoteKey}`]) {
-    const rule = [...configs.overrideBaseRules, ...configs.baseRules].find(rule => rule.id == id);
+    const overrideBaseRules = clone(configs.overrideBaseRules);
+    const overrideBaseRule = overrideBaseRules.find(rule => rule.id == id);
+    const baseRules = clone(configs.baseRules);
+    const baseRule = baseRules.find(rule => rule.id == id);
     const itemsLocal = response.Default[remoteKey] || [];
-    if (rule) {
-      rule.itemsLocal = itemsLocal;
+    log('overrideBaseRule = ', overrideBaseRule);
+    log('baseRule = ', baseRule);
+    if (overrideBaseRule) {
+      overrideBaseRule.itemsLocal = itemsLocal;
+      overrideBaseRule.enabled = true;
+      configs.overrideBaseRules = overrideBaseRules;
+    }
+    else if (baseRule) {
+      baseRule.itemsLocal = itemsLocal;
+      baseRule.enabled = true;
+      configs.baseRules = baseRules;
     }
     else {
       configs.overrideBaseRules = [
-        ...clone(configs.overrideBaseRules),
+        ...overrideBaseRules,
         {
-          id: id,
+          id:      id,
+          enabled: true,
           itemsLocal,
         },
       ];
     }
   }
   if (response.Locked[`Has${remoteKey}`]) {
-    const rule = configs.overrideRules.find(rule => rule.id == id);
+    const overrideRules = clone(configs.overrideRules);
+    const overrideRule = configs.overrideRules.find(rule => rule.id == id);
     const itemsLocal = response.Locked[remoteKey] || [];
-    if (rule) {
-      rule.itemsLocal = itemsLocal;
+    log('overrideRule = ', overrideRule);
+    if (overrideRule) {
+      overrideRule.itemsLocal = itemsLocal;
+      overrideRule.enabled = true;
+      configs.overrideRules = overrideRules;
     }
     else {
       configs.overrideRules = [
-        ...clone(configs.overrideBaseRules),
+        ...overrideRules,
         {
-          id: id,
+          id:      id,
+          enabled: true,
           itemsLocal,
         },
       ];
