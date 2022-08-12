@@ -284,6 +284,54 @@ export async function readFile(path) {
   return response && response.contents;
 }
 
+
+function applyOutlookGPOConfig(response, key) {
+  const remoteKey = `${key.charAt(0).toUpperCase()}{key.slice(1)}`;
+  const localKey = `${key.charAt(0).toLowerCase()}{key.slice(1)}`;
+  if (response.Default[`Has${remoteKey}`])
+    configs.$default[localKey] = response[remoteKey];
+  if (response.Locked[`Has${remoteKey}`]) {
+    configs[localKey] = response[remoteKey];
+    configs.$lock(localKey);
+  }
+}
+
+function applyOutlookGPOConfigRuleItems(response, id) {
+  const remoteKey = `${id.charAt(0).toUpperCase()}{id.slice(1)}Items`;
+  if (response.Default[`Has${remoteKey}`]) {
+    const rule = [...configs.overrideBaseRules, ...configs.baseRules].find(rule => rule.id == id);
+    const itemsLocal = response.Default[remoteKey] || [];
+    if (rule) {
+      rule.itemsLocal = itemsLocal;
+    }
+    else {
+      configs.overrideBaseRules = [
+        ...clone(configs.overrideBaseRules),
+        {
+          id: id,
+          itemsLocal,
+        },
+      ];
+    }
+  }
+  if (response.Locked[`Has${remoteKey}`]) {
+    const rule = configs.overrideRules.find(rule => rule.id == id);
+    const itemsLocal = response.Locked[remoteKey] || [];
+    if (rule) {
+      rule.itemsLocal = itemsLocal;
+    }
+    else {
+      configs.overrideRules = [
+        ...clone(configs.overrideBaseRules),
+        {
+          id: id,
+          itemsLocal,
+        },
+      ];
+    }
+  }
+}
+
 export async function applyOutlookGPOConfigs() {
   const response = await sendToHost({
     command: Constants.HOST_COMMAND_FETCH_OUTLOOK_GPO_CONFIGS,
@@ -292,34 +340,15 @@ export async function applyOutlookGPOConfigs() {
   if (!response)
     return;
 
-  if (response.HasCountdownAllowSkip)
-    configs.countdownAllowSkip = response.CountdownAllowSkip;
-
-  if (response.HasShowCountdown)
-    configs.showCountdown = response.ShowCountdown;
-
-  if (response.HasCountdownSeconds)
-    configs.countdownSeconds = response.CountdownSeconds;
-
-  if (response.HasSkipConfirmationForInternalMail)
-    configs.skipConfirmationForInternalMail = response.SkipConfirmationForInternalMail;
-
-  if (response.HasConfirmMultipleRecipientDomains)
-    configs.confirmMultipleRecipientDomains = response.ConfirmMultipleRecipientDomains;
-
-  if (response.HasMinConfirmMultipleRecipientDomainsCount)
-    configs.minConfirmMultipleRecipientDomainsCount = response.MinConfirmMultipleRecipientDomainsCount;
-
-  if (response.HasFixedInternalDomains)
-    configs.fixedInternalDomains = response.FixedInternalDomains || [];
-
-/*
-  if (response.HasBuiltInAttentionDomainsItems)
-    configs.builtInAttentionDomainsItems = response.BuiltInAttentionDomainsItems || [];
-
-  if (response.HasBuiltInAttentionTermsItems)
-    configs.builtInAttentionTermsItems = response.BuiltInAttentionTermsItems || [];
-*/
+  applyOutlookGPOConfig(response, 'countdownAllowSkip');
+  applyOutlookGPOConfig(response, 'showCountdown');
+  applyOutlookGPOConfig(response, 'countdownSeconds');
+  applyOutlookGPOConfig(response, 'skipConfirmationForInternalMail');
+  applyOutlookGPOConfig(response, 'confirmMultipleRecipientDomains');
+  applyOutlookGPOConfig(response, 'minConfirmMultipleRecipientDomainsCount');
+  applyOutlookGPOConfig(response, 'fixedInternalDomains');
+  applyOutlookGPOConfigRuleItems(response, 'builtInAttentionDomains');
+  applyOutlookGPOConfigRuleItems(response, 'builtInAttentionTerms');
 }
 
 

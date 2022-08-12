@@ -289,6 +289,11 @@ type TbStyleConfigs struct {
 	HasBuiltInAttentionTermsItems              bool     `json:hasBuiltInAttentionTermsItems`
 }
 
+type OutlookGPOConfigsResponse struct {
+	Default TbStyleConfigs `json:default`
+	Locked  TbStyleConfigs `json:locked`
+}
+
 func ReadAndApplyOutlookGPOConfigs(base registry.Key, keyPath string, configs *TbStyleConfigs) {
 	key, err := registry.OpenKey(base,
 		keyPath,
@@ -343,13 +348,13 @@ func ReadAndApplyOutlookGPOConfigs(base registry.Key, keyPath string, configs *T
 }
 
 func FetchOutlookGPOConfigsAndResponse() {
-	response := TbStyleConfigs{}
+	response := OutlookGPOConfigsResponse{}
 
 	defaultKeyPath := `SOFTWARE\Policies\FlexConfirmMail\Default`
 	LogForDebug(`Read GPO configs from HKLM\` + defaultKeyPath)
-	ReadAndApplyOutlookGPOConfigs(registry.LOCAL_MACHINE, defaultKeyPath, &response)
+	ReadAndApplyOutlookGPOConfigs(registry.LOCAL_MACHINE, defaultKeyPath, &response.Default)
 	LogForDebug(`Read GPO configs from HKCU\` + defaultKeyPath)
-	ReadAndApplyOutlookGPOConfigs(registry.CURRENT_USER, defaultKeyPath, &response)
+	ReadAndApplyOutlookGPOConfigs(registry.CURRENT_USER, defaultKeyPath, &response.Default)
 
 	body, err := json.Marshal(response)
 	if err != nil {
