@@ -305,15 +305,20 @@ func ReadAndApplyOutlookGPOConfigs(base registry.Key, keyPath string, configs *T
 	}
 	defer key.Close()
 
+	countAllowSkip, errMsg := ReadIntegerRegValue(key, "CountAllowSkip")
+	if errMsg == "" {
+		configs.CountdownAllowSkip = countAllowSkip == 1
+		configs.HasCountdownAllowSkip = true
+	}
 	countEnabled, errMsg := ReadIntegerRegValue(key, "CountEnabled")
 	if errMsg == "" {
 		configs.ShowCountdown = countEnabled == 1
-		configs.HasCountdownAllowSkip = true
+		configs.HasShowCountdown = true
 	}
 	countSeconds, errMsg := ReadIntegerRegValue(key, "CountSeconds")
 	if errMsg == "" {
 		configs.CountdownSeconds = countSeconds
-		configs.HasCountdownAllowSkip = true
+		configs.HasCountdownSeconds = true
 	}
 	mainSkipIfNoExt, errMsg := ReadIntegerRegValue(key, "MainSkipIfNoExt")
 	if errMsg == "" {
