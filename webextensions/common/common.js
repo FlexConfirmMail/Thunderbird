@@ -296,11 +296,14 @@ function applyOutlookGPOConfig(response, key) {
     locked:     lockedValue[remoteKey],
     hasLocked:  lockedValue[`Has${remoteKey}`],
   });
-  if (defaultValue[`Has${remoteKey}`])
-    configs.$default[localKey] = response[remoteKey];
+  if (defaultValue[`Has${remoteKey}`]) {
+    configs.$default[localKey] = defaultValue[remoteKey];
+    log(`=> setting as default value: ${localKey} = `, defaultValue[remoteKey]);
+  }
   if (lockedValue[`Has${remoteKey}`]) {
-    configs[localKey] = response[remoteKey];
+    configs[localKey] = lockedValue[remoteKey];
     configs.$lock(localKey);
+    log(`=> setting as locked value: ${localKey} = `, lockedValue[remoteKey]);
   }
 }
 
