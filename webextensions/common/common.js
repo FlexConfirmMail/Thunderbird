@@ -286,36 +286,40 @@ export async function readFile(path) {
 
 
 function applyOutlookGPOConfig(response, key) {
+  const defaultValue = response.Default || {};
+  const lockedValue = response.Locked || {};
   const remoteKey = `${key.charAt(0).toUpperCase()}${key.slice(1)}`;
   const localKey = `${key.charAt(0).toLowerCase()}${key.slice(1)}`;
   log(`applyOutlookGPOConfigRuleItems: ${localKey} from ${remoteKey}`, {
-    default:    response.Default[remoteKey],
-    hasDefault: response.Default[`Has${remoteKey}`],
-    locked:     response.Locked[remoteKey],
-    hasLocked:  response.Locked[`Has${remoteKey}`],
+    default:    defaultValue[remoteKey],
+    hasDefault: defaultValue[`Has${remoteKey}`],
+    locked:     lockedValue[remoteKey],
+    hasLocked:  lockedValue[`Has${remoteKey}`],
   });
-  if (response.Default[`Has${remoteKey}`])
+  if (defaultValue[`Has${remoteKey}`])
     configs.$default[localKey] = response[remoteKey];
-  if (response.Locked[`Has${remoteKey}`]) {
+  if (lockedValue[`Has${remoteKey}`]) {
     configs[localKey] = response[remoteKey];
     configs.$lock(localKey);
   }
 }
 
 function applyOutlookGPOConfigRuleItems(response, id) {
+  const defaultValue = response.Default || {};
+  const lockedValue = response.Locked || {};
   const remoteKey = `${id.charAt(0).toUpperCase()}${id.slice(1)}Items`;
   log(`applyOutlookGPOConfigRuleItems: ${id} from ${remoteKey}`, {
-    default:    response.Default[remoteKey],
-    hasDefault: response.Default[`Has${remoteKey}`],
-    locked:     response.Locked[remoteKey],
-    hasLocked:  response.Locked[`Has${remoteKey}`],
+    default:    defaultValue[remoteKey],
+    hasDefault: defaultValue[`Has${remoteKey}`],
+    locked:     lockedValue[remoteKey],
+    hasLocked:  lockedValue[`Has${remoteKey}`],
   });
-  if (response.Default[`Has${remoteKey}`]) {
+  if (defaultValue[`Has${remoteKey}`]) {
     const overrideBaseRules = clone(configs.overrideBaseRules);
     const overrideBaseRule = overrideBaseRules.find(rule => rule.id == id);
     const baseRules = clone(configs.baseRules);
     const baseRule = baseRules.find(rule => rule.id == id);
-    const itemsLocal = response.Default[remoteKey] || [];
+    const itemsLocal = defaultValue[remoteKey] || [];
     log('overrideBaseRule = ', overrideBaseRule);
     log('baseRule = ', baseRule);
     if (overrideBaseRule) {
@@ -339,10 +343,10 @@ function applyOutlookGPOConfigRuleItems(response, id) {
       ];
     }
   }
-  if (response.Locked[`Has${remoteKey}`]) {
+  if (lockedValue[`Has${remoteKey}`]) {
     const overrideRules = clone(configs.overrideRules);
     const overrideRule = configs.overrideRules.find(rule => rule.id == id);
-    const itemsLocal = response.Locked[remoteKey] || [];
+    const itemsLocal = lockedValue[remoteKey] || [];
     log('overrideRule = ', overrideRule);
     if (overrideRule) {
       overrideRule.itemsLocal = itemsLocal;
