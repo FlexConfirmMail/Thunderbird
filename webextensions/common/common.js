@@ -319,23 +319,40 @@ function applyOutlookGPOConfigRuleItems(response, id) {
   });
   if (defaultValue[`Has${remoteKey}`]) {
     const overrideBaseRules = clone(configs.overrideBaseRules);
-    const overrideBaseRule = overrideBaseRules.find(rule => rule.id == id);
+    const overrideBaseRule  = overrideBaseRules.find(rule => rule.id == id);
     const baseRules = clone(configs.baseRules);
-    const baseRule = baseRules.find(rule => rule.id == id);
+    const baseRule  = baseRules.find(rule => rule.id == id);
+    const userRules = clone(configs.userRules)
+    const userRule  = userRules.find(rule => rule.id == id);
     const itemsLocal = defaultValue[remoteKey] || [];
+    const stringifiedItemsLocal = itemsLocal;
     log('overrideBaseRule = ', overrideBaseRule);
     log('baseRule = ', baseRule);
+    log('userRule = ', userRule);
+    const userRuleItems = JSON.stringify(userRule.itemsLocal);
+    const userRuleSameToOldDefault = (
+      userRuleItems == JSON.stringify(baseRule.itemsLocal) ||
+      (overrideBaseRule &&
+       userRuleItems == JSON.stringify(overrideBaseRule.itemsLocal))
+    );
+    log('userRuleSameToOldDefault = ', userRuleSameToOldDefault);
+    let needUpdateUserRule = false;
     if (overrideBaseRule) {
+      log('apply to overrideBaseRule');
+      needUpdateUserRule = stringifiedItemsLocal != JSON.stringify(overrideBaseRule.itemsLocal);
       overrideBaseRule.itemsLocal = itemsLocal;
       overrideBaseRule.enabled = true;
       configs.overrideBaseRules = overrideBaseRules;
     }
     else if (baseRule) {
+      log('apply to baseRule');
+      needUpdateUserRule = stringifiedItemsLocal != JSON.stringify(baseRule.itemsLocal);
       baseRule.itemsLocal = itemsLocal;
       baseRule.enabled = true;
       configs.baseRules = baseRules;
     }
     else {
+      log('apply to overrideBaseRules');
       configs.overrideBaseRules = [
         ...overrideBaseRules,
         {
@@ -344,6 +361,14 @@ function applyOutlookGPOConfigRuleItems(response, id) {
           itemsLocal,
         },
       ];
+    }
+    log('needUpdateUserRule: ', needUpdateUserRule);
+    if (userRuleSameToOldDefault &&
+        needUpdateUserRule) {
+      log('updating userRule');
+      userRule.itemsLocal = itemsLocal;
+      userRule.enabled = itemsLocal.length > 0;
+      configs.userRules = userRules;
     }
   }
   if (lockedValue[`Has${remoteKey}`]) {
