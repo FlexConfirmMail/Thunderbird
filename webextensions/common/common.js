@@ -297,7 +297,7 @@ function applyOutlookGPOConfig(response, key) {
     hasLocked:  lockedValue[`Has${remoteKey}`],
   });
   if (defaultValue[`Has${remoteKey}`]) {
-    configs.$setDefaultValue(localKey, defaultValue[remoteKey]);
+    configs.$default[localKey] = defaultValue[remoteKey];
     log(`=> setting as default value: ${localKey} = `, defaultValue[remoteKey]);
   }
   if (lockedValue[`Has${remoteKey}`]) {
