@@ -11,6 +11,7 @@ import {
   applyOutlookGPOConfigs,
   sanitizeForHTMLText,
   toDOMDocumentFragment,
+  clone,
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
 import Options from '/extlib/Options.js';
@@ -263,6 +264,9 @@ function rebuildUserRulesUI() {
               <textarea id=${safeAttrValue('userRule-ui-itemsLocal:' + id)}
                         class="userRule-ui-itemsLocal ${hiddenIfLocked(rule, 'itemsLocal')}"
                         placeholder=${safeLocalizedValue('config_userRule_itemsLocal_placeholder_' + matchTargetSuffix)}></textarea>
+              <button id=${safeAttrValue('userRule-ui-button-resetItemsLocal:' + id)}
+                      class="userRule-button-resetItemsLocal ${hiddenIfLocked(rule, 'itemsLocal')}"
+                     >${safeLocalizedText('config_userRules_resetItemsLocal_label')}</button>
               </li>
           <li id=${safeAttrValue('userRule-ui-itemsSource-container-itemsFile:' + id)}
               class="${rule.$lockedKeys.includes('itemsSource') && rule.itemsSource != Constants.SOURCE_FILE ? 'hidden' : ''}"
@@ -463,6 +467,36 @@ async function removeRule(id) {
   rebuildUserRulesUI();
 }
 
+async function resetRuleItemsLocal(id) {
+  let result;
+  try {
+    result = await RichConfirm.show({
+      modal: true,
+      type:  'common-dialog',
+      url:   '/resources/blank.html',
+      message: browser.i18n.getMessage('config_userRules_resetItemsLocal_confirmMessage', [mMatchingRules.get(id).name]),
+      buttons: [
+        browser.i18n.getMessage('config_userRules_reset_accept'),
+        browser.i18n.getMessage('config_userRules_reset_cancel')
+      ]
+    });
+  }
+  catch(_error) {
+    result = { buttonIndex: -1 };
+  }
+  if (result.buttonIndex != 0)
+    return;
+
+  const overrideBaseRules = clone(configs.overrideBaseRules);
+  const overrideBaseRule  = overrideBaseRules.find(rule => rule.id == id);
+  const baseRules = clone(configs.baseRules);
+  const baseRule  = baseRules.find(rule => rule.id == id);
+
+  const field = document.querySelector(`#userRule-ui-itemsLocal\\:${id}`);
+  field.value = (overrideBaseRule ? overrideBaseRule.itemsLocal : baseRule ? baseRule.itemsLocal : []).join('\n');
+  reserveToSaveUserRuleChange(field);
+}
+
 async function chooseItemsFile(id) {
   const rule = mMatchingRules.get(id);
   const path = await chooseFile({
@@ -515,6 +549,12 @@ function onUserRuleClick(event) {
   const chooseFileButton = event.target.closest('.userRule-ui-itemsSource-chooseFileButton');
   if (chooseFileButton) {
     chooseItemsFile(chooseFileButton.id.split(':')[1]);
+    return;
+  }
+
+  const resetItemsLocalButton = event.target.closest('.userRule-button-resetItemsLocal');
+  if (resetItemsLocalButton) {
+    resetRuleItemsLocal(resetItemsLocalButton.id.split(':')[1]);
     return;
   }
 }

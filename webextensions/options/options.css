@@ -115,6 +115,12 @@ li textarea {
   width: calc(100% - 2em);
 }
 
+li textarea + button {
+  margin-left: auto;
+  margin-right: 0;
+  display: flex;
+}
+
 textarea#fixedInternalDomainsField {
   border: 0 none;
   line-height: 1.2;

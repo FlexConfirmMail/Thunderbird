@@ -120,6 +120,13 @@
   "config_userRules_moveUp_tooltiptext":   { "message": "Move Up" },
   "config_userRules_moveDown_label":       { "message": "▼" },
   "config_userRules_moveDown_tooltiptext": { "message": "Move Down" },
+  "config_userRules_resetItemsLocal_label": { "message": "Reset to Default" },
+  "config_userRules_resetItemsLocal_confirmMessage": { "message": "Are you sure to reset items of \"$NAME$\" ?",
+    "placeholders": {
+      "name": { "content": "$1", "example": "rule name" }
+    }},
+  "config_userRules_reset_accept":         { "message": "Reset to Default" },
+  "config_userRules_reset_cancel":         { "message": "Cancel" },
 
   "config_userRule_name_placeholder":    { "message": "Title" },
   "config_userRule_name_button_label":   { "message": "Edit" },

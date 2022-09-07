@@ -120,6 +120,13 @@
   "config_userRules_moveUp_tooltiptext":   { "message": "向上移动" },
   "config_userRules_moveDown_label":       { "message": "▼" },
   "config_userRules_moveDown_tooltiptext": { "message": "向下移动" },
+  "config_userRules_resetItemsLocal_label": { "message": "重置设置" },
+  "config_userRules_resetItemsLocal_confirmMessage": { "message": "你真的想重置设置「$NAME$」吗？",
+    "placeholders": {
+      "name": { "content": "$1", "example": "rule name" }
+    }},
+  "config_userRules_reset_accept":         { "message": "重置设置" },
+  "config_userRules_reset_cancel":         { "message": "取消" },
 
   "config_userRule_name_placeholder":    { "message": "名称" },
   "config_userRule_name_button_label":   { "message": "编辑" },
