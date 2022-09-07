@@ -367,7 +367,8 @@ function applyOutlookGPOConfigRuleItems(response, id) {
         needUpdateUserRule) {
       log('updating userRule');
       userRule.itemsLocal = itemsLocal;
-      userRule.enabled = itemsLocal.length > 0;
+      if (itemsLocal.length > 0)
+        userRule.enabled = true;
       configs.userRules = userRules;
     }
   }
