@@ -24,7 +24,7 @@ import (
 	"time"
 )
 
-const VERSION = "4.1.1";
+const VERSION = "4.1.2";
 
 
 var RunInCLI bool
