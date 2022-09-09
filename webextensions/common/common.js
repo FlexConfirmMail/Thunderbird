@@ -318,12 +318,12 @@ function applyOutlookGPOConfigRuleItems(response, id) {
     hasLocked:  lockedValue[`Has${remoteKey}`],
   });
   if (defaultValue[`Has${remoteKey}`]) {
-    const overrideBaseRules = clone(configs.overrideBaseRules);
-    const overrideBaseRule  = overrideBaseRules.find(rule => rule.id == id);
-    const baseRules = clone(configs.baseRules);
-    const baseRule  = baseRules.find(rule => rule.id == id);
-    const userRules = clone(configs.userRules)
-    const userRule  = userRules.find(rule => rule.id == id);
+    const overrideBaseRules = clone(configs.overrideBaseRules || []);
+    const overrideBaseRule  = overrideBaseRules.find(rule => rule && rule.id == id);
+    const baseRules = clone(configs.baseRules || []);
+    const baseRule  = baseRules.find(rule => rule && rule.id == id);
+    const userRules = clone(configs.userRules || []);
+    const userRule  = userRules.find(rule => rule && rule.id == id);
     const itemsLocal = defaultValue[remoteKey] || [];
     const stringifiedItemsLocal = itemsLocal;
     log('overrideBaseRule = ', overrideBaseRule);
@@ -365,7 +365,8 @@ function applyOutlookGPOConfigRuleItems(response, id) {
       ];
     }
     log('needUpdateUserRule: ', needUpdateUserRule);
-    if (userRuleSameToOldDefault &&
+    if (userRule &&
+        userRuleSameToOldDefault &&
         needUpdateUserRule) {
       log('updating userRule');
       userRule.itemsLocal = itemsLocal;
@@ -375,8 +376,8 @@ function applyOutlookGPOConfigRuleItems(response, id) {
     }
   }
   if (lockedValue[`Has${remoteKey}`]) {
-    const overrideRules = clone(configs.overrideRules);
-    const overrideRule = configs.overrideRules.find(rule => rule.id == id);
+    const overrideRules = clone(configs.overrideRules || []);
+    const overrideRule = configs.overrideRules.find(rule => rule && rule.id == id);
     const itemsLocal = lockedValue[remoteKey] || [];
     log('overrideRule = ', overrideRule);
     if (overrideRule) {
