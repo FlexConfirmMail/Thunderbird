@@ -332,9 +332,10 @@ function applyOutlookGPOConfigRuleItems(response, id) {
     const userRuleItems = userRule ? JSON.stringify(userRule.itemsLocal) : [];
     const userRuleSameToOldDefault = (
       userRule &&
-      userRuleItems == JSON.stringify(baseRule.itemsLocal) ||
-      (overrideBaseRule &&
-       userRuleItems == JSON.stringify(overrideBaseRule.itemsLocal))
+      ((baseRule &&
+        userRuleItems == JSON.stringify(baseRule.itemsLocal) ||
+       (overrideBaseRule &&
+        userRuleItems == JSON.stringify(overrideBaseRule.itemsLocal))))
     );
     log('userRuleSameToOldDefault = ', userRuleSameToOldDefault);
     let needUpdateUserRule = false;
