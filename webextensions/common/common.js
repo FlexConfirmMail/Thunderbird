@@ -329,8 +329,9 @@ function applyOutlookGPOConfigRuleItems(response, id) {
     log('overrideBaseRule = ', overrideBaseRule);
     log('baseRule = ', baseRule);
     log('userRule = ', userRule);
-    const userRuleItems = JSON.stringify(userRule.itemsLocal);
+    const userRuleItems = userRule ? JSON.stringify(userRule.itemsLocal) : [];
     const userRuleSameToOldDefault = (
+      userRule &&
       userRuleItems == JSON.stringify(baseRule.itemsLocal) ||
       (overrideBaseRule &&
        userRuleItems == JSON.stringify(overrideBaseRule.itemsLocal))
@@ -339,14 +340,14 @@ function applyOutlookGPOConfigRuleItems(response, id) {
     let needUpdateUserRule = false;
     if (overrideBaseRule) {
       log('apply to overrideBaseRule');
-      needUpdateUserRule = stringifiedItemsLocal != JSON.stringify(overrideBaseRule.itemsLocal);
+      needUpdateUserRule = userRule && stringifiedItemsLocal != JSON.stringify(overrideBaseRule.itemsLocal);
       overrideBaseRule.itemsLocal = itemsLocal;
       overrideBaseRule.enabled = true;
       configs.overrideBaseRules = overrideBaseRules;
     }
     else if (baseRule) {
       log('apply to baseRule');
-      needUpdateUserRule = stringifiedItemsLocal != JSON.stringify(baseRule.itemsLocal);
+      needUpdateUserRule = userRule && stringifiedItemsLocal != JSON.stringify(baseRule.itemsLocal);
       baseRule.itemsLocal = itemsLocal;
       baseRule.enabled = true;
       configs.baseRules = baseRules;
