@@ -704,9 +704,9 @@ window.addEventListener('DOMContentLoaded', async () => {
   if (showFixedInternalDomains)
     fixedInternalDomainsField.style.height = `calc(1.2em * ${configs.fixedInternalDomains.length})`;
 
-  const internalDomainsEditable = configs.$isLocked('internalDomainsField');
+  const internalDomainsEditable = !configs.$isLocked('internalDomains');
   for (const field of document.querySelectorAll('#internalDomainsField, #descriptionForEditableInternalDomains')) {
-    field.classList.toggle('hidden', internalDomainsEditable);
+    field.classList.toggle('hidden', !internalDomainsEditable);
   }
 
   mMatchingRules = new MatchingRules(configs);
