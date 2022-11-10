@@ -704,6 +704,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   if (showFixedInternalDomains)
     fixedInternalDomainsField.style.height = `calc(1.2em * ${configs.fixedInternalDomains.length})`;
 
+  document.querySelector('#internalDomainsField').classList.toggle('hidden', configs.$isLocked('internalDomainsField'));
 
   mMatchingRules = new MatchingRules(configs);
 
