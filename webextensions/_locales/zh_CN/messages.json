@@ -95,7 +95,8 @@
 
   "config_internalDomains_caption": { "message": "将被视为组织内的电子邮件地址的域名。" },
   "config_internalDomains_input_placeholder": { "message": "一行一行地输入域名（例子：example.com）" },
-  "config_fixedInternalDomains_label": { "message": "以下域是由组策略信任的。你也可以通过在开头添加\"-\"来排除域名。" },
+  "config_fixedInternalDomains_label": { "message": "以下域是由组策略信任的。" },
+  "config_fixedInternalDomains_label_editable": { "message": "你也可以通过在开头添加\"-\"来排除域名。" },
 
   "config_skipConfirmationForInternalMail_label": { "message": "在发送所有目的地为注册域名的电子邮件时，没有确认对话" },
   "config_minConfirmationRecipientsCount_label_before": { "message": "如果有" },

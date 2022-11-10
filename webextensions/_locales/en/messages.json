@@ -95,7 +95,8 @@
 
   "config_internalDomains_caption": { "message": "Domains treated as internals" },
   "config_internalDomains_input_placeholder": { "message": "Input domain names per line (e.g. example.com)" },
-  "config_fixedInternalDomains_label": { "message": "Following domains are listed by the system administrator. You can deactivate individual domains by adding \"-\" at the beginning." },
+  "config_fixedInternalDomains_label": { "message": "Following domains are listed by the system administrator." },
+  "config_fixedInternalDomains_label_editable": { "message": "You can deactivate individual domains by adding \"-\" at the beginning." },
 
   "config_skipConfirmationForInternalMail_label": { "message": "Skip confirmation if all recipients are internals" },
   "config_minConfirmationRecipientsCount_label_before": { "message": "Skip confirmation if there are/is only" },
