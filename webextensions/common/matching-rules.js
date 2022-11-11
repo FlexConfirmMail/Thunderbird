@@ -113,30 +113,34 @@ export class MatchingRules {
           break;
 
         case Constants.MATCH_TO_ATTACHMENT_NAME:
-          this._$attachmentMatchers[rule.id] = new RegExp(`(${rule.items.join('|')})`, 'i');
+          this._$attachmentMatchers[rule.id] = new RegExp(`(${rule.items.map(this.$sanitizeRegExpSource).join('|')})`, 'i');
           break;
 
         case Constants.MATCH_TO_ATTACHMENT_SUFFIX:
-          this._$attachmentMatchers[rule.id] = new RegExp(`\\.(${rule.items.map(suffix => suffix.replace(/^\./, '')).join('|')})$`, 'i');
+          this._$attachmentMatchers[rule.id] = new RegExp(`\\.(${rule.items.map(suffix => this.$sanitizeRegExpSource(suffix).replace(/^\./, '')).join('|')})$`, 'i');
           break;
 
         case Constants.MATCH_TO_SUBJECT:
-          this._$subjectMatchers[rule.id] = new RegExp(`(${rule.items.join('|')})`, 'gi');
+          this._$subjectMatchers[rule.id] = new RegExp(`(${rule.items.map(this.$sanitizeRegExpSource).join('|')})`, 'gi');
           break;
 
         case Constants.MATCH_TO_BODY:
-          this._$bodyMatchers[rule.id] = new RegExp(`(${rule.items.join('|')})`, 'gi');
+          this._$bodyMatchers[rule.id] = new RegExp(`(${rule.items.map(this.$sanitizeRegExpSource).join('|')})`, 'gi');
           break;
 
-        case Constants.MATCH_TO_SUBJECT_OR_BODY:
-          this._$subjectMatchers[rule.id] = new RegExp(`(${rule.items.join('|')})`, 'gi');
-          this._$bodyMatchers[rule.id] = new RegExp(`(${rule.items.join('|')})`, 'gi');
-          break;
+        case Constants.MATCH_TO_SUBJECT_OR_BODY: {
+          const sanitizedItems = rule.items.map(this.$sanitizeRegExpSource).join('|');
+          this._$subjectMatchers[rule.id] = new RegExp(`(${sanitizedItems})`, 'gi');
+          this._$bodyMatchers[rule.id] = new RegExp(`(${sanitizedItems})`, 'gi');
+        }; break;
 
         default:
           break;
       }
     }
+  }
+  $sanitizeRegExpSource(source) { // https://stackoverflow.com/questions/6300183/sanitize-string-of-regex-characters-before-regexp-build
+    return source.replace(/[#-.]|[[-^]|[?|{}]/g, '\\$&');
   }
 
   get all() {
