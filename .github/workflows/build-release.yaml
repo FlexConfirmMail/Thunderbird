@@ -1,0 +1,45 @@
+on: [push]
+name: Build FlexConfirmMail
+jobs:
+  build:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 'stable'
+      - run: go version
+      - name: Install go-msi
+        run: choco install go-msi zip
+      # jq wixtoolset is already installed on windows-2019 image
+      - name: Setup PATH
+        run: |
+          echo "c:/ProgramData/chocolatey/bin" >> $Env:GITHUB_PATH
+          echo "c:/Program Files/go-msi" >> $Env:GITHUB_PATH
+          echo "c:/Program Files (x86)/WiX Toolset v3.11/bin" >> $Env:GITHUB_PATH
+      - name: Show PATH
+        run: |
+          echo $Env:PATH
+          echo $Env:GOPATH
+      - name: Install gox
+        run: go install github.com/mitchellh/gox@latest
+      - name: Make xpi
+        run: make
+      - name: Make Installer
+        run: make host
+        env:
+          GOPATH: C:\Users\runneradmin\go
+      - name: Make Native Messaging Host Installer
+        run: |
+          .\webextensions\native-messaging-host\build_msi.bat
+          dir
+          xcopy /I /Y .\webextensions\native-messaging-host\*.msi .
+      - name: Upload assets
+        uses: actions/upload-artifact@v3
+        with:
+          name: Assets
+          path: |
+            *.xpi
+            *.zip
+            *.msi
+
