@@ -13,43 +13,18 @@ else
   exit 1
 fi
 
-if [ "$GOPATH" = '' ]
-then
-  echo 'ERROR: You must set GOPATH environment variable before you run this script.' 1>&2
-  exit 1
-fi
-
-if [ -d "$temp_src" ]
-then
-  echo "ERROR: You must remove previous '$temp_src' before building." 1>&2
-  exit 1
-fi
-
 main() {
   build_host
   prepare_msi_sources
 }
 
 build_host() {
-  cd "$GOPATH"
-
-  echo "preparing dependencies..."
-  prepare_dependency github.com/harry1453/go-common-file-dialog
-    prepare_dependency github.com/go-ole/go-ole
-    prepare_dependency github.com/google/uuid
-  prepare_dependency github.com/mitchellh/gox
-  prepare_dependency github.com/lhside/chrome-go
-  prepare_dependency golang.org/x/sys/windows/registry
-  prepare_dependency github.com/lestrrat/go-file-rotatelogs
-  mkdir -p "$temp_src"
-  ln -s "$dist_dir" "$temp_src/host"
-
+  cd $dist_dir
   addon_version="$(cat "$dist_dir/../manifest.json" | jq -r .version)"
   echo "version is ${addon_version}"
-  sed -i -r -e "s/^(const VERSION = \")[^\"]*(\")/\1${addon_version}\2/" "$temp_src/host/host.go"
+  sed -i -r -e "s/^(const VERSION = \")[^\"]*(\")/\1${addon_version}\2/" $dist_dir/host.go
 
-  local path="$(echo "$temp_src" | sed 's;^src/;;')/host"
-  gox -os="windows" "$path"
+  gox -os="windows"
 
   local arch
   for binary in *.exe
@@ -58,9 +33,6 @@ build_host() {
     mkdir -p "$dist_dir/$arch"
     mv "$binary" "$dist_dir/$arch/host.exe"
   done
-
-  rm "$temp_src/host"
-  rm -rf "$temp_src"
 
   echo "done."
 }
