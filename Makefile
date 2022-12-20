@@ -15,7 +15,7 @@ xpi: makexpi/makexpi.sh copy-extlib
 	cd webextensions && make && cp ./*.xpi ../
 
 host:
-	cd webextensions && make host && cp ./*host.zip ../
+	cd webextensions && make host && cp ./*.zip ../
 
 unittest: makexpi/makexpi.sh copy-extlib
 	makexpi/makexpi.sh -n $(PACKAGE_NAME) -o
