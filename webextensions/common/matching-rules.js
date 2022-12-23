@@ -8,6 +8,10 @@
 import * as Constants from './constants.js';
 import * as RecipientParser from './recipient-parser.js';
 
+function clone(object) {
+  return JSON.parse(JSON.stringify(object));
+}
+
 const BASE_RULE = {
   id:             '', // arbitrary unique string (auto generated)
   name:           '', // arbitrary visible name in the UI
@@ -24,11 +28,11 @@ const BASE_RULE = {
 
 export class MatchingRules {
   constructor({ base, baseRules, overrideBase, overrideBaseRules, user, userRules, override, overrideRules } = {}) {
-    this.$baseRules     = base     || baseRules     || [];
-    this.$overrideBaseRules = overrideBase || overrideBaseRules || [];
+    this.$baseRules     = clone(base     || baseRules     || []);
+    this.$overrideBaseRules = clone(overrideBase || overrideBaseRules || []);
     this.$mergedBaseRulesById = {};
-    this.$userRules     = user     || userRules     || [];
-    this.$overrideRules = override || overrideRules || [];
+    this.$userRules     = clone(user     || userRules     || []);
+    this.$overrideRules = clone(override || overrideRules || []);
     this.$load();
   }
 
@@ -44,16 +48,16 @@ export class MatchingRules {
         let merged = mergedRulesById[id];
         if (!merged) {
           merged = mergedRulesById[id] = {
-            ...JSON.parse(JSON.stringify(BASE_RULE)),
+            ...clone(BASE_RULE),
             id,
             $lockedKeys: [],
           };
           mergedRules.push(merged);
         }
-        Object.assign(merged, rule);
+        Object.assign(merged, clone(rule));
         if (rules === this.$baseRules ||
             rules === this.$overrideBaseRules)
-          this.$mergedBaseRulesById[id] = JSON.parse(JSON.stringify(merged));
+          this.$mergedBaseRulesById[id] = clone(merged);
         if (locked) {
           merged.$lockedKeys.push(...Object.keys(rule).filter(key => key != 'id'));
         }
@@ -155,7 +159,7 @@ export class MatchingRules {
     const id = `rule-${Date.now()}-${parseInt(Math.random() * 56632)}`;
     const rule = {
       id,
-      ...JSON.parse(JSON.stringify(BASE_RULE)),
+      ...clone(BASE_RULE),
       ...params,
       enabled: true,
       $lockedKeys: [],
