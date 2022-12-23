@@ -24,7 +24,7 @@ jobs:
       - name: Install gox
         run: go install github.com/mitchellh/gox@latest
       - name: Make xpi
-        run: make
+        run: cd webextensions && make && cp *.xpi ..\
       - name: Make Installer
         run: make host
         env:
