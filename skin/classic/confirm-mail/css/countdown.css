@@ -1,6 +1,0 @@
-/* style */
-
-:root:not(.allow-skip) button[dlgtype="accept"] {
-	display: none;
-}
-
