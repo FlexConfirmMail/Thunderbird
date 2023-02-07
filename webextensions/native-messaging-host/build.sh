@@ -24,7 +24,7 @@ build_host() {
   echo "version is ${addon_version}"
   sed -i -r -e "s/^(const VERSION = \")[^\"]*(\")/\1${addon_version}\2/" $dist_dir/host.go
 
-  gox -os="windows/386 windows/amd64 darwin"
+  gox -osarch="windows/386 windows/amd64 darwin/amd64 darwin/arm64"
 
   local arch
   for binary in *.exe
