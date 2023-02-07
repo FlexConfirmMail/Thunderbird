@@ -11,6 +11,8 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/harry1453/go-common-file-dialog/cfd"
+	"github.com/harry1453/go-common-file-dialog/cfdutil"
 	"github.com/lhside/chrome-go"
 	"golang.org/x/sys/windows/registry"
 	"log"
@@ -18,6 +20,31 @@ import (
 	"strconv"
 	"strings"
 )
+
+
+func ChooseFile(params RequestParams) (path string, errorMessage string) {
+	result, err := cfdutil.ShowOpenFileDialog(cfd.DialogConfig{
+		Title: params.Title,
+		Role:  params.Role,
+		FileFilters: []cfd.FileFilter{
+			{
+				DisplayName: params.DisplayName,
+				Pattern:     params.Pattern,
+			},
+		},
+		SelectedFileFilterIndex: 0,
+		FileName:                params.FileName,
+		DefaultExtension:        params.DefaultExtension,
+	})
+	if err == cfd.ErrorCancelled {
+		return result, ""
+	} else if err != nil {
+		log.Fatal(err)
+		return "", err.Error()
+	}
+	return result, ""
+}
+
 
 func ReadIntegerRegValue(key registry.Key, valueName string) (data uint64, errorMessage string) {
 	data, _, err := key.GetIntegerValue(valueName)
