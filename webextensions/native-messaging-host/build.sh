@@ -27,12 +27,14 @@ build_host() {
   gox -osarch="windows/386 windows/amd64 darwin/amd64 darwin/arm64"
 
   local arch
-  for binary in *.exe
+  for binary in host_windows_*.exe
   do
     arch="$(basename "$binary" '.exe' | sed 's/.\+_windows_//')"
     mkdir -p "$dist_dir/$arch"
     mv "$binary" "$dist_dir/$arch/host.exe"
   done
+
+  prepare_macos_host_kit
 
   echo "done."
 }
@@ -80,6 +82,18 @@ prepare_msi_sources() {
   echo -e "xcopy *.msi \"%SOURCE%\" /I /Y \r" >> "$build_msi_bat"
   echo -e "cd /d \"%SOURCE%\" \r" >> "$build_msi_bat"
   echo -e "rd /S /Q \"%MSITEMP%\" \r" >> "$build_msi_bat"
+}
+
+prepare_macos_host_kit() {
+  mkdir -p "$dist_dir/darwin/"
+  mv host_darwin_* "$dist_dir/darwin/"
+
+  local build_script="$dist_dir/darwin/build_universal_binary.sh"
+  rm -f "$build_script"
+  touch "$build_script"
+  chmod +x "$build_script"
+  echo "#!/bin/sh" >> "$build_script"
+  echo "lipo -create -output host host_darwin_*" >> "$build_script"
 }
 
 main
