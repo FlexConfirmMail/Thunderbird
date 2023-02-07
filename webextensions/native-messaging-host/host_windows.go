@@ -41,33 +41,6 @@ func ReadStringsRegValue(key registry.Key, valueName string) (data []string, err
 	return data, ""
 }
 
-type TbStyleConfigs struct {
-	CountdownAllowSkip                         bool     `json:countdownAllowSkip`
-	ShowCountdown                              bool     `json:showCountdown`
-	CountdownSeconds                           uint64   `json:countdownSeconds`
-	SkipConfirmationForInternalMail            bool     `json:skipConfirmationForInternalMail`
-	ConfirmMultipleRecipientDomains            bool     `json:confirmMultipleRecipientDomains`
-	MinConfirmMultipleRecipientDomainsCount    uint64   `json:minConfirmMultipleRecipientDomainsCount`
-	FixedInternalDomains                       []string `json:fixedInternalDomains`
-	BuiltInAttentionDomainsItems               []string `json:builtInAttentionDomainsItems`
-	BuiltInAttentionTermsItems                 []string `json:builtInAttentionTermsItems`
-
-	HasCountdownAllowSkip                      bool     `json:hasCountdownAllowSkip`
-	HasShowCountdown                           bool     `json:hasShowCountdown`
-	HasCountdownSeconds                        bool     `json:hasCountdownSeconds`
-	HasSkipConfirmationForInternalMail         bool     `json:hasSkipConfirmationForInternalMail`
-	HasConfirmMultipleRecipientDomains         bool     `json:hasConfirmMultipleRecipientDomains`
-	HasMinConfirmMultipleRecipientDomainsCount bool     `json:hasMinConfirmMultipleRecipientDomainsCount`
-	HasFixedInternalDomains                    bool     `json:hasFixedInternalDomains`
-	HasBuiltInAttentionDomainsItems            bool     `json:hasBuiltInAttentionDomainsItems`
-	HasBuiltInAttentionTermsItems              bool     `json:hasBuiltInAttentionTermsItems`
-}
-
-type OutlookGPOConfigsResponse struct {
-	Default TbStyleConfigs `json:default`
-	Locked  TbStyleConfigs `json:locked`
-}
-
 func ReadAndApplyOutlookGPOConfigs(base registry.Key, keyPath string, configs *TbStyleConfigs) {
 	key, err := registry.OpenKey(base,
 		keyPath,
