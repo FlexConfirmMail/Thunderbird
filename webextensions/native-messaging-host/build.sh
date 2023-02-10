@@ -95,7 +95,9 @@ prepare_macos_host_kit() {
   touch "$build_script"
   chmod +x "$build_script"
   echo "#!/bin/sh" >> "$build_script"
+  # build universal binary
   echo "lipo -create -output host host_darwin_*" >> "$build_script"
+  # build .pkg
   echo "rm -rf staging" >> "$build_script"
   echo "mkdir -p 'staging/$host_name'" >> "$build_script"
   echo "cp *.json staging/" >> "$build_script"
