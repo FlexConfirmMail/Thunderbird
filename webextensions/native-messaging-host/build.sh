@@ -5,6 +5,8 @@
 dist_dir="$(cd "$(dirname "$0")" && pwd)"
 temp_src="src/temp_flexible_confirm_mail"
 
+host_name="$(ls *.windows.json | sed -E -e 's/.windows.json$//')"
+
 if go version 2>&1 >/dev/null
 then
   echo "using $(go version)"
@@ -48,7 +50,6 @@ prepare_msi_sources() {
   cd "$dist_dir"
 
   product_name="$(cat wix.json | jq -r .product)"
-  host_name="$(ls *.windows.json | grep -v wix.json | sed -E -e 's/.windows.json$//')"
   vendor_name="$(cat wix.json | jq -r .company)"
   addon_version="$(cat ../manifest.json | jq -r .version)"
   upgrade_code_guid="$(cat wix.json | jq -r '."upgrade-code"')"
@@ -87,6 +88,7 @@ prepare_msi_sources() {
 prepare_macos_host_kit() {
   mkdir -p "$dist_dir/darwin/"
   mv host_darwin_* "$dist_dir/darwin/"
+  cp $host_name.macos.json "$dist_dir/darwin/$host_name.json"
 
   local build_script="$dist_dir/darwin/build_universal_binary.sh"
   rm -f "$build_script"

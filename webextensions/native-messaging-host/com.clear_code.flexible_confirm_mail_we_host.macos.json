@@ -1,7 +1,7 @@
 {
   "name": "com.clear_code.flexible_confirm_mail_we_host",
   "description": "FlexConfirmMail Native Messaging Host",
-  "path": "host",
+  "path": "/Library/Application Support/Mozilla/NativeMessagingHosts/com.clear_code.flexible_confirm_mail_we_host/host",
   "type": "stdio",
   "allowed_extensions": [
     "flexible-confirm-mail@clear-code.com"
