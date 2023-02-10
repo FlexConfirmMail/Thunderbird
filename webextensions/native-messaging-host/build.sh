@@ -22,7 +22,7 @@ build_host() {
   cd $dist_dir
   addon_version="$(cat "$dist_dir/../manifest.json" | jq -r .version)"
   echo "version is ${addon_version}"
-  sed -i -r -e "s/^(const VERSION = \")[^\"]*(\")/\1${addon_version}\2/" $dist_dir/host.go
+  sed -i -E -e "s/^(const VERSION = \")[^\"]*(\")/\1${addon_version}\2/" $dist_dir/host.go
 
   gox -osarch="windows/386 windows/amd64 darwin/amd64 darwin/arm64"
 
@@ -56,7 +56,7 @@ prepare_msi_sources() {
   env_guid="$(cat wix.json | jq -r .env.guid)"
 
   cat templates/product.wxs.template |
-    sed -r -e "s/%PRODUCT%/${product_name}/g" \
+    sed -E -e "s/%PRODUCT%/${product_name}/g" \
            -e "s/%NAME%/${host_name}/g" \
            -e "s/%VENDOR%/${vendor_name}/g" \
            -e "s/%VERSION%/${addon_version}/g" \
