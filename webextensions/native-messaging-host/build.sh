@@ -90,12 +90,19 @@ prepare_macos_host_kit() {
   mv host_darwin_* "$dist_dir/darwin/"
   cp $host_name.macos.json "$dist_dir/darwin/$host_name.json"
 
-  local build_script="$dist_dir/darwin/build_universal_binary.sh"
+  local build_script="$dist_dir/darwin/build_pkg.sh"
   rm -f "$build_script"
   touch "$build_script"
   chmod +x "$build_script"
   echo "#!/bin/sh" >> "$build_script"
   echo "lipo -create -output host host_darwin_*" >> "$build_script"
+  echo "rm -rf staging" >> "$build_script"
+  echo "mkdir -p 'staging/$host_name'" >> "$build_script"
+  echo "cp *.json staging/" >> "$build_script"
+  echo "cp host 'staging/$host_name/'" >> "$build_script"
+  echo "chmod 644 staging/*.json" >> "$build_script"
+  echo "chmod 755 staging/*/host" >> "$build_script"
+  echo "pkgbuild --root staging --identifier $host_name --install-location '/Library/Application Support/Mozilla/NativeMessagingHosts/' --version \$(./host -v) $host_name.pkg" >> "$build_script"
 }
 
 main
