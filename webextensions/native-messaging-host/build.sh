@@ -48,7 +48,7 @@ prepare_msi_sources() {
   cd "$dist_dir"
 
   product_name="$(cat wix.json | jq -r .product)"
-  host_name="$(ls *.json | grep -v wix.json | sed -r -e 's/.json$//')"
+  host_name="$(ls *.windows.json | grep -v wix.json | sed -E -e 's/.windows.json$//')"
   vendor_name="$(cat wix.json | jq -r .company)"
   addon_version="$(cat ../manifest.json | jq -r .version)"
   upgrade_code_guid="$(cat wix.json | jq -r '."upgrade-code"')"
