@@ -21,10 +21,10 @@ main() {
 }
 
 build_host() {
-  cd $dist_dir
+  cd "$dist_dir"
   addon_version="$(cat "$dist_dir/../manifest.json" | jq -r .version)"
   echo "version is ${addon_version}"
-  sed -i -E -e "s/^(const VERSION = \")[^\"]*(\")/\1${addon_version}\2/" $dist_dir/host.go
+  sed -i -E -e "s/^(const VERSION = \")[^\"]*(\")/\1${addon_version}\2/" "$dist_dir/host.go"
 
   gox -osarch="windows/386 windows/amd64 darwin/amd64 darwin/arm64"
 
