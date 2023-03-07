@@ -1,7 +1,9 @@
 386
 amd64
+darwin
 outdir
 templates/product.wxs
 *.msi
-*.exe
+host_windows_*.exe
+host_darwin_*
 build_msi.bat

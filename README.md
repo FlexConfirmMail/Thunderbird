@@ -70,7 +70,8 @@ It will help you to create such an managed storage manifest with exported config
 
 ### How to build the native messaging host and its installer?
 
-On Windows 10 + WSL:
+Prepare Windows 10 + WSL and macOS environments.
+On Windows:
 
 1. [Install and setup Golang](https://golang.org/doc/install) on your Linux environment.
 2. Install go-msi https://github.com/mh-cbon/go-msi *via an MSI to your Windows environment*.
@@ -80,4 +81,13 @@ On Windows 10 + WSL:
    Then `.exe` files and a batch file to build MSI will be generated.
 6. Double-click the generated `webextensions\native-messaging-host\build_msi.bat` on your Windows environment.
    Then two MSIs will be generated.
+
+And, on macOS:
+
+1. Copy built `darwin` directory to the local storage.
+2. Run the terminal.
+3. `cd` to the copied `darwin` directory.
+4. Run `build_pkg.sh`.
+   Then a `.pkg` file will be generated.
+
 
