@@ -85,7 +85,7 @@ On Windows:
 
 And, on macOS:
 
-1. If you need to sign to the built binary and nortaize the built pkg, prepare these things:
+1. If you need to distribute notarized pkg, prepare these things:
    * Install XCode. (You may need to update the macOS before that.)
    * Create your personal Apple ID (assume it is `myname@example.com`) and join to the Apple Developer Program. (*Payment required)
    * Create an application passward named as `Pkg Signing`. Assme that the generated password is `aaaa-bbbb-cccc-dddd`.
