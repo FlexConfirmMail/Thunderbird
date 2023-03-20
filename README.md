@@ -77,7 +77,7 @@ On Windows:
    * On Ubuntu 22.04LTS: you may just run `sudo apt install golang-go gox gcc-aarch64-linux-gnu`
 2. Install go-msi https://github.com/mh-cbon/go-msi *via an MSI to your Windows environment*.
 3. Install WiX Toolset https://wixtoolset.org/releases/ to your Windows environment.
-4. Set PATH to go-msi (ex. `C:\Program Files\go-msi`) and WiX Toolse (ex. `C:\Program Files (x86)\WiX Toolset v3.11\bin`).
+4. Set PATH to go-msi (ex. `C:\Program Files\go-msi`) and WiX Toolset (ex. `C:\Program Files (x86)\WiX Toolset v3.11\bin`).
 5. Run `make host`.
    Then `.exe` files and a batch file to build MSI will be generated.
 6. Double-click the generated `webextensions\native-messaging-host\build_msi.bat` on your Windows environment.
