@@ -113,12 +113,12 @@ And, on macOS:
      6. Click `Download Your Certificate` to download the certificate file `developerID_installer.cer`.
      7. Double-click downloaded `developerID_installer.cer` to import it to the Keychain Access.
      8. In a terminal, run `security find-identity -v | grep -E -o '(Developer ID Installer:[^"]+")` to get the certificate name. Assume that it is `Developer ID Installer: My Company (XXXXXXXXXXX)`.
-  * Configure your shell (with `~/.bashrc` or `~/.zshrc`) as:
-    ```
-    export APPLE_ID="myname@example.com"
-    export APP_CERT_NAME="Developer ID Application: My Company (XXXXXXXXXXX)"
-    export PKG_CERT_NAME="Developer ID Installer: My Company (XXXXXXXXXXX)"
-    ```
+   * Configure your shell (with `~/.bashrc` or `~/.zshrc`) as:
+     ```
+     export APPLE_ID="myname@example.com"
+     export APP_CERT_NAME="Developer ID Application: My Company (XXXXXXXXXXX)"
+     export PKG_CERT_NAME="Developer ID Installer: My Company (XXXXXXXXXXX)"
+     ```
 1. Copy built `darwin` directory to the local storage.
 2. Open a terminal window.
 3. `cd` to the copied `darwin` directory.
