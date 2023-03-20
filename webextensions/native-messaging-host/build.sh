@@ -70,24 +70,11 @@ prepare_msi_sources() {
            -e "s/%ENV_GUID%/${env_guid}/g" \
       > templates/product.wxs
 
-  build_msi_bat="build_msi.bat"
-  msi_basename="flex-confirm-mail-nmh"
-
-  rm -f "$build_msi_bat"
-  touch "$build_msi_bat"
-  echo -e "set MSITEMP=%USERPROFILE%\\\\temp%RANDOM%\r" >> "$build_msi_bat"
-  echo -e "set SOURCE=%~dp0\r" >> "$build_msi_bat"
-  echo -e "xcopy \"%SOURCE%*\" \"%MSITEMP%\" /S /I \r" >> "$build_msi_bat"
-  echo -e "copy $host_name.windows.json \"%MSITEMP%\\\\$host_name.json\" \r" >> "$build_msi_bat"
-  echo -e "cd /d \"%MSITEMP%\" \r" >> "$build_msi_bat"
-  echo -e "copy 386\\host.exe \"%cd%\\\" \r" >> "$build_msi_bat"
-  echo -e "go-msi.exe make --msi ${msi_basename}-386.msi --version ${addon_version} --src templates --out \"%cd%\\outdir\" --arch 386 \r" >> "$build_msi_bat"
-  echo -e "del host.exe \r" >> "$build_msi_bat"
-  echo -e "copy amd64\\host.exe \"%cd%\\\" \r" >> "$build_msi_bat"
-  echo -e "go-msi.exe make --msi ${msi_basename}-amd64.msi --version ${addon_version} --src templates --out \"%cd%\\outdir\" --arch amd64 \r" >> "$build_msi_bat"
-  echo -e "xcopy *.msi \"%SOURCE%\" /I /Y \r" >> "$build_msi_bat"
-  echo -e "cd /d \"%SOURCE%\" \r" >> "$build_msi_bat"
-  echo -e "rd /S /Q \"%MSITEMP%\" \r" >> "$build_msi_bat"
+  cat "build_msi.bat.template" |
+    sed -E -e "s/\\$\{host_name\}/${host_name}/g" \
+           -e "s/\\$\{msi_basename\}/flex-confirm-mail-nmh/g" \
+           -e "s/\\$\{addon_version\}/${addon_version}/g" \
+      > "build_msi.bat"
 }
 
 prepare_macos_host_kit() {
@@ -95,31 +82,9 @@ prepare_macos_host_kit() {
   mv host_darwin_* "$dist_dir/darwin/"
   cp $host_name.macos.json "$dist_dir/darwin/$host_name.json"
 
-  local build_script="$dist_dir/darwin/build_pkg.sh"
-  rm -f "$build_script"
-  touch "$build_script"
-  chmod +x "$build_script"
-  echo "#!/bin/sh" >> "$build_script"
-  # build universal binary and sign
-  echo "lipo -create -output host host_darwin_*" >> "$build_script"
-  echo "if [ \"\$APP_CERT_NAME\" != \"\" ]; then" >> "$build_script"
-  echo "  codesign --force --options runtime --sign \"\$APP_CERT_NAME\" ./host" >> "$build_script"
-  echo "fi" >> "$build_script"
-  # build .pkg and sign
-  echo "rm -rf staging" >> "$build_script"
-  echo "mkdir -p 'staging/$host_name'" >> "$build_script"
-  echo "cp *.json staging/" >> "$build_script"
-  echo "cp host 'staging/$host_name/'" >> "$build_script"
-  echo "chmod 644 staging/*.json" >> "$build_script"
-  echo "chmod 755 staging/*/host" >> "$build_script"
-  echo "pkgbuild --root staging --identifier $host_name --install-location '/Library/Application Support/Mozilla/NativeMessagingHosts/' --version \$(./host -v) \"$host_name.pkg\"" >> "$build_script"
-  echo "if [ \"\$PKG_CERT_NAME\" != \"\" ]; then" >> "$build_script"
-  echo "  productsign --sign \"\$PKG_CERT_NAME\" \"./$host_name.pkg\" \"./$host_name.signed.pkg\"" >> "$build_script"
-  echo "fi" >> "$build_script"
-  # notarization
-  echo "if codesign -dvvv ./host 2>&1 | grep \"Authority=\$APP_CERT_NAME\" > /dev/null && pkgutil --check-signature \"./$host_name.signed.pkg\" > /dev/null; then" >> "$build_script"
-  echo "  xcrun notarytool submit "\$PWD/$host_name.signed.pkg" --keychain-profile \"Pkg Signing\" --wait" >> "$build_script"
-  echo "fi" >> "$build_script"
+  cat "build_pkg.sh.template" |
+    sed -E -e "s/\\$\{host_name\}/${host_name}/g" \
+      > "$dist_dir/darwin/build_pkg.sh"
 }
 
 main

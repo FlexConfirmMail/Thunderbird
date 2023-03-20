@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# build universal binary and sign
+lipo -create -output host host_darwin_*
+if [ "$APP_CERT_NAME" != "" ]; then
+  codesign --force --options runtime --sign "$APP_CERT_NAME" ./host
+fi
+
+# build .pkg and sign
+rm -rf staging
+mkdir -p 'staging/${host_name}'
+cp *.json staging/
+cp host 'staging/${host_name}/'
+chmod 644 staging/*.json
+chmod 755 staging/*/host
+pkgbuild --root staging --identifier ${host_name} --install-location '/Library/Application Support/Mozilla/NativeMessagingHosts/' --version $(./host -v) "${host_name}.pkg"
+if [ "$PKG_CERT_NAME" != "" ]; then
+  productsign --sign "$PKG_CERT_NAME" "./${host_name}.pkg" "./${host_name}.signed.pkg"
+fi
+
+# notarization
+if codesign -dvvv ./host 2>&1 | grep "Authority=$APP_CERT_NAME" > /dev/null &&
+   pkgutil --check-signature "./${host_name}.signed.pkg" > /dev/null; then
+  xcrun notarytool submit "$PWD/${host_name}.signed.pkg" --keychain-profile "Pkg Signing" --wait
+fi
