@@ -6,6 +6,7 @@ dist_dir="$(cd "$(dirname "$0")" && pwd)"
 temp_src="src/temp_flexible_confirm_mail"
 
 host_name="$(ls *.windows.json | sed -E -e 's/.windows.json$//')"
+msi_basename=flex-confirm-mail-nmh
 
 if go version 2>&1 >/dev/null
 then
@@ -24,9 +25,13 @@ build_host() {
   cd "$dist_dir"
   addon_version="$(cat "$dist_dir/../manifest.json" | jq -r .version)"
   echo "version is ${addon_version}"
-  sed -i -E -e "s/^(const VERSION = \")[^\"]*(\")/\1${addon_version}\2/" "$dist_dir/host.go"
+  sed -i.bak -E -e "s/^(const VERSION = \")[^\"]*(\")/\1${addon_version}\2/" "$dist_dir/host.go"
 
   gox -osarch="windows/386 windows/amd64 darwin/amd64 darwin/arm64"
+  # On my environment gox unexpectedly fails to build arm64 binary for darwin... why?
+  if [ ! -f ./host_darwin_arm64 ]; then
+    GOOS=darwin GOARCH=arm64 CC=aarch64-linux-gnu-gcc go build -o host_darwin_arm64
+  fi
 
   local arch
   for binary in host_windows_*.exe
@@ -66,46 +71,24 @@ prepare_msi_sources() {
            -e "s/%ENV_GUID%/${env_guid}/g" \
       > templates/product.wxs
 
-  build_msi_bat="build_msi.bat"
-  msi_basename="flex-confirm-mail-nmh"
-
-  rm -f "$build_msi_bat"
-  touch "$build_msi_bat"
-  echo -e "set MSITEMP=%USERPROFILE%\\\\temp%RANDOM%\r" >> "$build_msi_bat"
-  echo -e "set SOURCE=%~dp0\r" >> "$build_msi_bat"
-  echo -e "xcopy \"%SOURCE%*\" \"%MSITEMP%\" /S /I \r" >> "$build_msi_bat"
-  echo -e "copy $host_name.windows.json \"%MSITEMP%\\\\$host_name.json\" \r" >> "$build_msi_bat"
-  echo -e "cd /d \"%MSITEMP%\" \r" >> "$build_msi_bat"
-  echo -e "copy 386\\host.exe \"%cd%\\\" \r" >> "$build_msi_bat"
-  echo -e "go-msi.exe make --msi ${msi_basename}-386.msi --version ${addon_version} --src templates --out \"%cd%\\outdir\" --arch 386 \r" >> "$build_msi_bat"
-  echo -e "del host.exe \r" >> "$build_msi_bat"
-  echo -e "copy amd64\\host.exe \"%cd%\\\" \r" >> "$build_msi_bat"
-  echo -e "go-msi.exe make --msi ${msi_basename}-amd64.msi --version ${addon_version} --src templates --out \"%cd%\\outdir\" --arch amd64 \r" >> "$build_msi_bat"
-  echo -e "xcopy *.msi \"%SOURCE%\" /I /Y \r" >> "$build_msi_bat"
-  echo -e "cd /d \"%SOURCE%\" \r" >> "$build_msi_bat"
-  echo -e "rd /S /Q \"%MSITEMP%\" \r" >> "$build_msi_bat"
+  local conf_bat=build_msi_configs.bat
+  rm -f "$conf_bat"
+  touch "$conf_bat"
+  echo -e "set NMH_NAME=${host_name}\r" >> "$conf_bat"
+  echo -e "set MSI_BASENAME=${msi_basename}\r" >> "$conf_bat"
+  echo -e "set ADDON_VERSION=${addon_version}\r" >> "$conf_bat"
 }
 
 prepare_macos_host_kit() {
   mkdir -p "$dist_dir/darwin/"
+  cp build_pkg.sh "$dist_dir/darwin/build_pkg.sh"
   mv host_darwin_* "$dist_dir/darwin/"
   cp $host_name.macos.json "$dist_dir/darwin/$host_name.json"
 
-  local build_script="$dist_dir/darwin/build_pkg.sh"
-  rm -f "$build_script"
-  touch "$build_script"
-  chmod +x "$build_script"
-  echo "#!/bin/sh" >> "$build_script"
-  # build universal binary
-  echo "lipo -create -output host host_darwin_*" >> "$build_script"
-  # build .pkg
-  echo "rm -rf staging" >> "$build_script"
-  echo "mkdir -p 'staging/$host_name'" >> "$build_script"
-  echo "cp *.json staging/" >> "$build_script"
-  echo "cp host 'staging/$host_name/'" >> "$build_script"
-  echo "chmod 644 staging/*.json" >> "$build_script"
-  echo "chmod 755 staging/*/host" >> "$build_script"
-  echo "pkgbuild --root staging --identifier $host_name --install-location '/Library/Application Support/Mozilla/NativeMessagingHosts/' --version \$(./host -v) $host_name.pkg" >> "$build_script"
+  local conf_sh="$dist_dir/darwin/build_pkg_configs.sh"
+  rm -f "$conf_sh"
+  touch "$conf_sh"
+  echo "NMH_NAME=${host_name}" >> "$conf_sh"
 }
 
 main
