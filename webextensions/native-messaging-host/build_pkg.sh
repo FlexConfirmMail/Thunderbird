@@ -1,7 +1,7 @@
 #!/bin/sh
 
 [ ! -f ./build_pkg_configs.sh ] || exit 1
-source ./build_pkg_configs.sh
+. ./build_pkg_configs.sh
 
 # build universal binary and sign
 lipo -create -output host host_darwin_*
