@@ -100,16 +100,26 @@ prepare_macos_host_kit() {
   touch "$build_script"
   chmod +x "$build_script"
   echo "#!/bin/sh" >> "$build_script"
-  # build universal binary
+  # build universal binary and sign
   echo "lipo -create -output host host_darwin_*" >> "$build_script"
-  # build .pkg
+  echo "if [ \"\$APP_CERT_NAME\" != \"\" ]; then" >> "$build_script"
+  echo "  codesign --force --options runtime --sign \"\$APP_CERT_NAME\" ./host" >> "$build_script"
+  echo "fi" >> "$build_script"
+  # build .pkg and sign
   echo "rm -rf staging" >> "$build_script"
   echo "mkdir -p 'staging/$host_name'" >> "$build_script"
   echo "cp *.json staging/" >> "$build_script"
   echo "cp host 'staging/$host_name/'" >> "$build_script"
   echo "chmod 644 staging/*.json" >> "$build_script"
   echo "chmod 755 staging/*/host" >> "$build_script"
-  echo "pkgbuild --root staging --identifier $host_name --install-location '/Library/Application Support/Mozilla/NativeMessagingHosts/' --version \$(./host -v) $host_name.pkg" >> "$build_script"
+  echo "pkgbuild --root staging --identifier $host_name --install-location '/Library/Application Support/Mozilla/NativeMessagingHosts/' --version \$(./host -v) \"$host_name.pkg\"" >> "$build_script"
+  echo "if [ \"\$PKG_CERT_NAME\" != \"\" ]; then" >> "$build_script"
+  echo "  productsign --sign \"\$PKG_CERT_NAME\" \"./$host_name.pkg\" \"./$host_name.signed.pkg\"" >> "$build_script"
+  echo "fi" >> "$build_script"
+  # notarization
+  echo "if codesign -dvvv ./host 2>&1 | grep \"Authority=\$APP_CERT_NAME\" > /dev/null && pkgutil --check-signature \"./$host_name.signed.pkg\" > /dev/null; then" >> "$build_script"
+  echo "  xcrun notarytool submit "\$PWD/$host_name.signed.pkg" --keychain-profile \"Pkg Signing\" --wait" >> "$build_script"
+  echo "fi" >> "$build_script"
 }
 
 main
