@@ -27,6 +27,10 @@ build_host() {
   sed -i.bak -E -e "s/^(const VERSION = \")[^\"]*(\")/\1${addon_version}\2/" "$dist_dir/host.go"
 
   gox -osarch="windows/386 windows/amd64 darwin/amd64 darwin/arm64"
+  # On my environment gox unexpectedly fails to build arm64 binary for darwin... why?
+  if [ ! -f ./host_darwin_arm64 ]; then
+    GOOS=darwin GOARCH=arm64 CC=aarch64-linux-gnu-gcc go build -o host_darwin_arm64
+  fi
 
   local arch
   for binary in host_windows_*.exe
