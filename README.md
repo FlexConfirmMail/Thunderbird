@@ -88,9 +88,9 @@ And, on macOS:
 1. If you need to distribute notarized pkg, prepare these things:
    * Install XCode. (You may need to update the macOS before that.)
    * Create your personal Apple ID (assume it is `myname@example.com`) and join to the Apple Developer Program. (*Payment required)
-   * Create an application passward named as `Pkg Signing`. Assme that the generated password is `aaaa-bbbb-cccc-dddd`.
+   * Create an application password named as `Pkg Signing`. Assume that the generated password.
    * Create a cerficate signing request.
-     1. Open "Keychain Access (キーチェーンアクセス)": "Finder" => "Acompplications (アプリケーション)" => "Utilities (ユーティリティ)" => "Keychain Access (キーチェーンアクセス)"
+     1. Open "Keychain Access (キーチェーンアクセス)": "Finder" => "Application (アプリケーション)" => "Utilities (ユーティリティ)" => "Keychain Access (キーチェーンアクセス)"
      2. In the menubar: "Keychain Access (キーチェーンアクセス)" => "Certificate Assistant (証明書アシスタント)" => "Request a Certificate From a Certificate Authority (認証局に証明書を要求)"
      3. Fill fields with your Apple ID (email addressm) and your company name (assume it is `My Company`). The email field of the CA can be blank.
      4. Click "Save to Disk (ディスクに保存)" and "Continue (続ける)".
