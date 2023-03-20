@@ -119,7 +119,7 @@ And, on macOS:
      export APP_CERT_NAME="Developer ID Application: My Company (XXXXXXXXXXX)"
      export PKG_CERT_NAME="Developer ID Installer: My Company (XXXXXXXXXXX)"
      ```
-1. Copy built `darwin` directory to the local storage.
+1. Copy built `darwin` directory to the local storage of your macOS environment.
 2. Open a terminal window.
 3. `cd` to the copied `darwin` directory.
 4. Run `build_pkg.sh`.
