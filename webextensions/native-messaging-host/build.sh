@@ -6,6 +6,7 @@ dist_dir="$(cd "$(dirname "$0")" && pwd)"
 temp_src="src/temp_flexible_confirm_mail"
 
 host_name="$(ls *.windows.json | sed -E -e 's/.windows.json$//')"
+msi_basename=flex-confirm-mail-nmh
 
 if go version 2>&1 >/dev/null
 then
@@ -72,7 +73,7 @@ prepare_msi_sources() {
 
   cat "build_msi.bat.template" |
     sed -E -e "s/\\$\{host_name\}/${host_name}/g" \
-           -e "s/\\$\{msi_basename\}/flex-confirm-mail-nmh/g" \
+           -e "s/\\$\{msi_basename\}/${msi_basename}/g" \
            -e "s/\\$\{addon_version\}/${addon_version}/g" \
       > "build_msi.bat"
 }
