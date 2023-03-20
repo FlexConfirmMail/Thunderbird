@@ -124,7 +124,7 @@ And, on macOS:
 3. `cd` to the copied `darwin` directory.
 4. Run `build_pkg.sh`.
    Then a `.pkg` file will be generated.
-   * You'll see some authentication dialogs to access the Keychain Access, if you prepared `APPLE_ID`, `APP_CERT_NAME` and `PKG_CERT_NAME` as described above and you ran the `build_pkg.sh` on a macOS desktop environment.
+   * You'll see some authentication dialogs to access the Keychain Access or login as `Pkg Signing`, if you prepared `APPLE_ID`, `APP_CERT_NAME` and `PKG_CERT_NAME` as described above and you ran the `build_pkg.sh` on a macOS desktop environment.
      The built file `.signed.pkg` is notarized, so you should distribute it instead of the unsigned version.
 
 
