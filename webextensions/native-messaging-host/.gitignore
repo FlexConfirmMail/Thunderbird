@@ -6,4 +6,4 @@ templates/product.wxs
 *.msi
 host_windows_*.exe
 host_darwin_*
-build_msi.bat
+build_msi_configs.bat

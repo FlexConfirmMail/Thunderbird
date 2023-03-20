@@ -71,21 +71,24 @@ prepare_msi_sources() {
            -e "s/%ENV_GUID%/${env_guid}/g" \
       > templates/product.wxs
 
-  cat "build_msi.bat.template" |
-    sed -E -e "s/\\$\{host_name\}/${host_name}/g" \
-           -e "s/\\$\{msi_basename\}/${msi_basename}/g" \
-           -e "s/\\$\{addon_version\}/${addon_version}/g" \
-      > "build_msi.bat"
+  local conf_bat=build_msi_configs.bat
+  rm -f "$conf_bat"
+  touch "$conf_bat"
+  echo -e "set NMH_NAME=${host_name}\r" >> "$conf_bat"
+  echo -e "set MSI_BASENAME=${msi_basename}\r" >> "$conf_bat"
+  echo -e "set ADDON_VERSION=${addon_version}\r" >> "$conf_bat"
 }
 
 prepare_macos_host_kit() {
   mkdir -p "$dist_dir/darwin/"
+  cp build_pkg.sh "$dist_dir/darwin/build_pkg.sh"
   mv host_darwin_* "$dist_dir/darwin/"
   cp $host_name.macos.json "$dist_dir/darwin/$host_name.json"
 
-  cat "build_pkg.sh.template" |
-    sed -E -e "s/\\$\{host_name\}/${host_name}/g" \
-      > "$dist_dir/darwin/build_pkg.sh"
+  local conf_sh="$dist_dir/darwin/build_pkg_configs.sh"
+  rm -f "$conf_sh"
+  touch "$conf_sh"
+  echo "NMH_NAME=${host_name}" >> "$conf_sh"
 }
 
 main
