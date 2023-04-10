@@ -263,7 +263,7 @@ export function log(message, ...args) {
 
 export async function sendToHost(message) {
   try {
-    message.loggging = message.loggging && configs.debug;
+    message.logging = message.logging && configs.debug;
     message.debug = message.debug && configs.debug;
     const response = await browser.runtime.sendNativeMessage(Constants.HOST_ID, message);
     if (!response || typeof response != 'object')
