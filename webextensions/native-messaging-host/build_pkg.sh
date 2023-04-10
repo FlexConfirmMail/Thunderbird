@@ -25,4 +25,5 @@ fi
 if codesign -dvvv ./host 2>&1 | grep "Authority=$APP_CERT_NAME" > /dev/null &&
    pkgutil --check-signature "./$NMH_NAME.signed.pkg" > /dev/null; then
   xcrun notarytool submit "$PWD/$NMH_NAME.signed.pkg" --keychain-profile "Pkg Signing" --wait
+  xcrun stapler staple "$PWD/$NMH_NAME.signed.pkg"
 fi
