@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ ! -f ./build_pkg_configs.sh ] || exit 1
+[ ! -f ./build_pkg_configs.sh ] && exit 1
 . ./build_pkg_configs.sh
 
 # build universal binary and sign
