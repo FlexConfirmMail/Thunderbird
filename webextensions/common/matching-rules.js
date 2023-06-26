@@ -121,7 +121,7 @@ export class MatchingRules {
           break;
 
         case Constants.MATCH_TO_ATTACHMENT_SUFFIX:
-          this._$attachmentMatchers[rule.id] = new RegExp(`\\.(${rule.items.map(suffix => this.$sanitizeRegExpSource(suffix).replace(/^\./, '')).join('|')})$`, 'i');
+          this._$attachmentMatchers[rule.id] = new RegExp(`\\.(${rule.items.map(suffix => this.$sanitizeRegExpSource(suffix.replace(/^\./, ''))).join('|')})$`, 'i');
           break;
 
         case Constants.MATCH_TO_SUBJECT:
