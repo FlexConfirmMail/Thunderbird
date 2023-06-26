@@ -1055,7 +1055,6 @@ export async function test_shouldAcceptWildcardInRecipients() {
   });
   await matchingRules.populate();
 
-console.log('matchingRules.$matchedDomainSets ', matchingRules.$matchedDomainSets);
   is(
     [
       'user@.example.com',
@@ -1063,7 +1062,7 @@ console.log('matchingRules.$matchedDomainSets ', matchingRules.$matchedDomainSet
       'user@XX.example.com',
       'user@X.example.org',
     ],
-    matchingRules.getHighlightedRecipientAddresses({
+    [...matchingRules.getHighlightedRecipientAddresses({
       externals:   [
         'user@.example.com',
         'user@X.example.com',
@@ -1073,7 +1072,7 @@ console.log('matchingRules.$matchedDomainSets ', matchingRules.$matchedDomainSet
         'user@XX.example.org',
       ],
       attachments: [],
-    })
+    })]
   );
 }
 
@@ -1096,23 +1095,18 @@ export async function test_shouldAcceptWildcardForAttachments() {
   });
   await matchingRules.populate();
 
-console.log('matchingRules.$attachmentMatchers ', matchingRules.$attachmentMatchers);
   is(
-    {
-      'filename': [
-        'astariskname1.ext',
-        'astariskXname2.ext',
-        'astariskXXname2.ext',
-        'questionXname2.ext',
-      ],
-      'filesuffix': [
-        'basename1.astarisksuffix',
-        'basename2.astariskXsuffix',
-        'basename3.astariskXXsuffix',
-        'basename2.questionXsuffix',
-      ],
-    },
-    attachmentsToNames(matchingRules.classifyBlockAttachments({
+    [
+      'astariskname1.ext',
+      'astariskXname2.ext',
+      'astariskXXname2.ext',
+      'questionXname2.ext',
+      'basename1.astarisksuffix',
+      'basename2.astariskXsuffix',
+      'basename3.astariskXXsuffix',
+      'basename2.questionXsuffix',
+    ],
+    [...matchingRules.getHighlightedAttachmentNames({
       attachments: [
         'astariskname1.ext',
         'astariskXname2.ext',
@@ -1126,9 +1120,9 @@ console.log('matchingRules.$attachmentMatchers ', matchingRules.$attachmentMatch
         'basename1.questionsuffix',
         'basename2.questionXsuffix',
         'basename3.questionXXsuffix',
-      ],
+      ].map(name => ({ name })),
       hasExternal: false,
-    }))
+    })]
   );
 }
 
@@ -1145,8 +1139,13 @@ export async function test_shouldAcceptWildcardInBody() {
   });
   await matchingRules.populate();
 
-console.log('matchingRules.$bodyMatchers ', matchingRules.$bodyMatchers);
   is(
+    [
+      'bodywithastarisk',
+      'body with astarisk',
+      'body  with  astarisk',
+      'body with question',
+    ],
     [
       'bodywithastarisk',
       'body with astarisk',
@@ -1154,7 +1153,6 @@ console.log('matchingRules.$bodyMatchers ', matchingRules.$bodyMatchers);
       'bodywithaquestion',
       'body with question',
       'body  with  question',
-    ],
-    [].map(body => matchingRules.shouldHighlightBody(body))
+    ].filter(body => matchingRules.shouldHighlightBody(body))
   );
 }
