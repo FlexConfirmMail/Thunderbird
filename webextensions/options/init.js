@@ -260,7 +260,8 @@ function rebuildUserRulesUI() {
                             name=${safeAttrValue('userRule-ui-itemsSource:' + id)}
                             type="radio"
                             value="${Constants.SOURCE_LOCAL_CONFIG}">
-                     ${safeLocalizedText('config_userRule_itemsLocal_caption')}</label>
+                     ${safeLocalizedText('config_userRule_itemsLocal_caption')}
+                     ${safeLocalizedText('config_userRule_itemsLocal_description')}</label>
               <textarea id=${safeAttrValue('userRule-ui-itemsLocal:' + id)}
                         class="userRule-ui-itemsLocal ${hiddenIfLocked(rule, 'itemsLocal')}"
                         placeholder=${safeLocalizedValue('config_userRule_itemsLocal_placeholder_' + matchTargetSuffix)}></textarea>

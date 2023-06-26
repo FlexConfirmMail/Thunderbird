@@ -95,8 +95,9 @@
 
   "config_internalDomains_caption": { "message": "組織内として扱うメールアドレスのドメイン名" },
   "config_internalDomains_input_placeholder": { "message": "ドメイン名を1行ずつ入力（例：example.com）" },
+  "config_internalDomains_input_description": { "message": "ワイルドカード（*および?）を使用可能です" },
   "config_fixedInternalDomains_label": { "message": "システム管理者によって、以下のドメインが組織内ドメインとして指定されています。" },
-  "config_fixedInternalDomains_label_editable": { "message": "ドメイン名の先頭に「-」をつけると、ドメインを除外することができます。" },
+  "config_fixedInternalDomains_label_editable": { "message": "ドメイン名の先頭に「-」をつけると、ドメインを除外することができます。また、ワイルドカード（*および?）も使用可能です。" },
 
   "config_skipConfirmationForInternalMail_label": { "message": "すべての宛先が登録済みドメインのメール送信時は確認ダイアログを表示しない" },
   "config_minConfirmationRecipientsCount_label_before": { "message": "宛先が" },
@@ -170,6 +171,7 @@
   "config_userRule_itemsLocal_placeholder_subject":          { "message": "語句を1行ずつ入力（例：危険、社外秘）" },
   "config_userRule_itemsLocal_placeholder_body":             { "message": "語句を1行ずつ入力（例：危険、社外秘）" },
   "config_userRule_itemsLocal_placeholder_subjectOrBody":    { "message": "語句を1行ずつ入力（例：危険、社外秘）" },
+  "config_userRule_itemsLocal_description":                  { "message": "：ワイルドカード（*および?）を使用可能です" },
   "config_userRule_itemsFile_caption":                             { "message": "ファイル形式のリストを使用" },
   "config_userRule_itemsFile_button_label":                        { "message": "参照..." },
   "config_userRule_itemsFile_button_dialogTitle_recipientDomain":  { "message": "ドメインのリストを選択" },
