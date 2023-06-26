@@ -1055,6 +1055,7 @@ export async function test_shouldAcceptWildcardInRecipients() {
   });
   await matchingRules.populate();
 
+console.log('matchingRules.$matchedDomainSets ', matchingRules.$matchedDomainSets);
   is(
     [
       'user@.example.com',
@@ -1094,6 +1095,8 @@ export async function test_shouldAcceptWildcardForAttachments() {
     ],
   });
   await matchingRules.populate();
+
+console.log('matchingRules.$attachmentMatchers ', matchingRules.$attachmentMatchers);
   is(
     {
       'filename': [
@@ -1141,6 +1144,8 @@ export async function test_shouldAcceptWildcardInBody() {
     ],
   });
   await matchingRules.populate();
+
+console.log('matchingRules.$bodyMatchers ', matchingRules.$bodyMatchers);
   is(
     [
       'bodywithastarisk',
