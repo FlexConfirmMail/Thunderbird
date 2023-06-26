@@ -67,10 +67,10 @@ export class MatchingRules {
     this.$rulesById = mergedRulesById;
   }
 
-  get $matchedDomainSets() {
-    if (!this._$matchedDomainSets)
+  get $domainMatchers() {
+    if (!this._$domainMatchers)
       this.$prepareMatchers();
-    return this._$matchedDomainSets;
+    return this._$domainMatchers;
   }
 
   get $attachmentMatchers() {
@@ -92,7 +92,7 @@ export class MatchingRules {
   }
 
   $prepareMatchers() {
-    this._$matchedDomainSets = {};
+    this._$domainMatchers = {};
     this._$attachmentMatchers = {};
     this._$subjectMatchers = {};
     this._$bodyMatchers = {};
@@ -113,7 +113,7 @@ export class MatchingRules {
             uniqueDomains.delete(negativeItem);
             uniqueDomains.delete(`-${negativeItem}`);
           }
-          this._$matchedDomainSets[rule.id] = uniqueDomains;
+          this._$domainMatchers[rule.id] = new RegExp(`^(${[...uniqueDomains].map(this.$toRegExpSource).join('|')})$`, 'i');
           break;
 
         case Constants.MATCH_TO_ATTACHMENT_NAME:
@@ -304,8 +304,8 @@ export class MatchingRules {
       for (const recipient of recipients) {
         const parsedRecipient = typeof recipient == 'string' ? RecipientParser.parse(recipient) : recipient;
 
-        for (const [id, domains] of Object.entries(this.$matchedDomainSets)) {
-          if (!domains.has(parsedRecipient.domain))
+        for (const [id, matcher] of Object.entries(this.$domainMatchers)) {
+          if (!matcher.test(parsedRecipient.domain))
             continue;
 
           const rule = this.get(id);
