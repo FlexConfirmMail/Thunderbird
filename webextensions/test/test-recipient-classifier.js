@@ -222,6 +222,32 @@ test_classifyAddresses.parameters = {
       ],
     }
   },
+  'support wildcards': {
+    recipients: [
+      'aaa@.example.com',
+      'aaa@X.example.com',
+      'aaa@XX.example.com',
+      'bbb@.example.net',
+      'bbb@X.example.net',
+      'bbb@XX.example.net',
+    ],
+    internalDomains: [
+      '*.example.com',
+      '?.example.net',
+    ],
+    expected: {
+      internals: [
+        'aaa@.example.com',
+        'aaa@X.example.com',
+        'aaa@XX.example.com',
+        'bbb@X.example.net',
+      ],
+      externals: [
+        'bbb@.example.net',
+        'bbb@XX.example.net',
+      ],
+    }
+  },
 };
 export function test_classifyAddresses({ recipients, internalDomains, expected }) {
   const classifier = new RecipientClassifier({ internalDomains });

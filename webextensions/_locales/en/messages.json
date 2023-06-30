@@ -95,8 +95,9 @@
 
   "config_internalDomains_caption": { "message": "Domains treated as internals" },
   "config_internalDomains_input_placeholder": { "message": "Input domain names per line (e.g. example.com)" },
+  "config_internalDomains_input_description": { "message": "Wildcards (* and ?) are available." },
   "config_fixedInternalDomains_label": { "message": "Following domains are listed by the system administrator." },
-  "config_fixedInternalDomains_label_editable": { "message": "You can deactivate individual domains by adding \"-\" at the beginning." },
+  "config_fixedInternalDomains_label_editable": { "message": "You can deactivate individual domains by adding \"-\" at the beginning, and wildcards (* and ?) are available." },
 
   "config_skipConfirmationForInternalMail_label": { "message": "Skip confirmation if all recipients are internals" },
   "config_minConfirmationRecipientsCount_label_before": { "message": "Skip confirmation if there are/is only" },
@@ -170,6 +171,7 @@
   "config_userRule_itemsLocal_placeholder_subject":          { "message": "Input a term per line (e.g. important, confidential)" },
   "config_userRule_itemsLocal_placeholder_body":             { "message": "Input a term per line (e.g. important, confidential)" },
   "config_userRule_itemsLocal_placeholder_subjectOrBody":    { "message": "Input a term per line (e.g. important, confidential)" },
+  "config_userRule_itemsLocal_description":                  { "message": ": wildcards (* and ?) are available." },
   "config_userRule_itemsFile_caption":                             { "message": "Use a list given as a file" },
   "config_userRule_itemsFile_button_label":                        { "message": "Choose…" },
   "config_userRule_itemsFile_button_dialogTitle_recipientDomain":  { "message": "Choose a list of domain names" },

@@ -1041,3 +1041,118 @@ export async function test_shouldHighlightBody() {
     { hasExternal: true, hasAttachment: true }
   ));
 }
+
+export async function test_shouldAcceptWildcardInRecipients() {
+  const matchingRules = new MatchingRules({
+    baseRules: [
+      { id:          'recipients',
+        enabled:     true,
+        matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+        highlight:   Constants.HIGHLIGHT_ALWAYS,
+        itemsSource: Constants.SOURCE_LOCAL_CONFIG,
+        itemsLocal:  ['*.example.com', '?.example.org'] },
+    ],
+  });
+  await matchingRules.populate();
+
+  is(
+    [
+      'user@.example.com',
+      'user@X.example.com',
+      'user@XX.example.com',
+      'user@X.example.org',
+    ],
+    [...matchingRules.getHighlightedRecipientAddresses({
+      externals:   [
+        'user@.example.com',
+        'user@X.example.com',
+        'user@XX.example.com',
+        'user@.example.org',
+        'user@X.example.org',
+        'user@XX.example.org',
+      ],
+      attachments: [],
+    })]
+  );
+}
+
+export async function test_shouldAcceptWildcardForAttachments() {
+  const matchingRules = new MatchingRules({
+    baseRules: [
+      { id:          'filename',
+        enabled:     true,
+        matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
+        highlight:   Constants.HIGHLIGHT_ALWAYS,
+        itemsSource: Constants.SOURCE_LOCAL_CONFIG,
+        itemsLocal:  ['astarisk*name', 'question?name'] },
+      { id:          'filesuffix',
+        enabled:     true,
+        matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
+        highlight:   Constants.HIGHLIGHT_ALWAYS,
+        itemsSource: Constants.SOURCE_LOCAL_CONFIG,
+        itemsLocal:  ['.astarisk*suffix', '.question?suffix'] },
+    ],
+  });
+  await matchingRules.populate();
+
+  is(
+    [
+      'astariskname1.ext',
+      'astariskXname2.ext',
+      'astariskXXname2.ext',
+      'questionXname2.ext',
+      'basename1.astarisksuffix',
+      'basename2.astariskXsuffix',
+      'basename3.astariskXXsuffix',
+      'basename2.questionXsuffix',
+    ],
+    [...matchingRules.getHighlightedAttachmentNames({
+      attachments: [
+        'astariskname1.ext',
+        'astariskXname2.ext',
+        'astariskXXname2.ext',
+        'questionname1.ext',
+        'questionXname2.ext',
+        'questionXXname2.ext',
+        'basename1.astarisksuffix',
+        'basename2.astariskXsuffix',
+        'basename3.astariskXXsuffix',
+        'basename1.questionsuffix',
+        'basename2.questionXsuffix',
+        'basename3.questionXXsuffix',
+      ].map(name => ({ name })),
+      hasExternal: false,
+    })]
+  );
+}
+
+export async function test_shouldAcceptWildcardInBody() {
+  const matchingRules = new MatchingRules({
+    baseRules: [
+      { id:          'body',
+        enabled:     true,
+        matchTarget: Constants.MATCH_TO_BODY,
+        highlight:   Constants.HIGHLIGHT_ALWAYS,
+        itemsSource: Constants.SOURCE_LOCAL_CONFIG,
+        itemsLocal:  ['body*with*astarisk', 'body?with?question'] },
+    ],
+  });
+  await matchingRules.populate();
+
+  is(
+    [
+      'bodywithastarisk',
+      'body with astarisk',
+      'body  with  astarisk',
+      'body with question',
+    ],
+    [
+      'bodywithastarisk',
+      'body with astarisk',
+      'body  with  astarisk',
+      'bodywithaquestion',
+      'body with question',
+      'body  with  question',
+    ].filter(body => matchingRules.shouldHighlightBody(body))
+  );
+}

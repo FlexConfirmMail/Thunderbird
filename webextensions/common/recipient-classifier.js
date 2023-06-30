@@ -23,8 +23,17 @@ export class RecipientClassifier {
       uniqueDomains.delete(negativeItem);
       uniqueDomains.delete(`-${negativeItem}`);
     }
-    this.$internalDomainsSet = uniqueDomains;
+    this.$internalDomainsMatcher = new RegExp(`^(${[...uniqueDomains].map(domain => this.$toRegExpSource(domain)).join('|')})$`, 'i');
     this.classify = this.classify.bind(this);
+  }
+
+  $toRegExpSource(source) {
+    // https://stackoverflow.com/questions/6300183/sanitize-string-of-regex-characters-before-regexp-build
+    const sanitized = source.replace(/[#-.]|[[-^]|[?|{}]/g, '\\$&');
+
+    const wildcardAccepted = sanitized.replace(/\\\*/g, '.*').replace(/\\\?/g, '.');
+
+    return wildcardAccepted;
   }
 
   classify(recipients) {
@@ -36,7 +45,7 @@ export class RecipientClassifier {
         ...RecipientParser.parse(recipient),
       };
       const domain = classifiedRecipient.domain;
-      if (this.$internalDomainsSet.has(domain))
+      if (this.$internalDomainsMatcher.test(domain))
         internals.add(classifiedRecipient);
       else
         externals.add(classifiedRecipient);

@@ -67,10 +67,10 @@ export class MatchingRules {
     this.$rulesById = mergedRulesById;
   }
 
-  get $matchedDomainSets() {
-    if (!this._$matchedDomainSets)
+  get $domainMatchers() {
+    if (!this._$domainMatchers)
       this.$prepareMatchers();
-    return this._$matchedDomainSets;
+    return this._$domainMatchers;
   }
 
   get $attachmentMatchers() {
@@ -92,7 +92,7 @@ export class MatchingRules {
   }
 
   $prepareMatchers() {
-    this._$matchedDomainSets = {};
+    this._$domainMatchers = {};
     this._$attachmentMatchers = {};
     this._$subjectMatchers = {};
     this._$bodyMatchers = {};
@@ -113,27 +113,27 @@ export class MatchingRules {
             uniqueDomains.delete(negativeItem);
             uniqueDomains.delete(`-${negativeItem}`);
           }
-          this._$matchedDomainSets[rule.id] = uniqueDomains;
+          this._$domainMatchers[rule.id] = new RegExp(`^(${[...uniqueDomains].map(this.$toRegExpSource).join('|')})$`, 'i');
           break;
 
         case Constants.MATCH_TO_ATTACHMENT_NAME:
-          this._$attachmentMatchers[rule.id] = new RegExp(`(${rule.items.map(this.$sanitizeRegExpSource).join('|')})`, 'i');
+          this._$attachmentMatchers[rule.id] = new RegExp(`(${rule.items.map(this.$toRegExpSource).join('|')})`, 'i');
           break;
 
         case Constants.MATCH_TO_ATTACHMENT_SUFFIX:
-          this._$attachmentMatchers[rule.id] = new RegExp(`\\.(${rule.items.map(suffix => this.$sanitizeRegExpSource(suffix.replace(/^\./, ''))).join('|')})$`, 'i');
+          this._$attachmentMatchers[rule.id] = new RegExp(`\\.(${rule.items.map(suffix => this.$toRegExpSource(suffix.replace(/^\./, ''))).join('|')})$`, 'i');
           break;
 
         case Constants.MATCH_TO_SUBJECT:
-          this._$subjectMatchers[rule.id] = new RegExp(`(${rule.items.map(this.$sanitizeRegExpSource).join('|')})`, 'gi');
+          this._$subjectMatchers[rule.id] = new RegExp(`(${rule.items.map(this.$toRegExpSource).join('|')})`, 'gi');
           break;
 
         case Constants.MATCH_TO_BODY:
-          this._$bodyMatchers[rule.id] = new RegExp(`(${rule.items.map(this.$sanitizeRegExpSource).join('|')})`, 'gi');
+          this._$bodyMatchers[rule.id] = new RegExp(`(${rule.items.map(this.$toRegExpSource).join('|')})`, 'gi');
           break;
 
         case Constants.MATCH_TO_SUBJECT_OR_BODY: {
-          const sanitizedItems = rule.items.map(this.$sanitizeRegExpSource).join('|');
+          const sanitizedItems = rule.items.map(this.$toRegExpSource).join('|');
           this._$subjectMatchers[rule.id] = new RegExp(`(${sanitizedItems})`, 'gi');
           this._$bodyMatchers[rule.id] = new RegExp(`(${sanitizedItems})`, 'gi');
         }; break;
@@ -143,8 +143,13 @@ export class MatchingRules {
       }
     }
   }
-  $sanitizeRegExpSource(source) { // https://stackoverflow.com/questions/6300183/sanitize-string-of-regex-characters-before-regexp-build
-    return source.replace(/[#-.]|[[-^]|[?|{}]/g, '\\$&');
+  $toRegExpSource(source) {
+    // https://stackoverflow.com/questions/6300183/sanitize-string-of-regex-characters-before-regexp-build
+    const sanitized = source.replace(/[#-.]|[[-^]|[?|{}]/g, '\\$&');
+
+    const wildcardAccepted = sanitized.replace(/\\\*/g, '.*').replace(/\\\?/g, '.');
+
+    return wildcardAccepted;
   }
 
   get all() {
@@ -299,8 +304,8 @@ export class MatchingRules {
       for (const recipient of recipients) {
         const parsedRecipient = typeof recipient == 'string' ? RecipientParser.parse(recipient) : recipient;
 
-        for (const [id, domains] of Object.entries(this.$matchedDomainSets)) {
-          if (!domains.has(parsedRecipient.domain))
+        for (const [id, matcher] of Object.entries(this.$domainMatchers)) {
+          if (!matcher.test(parsedRecipient.domain))
             continue;
 
           const rule = this.get(id);
