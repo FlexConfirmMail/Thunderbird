@@ -2,6 +2,19 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
 	 y="0px" width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+<style>
+  :root {
+    color-scheme: light dark;
+  }
+  path {
+    fill: #0C0C0D;
+  }
+  @media (prefers-color-scheme: dark) {
+    path {
+      fill: #F9F9FA;
+    }
+  }
+</style>
 <path d="M24.006,31.998c-0.266,0-0.52-0.105-0.707-0.293l-3-3c-0.384-0.397-0.373-1.03,0.024-1.414c0.388-0.374,1.002-0.374,1.39,0
 	l2.157,2.157l6.315-9.023c0.321-0.449,0.945-0.554,1.395-0.233c0.444,0.316,0.553,0.93,0.244,1.38l-7,10
 	c-0.168,0.243-0.436,0.399-0.731,0.427C24.064,32,24.035,32,24.006,31.998z"/>
