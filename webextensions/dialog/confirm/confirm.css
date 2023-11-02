@@ -142,6 +142,11 @@ hr.splitter {
   mask: url("/resources/domain-unchecked.svg") no-repeat center / 100%;
   width: 1em;
 }
+@media (prefers-color-scheme: dark) {
+  .listbox .row.domain::before {
+    background: var(--grey-10);
+  }
+}
 
 .listbox .row.domain.checked::before {
   background-color: var(--orange-50);
