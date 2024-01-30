@@ -9,7 +9,8 @@ import '/extlib/l10n.js';
 import * as Dialog from '/extlib/dialog.js';
 
 import {
-  configs
+  configs,
+  log,
 } from '/common/common.js';
 
 const mCounter = document.getElementById('count');
@@ -41,10 +42,18 @@ configs.$loaded.then(async () => {
   });
 
   const start = Date.now();
-  window.setInterval(() => {
+  const timer = window.setInterval(() => {
     const rest = Math.ceil(configs.countdownSeconds - ((Date.now() - start) / 1000));
     mCounter.textContent = rest;
-    if (rest <= 0)
+    if (rest > 0)
+      return;
+    window.clearInterval(timer);
+    try {
       Dialog.accept();
+    }
+    catch(error) {
+      log('failed to accept countdown dialog: ', error);
+      window.close();
+    }
   }, 250);
 });
