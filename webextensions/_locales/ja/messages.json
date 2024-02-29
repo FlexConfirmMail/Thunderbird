@@ -106,6 +106,7 @@
   "config_minConfirmMultipleRecipientDomainsCount_label_after": { "message": "個以上のドメインが含まれる場合に警告する" },
   "config_allowCheckAllInternals_label": { "message": "組織内の宛先の一括チェックを許可" },
   "config_allowCheckAllExternals_label": { "message": "外部の宛先の一括チェックを許可" },
+  "config_emphasizeNewDomainRecipients_label": { "message": "返信の宛先に今まで含まれていなかったドメインのアドレスを強調表示する" },
 
 
   "config_userRules_caption":              { "message": "追加のルール" },

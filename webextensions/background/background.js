@@ -18,6 +18,7 @@ import {
 import * as Constants from '/common/constants.js';
 import { MatchingRules } from '/common/matching-rules.js';
 import { RecipientClassifier } from '/common/recipient-classifier.js';
+import * as RecipientParser from '/common/recipient-parser.js';
 
 import * as ListUtils from './list-utils.js';
 
@@ -44,6 +45,7 @@ function getMessageSignature(message) {
 // so we now wait for a message from a new composition content.
 const mDetectedMessageTypeForTab = new Map();
 const mDetectedClipboardStateForTab = new Map();
+const mInitialRecipientsForTab = new Map();
 const mInitialSignatureForTab = new Map();
 const mInitialSignatureForTabWithoutSubject = new Map();
 const mLastContextMessagesForTab = new Map();
@@ -53,6 +55,12 @@ browser.runtime.onMessage.addListener((message, sender) => {
       log('TYPE_COMPOSE_STARTED received ', message, sender);
       browser.compose.getComposeDetails(sender.tab.id).then(async details => {
         const author = await getAddressFromIdentity(details.identityId);
+        mInitialRecipientsForTab.set(sender.tab.id, [...new Set([
+          message.from || message.author,
+          ...(message.to || message.recipients || []),
+          ...(message.cc || message.ccList || []),
+          ...(message.bcc || message.bccList || []),
+        ])]);
         const signature = getMessageSignature({
           author,
           ...details
@@ -304,6 +312,15 @@ async function tryConfirm(tab, details, opener) {
     return;
   }
 
+  const initialRecipientDomains = [...new Set(mInitialRecipientsForTab.get(tab.id).map(recipient => RecipientParser.parse(recipient).domain))];
+  const newRecipientDomains = new Set();
+  for (const recipient of [...to, ...cc, ...bcc]) {
+    const domain = RecipientParser.parse(recipient).domain;
+    if (initialRecipientDomains.has(domain))
+      continue;
+    newRecipientDomains.add(domain);
+  }
+
   log('show confirmation ', tab, details);
 
   const dialogParams = {
@@ -336,6 +353,7 @@ async function tryConfirm(tab, details, opener) {
       internals: Array.from(internals),
       externals: Array.from(externals),
       attachments: details.attachments || await browser.compose.listAttachments(tab.id),
+      newRecipientDomains: [...newRecipientDomains],
     }
   );
 }
@@ -438,6 +456,7 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
 
   log('confirmed: OK to send');
   mDetectedMessageTypeForTab.delete(tab.id)
+  mInitialRecipientsForTab.delete(tab.id);
   mInitialSignatureForTab.delete(tab.id);
   mInitialSignatureForTabWithoutSubject.delete(tab.id);
   mRecentlySavedDraftSignatures.clear();

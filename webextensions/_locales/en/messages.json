@@ -106,6 +106,7 @@
   "config_minConfirmMultipleRecipientDomainsCount_label_after": { "message": "or more domains in To/Cc recipients" },
   "config_allowCheckAllInternals_label": { "message": "Allow to make all internal recipients to be checked with one checkbox" },
   "config_allowCheckAllExternals_label": { "message": "Allow to make all external recipients to be checked with one checkbox" },
+  "config_emphasizeNewDomainRecipients_label": { "message": "Emphasize added recipients with domains different from any existing recipients" },
 
 
   "config_userRules_caption":              { "message": "More Rules" },

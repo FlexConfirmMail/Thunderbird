@@ -204,6 +204,7 @@ export const configs = new Configs({
   emphasizeTopMessage: false,
   topMessage: '',
   emphasizeRecipientType: false,
+  emphasizeNewDomainRecipients: true,
 
   showCountdown: false,
   countdownSeconds: 5,

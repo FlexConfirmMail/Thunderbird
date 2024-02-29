@@ -24,6 +24,7 @@ let mParams;
 let mMatchingRules;
 let mBodyText;
 let mBodyHTML;
+let mNewRecipientDomains;
 
 let mTopMessage;
 let mInternalsAllCheck;
@@ -150,6 +151,8 @@ configs.$loaded.then(async () => {
   onConfigChange('topMessage');
   onConfigChange('debug');
 
+  mNewRecipientDomains = new Set(mParams.newRecipientDomains);
+
   initInternals();
   initExternals();
   initSubjectBlock();
@@ -248,7 +251,8 @@ function initExternals() {
       attachments: mParams.attachments,
     });
     const domainRow = createDomainRow(domain);
-    if (recipients.some(recipient => highlightedAddresses.has(recipient.address)))
+    if (recipients.some(recipient => highlightedAddresses.has(recipient.address)) ||
+        (configs.emphasizeNewDomainRecipients && mNewRecipientDomains.has(domain)))
       domainRow.classList.add('attention');
     mExternalsList.appendChild(domainRow);
 
@@ -257,7 +261,8 @@ function initExternals() {
       const row = createRecipientRow(recipient);
       row.dataset.domain = domain;
       row.classList.add(domainClass);
-      if (highlightedAddresses.has(recipient.address))
+      if (highlightedAddresses.has(recipient.address) ||
+          (configs.emphasizeNewDomainRecipients && mNewRecipientDomains.has(recipient.domain)))
         row.classList.add('attention');
       mExternalsList.appendChild(row);
     }
