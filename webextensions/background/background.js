@@ -21,8 +21,6 @@ import { RecipientClassifier } from '/common/recipient-classifier.js';
 
 import * as ListUtils from './list-utils.js';
 
-Dialog.setLogger(log);
-
 const TYPE_NEWLY_COMPOSED   = 'new-message';
 const TYPE_REPLY            = 'reply';
 const TYPE_DRAFT            = 'draft';

@@ -7,6 +7,7 @@
 
 import Configs from '/extlib/Configs.js';
 import * as Constants from './constants.js';
+import * as Dialog from '/extlib/dialog.js';
 
 const OVERRIDE_DEFAULT_CONFIGS = {}; /* Replace this for more customization on an enterprise use. */
 
@@ -258,8 +259,11 @@ export function log(message, ...args) {
   for (let i = 0; i < nest; i++) {
     indent += ' ';
   }
-  console.log(`flex-confirm-mail: ${indent}${message}`, ...args);
+  const timestamp = new Date().toLocaleString();
+  console.log(`${timestamp} flex-confirm-mail: ${indent}${message}`, ...args);
 }
+
+Dialog.setLogger(log);
 
 export async function sendToHost(message) {
   try {
