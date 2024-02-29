@@ -53,7 +53,7 @@ configs.$loaded.then(async () => {
     }
     catch(error) {
       log('failed to accept countdown dialog: ', error);
-      window.close();
+      //window.close();
     }
   }, 250);
 });
