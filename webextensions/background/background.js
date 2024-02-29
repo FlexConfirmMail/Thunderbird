@@ -56,11 +56,12 @@ browser.runtime.onMessage.addListener((message, sender) => {
       browser.compose.getComposeDetails(sender.tab.id).then(async details => {
         const author = await getAddressFromIdentity(details.identityId);
         mInitialRecipientsForTab.set(sender.tab.id, [...new Set([
-          message.from || message.author,
-          ...(message.to || message.recipients || []),
-          ...(message.cc || message.ccList || []),
-          ...(message.bcc || message.bccList || []),
-        ])]);
+          author,
+          ...(details.to || details.recipients || []),
+          ...(details.cc || details.ccList || []),
+          ...(details.bcc || details.bccList || []),
+        ])].filter(recipient => !!recipient));
+        log('initialRecipients ', mInitialRecipientsForTab.get(sender.tab.id));
         const signature = getMessageSignature({
           author,
           ...details
@@ -312,14 +313,16 @@ async function tryConfirm(tab, details, opener) {
     return;
   }
 
-  const initialRecipientDomains = [...new Set(mInitialRecipientsForTab.get(tab.id).map(recipient => RecipientParser.parse(recipient).domain))];
+  const initialRecipientDomains = new Set(mInitialRecipientsForTab.get(tab.id).map(recipient => RecipientParser.parse(recipient).domain));
   const newRecipientDomains = new Set();
+  log('initialRecipientDomains ', initialRecipientDomains);
   for (const recipient of [...to, ...cc, ...bcc]) {
     const domain = RecipientParser.parse(recipient).domain;
     if (initialRecipientDomains.has(domain))
       continue;
     newRecipientDomains.add(domain);
   }
+  log('newRecipientDomains ', newRecipientDomains);
 
   log('show confirmation ', tab, details);
 
@@ -350,8 +353,8 @@ async function tryConfirm(tab, details, opener) {
     dialogParams,
     {
       details,
-      internals: Array.from(internals),
-      externals: Array.from(externals),
+      internals: [...internals],
+      externals: [...externals],
       attachments: details.attachments || await browser.compose.listAttachments(tab.id),
       newRecipientDomains: [...newRecipientDomains],
     }
