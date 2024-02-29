@@ -189,6 +189,9 @@ export const configs = new Configs({
   minConfirmationRecipientsCount: 0,
   confirmMultipleRecipientDomainsDialogTitle: '',
   confirmMultipleRecipientDomainsDialogMessage: '',
+  confirmNewDomainRecipients: false,
+  confirmNewDomainRecipientsDialogTitle: '',
+  confirmNewDomainRecipientsDialogMessage: '',
 
   allowCheckAllInternals: true,
   allowCheckAllExternals: false,

@@ -23,6 +23,14 @@
   "confirmMultipleRecipientDomainsAccept": { "message": "送信" },
   "confirmMultipleRecipientDomainsCancel": { "message": "キャンセル" },
 
+  "confirmNewDomainRecipientsDialogTitle": { "message": "返信元のメールの宛先に含まれていなかったドメインの宛先が追加されています" },
+  "confirmNewDomainRecipientsDialogMessage": { "message": "返信元のメールの宛先に含まれていなかったドメインの以下の宛先が追加されています。\n\n$RECIPIENTS$\n\n送信してよろしいですか？",
+    "placeholders": {
+      "recipients": { "content": "$1", "example": "user@example.com" }
+    }},
+  "confirmNewDomainRecipientsAccept": { "message": "送信" },
+  "confirmNewDomainRecipientsCancel": { "message": "キャンセル" },
+
 
   "confirmAttentionDomainsTitle": { "message": "特別に注意が必要な宛先" },
   "confirmAttentionDomainsMessage": { "message": "特別に注意が必要なドメインに属する以下の宛先があります。\n\n$RECIPIENTS$\n\n問題がない事を確認の上でメールを送信してください。",
@@ -106,6 +114,7 @@
   "config_minConfirmMultipleRecipientDomainsCount_label_after": { "message": "個以上のドメインが含まれる場合に警告する" },
   "config_allowCheckAllInternals_label": { "message": "組織内の宛先の一括チェックを許可" },
   "config_allowCheckAllExternals_label": { "message": "外部の宛先の一括チェックを許可" },
+  "config_confirmNewDomainRecipients_label": { "message": "返信の宛先に今まで含まれていなかったドメインのアドレスが追加された場合に警告する" },
   "config_emphasizeNewDomainRecipients_label": { "message": "返信の宛先に今まで含まれていなかったドメインのアドレスを強調表示する" },
 
 

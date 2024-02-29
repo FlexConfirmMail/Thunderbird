@@ -23,6 +23,14 @@
   "confirmMultipleRecipientDomainsAccept": { "message": "Send" },
   "confirmMultipleRecipientDomainsCancel": { "message": "Cancel" },
 
+  "confirmNewDomainRecipientsDialogTitle": { "message": "Recipients with domains not included in the recipients of the original message" },
+  "confirmNewDomainRecipientsDialogMessage": { "message": "There are recipients with domains not included in the recipients of the original message.\n\n$RECIPIENTS$\n\nDo you really want to send this message?",
+    "placeholders": {
+      "domains": { "content": "$1", "example": "user@example.com" }
+    }},
+  "confirmNewDomainRecipientsAccept": { "message": "Send" },
+  "confirmNewDomainRecipientsCancel": { "message": "Cancel" },
+
 
   "confirmAttentionDomainsTitle": { "message": "Recipients with attention domains" },
   "confirmAttentionDomainsMessage": { "message": "These recipients with attention domains are found:\n\n$RECIPIENTS$\n\nIf there is no problem, continue to send.",
@@ -106,6 +114,7 @@
   "config_minConfirmMultipleRecipientDomainsCount_label_after": { "message": "or more domains in To/Cc recipients" },
   "config_allowCheckAllInternals_label": { "message": "Allow to make all internal recipients to be checked with one checkbox" },
   "config_allowCheckAllExternals_label": { "message": "Allow to make all external recipients to be checked with one checkbox" },
+  "config_confirmNewDomainRecipients_label": { "message": "Confirm when any recipients with domains different from any existing recipients are added" },
   "config_emphasizeNewDomainRecipients_label": { "message": "Emphasize added recipients with domains different from any existing recipients" },
 
 

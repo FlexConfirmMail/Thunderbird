@@ -169,6 +169,7 @@ configs.$loaded.then(async () => {
   Dialog.initButton(mAcceptButton, async _event => {
     if (!isAllChecked() ||
         !(await confirmedMultipleRecipientDomains()) ||
+        !(await confirmedNewDomainRecipients()) ||
         !(await confirmedWithRules()))
       return;
 
@@ -230,7 +231,7 @@ function initExternals() {
     const row = event.target.closest('.row');
     const domainRow = mExternalsList.querySelector(`.row.domain[data-domain="${row.dataset.domain}"]`);
     const recipientCheckboxes = mExternalsList.querySelectorAll(`.row.recipient[data-domain="${row.dataset.domain}"] input[type="checkbox"]`);
-    domainRow.classList.toggle('checked', Array.from(recipientCheckboxes).every(checkbox => checkbox.checked));
+    domainRow.classList.toggle('checked', [...recipientCheckboxes].every(checkbox => checkbox.checked));
     mExternalsAllCheck.checked = isAllChecked(mExternalsList);
   });
 
@@ -447,8 +448,8 @@ async function confirmedMultipleRecipientDomains() {
     return true;
 
   const message = (
-    configs.confirmMultipleRecipientDomainsDialogMessage.replace(/[\%\$]s/i, Array.from(domains).join('\n')) ||
-    browser.i18n.getMessage('confirmMultipleRecipientDomainsMessage', [Array.from(domains).join('\n')])
+    configs.confirmMultipleRecipientDomainsDialogMessage.replace(/[\%\$]s/i, [...domains].join('\n')) ||
+    browser.i18n.getMessage('confirmMultipleRecipientDomainsMessage', [[...domains].join('\n')])
   );
   let result;
   try {
@@ -468,6 +469,46 @@ async function confirmedMultipleRecipientDomains() {
     result = { buttonIndex: -1 };
   }
   log('confirmedMultipleRecipientDomains result.buttonIndex = ', result.buttonIndex);
+  switch (result.buttonIndex) {
+    case 0:
+      return true;
+    default:
+      return false;
+  }
+}
+
+async function confirmedNewDomainRecipients() {
+  log('confirmedNewDomainRecipients shouldConfirm = ', configs.confirmNewDomainRecipients);
+  if (!configs.confirmNewDomainRecipients)
+    return true;
+
+  const newDomainRecipients = [...new Set(mParams.externals.filter(recipient => mNewRecipientDomains.has(recipient.domain)))].map(recipient => recipient.address);
+  log('newDomainRecipients domains = ', newDomainRecipients);
+  if (newDomainRecipients.length == 0)
+    return true;
+
+  const message = (
+    configs.confirmNewDomainRecipientsDialogMessage.replace(/[\%\$]s/i, newDomainRecipients.join('\n')) ||
+    browser.i18n.getMessage('confirmNewDomainRecipientsDialogMessage', [newDomainRecipients.join('\n')])
+  );
+  let result;
+  try {
+    result = await RichConfirm.show({
+      modal: true,
+      type:  'common-dialog',
+      url:   '/resources/blank.html',
+      title: configs.confirmNewDomainRecipientsDialogTitle || browser.i18n.getMessage('confirmNewDomainRecipientsDialogTitle'),
+      message,
+      buttons: [
+        browser.i18n.getMessage('confirmNewDomainRecipientsAccept'),
+        browser.i18n.getMessage('confirmNewDomainRecipientsCancel')
+      ]
+    });
+  }
+  catch(_error) {
+    result = { buttonIndex: -1 };
+  }
+  log('confirmedNewDomainRecipients result.buttonIndex = ', result.buttonIndex);
   switch (result.buttonIndex) {
     case 0:
       return true;
