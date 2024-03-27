@@ -458,7 +458,7 @@ async function confirmedMultipleRecipientDomains() {
       type:  'common-dialog',
       url:   '/resources/blank.html',
       title: configs.confirmMultipleRecipientDomainsDialogTitle || browser.i18n.getMessage('confirmMultipleRecipientDomainsTitle'),
-      message,
+      content: message,
       buttons: [
         browser.i18n.getMessage('confirmMultipleRecipientDomainsAccept'),
         browser.i18n.getMessage('confirmMultipleRecipientDomainsCancel')
@@ -498,7 +498,7 @@ async function confirmedNewDomainRecipients() {
       type:  'common-dialog',
       url:   '/resources/blank.html',
       title: configs.confirmNewDomainRecipientsDialogTitle || browser.i18n.getMessage('confirmNewDomainRecipientsDialogTitle'),
-      message,
+      content: message,
       buttons: [
         browser.i18n.getMessage('confirmNewDomainRecipientsAccept'),
         browser.i18n.getMessage('confirmNewDomainRecipientsCancel')
@@ -533,7 +533,7 @@ async function confirmedWithRules() {
           type:  'common-dialog',
           url:   '/resources/blank.html',
           title,
-          message,
+          content: message,
           buttons: [
             browser.i18n.getMessage('reconfirmAccept'),
             browser.i18n.getMessage('reconfirmCancel'),
