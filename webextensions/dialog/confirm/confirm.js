@@ -464,7 +464,10 @@ async function confirmedMultipleRecipientDomains() {
       buttons: [
         browser.i18n.getMessage('confirmMultipleRecipientDomainsAccept'),
         browser.i18n.getMessage('confirmMultipleRecipientDomainsCancel')
-      ]
+      ],
+      onShown(content) {
+        content.closest('.rich-confirm-dialog').classList.add('for-multiple-recipient-domains');
+      },
     });
   }
   catch(_error) {
@@ -504,7 +507,10 @@ async function confirmedNewDomainRecipients() {
       buttons: [
         browser.i18n.getMessage('confirmNewDomainRecipientsAccept'),
         browser.i18n.getMessage('confirmNewDomainRecipientsCancel')
-      ]
+      ],
+      onShown(content) {
+        content.closest('.rich-confirm-dialog').classList.add('for-new-domain-recipients');
+      },
     });
   }
   catch(_error) {
@@ -527,7 +533,7 @@ async function confirmedWithRules() {
     attachments: mParams.attachments,
     subject:     mParams.details.subject,
     body:        mBodyText,
-    async confirm({ title, message }) {
+    async confirm({ title, message, rule }) {
       let result;
       try {
         result = await RichConfirm.show({
@@ -540,6 +546,9 @@ async function confirmedWithRules() {
             browser.i18n.getMessage('reconfirmAccept'),
             browser.i18n.getMessage('reconfirmCancel'),
           ],
+          onShown(content) {
+            content.closest('.rich-confirm-dialog').classList.add(`for-${rule.name.replace(/[\s\|:()\[\]<>{}!?*\.\/\\~+]/g, '_')}`);
+          },
         });
       }
       catch(_error) {
