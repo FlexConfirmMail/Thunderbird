@@ -14,6 +14,7 @@ import {
   log,
   toDOMDocumentFragment,
   readFile,
+  applyExtraStyleRules,
 } from '/common/common.js';
 import * as Constants from '/common/constants.js';
 
@@ -130,6 +131,7 @@ function buildFields() {
 }
 
 configs.$loaded.then(async () => {
+  applyExtraStyleRules();
   buildFields();
 
   mParams = await Dialog.getParams();
