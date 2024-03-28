@@ -16,7 +16,7 @@
 
 
   "confirmMultipleRecipientDomainsTitle": { "message": "多个域被包含在收件人或抄送目的地中" },
-  "confirmMultipleRecipientDomainsMessage": { "message": "收件人或抄送目的地包含一个以上的域。\n\n$DOMAINS$\n\n一旦发送，所有其他目的地将被告知。 你确定你要发送这个吗？",
+  "confirmMultipleRecipientDomainsMessage": { "message": "收件人或抄送目的地包含一个以上的域。\n\n<strong>$DOMAINS$</strong>\n\n一旦发送，所有其他目的地将被告知。 你确定你要发送这个吗？",
     "placeholders": {
       "domains": { "content": "$1", "example": "example.com" }
     }},
@@ -25,7 +25,7 @@
 
 
   "confirmAttentionDomainsTitle": { "message": "需要特别注意的目的地" },
-  "confirmAttentionDomainsMessage": { "message": "以下目的地属于需要特别注意的领域。\n\n$RECIPIENTS$\n\n请在发送邮件前确认一切正常。",
+  "confirmAttentionDomainsMessage": { "message": "以下目的地属于需要特别注意的领域。\n\n<strong>$RECIPIENTS$</strong>\n\n请在发送邮件前确认一切正常。",
     "placeholders": {
       "recipients": { "content": "$1", "example": "mail@example.com" }
     }},
@@ -34,7 +34,7 @@
 
 
   "confirmAttentionSuffixesTitle": { "message": "需要特别注意的附件类型" },
-  "confirmAttentionSuffixesMessage": { "message": "以下是需要特别注意的带有扩展的附件。\n\n$ATTACHMENTS$\n\n请在发送邮件前确认一切正常。",
+  "confirmAttentionSuffixesMessage": { "message": "以下是需要特别注意的带有扩展的附件。\n\n<strong>$ATTACHMENTS$</strong>\n\n请在发送邮件前确认一切正常。",
     "placeholders": {
       "attachments": { "content": "$1", "example": "file.txt" }
     }},
@@ -42,7 +42,7 @@
   "confirmAttentionSuffixesCancel": { "message": "取消" },
 
   "confirmAttentionSuffixes2Title": { "message": "需要特别注意的其他类型的附件" },
-  "confirmAttentionSuffixes2Message": { "message": "此外，还有以下带有扩展的附件需要特别注意。\n\n$ATTACHMENTS$\n\n请在发送邮件前确认一切正常。",
+  "confirmAttentionSuffixes2Message": { "message": "此外，还有以下带有扩展的附件需要特别注意。\n\n<strong>$ATTACHMENTS$</strong>\n\n请在发送邮件前确认一切正常。",
     "placeholders": {
       "attachments": { "content": "$1", "example": "file.txt" }
     }},
@@ -51,7 +51,7 @@
 
 
   "confirmAttentionTermsTitle": { "message": "命名需要特别注意的附件" },
-  "confirmAttentionTermsMessage": { "message": "以下附件的名称中含有需要特别注意的单词或短语。\n\n$ATTACHMENTS$\n\n请在发送邮件前确认一切正常。",
+  "confirmAttentionTermsMessage": { "message": "以下附件的名称中含有需要特别注意的单词或短语。\n\n<strong>$ATTACHMENTS$</strong>\n\n请在发送邮件前确认一切正常。",
     "placeholders": {
       "attachments": { "content": "$1", "example": "file.txt" }
     }},
@@ -60,7 +60,7 @@
 
 
   "alertBlockedDomainsTitle": { "message": "将被封锁的目的地" },
-  "alertBlockedDomainsMessage": { "message": "以下目的地属于要被封锁的域。\n\n$RECIPIENTS$\n\n不可能向这些地址发送邮件。",
+  "alertBlockedDomainsMessage": { "message": "以下目的地属于要被封锁的域。\n\n<strong>$RECIPIENTS$</strong>\n\n不可能向这些地址发送邮件。",
     "placeholders": {
       "recipients": { "content": "$1", "example": "mail@example.com" }
     }},

@@ -208,6 +208,36 @@ export const configs = new Configs({
   topMessage: '',
   emphasizeRecipientType: false,
   emphasizeNewDomainRecipients: true,
+  extraStyleRules: `
+/* Emphasize reconfirmation dialogs more */
+/*
+.rich-confirm-dialog {
+  background: red !important;
+  padding: 1.5em;
+}
+
+.rich-confirm-dialog::before {
+  color: white !important;
+  content: "CAUTION!!";
+  display: block;
+  font-size: x-large !important;
+  font-weight: bold !important;
+  position: relative;
+  text-align: center;
+  top: -0.5em;
+}
+
+.rich-confirm-content {
+  background: var(--bg-color) !important;
+  padding: 1em;
+}
+
+.rich-confirm-content strong {
+  font-size: large;
+  font-weight: bold;
+}
+*/
+  `.trim(),
 
   showCountdown: false,
   countdownSeconds: 5,
@@ -423,6 +453,13 @@ export async function applyOutlookGPOConfigs() {
   applyOutlookGPOConfig(response, 'fixedInternalDomains');
   applyOutlookGPOConfigRuleItems(response, 'builtInAttentionDomains');
   applyOutlookGPOConfigRuleItems(response, 'builtInAttentionTerms');
+}
+
+export function applyExtraStyleRules() {
+  const style = document.createElement('style');
+  style.setAttribute('type', 'text/css');
+  style.appendChild(document.createTextNode(configs.extraStyleRules || ''));
+  (document.head || document.body).appendChild(style);
 }
 
 
