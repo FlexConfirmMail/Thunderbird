@@ -16,7 +16,7 @@
 
 
   "confirmMultipleRecipientDomainsTitle": { "message": "Multiple recipient domains in To or Cc" },
-  "confirmMultipleRecipientDomainsMessage": { "message": "There are multiple recipient domains in To or Cc.\n\n$DOMAINS$\n\nAll recipients information will be disclosed to all other recipients. Do you really want to send this message?",
+  "confirmMultipleRecipientDomainsMessage": { "message": "There are multiple recipient domains in To or Cc.\n\n<strong>$DOMAINS$</strong>\n\nAll recipients information will be disclosed to all other recipients. Do you really want to send this message?",
     "placeholders": {
       "domains": { "content": "$1", "example": "example.com" }
     }},
@@ -24,7 +24,7 @@
   "confirmMultipleRecipientDomainsCancel": { "message": "Cancel" },
 
   "confirmNewDomainRecipientsDialogTitle": { "message": "Recipients with domains not included in the recipients of the original message" },
-  "confirmNewDomainRecipientsDialogMessage": { "message": "There are recipients with domains not included in the recipients of the original message.\n\n$RECIPIENTS$\n\nDo you really want to send this message?",
+  "confirmNewDomainRecipientsDialogMessage": { "message": "There are recipients with domains not included in the recipients of the original message.\n\n<strong>$RECIPIENTS$</strong>\n\nDo you really want to send this message?",
     "placeholders": {
       "domains": { "content": "$1", "example": "user@example.com" }
     }},
@@ -33,7 +33,7 @@
 
 
   "confirmAttentionDomainsTitle": { "message": "Recipients with attention domains" },
-  "confirmAttentionDomainsMessage": { "message": "These recipients with attention domains are found:\n\n$RECIPIENTS$\n\nIf there is no problem, continue to send.",
+  "confirmAttentionDomainsMessage": { "message": "These recipients with attention domains are found:\n\n<strong>$RECIPIENTS$</strong>\n\nIf there is no problem, continue to send.",
     "placeholders": {
       "recipients": { "content": "$1", "example": "mail@example.com" }
     }},
@@ -42,7 +42,7 @@
 
 
   "confirmAttentionSuffixesTitle": { "message": "Attachments with attention file types" },
-  "confirmAttentionSuffixesMessage": { "message": "These attachments with attention extensions are found:\n\n$ATTACHMENTS$\n\nIf there is no problem, continue to send.",
+  "confirmAttentionSuffixesMessage": { "message": "These attachments with attention extensions are found:\n\n<strong>$ATTACHMENTS$</strong>\n\nIf there is no problem, continue to send.",
     "placeholders": {
       "attachments": { "content": "$1", "example": "file.txt" }
     }},
@@ -50,7 +50,7 @@
   "confirmAttentionSuffixesCancel": { "message": "Cancel" },
 
   "confirmAttentionSuffixes2Title": { "message": "Attachments with more attention file types" },
-  "confirmAttentionSuffixes2Message": { "message": "These attachments with more attention extensions are found:\n\n$ATTACHMENTS$\n\nIf there is no problem, continue to send.",
+  "confirmAttentionSuffixes2Message": { "message": "These attachments with more attention extensions are found:\n\n<strong>$ATTACHMENTS$</strong>\n\nIf there is no problem, continue to send.",
     "placeholders": {
       "attachments": { "content": "$1", "example": "file.txt" }
     }},
@@ -68,7 +68,7 @@
 
 
   "alertBlockedDomainsTitle": { "message": "Recipients with blocked domains" },
-  "alertBlockedDomainsMessage": { "message": "These recipients with blocked domains are found:\n\n$RECIPIENTS$\n\nIt is not allowe to send messages to such recipients.",
+  "alertBlockedDomainsMessage": { "message": "These recipients with blocked domains are found:\n\n<strong>$RECIPIENTS$</strong>\n\nIt is not allowe to send messages to such recipients.",
     "placeholders": {
       "recipients": { "content": "$1", "example": "mail@example.com" }
     }},

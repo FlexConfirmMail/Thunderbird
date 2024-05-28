@@ -16,7 +16,7 @@
 
 
   "confirmMultipleRecipientDomainsTitle": { "message": "複数のドメインがToまたはCcの宛先に含まれています" },
-  "confirmMultipleRecipientDomainsMessage": { "message": "ToまたはCcの宛先に複数のドメインが含まれています。\n\n$DOMAINS$\n\n送信すると、他の宛先の情報が全ての宛先に通知されます。送信してよろしいですか？",
+  "confirmMultipleRecipientDomainsMessage": { "message": "ToまたはCcの宛先に複数のドメインが含まれています。\n\n<strong>$DOMAINS$</strong>\n\n送信すると、他の宛先の情報が全ての宛先に通知されます。送信してよろしいですか？",
     "placeholders": {
       "domains": { "content": "$1", "example": "example.com" }
     }},
@@ -24,7 +24,7 @@
   "confirmMultipleRecipientDomainsCancel": { "message": "キャンセル" },
 
   "confirmNewDomainRecipientsDialogTitle": { "message": "返信元のメールの宛先に含まれていなかったドメインの宛先が追加されています" },
-  "confirmNewDomainRecipientsDialogMessage": { "message": "返信元のメールの宛先に含まれていなかったドメインの以下の宛先が追加されています。\n\n$RECIPIENTS$\n\n送信してよろしいですか？",
+  "confirmNewDomainRecipientsDialogMessage": { "message": "返信元のメールの宛先に含まれていなかったドメインの以下の宛先が追加されています。\n\n<strong>$RECIPIENTS$</strong>\n\n送信してよろしいですか？",
     "placeholders": {
       "recipients": { "content": "$1", "example": "user@example.com" }
     }},
@@ -33,7 +33,7 @@
 
 
   "confirmAttentionDomainsTitle": { "message": "特別に注意が必要な宛先" },
-  "confirmAttentionDomainsMessage": { "message": "特別に注意が必要なドメインに属する以下の宛先があります。\n\n$RECIPIENTS$\n\n問題がない事を確認の上でメールを送信してください。",
+  "confirmAttentionDomainsMessage": { "message": "特別に注意が必要なドメインに属する以下の宛先があります。\n\n<strong>$RECIPIENTS$</strong>\n\n問題がない事を確認の上でメールを送信してください。",
     "placeholders": {
       "recipients": { "content": "$1", "example": "mail@example.com" }
     }},
@@ -42,7 +42,7 @@
 
 
   "confirmAttentionSuffixesTitle": { "message": "特別に注意が必要な種類の添付ファイル" },
-  "confirmAttentionSuffixesMessage": { "message": "特別に注意が必要な拡張子を持つ以下の添付ファイルがあります。\n\n$ATTACHMENTS$\n\n問題がない事を確認の上でメールを送信してください。",
+  "confirmAttentionSuffixesMessage": { "message": "特別に注意が必要な拡張子を持つ以下の添付ファイルがあります。\n\n<strong>$ATTACHMENTS$</strong>\n\n問題がない事を確認の上でメールを送信してください。",
     "placeholders": {
       "attachments": { "content": "$1", "example": "file.txt" }
     }},
@@ -50,7 +50,7 @@
   "confirmAttentionSuffixesCancel": { "message": "キャンセル" },
 
   "confirmAttentionSuffixes2Title": { "message": "さらに特別に注意が必要な種類の添付ファイル" },
-  "confirmAttentionSuffixes2Message": { "message": "さらに特別に注意が必要な拡張子を持つ以下の添付ファイルがあります。\n\n$ATTACHMENTS$\n\n問題がない事を確認の上でメールを送信してください。",
+  "confirmAttentionSuffixes2Message": { "message": "さらに特別に注意が必要な拡張子を持つ以下の添付ファイルがあります。\n\n<strong>$ATTACHMENTS$</strong>\n\n問題がない事を確認の上でメールを送信してください。",
     "placeholders": {
       "attachments": { "content": "$1", "example": "file.txt" }
     }},
@@ -59,7 +59,7 @@
 
 
   "confirmAttentionTermsTitle": { "message": "特別に注意が必要な名前の添付ファイル" },
-  "confirmAttentionTermsMessage": { "message": "特別に注意が必要な語句を名前に含む以下の添付ファイルがあります。\n\n$ATTACHMENTS$\n\n問題がない事を確認の上でメールを送信してください。",
+  "confirmAttentionTermsMessage": { "message": "特別に注意が必要な語句を名前に含む以下の添付ファイルがあります。\n\n<strong>$ATTACHMENTS$</strong>\n\n問題がない事を確認の上でメールを送信してください。",
     "placeholders": {
       "attachments": { "content": "$1", "example": "file.txt" }
     }},
@@ -68,7 +68,7 @@
 
 
   "alertBlockedDomainsTitle": { "message": "ブロック対象の宛先" },
-  "alertBlockedDomainsMessage": { "message": "ブロック対象のドメインに属する以下の宛先があります。\n\n$RECIPIENTS$\n\nこれらの宛先にメールを送ることはできません。",
+  "alertBlockedDomainsMessage": { "message": "ブロック対象のドメインに属する以下の宛先があります。\n\n<strong>$RECIPIENTS$</strong>\n\nこれらの宛先にメールを送ることはできません。",
     "placeholders": {
       "recipients": { "content": "$1", "example": "mail@example.com" }
     }},

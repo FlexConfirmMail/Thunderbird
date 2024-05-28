@@ -11,6 +11,7 @@ import * as Dialog from '/extlib/dialog.js';
 import {
   configs,
   log,
+  applyExtraStyleRules,
 } from '/common/common.js';
 
 const mCounter = document.getElementById('count');
@@ -18,6 +19,7 @@ const mSkipButton = document.getElementById('skip');
 const mCancelButton = document.getElementById('cancel');
 
 configs.$loaded.then(async () => {
+  applyExtraStyleRules();
   mCounter.textContent = configs.countdownSeconds;
 
   if (configs.countdownAllowSkip) {
