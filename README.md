@@ -66,7 +66,7 @@ It will help you to create such an managed storage manifest with exported config
 
 1. Download "Assets" from [any CI result's artifacts](https://github.com/FlexConfirmMail/Thunderbird/actions/workflows/build-release.yaml).
 2. Extract XPI and native messaging host from the downloaded Assets.
-3. Install native messaging host extracted at the step 2, if it is not installed.
+3. Run `install.bat` to Install native messaging host extracted at the step 2, if it is not installed.
 4. Start Thunderbird.
 5. Open the Add-ons Manager.
 6. Drag downloaded XPI file and drop it to the Add-ons Manager.
