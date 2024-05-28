@@ -67,10 +67,10 @@ export class MatchingRules {
     this.$rulesById = mergedRulesById;
   }
 
-  get $domainMatchers() {
-    if (!this._$domainMatchers)
+  get $addressMatchers() {
+    if (!this._$addressMatchers)
       this.$prepareMatchers();
-    return this._$domainMatchers;
+    return this._$addressMatchers;
   }
 
   get $attachmentMatchers() {
@@ -92,28 +92,32 @@ export class MatchingRules {
   }
 
   $prepareMatchers() {
-    this._$domainMatchers = {};
+    this._$addressMatchers = {};
     this._$attachmentMatchers = {};
     this._$subjectMatchers = {};
     this._$bodyMatchers = {};
     for (const rule of this.$rules) {
       switch (rule.matchTarget) {
         case Constants.MATCH_TO_RECIPIENT_DOMAIN:
-          const uniqueDomains = new Set(
+          const uniquePatterns = new Set(
             (rule.items || [])
-              .map(domain => domain.toLowerCase().replace(/^(-?)@/, '$1'))
-              .filter(domain => !domain.startsWith('#')) // reject commented out items
+              .map(
+                pattern => pattern.toLowerCase()
+                  .replace(/^(-?)@/, '$1') // delete needless "@" from domain only patterns: "@example.com" => "example.com"
+                  .replace(/^(-?)(?![^@]+@)/, '$1*@') // normalize to full address patterns: "foo@example.com" => "foo@example.com", "example.com" => "*@example.com"
+              )
+              .filter(pattern => !pattern.startsWith('#')) // reject commented out items
           );
           const negativeItems = new Set(
-            [...uniqueDomains]
-              .filter(domain => domain.startsWith('-'))
-              .map(domain => domain.replace(/^-/, ''))
+            [...uniquePatterns]
+              .filter(pattern => pattern.startsWith('-'))
+              .map(pattern => pattern.replace(/^-/, ''))
           );
           for (const negativeItem of negativeItems) {
-            uniqueDomains.delete(negativeItem);
-            uniqueDomains.delete(`-${negativeItem}`);
+            uniquePatterns.delete(negativeItem);
+            uniquePatterns.delete(`-${negativeItem}`);
           }
-          this._$domainMatchers[rule.id] = new RegExp(`^(${[...uniqueDomains].map(this.$toRegExpSource).join('|')})$`, 'i');
+          this._$addressMatchers[rule.id] = new RegExp(`^(${[...uniquePatterns].map(this.$toRegExpSource).join('|')})$`, 'i');
           break;
 
         case Constants.MATCH_TO_ATTACHMENT_NAME:
@@ -304,8 +308,8 @@ export class MatchingRules {
       for (const recipient of recipients) {
         const parsedRecipient = typeof recipient == 'string' ? RecipientParser.parse(recipient) : recipient;
 
-        for (const [id, matcher] of Object.entries(this.$domainMatchers)) {
-          if (!matcher.test(parsedRecipient.domain))
+        for (const [id, matcher] of Object.entries(this.$addressMatchers)) {
+          if (!matcher.test(parsedRecipient.address))
             continue;
 
           const rule = this.get(id);
