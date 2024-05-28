@@ -14,8 +14,8 @@ export class RecipientClassifier {
         .filter(pattern => !pattern.startsWith('#')) // reject commented out items
         .map(
           pattern => pattern.toLowerCase()
-            .replace(/^(-?)@/, '$1') // "@example.com" => "example.com"
-            .replace(/^(-?)(?![^@]+@)/, '$1?*@') // "example.com" => "?*@example.com"
+            .replace(/^(-?)@/, '$1') // delete needless "@" from domain only patterns: "@example.com" => "example.com"
+            .replace(/^(-?)(?![^@]+@)/, '$1*@') // normalize to full address patterns: "foo@example.com" => "foo@example.com", "example.com" => "*@example.com"
         )
     );
     const negativeItems = new Set(
