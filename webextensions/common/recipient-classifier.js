@@ -27,7 +27,7 @@ export class RecipientClassifier {
       uniquePatterns.delete(negativeItem);
       uniquePatterns.delete(`-${negativeItem}`);
     }
-    this.$internalDomainsMatcher = new RegExp(`^(${[...uniquePatterns].map(pattern => this.$toRegExpSource(pattern)).join('|')})$`, 'i');
+    this.$internalPatternsMatcher = new RegExp(`^(${[...uniquePatterns].map(pattern => this.$toRegExpSource(pattern)).join('|')})$`, 'i');
     this.classify = this.classify.bind(this);
   }
 
@@ -49,7 +49,7 @@ export class RecipientClassifier {
         ...RecipientParser.parse(recipient),
       };
       const address = classifiedRecipient.address;
-      if (this.$internalDomainsMatcher.test(address))
+      if (this.$internalPatternsMatcher.test(address))
         internals.add(classifiedRecipient);
       else
         externals.add(classifiedRecipient);
