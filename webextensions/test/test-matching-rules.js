@@ -307,6 +307,24 @@ const RECIPIENT_DOMAIN_RULES = [
     ] },
 ];
 
+const RECIPIENT_ADDRESS_RULES = [
+  { id:          'highlighted by recipient address always',
+    matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+    highlight:   Constants.HIGHLIGHT_ALWAYS,
+    itemsLocal:  ['*+highlighted-always@example.com'] },
+  { id:          'highlighted by recipient address always, but disabled by comment',
+    matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+    highlight:   Constants.HIGHLIGHT_ALWAYS,
+    itemsLocal:  ['#*+never-highlighted-with-comment@example.com'] },
+  { id:          'highlighted by recipient address always, but disabled by negative modifier',
+    matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+    highlight:   Constants.HIGHLIGHT_ALWAYS,
+    itemsLocal:  [
+      '*+never-highlighted-with-negative-modifier@example.com',
+      '-*+never-highlighted-with-negative-modifier@example.com',
+    ] },
+];
+
 const ATTACHMENT_NAME_RULES = [
   { id:          'highlighted by attachment name',
     matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
@@ -518,6 +536,7 @@ const RULES = [
   ...NO_REACTION_RULES,
   ...DISABLED_RULES,
   ...RECIPIENT_DOMAIN_RULES,
+  ...RECIPIENT_ADDRESS_RULES,
   ...ATTACHMENT_NAME_RULES,
   ...ATTACHMENT_SUFFIX_RULES,
   ...SUBJECT_RULES,
@@ -533,6 +552,7 @@ const RECONFIRM_ACTIONS = new Set([
 ]);
 const RECONFIRM_RULES = [
   ...RECIPIENT_DOMAIN_RULES,
+  ...RECIPIENT_ADDRESS_RULES,
   ...ATTACHMENT_NAME_RULES,
   ...ATTACHMENT_SUFFIX_RULES,
   ...SUBJECT_RULES,
@@ -549,6 +569,7 @@ const BLOCK_ACTIONS = new Set([
 ]);
 const BLOCK_RULES = [
   ...RECIPIENT_DOMAIN_RULES,
+  ...RECIPIENT_ADDRESS_RULES,
   ...ATTACHMENT_NAME_RULES,
   ...ATTACHMENT_SUFFIX_RULES,
   ...SUBJECT_RULES,
@@ -562,6 +583,7 @@ const RECIPIENTS_HIGHLIGHTED_ALWAYS = [
   'lowercase@highlighted-always.example.com',
   'uppercase@HIGHLIGHTED-ALWAYS.CLEAR-CODE.COM',
   'mixedcase@HiGhLiGhTeD-aLwAyS.ExAmPlE.cOm',
+  'local+highlighted-always@example.com',
 ];
 const RECIPIENTS_HIGHLIGHTED_WITH_ATTACHMENTS = [
   'lowercase@highlighted-attachment.example.com',
@@ -620,9 +642,11 @@ const RECIPIENTS_BLOCKED_EXTERNALS_WITH_ATTACHMENTS = [
 ];
 const RECIPIENTS_NOT_HIGHLIGHTED_WITH_COMMENT = [
   'address@never-highlighted-with-comment.example.com',
+  'local+never-highlighted-with-comment@example.com',
 ];
 const RECIPIENTS_NOT_HIGHLIGHTED_WITH_NEGATIVE_MODIFIER = [
   'address@never-highlighted-with-negative-modifier.clear-code.com',
+  'local+never-highlighted-with-negative-modifier@example.com',
 ];
 
 const RECIPIENTS = [
