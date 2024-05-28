@@ -248,6 +248,65 @@ test_classifyAddresses.parameters = {
       ],
     }
   },
+  'support local part': {
+    recipients: [
+      'aaa.xx@example.com',
+      'bbb.yy@example.com',
+      'ccc.zz@example.com',
+      'ddd@example.com',
+    ],
+    internalDomains: [
+      '*.xx@example.com',
+      '*.yy@example.com',
+    ],
+    expected: {
+      internals: [
+        'aaa.xx@example.com',
+        'bbb.yy@example.com',
+      ],
+      externals: [
+        'ccc.zz@example.com',
+        'ddd@example.com',
+      ],
+    }
+  },
+  'local part with negative modifier': {
+    recipients: [
+      'aaa.xx@example.com',
+      'bbb.xx@example.com',
+    ],
+    internalDomains: [
+      '*.xx@example.com',
+      '-*.xx@example.com',
+    ],
+    expected: {
+      internals: [
+      ],
+      externals: [
+        'aaa.xx@example.com',
+        'bbb.xx@example.com',
+      ],
+    }
+  },
+  'wildcards in both local part and domain part': {
+    recipients: [
+      'aaa.xx@foo.example.com',
+      'bbb.xx@bar.example.com',
+      'ccc.zz@bar.example.com',
+    ],
+    internalDomains: [
+      '*.xx@*example.com',
+    ],
+    expected: {
+      internals: [
+        'aaa.xx@foo.example.com',
+        'bbb.xx@bar.example.com',
+      ],
+      externals: [
+        'ccc.zz@bar.example.com',
+      ],
+    }
+  },
 };
 export function test_classifyAddresses({ recipients, internalDomains, expected }) {
   const classifier = new RecipientClassifier({ internalDomains });

@@ -151,13 +151,23 @@ browser.messageDisplayScripts.register({
 });
 
 async function getAddressFromIdentity(id) {
-  const accounts = await browser.accounts.list();
-  for (const account of accounts) {
-    for (const identity of account.identities) {
-      if (identity.id == id)
+  log('getting identity from id: ', id);
+  try {
+    const accounts = await browser.accounts.list(false);
+    log('accounts: ', accounts);
+    for (const account of accounts) {
+      for (const identity of account.identities) {
+        if (identity.id != id)
+          continue;
+        log('found: ', identity);
         return identity.email;
+      }
     }
   }
+  catch(error) {
+    console.log('failed to get identity: ', error);
+  }
+  log('identity not found');
   return null;
 }
 
@@ -407,11 +417,15 @@ async function shouldBlock(tab, details) {
 
 
 browser.compose.onBeforeSend.addListener(async (tab, details) => {
+  log('onBeforeSend ', tab, details);
   await configs.$loaded;
   const composeWin = await browser.windows.get(tab.windowId);
+  log('onBeforeSend: composeWin = ', composeWin);
 
-  if (await shouldBlock(tab, details))
+  if (await shouldBlock(tab, details)) {
+    log(' => blocked');
     return { cancel: true };
+  }
 
   switch (configs.confirmationMode) {
     case Constants.CONFIRMATION_MODE_NEVER:
@@ -420,9 +434,13 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
 
     default:
     case Constants.CONFIRMATION_MODE_ONLY_MODIFIED:
-      if (!(await needConfirmationOnModified(tab, details)))
+      log('checking modification');
+      if (!(await needConfirmationOnModified(tab, details))) {
+        log(' => no modification: no need to confirm');
         break;
+      }
     case Constants.CONFIRMATION_MODE_ALWAYS: {
+      log(' => trying to confirm');
       try {
         await tryConfirm(tab, details, composeWin);
       }

@@ -9,21 +9,25 @@ import * as RecipientParser from './recipient-parser.js';
 
 export class RecipientClassifier {
   constructor({ internalDomains } = {}) {
-    const uniqueDomains = new Set(
+    const uniquePatterns = new Set(
       (internalDomains || [])
-        .map(domain => domain.toLowerCase().replace(/^(-?)@/, '$1'))
-        .filter(domain => !domain.startsWith('#')) // reject commented out items
+        .filter(pattern => !pattern.startsWith('#')) // reject commented out items
+        .map(
+          pattern => pattern.toLowerCase()
+            .replace(/^(-?)@/, '$1') // delete needless "@" from domain only patterns: "@example.com" => "example.com"
+            .replace(/^(-?)(?![^@]+@)/, '$1*@') // normalize to full address patterns: "foo@example.com" => "foo@example.com", "example.com" => "*@example.com"
+        )
     );
     const negativeItems = new Set(
-      [...uniqueDomains]
-        .filter(domain => domain.startsWith('-'))
-        .map(domain => domain.replace(/^-/, ''))
+      [...uniquePatterns]
+        .filter(pattern => pattern.startsWith('-'))
+        .map(pattern => pattern.replace(/^-/, ''))
     );
     for (const negativeItem of negativeItems) {
-      uniqueDomains.delete(negativeItem);
-      uniqueDomains.delete(`-${negativeItem}`);
+      uniquePatterns.delete(negativeItem);
+      uniquePatterns.delete(`-${negativeItem}`);
     }
-    this.$internalDomainsMatcher = new RegExp(`^(${[...uniqueDomains].map(domain => this.$toRegExpSource(domain)).join('|')})$`, 'i');
+    this.$internalDomainsMatcher = new RegExp(`^(${[...uniquePatterns].map(pattern => this.$toRegExpSource(pattern)).join('|')})$`, 'i');
     this.classify = this.classify.bind(this);
   }
 
@@ -44,8 +48,8 @@ export class RecipientClassifier {
       const classifiedRecipient = {
         ...RecipientParser.parse(recipient),
       };
-      const domain = classifiedRecipient.domain;
-      if (this.$internalDomainsMatcher.test(domain))
+      const address = classifiedRecipient.address;
+      if (this.$internalDomainsMatcher.test(address))
         internals.add(classifiedRecipient);
       else
         externals.add(classifiedRecipient);
