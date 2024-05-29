@@ -307,6 +307,24 @@ const RECIPIENT_DOMAIN_RULES = [
     ] },
 ];
 
+const RECIPIENT_ADDRESS_RULES = [
+  { id:          'highlighted by recipient address always',
+    matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+    highlight:   Constants.HIGHLIGHT_ALWAYS,
+    itemsLocal:  ['*+highlighted-always@example.com'] },
+  { id:          'highlighted by recipient address always, but disabled by comment',
+    matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+    highlight:   Constants.HIGHLIGHT_ALWAYS,
+    itemsLocal:  ['#*+never-highlighted-with-comment@example.com'] },
+  { id:          'highlighted by recipient address always, but disabled by negative modifier',
+    matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+    highlight:   Constants.HIGHLIGHT_ALWAYS,
+    itemsLocal:  [
+      '*+never-highlighted-with-negative-modifier@example.com',
+      '-*+never-highlighted-with-negative-modifier@example.com',
+    ] },
+];
+
 const ATTACHMENT_NAME_RULES = [
   { id:          'highlighted by attachment name',
     matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
@@ -518,6 +536,7 @@ const RULES = [
   ...NO_REACTION_RULES,
   ...DISABLED_RULES,
   ...RECIPIENT_DOMAIN_RULES,
+  ...RECIPIENT_ADDRESS_RULES,
   ...ATTACHMENT_NAME_RULES,
   ...ATTACHMENT_SUFFIX_RULES,
   ...SUBJECT_RULES,
@@ -533,6 +552,7 @@ const RECONFIRM_ACTIONS = new Set([
 ]);
 const RECONFIRM_RULES = [
   ...RECIPIENT_DOMAIN_RULES,
+  ...RECIPIENT_ADDRESS_RULES,
   ...ATTACHMENT_NAME_RULES,
   ...ATTACHMENT_SUFFIX_RULES,
   ...SUBJECT_RULES,
@@ -549,6 +569,7 @@ const BLOCK_ACTIONS = new Set([
 ]);
 const BLOCK_RULES = [
   ...RECIPIENT_DOMAIN_RULES,
+  ...RECIPIENT_ADDRESS_RULES,
   ...ATTACHMENT_NAME_RULES,
   ...ATTACHMENT_SUFFIX_RULES,
   ...SUBJECT_RULES,
@@ -562,6 +583,7 @@ const RECIPIENTS_HIGHLIGHTED_ALWAYS = [
   'lowercase@highlighted-always.example.com',
   'uppercase@HIGHLIGHTED-ALWAYS.CLEAR-CODE.COM',
   'mixedcase@HiGhLiGhTeD-aLwAyS.ExAmPlE.cOm',
+  'local+highlighted-always@example.com',
 ];
 const RECIPIENTS_HIGHLIGHTED_WITH_ATTACHMENTS = [
   'lowercase@highlighted-attachment.example.com',
@@ -620,9 +642,11 @@ const RECIPIENTS_BLOCKED_EXTERNALS_WITH_ATTACHMENTS = [
 ];
 const RECIPIENTS_NOT_HIGHLIGHTED_WITH_COMMENT = [
   'address@never-highlighted-with-comment.example.com',
+  'local+never-highlighted-with-comment@example.com',
 ];
 const RECIPIENTS_NOT_HIGHLIGHTED_WITH_NEGATIVE_MODIFIER = [
   'address@never-highlighted-with-negative-modifier.clear-code.com',
+  'local+never-highlighted-with-negative-modifier@example.com',
 ];
 
 const RECIPIENTS = [
@@ -737,14 +761,14 @@ const ATTACHMENTS = [
 function recipientsToAddresses(classified) {
   return Object.fromEntries(
     Object.entries(classified)
-      .map(([id, recipients]) => [id, recipients.map(recipient => recipient.address)])
+      .map(([id, recipients]) => [id, recipients.map(recipient => recipient.address).sort()])
   );
 }
 
 function attachmentsToNames(classified) {
   return Object.fromEntries(
     Object.entries(classified)
-      .map(([id, attachments]) => [id, attachments.map(attachment => attachment.name)])
+      .map(([id, attachments]) => [id, attachments.map(attachment => attachment.name).sort()])
   );
 }
 
@@ -758,11 +782,11 @@ export async function test_classifyRecipients() {
       ...RECIPIENTS_HIGHLIGHTED_ALWAYS,
       'address-like@highlighted-always.CLEAR-code.com',
       ...RECIPIENTS_HIGHLIGHTED_EXTERNALS,
-    ],
+    ].sort(),
     [...matchingRules.getHighlightedRecipientAddresses({
       externals:   RECIPIENTS,
       attachments: [],
-    })]
+    })].sort()
   );
   is(
     [
@@ -771,11 +795,11 @@ export async function test_classifyRecipients() {
       ...RECIPIENTS_HIGHLIGHTED_WITH_ATTACHMENTS,
       ...RECIPIENTS_HIGHLIGHTED_EXTERNALS,
       ...RECIPIENTS_HIGHLIGHTED_EXTERNALS_WITH_ATTACHMENTS,
-    ],
+    ].sort(),
     [...matchingRules.getHighlightedRecipientAddresses({
       externals:   RECIPIENTS,
       attachments: ATTACHMENTS,
-    })]
+    })].sort()
   );
 
   is(
@@ -783,8 +807,10 @@ export async function test_classifyRecipients() {
       'reconfirmed by recipient domain always': [
         ...RECIPIENTS_RECONFIRMED_ALWAYS,
         'address-like@reconfirmed-always.CLEAR-code.com',
-      ],
-      'reconfirmed by recipient domain only external': RECIPIENTS_RECONFIRMED_EXTERNALS,
+      ].sort(),
+      'reconfirmed by recipient domain only external': [
+        ...RECIPIENTS_RECONFIRMED_EXTERNALS,
+      ].sort(),
     },
     recipientsToAddresses(matchingRules.classifyReconfirmRecipients({
       externals:   RECIPIENTS,
@@ -796,10 +822,16 @@ export async function test_classifyRecipients() {
       'reconfirmed by recipient domain always': [
         ...RECIPIENTS_RECONFIRMED_ALWAYS,
         'address-like@reconfirmed-always.CLEAR-code.com',
-      ],
-      'reconfirmed by recipient domain only with attachment': RECIPIENTS_RECONFIRMED_WITH_ATTACHMENTS,
-      'reconfirmed by recipient domain only external': RECIPIENTS_RECONFIRMED_EXTERNALS,
-      'reconfirmed by recipient domain only external with attachment': RECIPIENTS_RECONFIRMED_EXTERNALS_WITH_ATTACHMENTS,
+      ].sort(),
+      'reconfirmed by recipient domain only with attachment': [
+        ...RECIPIENTS_RECONFIRMED_WITH_ATTACHMENTS,
+      ].sort(),
+      'reconfirmed by recipient domain only external': [
+        ...RECIPIENTS_RECONFIRMED_EXTERNALS,
+      ].sort(),
+      'reconfirmed by recipient domain only external with attachment': [
+        ...RECIPIENTS_RECONFIRMED_EXTERNALS_WITH_ATTACHMENTS,
+      ].sort(),
     },
     recipientsToAddresses(matchingRules.classifyReconfirmRecipients({
       externals:   RECIPIENTS,
@@ -812,8 +844,10 @@ export async function test_classifyRecipients() {
       'blocked by recipient domain always': [
         ...RECIPIENTS_BLOCKED_ALWAYS,
         'address-like@blocked-always.example.com',
-      ],
-      'blocked by recipient domain only external': RECIPIENTS_BLOCKED_EXTERNALS,
+      ].sort(),
+      'blocked by recipient domain only external': [
+        ...RECIPIENTS_BLOCKED_EXTERNALS,
+      ].sort(),
     },
     recipientsToAddresses(matchingRules.classifyBlockRecipients({
       externals:   RECIPIENTS,
@@ -825,10 +859,16 @@ export async function test_classifyRecipients() {
       'blocked by recipient domain always': [
         ...RECIPIENTS_BLOCKED_ALWAYS,
         'address-like@blocked-always.example.com',
-      ],
-      'blocked by recipient domain only with attachment': RECIPIENTS_BLOCKED_WITH_ATTACHMENTS,
-      'blocked by recipient domain only external': RECIPIENTS_BLOCKED_EXTERNALS,
-      'blocked by recipient domain only external with attachment': RECIPIENTS_BLOCKED_EXTERNALS_WITH_ATTACHMENTS,
+      ].sort(),
+      'blocked by recipient domain only with attachment': [
+        ...RECIPIENTS_BLOCKED_WITH_ATTACHMENTS,
+      ].sort(),
+      'blocked by recipient domain only external': [
+        ...RECIPIENTS_BLOCKED_EXTERNALS,
+      ].sort(),
+      'blocked by recipient domain only external with attachment': [
+        ...RECIPIENTS_BLOCKED_EXTERNALS_WITH_ATTACHMENTS,
+      ].sort(),
     },
     recipientsToAddresses(matchingRules.classifyBlockRecipients({
       externals:   RECIPIENTS,
@@ -845,11 +885,11 @@ export async function test_classifyAttachments() {
     [
       ...ATTACHMENTS_HIGHLIGHTED_NAME,
       ...ATTACHMENTS_HIGHLIGHTED_SUFFIX,
-    ],
+    ].sort(),
     [...matchingRules.getHighlightedAttachmentNames({
       attachments: ATTACHMENTS,
       hasExternal: false,
-    })]
+    })].sort()
   );
   is(
     [
@@ -857,21 +897,21 @@ export async function test_classifyAttachments() {
       ...ATTACHMENTS_HIGHLIGHTED_NAME_EXTERNALS,
       ...ATTACHMENTS_HIGHLIGHTED_SUFFIX,
       ...ATTACHMENTS_HIGHLIGHTED_SUFFIX_EXTERNALS,
-    ],
+    ].sort(),
     [...matchingRules.getHighlightedAttachmentNames({
       attachments: ATTACHMENTS,
       hasExternal: true,
-    })]
+    })].sort()
   );
 
   is(
     {
       'reconfirmed by attachment name': [
         ...ATTACHMENTS_RECONFIRMED_NAME,
-      ],
+      ].sort(),
       'reconfirmed by attachment suffix': [
         ...ATTACHMENTS_RECONFIRMED_SUFFIX,
-      ],
+      ].sort(),
     },
     attachmentsToNames(matchingRules.classifyReconfirmAttachments({
       attachments: ATTACHMENTS,
@@ -882,16 +922,16 @@ export async function test_classifyAttachments() {
     {
       'reconfirmed by attachment name': [
         ...ATTACHMENTS_RECONFIRMED_NAME,
-      ],
+      ].sort(),
       'reconfirmed by attachment name only external': [
         ...ATTACHMENTS_RECONFIRMED_NAME_EXTERNALS,
-      ],
+      ].sort(),
       'reconfirmed by attachment suffix': [
         ...ATTACHMENTS_RECONFIRMED_SUFFIX,
-      ],
+      ].sort(),
       'reconfirmed by attachment suffix only external': [
         ...ATTACHMENTS_RECONFIRMED_SUFFIX_EXTERNALS,
-      ],
+      ].sort(),
     },
     attachmentsToNames(matchingRules.classifyReconfirmAttachments({
       attachments: ATTACHMENTS,
@@ -903,10 +943,10 @@ export async function test_classifyAttachments() {
     {
       'blocked by attachment name': [
         ...ATTACHMENTS_BLOCKED_NAME,
-      ],
+      ].sort(),
       'blocked by attachment suffix': [
         ...ATTACHMENTS_BLOCKED_SUFFIX,
-      ],
+      ].sort(),
     },
     attachmentsToNames(matchingRules.classifyBlockAttachments({
       attachments: ATTACHMENTS,
@@ -917,16 +957,16 @@ export async function test_classifyAttachments() {
     {
       'blocked by attachment name': [
         ...ATTACHMENTS_BLOCKED_NAME,
-      ],
+      ].sort(),
       'blocked by attachment name only external': [
         ...ATTACHMENTS_BLOCKED_NAME_EXTERNALS,
-      ],
+      ].sort(),
       'blocked by attachment suffix': [
         ...ATTACHMENTS_BLOCKED_SUFFIX,
-      ],
+      ].sort(),
       'blocked by attachment suffix only external': [
         ...ATTACHMENTS_BLOCKED_SUFFIX_EXTERNALS,
-      ],
+      ].sort(),
     },
     attachmentsToNames(matchingRules.classifyBlockAttachments({
       attachments: ATTACHMENTS,
