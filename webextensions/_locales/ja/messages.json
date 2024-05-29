@@ -33,7 +33,7 @@
 
 
   "confirmAttentionDomainsTitle": { "message": "特別に注意が必要な宛先" },
-  "confirmAttentionDomainsMessage": { "message": "特別に注意が必要なドメインに属する以下の宛先があります。\n\n<strong>$RECIPIENTS$</strong>\n\n問題がない事を確認の上でメールを送信してください。",
+  "confirmAttentionDomainsMessage": { "message": "特別に注意が必要なパターンに該当する以下の宛先があります。\n\n<strong>$RECIPIENTS$</strong>\n\n問題がない事を確認の上でメールを送信してください。",
     "placeholders": {
       "recipients": { "content": "$1", "example": "mail@example.com" }
     }},
@@ -68,7 +68,7 @@
 
 
   "alertBlockedDomainsTitle": { "message": "ブロック対象の宛先" },
-  "alertBlockedDomainsMessage": { "message": "ブロック対象のドメインに属する以下の宛先があります。\n\n<strong>$RECIPIENTS$</strong>\n\nこれらの宛先にメールを送ることはできません。",
+  "alertBlockedDomainsMessage": { "message": "ブロック対象のパターンに該当する以下の宛先があります。\n\n<strong>$RECIPIENTS$</strong>\n\nこれらの宛先にメールを送ることはできません。",
     "placeholders": {
       "recipients": { "content": "$1", "example": "mail@example.com" }
     }},
@@ -101,13 +101,13 @@
   "config_confirmationMode_onModified_description_after": { "message": "文字より長い文字列をペーストした時に確認します。" },
   "config_confirmationMode_never_label": { "message": "確認しない" },
 
-  "config_internalDomains_caption": { "message": "組織内として扱うメールアドレスのドメイン名" },
-  "config_internalDomains_input_placeholder": { "message": "ドメイン名を1行ずつ入力（例：example.com）" },
+  "config_internalDomains_caption": { "message": "組織内として扱うメールアドレスのパターン" },
+  "config_internalDomains_input_placeholder": { "message": "ドメイン名（例：example.com）またはアドレス（例：group@example.com）を1行ずつ入力" },
   "config_internalDomains_input_description": { "message": "ワイルドカード（*および?）を使用可能です" },
-  "config_fixedInternalDomains_label": { "message": "システム管理者によって、以下のドメインが組織内ドメインとして指定されています。" },
-  "config_fixedInternalDomains_label_editable": { "message": "ドメイン名の先頭に「-」をつけると、ドメインを除外することができます。また、ワイルドカード（*および?）も使用可能です。" },
+  "config_fixedInternalDomains_label": { "message": "システム管理者によって、以下のパターンが組織内として扱う対象に指定されています。" },
+  "config_fixedInternalDomains_label_editable": { "message": "パターンの先頭に「-」をつけると、そのパターンを除外することができます。また、ワイルドカード（*および?）も使用可能です。" },
 
-  "config_skipConfirmationForInternalMail_label": { "message": "すべての宛先が登録済みドメインのメール送信時は確認ダイアログを表示しない" },
+  "config_skipConfirmationForInternalMail_label": { "message": "すべての宛先が組織内のメール送信時は確認ダイアログを表示しない" },
   "config_minConfirmationRecipientsCount_label_before": { "message": "宛先が" },
   "config_minConfirmationRecipientsCount_label_after": { "message": "件以下の場合は確認ダイアログを表示しない（※0で常に確認）" },
   "config_minConfirmMultipleRecipientDomainsCount_label_before": { "message": "ToまたはCcの宛先に" },

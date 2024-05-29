@@ -32,8 +32,8 @@
   "confirmNewDomainRecipientsCancel": { "message": "Cancel" },
 
 
-  "confirmAttentionDomainsTitle": { "message": "Recipients with attention domains" },
-  "confirmAttentionDomainsMessage": { "message": "These recipients with attention domains are found:\n\n<strong>$RECIPIENTS$</strong>\n\nIf there is no problem, continue to send.",
+  "confirmAttentionDomainsTitle": { "message": "Recipients matching to attention patterns" },
+  "confirmAttentionDomainsMessage": { "message": "These recipients matching to attention patterns are found:\n\n<strong>$RECIPIENTS$</strong>\n\nIf there is no problem, continue to send.",
     "placeholders": {
       "recipients": { "content": "$1", "example": "mail@example.com" }
     }},
@@ -67,8 +67,8 @@
   "confirmAttentionTermsCancel": { "message": "Cancel" },
 
 
-  "alertBlockedDomainsTitle": { "message": "Recipients with blocked domains" },
-  "alertBlockedDomainsMessage": { "message": "These recipients with blocked domains are found:\n\n<strong>$RECIPIENTS$</strong>\n\nIt is not allowe to send messages to such recipients.",
+  "alertBlockedDomainsTitle": { "message": "Recipients matching to blocked patterns" },
+  "alertBlockedDomainsMessage": { "message": "These recipients matching to blocked patterns are found:\n\n<strong>$RECIPIENTS$</strong>\n\nIt is not allowe to send messages to such recipients.",
     "placeholders": {
       "recipients": { "content": "$1", "example": "mail@example.com" }
     }},
@@ -101,11 +101,11 @@
   "config_confirmationMode_onModified_description_after": { "message": " characters is pasted." },
   "config_confirmationMode_never_label": { "message": "Never" },
 
-  "config_internalDomains_caption": { "message": "Domains treated as internals" },
-  "config_internalDomains_input_placeholder": { "message": "Input domain names per line (e.g. example.com)" },
+  "config_internalDomains_caption": { "message": "Domains and addresses treated as internals" },
+  "config_internalDomains_input_placeholder": { "message": "Input domain names (e.g. example.com) or addresses (e.g. group@example.com) per line " },
   "config_internalDomains_input_description": { "message": "Wildcards (* and ?) are available." },
-  "config_fixedInternalDomains_label": { "message": "Following domains are listed by the system administrator." },
-  "config_fixedInternalDomains_label_editable": { "message": "You can deactivate individual domains by adding \"-\" at the beginning, and wildcards (* and ?) are available." },
+  "config_fixedInternalDomains_label": { "message": "Following patterns are listed by the system administrator." },
+  "config_fixedInternalDomains_label_editable": { "message": "You can deactivate individual patterns by adding \"-\" at the beginning, and wildcards (* and ?) are available." },
 
   "config_skipConfirmationForInternalMail_label": { "message": "Skip confirmation if all recipients are internals" },
   "config_minConfirmationRecipientsCount_label_before": { "message": "Skip confirmation if there are/is only" },
