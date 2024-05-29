@@ -145,7 +145,7 @@
   "config_userRule_enabled_tooltiptext": { "message": "Check to activate this rule" },
 
   "config_userRule_matchTarget_caption":          { "message": "Match to:" },
-  "config_userRule_matchTarget_recipientDomain":  { "message": "Domain Name of Recipients" },
+  "config_userRule_matchTarget_recipientDomain":  { "message": "Address of Recipients" },
   "config_userRule_matchTarget_attachmentName":   { "message": "Attachment Names" },
   "config_userRule_matchTarget_attachmentSuffix": { "message": "Attachment Suffixes" },
   "config_userRule_matchTarget_subject":          { "message": "Subject" },
@@ -175,7 +175,7 @@
   "config_userRule_action_blockExternalsWithAttachments": { "message": "Disallow to send messages only when there is any external recipient and attachment" },
 
   "config_userRule_itemsLocal_caption":                      { "message": "Use a manually managed list" },
-  "config_userRule_itemsLocal_placeholder_recipientDomain":  { "message": "Input a domain name per line (e.g. example.com)" },
+  "config_userRule_itemsLocal_placeholder_recipientDomain":  { "message": "Input a domain name or address per line (e.g. example.com, group@example.com)" },
   "config_userRule_itemsLocal_placeholder_attachmentName":   { "message": "Input a term per line (e.g. important, confidential)" },
   "config_userRule_itemsLocal_placeholder_attachmentSuffix": { "message": "Input a file extension per line (e.g. .exe, .pdf)" },
   "config_userRule_itemsLocal_placeholder_subject":          { "message": "Input a term per line (e.g. important, confidential)" },
@@ -184,7 +184,7 @@
   "config_userRule_itemsLocal_description":                  { "message": ": wildcards (* and ?) are available." },
   "config_userRule_itemsFile_caption":                             { "message": "Use a list given as a file" },
   "config_userRule_itemsFile_button_label":                        { "message": "Choose…" },
-  "config_userRule_itemsFile_button_dialogTitle_recipientDomain":  { "message": "Choose a list of domain names" },
+  "config_userRule_itemsFile_button_dialogTitle_recipientDomain":  { "message": "Choose a list of domain names and addresses" },
   "config_userRule_itemsFile_button_dialogTitle_attachmentName":   { "message": "Choose a list of temrs" },
   "config_userRule_itemsFile_button_dialogTitle_attachmentSuffix": { "message": "Choose a list of file extensions" },
   "config_userRule_itemsFile_button_dialogTitle_subject":          { "message": "Choose a list of temrs" },
@@ -206,11 +206,11 @@
   "config_userRule_confirmMessage_caption_subjectOrBody":    { "message": "Message for confirmation (\"%S\" will be filled with found terms):" },
 
 
-  "config_attentionDomains_caption": { "message": "Specially alerted external domains in recipients" },
-  "config_blockedDomains_caption": { "message": "Blocked domains in recipients" },
-  "config_attentionSuffixesConfirm_label": { "message": "Confirm me again before send, if there is any attachment with one of these extensions in a message to external domains" },
-  "config_attentionSuffixes2Confirm_label": { "message": "Confirm me more again before send, if there is any attachment with one of these extensions in a message to external domains" },
-  "config_attentionTermsConfirm_label": { "message": "Confirm me again before send, if there is any attachment name with one of these terms in a message to external domains" },
+  "config_attentionDomains_caption": { "message": "Specially alerted external domains and addresses in recipients" },
+  "config_blockedDomains_caption": { "message": "Blocked domains and addresses in recipients" },
+  "config_attentionSuffixesConfirm_label": { "message": "Confirm me again before send, if there is any attachment with one of these extensions in a message to external recipients" },
+  "config_attentionSuffixes2Confirm_label": { "message": "Confirm me more again before send, if there is any attachment with one of these extensions in a message to external recipients" },
+  "config_attentionTermsConfirm_label": { "message": "Confirm me again before send, if there is any attachment name with one of these terms in a message to external recipients" },
 
   "config_attachments_caption": { "message": "Attachments" },
 

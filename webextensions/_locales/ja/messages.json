@@ -4,8 +4,8 @@
 
 
   "confirmDialogTitle": { "message": "宛先メールアドレスの確認" },
-  "confirmDialogInternalsCaption": { "message": "登録済みドメインのメールアドレス" },
-  "confirmDialogExternalsCaption": { "message": "外部ドメインのメールアドレス" },
+  "confirmDialogInternalsCaption": { "message": "登録済みドメイン・組織内のメールアドレス" },
+  "confirmDialogExternalsCaption": { "message": "外部ドメイン・組織外のメールアドレス" },
   "confirmDialogSubjectCaption": { "message": "件名: " },
   "confirmDialogBodyCaption": { "message": "本文" },
   "confirmDialogAttachmentsCaption": { "message": "添付ファイル" },
@@ -145,7 +145,7 @@
   "config_userRule_enabled_tooltiptext": { "message": "チェックをONにするとルールが有効になります" },
 
   "config_userRule_matchTarget_caption":          { "message": "マッチング対象:" },
-  "config_userRule_matchTarget_recipientDomain":  { "message": "宛先のドメイン名部分" },
+  "config_userRule_matchTarget_recipientDomain":  { "message": "宛先のアドレス部分" },
   "config_userRule_matchTarget_attachmentName":   { "message": "添付ファイルの名前" },
   "config_userRule_matchTarget_attachmentSuffix": { "message": "添付ファイルの拡張子" },
   "config_userRule_matchTarget_subject":          { "message": "件名" },
@@ -175,7 +175,7 @@
   "config_userRule_action_blockExternalsWithAttachments": { "message": "外部のアドレスが宛先に含まれ、且つ添付ファイルがある時だけ送信を禁止する" },
 
   "config_userRule_itemsLocal_caption":                      { "message": "手動編集のリストを使用" },
-  "config_userRule_itemsLocal_placeholder_recipientDomain":  { "message": "ドメイン名を1行ずつ入力（例：example.com）" },
+  "config_userRule_itemsLocal_placeholder_recipientDomain":  { "message": "ドメイン名またはアドレスを1行ずつ入力（例：example.com、group@example.com）" },
   "config_userRule_itemsLocal_placeholder_attachmentName":   { "message": "語句を1行ずつ入力（例：危険、社外秘）" },
   "config_userRule_itemsLocal_placeholder_attachmentSuffix": { "message": "ファイルの拡張子を1行ずつ入力（例：.exe、.pdf）" },
   "config_userRule_itemsLocal_placeholder_subject":          { "message": "語句を1行ずつ入力（例：危険、社外秘）" },
@@ -184,7 +184,7 @@
   "config_userRule_itemsLocal_description":                  { "message": "：ワイルドカード（*および?）を使用可能です" },
   "config_userRule_itemsFile_caption":                             { "message": "ファイル形式のリストを使用" },
   "config_userRule_itemsFile_button_label":                        { "message": "参照..." },
-  "config_userRule_itemsFile_button_dialogTitle_recipientDomain":  { "message": "ドメインのリストを選択" },
+  "config_userRule_itemsFile_button_dialogTitle_recipientDomain":  { "message": "ドメイン名およびアドレスのリストを選択" },
   "config_userRule_itemsFile_button_dialogTitle_attachmentName":   { "message": "語句のリストを選択" },
   "config_userRule_itemsFile_button_dialogTitle_attachmentSuffix": { "message": "拡張子のリストを選択" },
   "config_userRule_itemsFile_button_dialogTitle_subject":          { "message": "語句のリストを選択" },
@@ -206,16 +206,16 @@
   "config_userRule_confirmMessage_caption_subjectOrBody":    { "message": "警告のメッセージ (\"%S\" と書いた位置に語句が入ります):" },
 
 
-  "config_attentionDomains_caption": { "message": "特別に注意が必要な外部ドメインの宛先" },
-  "config_blockedDomains_caption": { "message": "送信を禁止する宛先" },
+  "config_attentionDomains_caption": { "message": "特別に注意が必要な外部ドメイン・アドレスの宛先" },
+  "config_blockedDomains_caption": { "message": "送信を禁止する外部ドメイン・アドレスの宛先" },
   "config_requireCheckAttachment_label": { "message": "添付ファイルの確認を求める" },
-  "config_attentionSuffixesConfirm_label": { "message": "これらの拡張子を持つファイルが外部ドメイン宛のメールに添付されている場合は再度警告する" },
-  "config_attentionSuffixes2Confirm_label": { "message": "これらの拡張子を持つファイルが外部ドメイン宛のメールに添付されている場合はさらに再度警告する" },
-  "config_attentionTermsConfirm_label": { "message": "これらの語句を名前の一部に持つファイルが外部ドメイン宛のメールに添付されている場合は再度警告する" },
+  "config_attentionSuffixesConfirm_label": { "message": "これらの拡張子を持つファイルが外部宛のメールに添付されている場合は再度警告する" },
+  "config_attentionSuffixes2Confirm_label": { "message": "これらの拡張子を持つファイルが外部宛のメールに添付されている場合はさらに再度警告する" },
+  "config_attentionTermsConfirm_label": { "message": "これらの語句を名前の一部に持つファイルが外部宛のメールに添付されている場合は再度警告する" },
 
   "config_attachments_caption": { "message": "添付ファイル" },
 
-  "config_requireReinputAttachmentNames_label": { "message": "宛先に外部ドメインのアドレスがある場合、添付ファイル名の手動での入力を求める" },
+  "config_requireReinputAttachmentNames_label": { "message": "外部ドメイン・アドレスの宛先がある場合、添付ファイル名の手動での入力を求める" },
   "config_allowCheckAllAttachments_label": { "message": "添付ファイルのチェックボックスの一括制御を許可" },
 
 
@@ -228,7 +228,7 @@
   "config_requireCheckSubject_label": { "message": "件名の確認を求める" },
   "config_requireCheckBody_label": { "message": "メール本文の確認を求める" },
 
-  "config_highlightExternalDomains_label": { "message": "外部ドメインの宛先のアドレスを強調表示する" },
+  "config_highlightExternalDomains_label": { "message": "外部の宛先のアドレスを強調表示する" },
   "config_largeFontSizeForAddresses_label": { "message": "メールアドレスを大きなフォントサイズで表示する" },
   "config_alwaysLargeDialog_label": { "message": "確認のダイアログを常に大きなサイズで開く" },
   "config_topMessage_label": { "message": "確認のダイアログの冒頭メッセージ:" },
