@@ -331,13 +331,13 @@ async function tryConfirm(tab, details, opener) {
   if (initialRecipients.length > 0) {
     const author = mAuthorForTab.get(tab.id);
     const initialRecipientDomains = new Set([author, ...initialRecipients].map(recipient => RecipientParser.parse(recipient).domain));
-  log('initialRecipientDomains ', initialRecipientDomains);
-  for (const recipient of [...to, ...cc, ...bcc]) {
-    const domain = RecipientParser.parse(recipient).domain;
-    if (initialRecipientDomains.has(domain))
-      continue;
-    newRecipientDomains.add(domain);
-  }
+    log('initialRecipientDomains ', initialRecipientDomains);
+    for (const recipient of [...to, ...cc, ...bcc]) {
+      const domain = RecipientParser.parse(recipient).domain;
+      if (initialRecipientDomains.has(domain))
+        continue;
+      newRecipientDomains.add(domain);
+    }
   }
   log('newRecipientDomains ', newRecipientDomains);
 
