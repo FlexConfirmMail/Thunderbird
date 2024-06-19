@@ -55,6 +55,7 @@ browser.runtime.onMessage.addListener((message, sender) => {
     case Constants.TYPE_COMPOSE_STARTED:
       log('TYPE_COMPOSE_STARTED received ', message, sender);
       browser.compose.getComposeDetails(sender.tab.id).then(async details => {
+        log('details ', details);
         const author = await getAddressFromIdentity(details.identityId);
         mAuthorForTab.set(sender.tab.id, author);
         log('author ', author);
@@ -85,7 +86,8 @@ browser.runtime.onMessage.addListener((message, sender) => {
             TYPE_TEMPLATE :
             (types.size > 0) ?
               TYPE_EXISTING_MESSAGE :
-              (signature == blankSignature) ?
+              (signature == blankSignature ||
+               details.type == 'new') ?
                 TYPE_NEWLY_COMPOSED :
                 TYPE_REPLY;
         log('detected type: ', detectedType)
@@ -325,10 +327,14 @@ async function tryConfirm(tab, details, opener) {
     return;
   }
 
+  const type = mDetectedMessageTypeForTab.get(tab.id);
+  log('type ', type);
   const newRecipientDomains = new Set();
   const initialRecipients = mInitialRecipientsForTab.get(tab.id);
   log('initialRecipients ', initialRecipients);
-  if (initialRecipients.length > 0) {
+  if (type != TYPE_NEWLY_COMPOSED &&
+      type != TYPE_TEMPLATE &&
+      initialRecipients.length > 0) {
     const author = mAuthorForTab.get(tab.id);
     const initialRecipientDomains = new Set([author, ...initialRecipients].map(recipient => RecipientParser.parse(recipient).domain));
     log('initialRecipientDomains ', initialRecipientDomains);
@@ -484,6 +490,7 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
 
   log('confirmed: OK to send');
   mDetectedMessageTypeForTab.delete(tab.id)
+  mAuthorForTab.delete(tab.id);
   mInitialRecipientsForTab.delete(tab.id);
   mInitialSignatureForTab.delete(tab.id);
   mInitialSignatureForTabWithoutSubject.delete(tab.id);
