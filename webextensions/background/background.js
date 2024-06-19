@@ -45,6 +45,7 @@ function getMessageSignature(message) {
 // so we now wait for a message from a new composition content.
 const mDetectedMessageTypeForTab = new Map();
 const mDetectedClipboardStateForTab = new Map();
+const mAuthorForTab = new Map();
 const mInitialRecipientsForTab = new Map();
 const mInitialSignatureForTab = new Map();
 const mInitialSignatureForTabWithoutSubject = new Map();
@@ -55,8 +56,9 @@ browser.runtime.onMessage.addListener((message, sender) => {
       log('TYPE_COMPOSE_STARTED received ', message, sender);
       browser.compose.getComposeDetails(sender.tab.id).then(async details => {
         const author = await getAddressFromIdentity(details.identityId);
+        mAuthorForTab.set(sender.tab.id, author);
+        log('author ', author);
         mInitialRecipientsForTab.set(sender.tab.id, [...new Set([
-          author,
           ...(details.to || details.recipients || []),
           ...(details.cc || details.ccList || []),
           ...(details.bcc || details.bccList || []),
@@ -323,14 +325,19 @@ async function tryConfirm(tab, details, opener) {
     return;
   }
 
-  const initialRecipientDomains = new Set(mInitialRecipientsForTab.get(tab.id).map(recipient => RecipientParser.parse(recipient).domain));
   const newRecipientDomains = new Set();
+  const initialRecipients = mInitialRecipientsForTab.get(tab.id);
+  log('initialRecipients ', initialRecipients);
+  if (initialRecipients.length > 0) {
+    const author = mAuthorForTab.get(tab.id);
+    const initialRecipientDomains = new Set([author, ...initialRecipients].map(recipient => RecipientParser.parse(recipient).domain));
   log('initialRecipientDomains ', initialRecipientDomains);
   for (const recipient of [...to, ...cc, ...bcc]) {
     const domain = RecipientParser.parse(recipient).domain;
     if (initialRecipientDomains.has(domain))
       continue;
     newRecipientDomains.add(domain);
+  }
   }
   log('newRecipientDomains ', newRecipientDomains);
 
