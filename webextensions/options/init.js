@@ -398,6 +398,8 @@ function rebuildUserRulesUI() {
     setUserRuleFieldValue(`#userRule-ui-confirmTitle\\:${id}`,   rule.confirmTitle);
     setUserRuleFieldValue(`#userRule-ui-confirmMessage\\:${id}`, rule.confirmMessage);
   }
+
+  document.querySelector('#userRulesAddButtonContainer').classList.toggle('hidden', !configs.allowAddRules);
 }
 
 function throttledRebuildUserRulesUI() {
