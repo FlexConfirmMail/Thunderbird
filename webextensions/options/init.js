@@ -240,15 +240,15 @@ function rebuildUserRulesUI() {
                     </select></label></p>
           <button id=${safeAttrValue('userRule-ui-button-moveUp:' + id)}
                   class="userRule-button-moveUp ${configs.allowRearrangeRules ? '' : 'hidden'}"
-                  title="config_userRules_moveUp_tooltiptext"
+                  title="${safeLocalizedText('config_userRules_moveUp_tooltiptext')}"
                  >${safeLocalizedText('config_userRules_moveUp_label')}</button>
           <button id=${safeAttrValue('userRule-ui-button-moveDown:' + id)}
                   class="userRule-button-moveDown ${configs.allowRearrangeRules ? '' : 'hidden'}"
-                  title="config_userRules_moveDown_tooltiptext"
+                  title="${safeLocalizedText('config_userRules_moveDown_tooltiptext')}"
                  >${safeLocalizedText('config_userRules_moveDown_label')}</button>
           <button id=${safeAttrValue('userRule-ui-button-remove:' + id)}
                   class="userRule-button-remove ${configs.allowRemoveRules ? '' : 'hidden'}"
-                  title="config_userRules_remove_tooltiptext"
+                  title="${safeLocalizedText('config_userRules_remove_tooltiptext')}"
                  >${safeLocalizedText('config_userRules_remove_label')}</button>
         </div>
         <ul id=${safeAttrValue('userRule-ui-itemsSource-group:' + id)}>
@@ -398,6 +398,8 @@ function rebuildUserRulesUI() {
     setUserRuleFieldValue(`#userRule-ui-confirmTitle\\:${id}`,   rule.confirmTitle);
     setUserRuleFieldValue(`#userRule-ui-confirmMessage\\:${id}`, rule.confirmMessage);
   }
+
+  document.querySelector('#userRulesAddButtonContainer').classList.toggle('hidden', !configs.allowAddRules);
 }
 
 function throttledRebuildUserRulesUI() {
