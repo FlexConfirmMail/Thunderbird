@@ -57,16 +57,23 @@ It will help you to create such an managed storage manifest with exported config
 
 ### How to run automated unittest?
 
-1. Create an XPI including unittest, with the command `make unittest`.
-2. Install the built XPI.
-3. Open the browser console or the developer tool for the Thunderbird itself.
-4. Run `openDialog('chrome://confirm-mail/content/unittest/testRunner.html', '_blank', 'chrome,all')`.
+1. Install Node.js including npm to your local machine.
+2. Clone this repository to your local machine.
+3. In the cloned repository directory, run `cd webextensions && npm install` to insatll dependencies.
+4, In the cloned repository, run `make unittest`.
 
 ### How to do manual test?
 
-1. Open `sample.eml` with Thunderbird.
-2. Hit Ctrl-E to edit the mail as a new message.
-3. Try to send it.
+1. Download "Assets" from [any CI result's artifacts](https://github.com/FlexConfirmMail/Thunderbird/actions/workflows/build-release.yaml).
+2. Extract XPI and native messaging host from the downloaded Assets.
+3. Run `install.bat` to Install native messaging host extracted at the step 2, if it is not installed.
+4. Start Thunderbird.
+5. Open the Add-ons Manager.
+6. Drag downloaded XPI file and drop it to the Add-ons Manager.
+7. Accept installation of the new FlexConfirmMail.
+8. Open `sample.eml` with Thunderbird.
+9. Hit Ctrl-E to edit the mail as a new message.
+10. Try to send it.
 
 ### How to build the native messaging host and its installer?
 
