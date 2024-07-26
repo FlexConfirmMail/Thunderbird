@@ -80,16 +80,23 @@ browser.runtime.onMessage.addListener((message, sender) => {
         mInitialSignatureForTabWithoutSubject.set(sender.tab.id, signatureWithoutSubject);
         const types = new Set(await getContainerFolderTypesFromSignature(signature));
         log('message types: ', types);
-        const detectedType = (types.has('drafts') && !hasRecentlySavedDraftWithSignature(signature)) ?
-          TYPE_DRAFT :
-          types.has('templates') ?
-            TYPE_TEMPLATE :
-            (types.size > 0) ?
-              TYPE_EXISTING_MESSAGE :
-              (signature == blankSignature ||
-               details.type == 'new') ?
-                TYPE_NEWLY_COMPOSED :
-                TYPE_REPLY;
+        const detectedType = (() => {
+          if (types.has('drafts') &&
+              !hasRecentlySavedDraftWithSignature(signature))
+            return TYPE_DRAFT;
+
+          if (types.has('templates'))
+            return TYPE_TEMPLATE;
+
+          if (types.size > 0)
+            return TYPE_EXISTING_MESSAGE;
+
+          if (signature == blankSignature ||
+             details.type == 'new')
+            return TYPE_NEWLY_COMPOSED;
+
+          return TYPE_REPLY;
+        })();
         log('detected type: ', detectedType)
         mDetectedMessageTypeForTab.set(sender.tab.id , detectedType);
         mLastContextMessagesForTab.delete(sender.tab.id);
