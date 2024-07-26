@@ -92,7 +92,7 @@ browser.runtime.onMessage.addListener((message, sender) => {
             return TYPE_EXISTING_MESSAGE;
 
           if (signature == blankSignature ||
-             details.type == 'new')
+              details.type == 'new')
             return TYPE_NEWLY_COMPOSED;
 
           return TYPE_REPLY;
