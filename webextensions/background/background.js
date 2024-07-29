@@ -45,6 +45,7 @@ function getMessageSignature(message) {
 // so we now wait for a message from a new composition content.
 const mDetectedMessageTypeForTab = new Map();
 const mDetectedClipboardStateForTab = new Map();
+const mAuthorForTab = new Map();
 const mInitialRecipientsForTab = new Map();
 const mInitialSignatureForTab = new Map();
 const mInitialSignatureForTabWithoutSubject = new Map();
@@ -54,9 +55,11 @@ browser.runtime.onMessage.addListener((message, sender) => {
     case Constants.TYPE_COMPOSE_STARTED:
       log('TYPE_COMPOSE_STARTED received ', message, sender);
       browser.compose.getComposeDetails(sender.tab.id).then(async details => {
+        log('details ', details);
         const author = await getAddressFromIdentity(details.identityId);
+        mAuthorForTab.set(sender.tab.id, author);
+        log('author ', author);
         mInitialRecipientsForTab.set(sender.tab.id, [...new Set([
-          author,
           ...(details.to || details.recipients || []),
           ...(details.cc || details.ccList || []),
           ...(details.bcc || details.bccList || []),
@@ -77,15 +80,23 @@ browser.runtime.onMessage.addListener((message, sender) => {
         mInitialSignatureForTabWithoutSubject.set(sender.tab.id, signatureWithoutSubject);
         const types = new Set(await getContainerFolderTypesFromSignature(signature));
         log('message types: ', types);
-        const detectedType = (types.has('drafts') && !hasRecentlySavedDraftWithSignature(signature)) ?
-          TYPE_DRAFT :
-          types.has('templates') ?
-            TYPE_TEMPLATE :
-            (types.size > 0) ?
-              TYPE_EXISTING_MESSAGE :
-              (signature == blankSignature) ?
-                TYPE_NEWLY_COMPOSED :
-                TYPE_REPLY;
+        const detectedType = (() => {
+          if (types.has('drafts') &&
+              !hasRecentlySavedDraftWithSignature(signature))
+            return TYPE_DRAFT;
+
+          if (types.has('templates'))
+            return TYPE_TEMPLATE;
+
+          if (types.size > 0)
+            return TYPE_EXISTING_MESSAGE;
+
+          if (signature == blankSignature ||
+              details.type == 'new')
+            return TYPE_NEWLY_COMPOSED;
+
+          return TYPE_REPLY;
+        })();
         log('detected type: ', detectedType)
         mDetectedMessageTypeForTab.set(sender.tab.id , detectedType);
         mLastContextMessagesForTab.delete(sender.tab.id);
@@ -323,14 +334,23 @@ async function tryConfirm(tab, details, opener) {
     return;
   }
 
-  const initialRecipientDomains = new Set(mInitialRecipientsForTab.get(tab.id).map(recipient => RecipientParser.parse(recipient).domain));
+  const type = mDetectedMessageTypeForTab.get(tab.id);
+  log('type ', type);
   const newRecipientDomains = new Set();
-  log('initialRecipientDomains ', initialRecipientDomains);
-  for (const recipient of [...to, ...cc, ...bcc]) {
-    const domain = RecipientParser.parse(recipient).domain;
-    if (initialRecipientDomains.has(domain))
-      continue;
-    newRecipientDomains.add(domain);
+  const initialRecipients = mInitialRecipientsForTab.get(tab.id);
+  log('initialRecipients ', initialRecipients);
+  if (type != TYPE_NEWLY_COMPOSED &&
+      type != TYPE_TEMPLATE &&
+      initialRecipients.length > 0) {
+    const author = mAuthorForTab.get(tab.id);
+    const initialRecipientDomains = new Set([author, ...initialRecipients].map(recipient => RecipientParser.parse(recipient).domain));
+    log('initialRecipientDomains ', initialRecipientDomains);
+    for (const recipient of [...to, ...cc, ...bcc]) {
+      const domain = RecipientParser.parse(recipient).domain;
+      if (initialRecipientDomains.has(domain))
+        continue;
+      newRecipientDomains.add(domain);
+    }
   }
   log('newRecipientDomains ', newRecipientDomains);
 
@@ -477,6 +497,7 @@ browser.compose.onBeforeSend.addListener(async (tab, details) => {
 
   log('confirmed: OK to send');
   mDetectedMessageTypeForTab.delete(tab.id)
+  mAuthorForTab.delete(tab.id);
   mInitialRecipientsForTab.delete(tab.id);
   mInitialSignatureForTab.delete(tab.id);
   mInitialSignatureForTabWithoutSubject.delete(tab.id);
