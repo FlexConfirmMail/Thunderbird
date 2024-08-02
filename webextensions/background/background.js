@@ -164,7 +164,13 @@ browser.messageDisplayScripts.register({
 async function getAddressFromIdentity(id) {
   log('getting identity from id: ', id);
   try {
-    const accounts = await browser.accounts.list(false);
+    try {    
+      // Works for TB >=91
+      const accounts = await browser.accounts.list(false);
+    } catch(e) {
+      //Works for TB 78
+      const accounts = await browser.accounts.list();
+    }    
     log('accounts: ', accounts);
     for (const account of accounts) {
       for (const identity of account.identities) {
