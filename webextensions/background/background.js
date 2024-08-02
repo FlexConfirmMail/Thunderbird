@@ -164,13 +164,16 @@ browser.messageDisplayScripts.register({
 async function getAddressFromIdentity(id) {
   log('getting identity from id: ', id);
   try {
-    try {    
-      // Works for TB >=91
-      const accounts = await browser.accounts.list(false);
-    } catch(e) {
-      //Works for TB 78
-      const accounts = await browser.accounts.list();
-    }    
+    // Get TB info
+    const browserInfo = await browser.runtime.getBrowserInfo();
+    const version = parseInt(browserInfo.version.split('.')[0], 10);
+    // If version is >= 91 use the argument
+	  let accounts;
+      if (version >= 91) {
+          accounts = await browser.accounts.list(true);
+      } else {
+          accounts = await browser.accounts.list();
+      }
     log('accounts: ', accounts);
     for (const account of accounts) {
       for (const identity of account.identities) {
