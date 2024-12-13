@@ -59,10 +59,17 @@ browser.runtime.onMessage.addListener((message, sender) => {
         const author = await getAddressFromIdentity(details.identityId);
         mAuthorForTab.set(sender.tab.id, author);
         log('author ', author);
+        const [
+          to, cc, bcc,
+        ] = await Promise.all([
+          ListUtils.populateListAddresses(details.to || details.recipients || []),
+          ListUtils.populateListAddresses(details.cc || details.ccList || []),
+          ListUtils.populateListAddresses(details.bcc || details.bccList || []),
+        ]);
         mInitialRecipientsForTab.set(sender.tab.id, [...new Set([
-          ...(details.to || details.recipients || []),
-          ...(details.cc || details.ccList || []),
-          ...(details.bcc || details.bccList || []),
+          ...to,
+          ...cc,
+          ...bcc,
         ])].filter(recipient => !!recipient));
         log('initialRecipients ', mInitialRecipientsForTab.get(sender.tab.id));
         const signature = getMessageSignature({
