@@ -6,6 +6,14 @@
 'use strict';
 
 export function parse(recipient) {
+  if (/\s*([^<@]+)\s*<\1>\s*$/.test(recipient)) { // list like "list-name <list-name>"
+    return {
+      recipient,
+      address: '',
+      domain: '',
+    };
+  }
+
   const address = /<([^@]+@[^>]+)>\s*$/.test(recipient) ? RegExp.$1 : recipient;
   const domain = address.split('@')[1].toLowerCase();
   return {
