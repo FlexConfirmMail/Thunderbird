@@ -337,7 +337,7 @@ async function tryConfirm(tab, details, opener) {
   const type = mDetectedMessageTypeForTab.get(tab.id);
   log('type ', type);
   const newRecipientDomains = new Set();
-  const initialRecipients = mInitialRecipientsForTab.get(tab.id);
+  const initialRecipients = mInitialRecipientsForTab.get(tab.id) || [];
   log('initialRecipients ', initialRecipients);
   if (type != TYPE_NEWLY_COMPOSED &&
       type != TYPE_TEMPLATE &&
