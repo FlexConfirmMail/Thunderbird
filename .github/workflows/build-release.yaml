@@ -53,5 +53,5 @@ jobs:
       - name: Install dependencies
         run: cd webextensions && npm install && cd native-messaging-host && go mod tidy
       - name: Run test
-        run: make test
+        run: make unittest
 
