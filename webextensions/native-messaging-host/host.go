@@ -49,13 +49,13 @@ func LogForDebug(message string) {
 
 
 type RequestParams struct {
-	Path             string `json:path`
-	Title            string `json:title`
-	Role             string `json:role`
-	FileName         string `json:fileName`
-	DefaultExtension string `json:defaultExtension`
-	DisplayName      string `json:displayName`
-	Pattern          string `json:pattern`
+	Path             string `json:"path"`
+	Title            string `json:"title"`
+	Role             string `json:"role"`
+	FileName         string `json:"fileName"`
+	DefaultExtension string `json:"defaultExtension"`
+	DisplayName      string `json:"displayName"`
+	Pattern          string `json:"pattern"`
 }
 type Request struct {
 	Logging          bool          `json:"logging"`
@@ -218,28 +218,28 @@ func ChooseFileAndRespond(params RequestParams) {
 
 
 type TbStyleConfigs struct {
-	CountdownAllowSkip                         bool     `json:countdownAllowSkip`
-	ShowCountdown                              bool     `json:showCountdown`
-	CountdownSeconds                           uint64   `json:countdownSeconds`
-	SkipConfirmationForInternalMail            bool     `json:skipConfirmationForInternalMail`
-	ConfirmMultipleRecipientDomains            bool     `json:confirmMultipleRecipientDomains`
-	MinConfirmMultipleRecipientDomainsCount    uint64   `json:minConfirmMultipleRecipientDomainsCount`
-	FixedInternalDomains                       []string `json:fixedInternalDomains`
-	BuiltInAttentionDomainsItems               []string `json:builtInAttentionDomainsItems`
-	BuiltInAttentionTermsItems                 []string `json:builtInAttentionTermsItems`
+	CountdownAllowSkip                         bool     `json:"CountdownAllowSkip"`
+	ShowCountdown                              bool     `json:"ShowCountdown"`
+	CountdownSeconds                           uint64   `json:"CountdownSeconds"`
+	SkipConfirmationForInternalMail            bool     `json:"SkipConfirmationForInternalMail"`
+	ConfirmMultipleRecipientDomains            bool     `json:"ConfirmMultipleRecipientDomains"`
+	MinConfirmMultipleRecipientDomainsCount    uint64   `json:"MinConfirmMultipleRecipientDomainsCount"`
+	FixedInternalDomains                       []string `json:"FixedInternalDomains"`
+	BuiltInAttentionDomainsItems               []string `json:"BuiltInAttentionDomainsItems"`
+	BuiltInAttentionTermsItems                 []string `json:"BuiltInAttentionTermsItems"`
 
-	HasCountdownAllowSkip                      bool     `json:hasCountdownAllowSkip`
-	HasShowCountdown                           bool     `json:hasShowCountdown`
-	HasCountdownSeconds                        bool     `json:hasCountdownSeconds`
-	HasSkipConfirmationForInternalMail         bool     `json:hasSkipConfirmationForInternalMail`
-	HasConfirmMultipleRecipientDomains         bool     `json:hasConfirmMultipleRecipientDomains`
-	HasMinConfirmMultipleRecipientDomainsCount bool     `json:hasMinConfirmMultipleRecipientDomainsCount`
-	HasFixedInternalDomains                    bool     `json:hasFixedInternalDomains`
-	HasBuiltInAttentionDomainsItems            bool     `json:hasBuiltInAttentionDomainsItems`
-	HasBuiltInAttentionTermsItems              bool     `json:hasBuiltInAttentionTermsItems`
+	HasCountdownAllowSkip                      bool     `json:"HasCountdownAllowSkip"`
+	HasShowCountdown                           bool     `json:"HasShowCountdown"`
+	HasCountdownSeconds                        bool     `json:"HasCountdownSeconds"`
+	HasSkipConfirmationForInternalMail         bool     `json:"HasSkipConfirmationForInternalMail"`
+	HasConfirmMultipleRecipientDomains         bool     `json:"HasConfirmMultipleRecipientDomains"`
+	HasMinConfirmMultipleRecipientDomainsCount bool     `json:"HasMinConfirmMultipleRecipientDomainsCount"`
+	HasFixedInternalDomains                    bool     `json:"HasFixedInternalDomains"`
+	HasBuiltInAttentionDomainsItems            bool     `json:"HasBuiltInAttentionDomainsItems"`
+	HasBuiltInAttentionTermsItems              bool     `json:"HasBuiltInAttentionTermsItems"`
 }
 
 type OutlookGPOConfigsResponse struct {
-	Default TbStyleConfigs `json:default`
-	Locked  TbStyleConfigs `json:locked`
+	Default TbStyleConfigs `json:"Default"`
+	Locked  TbStyleConfigs `json:"Locked"`
 }
