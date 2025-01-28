@@ -23,8 +23,6 @@ jobs:
           echo $Env:GOPATH
       - name: Install gox
         run: go install github.com/mitchellh/gox@latest
-      - name: Run test
-        run: cd webextensions/native-messaging-host && go mod tidy && make test
       - name: Make xpi
         run: cd webextensions && make && cp *.xpi ..\
       - name: Make Installer
@@ -44,4 +42,16 @@ jobs:
             *.xpi
             *.zip
             *.msi
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 'stable'
+      - run: go version
+      - name: Install dependencies
+        run: cd webextensions && npm install && cd native-messaging-host && go mod tidy
+      - name: Run test
+        run: make test
 
