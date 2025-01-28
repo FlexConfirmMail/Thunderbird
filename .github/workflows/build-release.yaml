@@ -23,6 +23,8 @@ jobs:
           echo $Env:GOPATH
       - name: Install gox
         run: go install github.com/mitchellh/gox@latest
+      - name: Run test
+        run: cd webextensions/native-messaging-host && go mod tidy && make test
       - name: Make xpi
         run: cd webextensions && make && cp *.xpi ..\
       - name: Make Installer
