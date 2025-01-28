@@ -117,7 +117,7 @@ func ProcessRequest(context *Context) error {
 	log.SetOutput(context.ErrorOut)
 
 	if context.ReportVersion {
-		fmt.Println(VERSION)
+		fmt.Fprintln(context.Output, VERSION)
 		return nil
 	}
 	if context.Command != "" {

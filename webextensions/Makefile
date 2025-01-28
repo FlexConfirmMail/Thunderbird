@@ -45,3 +45,4 @@ host:
 
 test:
 	npm run test
+	cd native-messaging-host && make test
