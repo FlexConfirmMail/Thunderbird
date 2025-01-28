@@ -1,10 +1,10 @@
+//go:build darwin
+
 /*
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
-
-//go:build darwin
 
 package main
 
@@ -14,7 +14,6 @@ import (
 	"github.com/ncruces/zenity"
 	"io"
 )
-
 
 func ChooseFile(params RequestParams) (path string, errorMessage string) {
 	filename, err := zenity.SelectFile(
@@ -30,7 +29,6 @@ func ChooseFile(params RequestParams) (path string, errorMessage string) {
 	}
 	return filename, ""
 }
-
 
 func FetchOutlookGPOConfigsAndResponse(output io.Writer) error {
 	response := OutlookGPOConfigsResponse{}

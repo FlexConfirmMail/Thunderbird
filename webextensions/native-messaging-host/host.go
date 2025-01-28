@@ -20,8 +20,7 @@ import (
 	"time"
 )
 
-const VERSION = "4.2.3";
-
+const VERSION = "4.2.3"
 
 var RunInCLI bool
 var DebugLogs []string
@@ -48,7 +47,6 @@ func LogForDebug(message string) {
 		log.Print(message + "\r\n")
 	}
 }
-
 
 type RequestParams struct {
 	Path             string `json:"path"`
@@ -143,7 +141,7 @@ func ProcessRequest(context *Context) error {
 			}
 			contents, errorMessage := Fetch(params.Path)
 			if errorMessage != "" {
-				return fmt.Errorf("failed to fetch: "+errorMessage)
+				return fmt.Errorf("failed to fetch: " + errorMessage)
 			}
 			fmt.Fprintln(context.Output, contents)
 		case "choose-file":
@@ -159,7 +157,7 @@ func ProcessRequest(context *Context) error {
 			}
 			path, errorMessage := ChooseFile(params)
 			if errorMessage != "" {
-				return fmt.Errorf("failed to open file chooser: "+errorMessage)
+				return fmt.Errorf("failed to open file chooser: " + errorMessage)
 			}
 			fmt.Fprintln(context.Output, path)
 		case "outlook-gpo-configs":
@@ -175,10 +173,10 @@ func ProcessRequest(context *Context) error {
 		return err
 	}
 	request := &Request{
-		Logging: false,
-		Debug: false,
+		Logging:          false,
+		Debug:            false,
 		LogRotationCount: 7,
-		LogRotationTime: 24,
+		LogRotationTime:  24,
 	}
 	if err := json.Unmarshal(rawRequest, request); err != nil {
 		return err
@@ -271,27 +269,26 @@ func ChooseFileAndRespond(params RequestParams, output io.Writer) error {
 	return nil
 }
 
-
 type TbStyleConfigs struct {
-	CountdownAllowSkip                         bool     `json:"CountdownAllowSkip"`
-	ShowCountdown                              bool     `json:"ShowCountdown"`
-	CountdownSeconds                           uint64   `json:"CountdownSeconds"`
-	SkipConfirmationForInternalMail            bool     `json:"SkipConfirmationForInternalMail"`
-	ConfirmMultipleRecipientDomains            bool     `json:"ConfirmMultipleRecipientDomains"`
-	MinConfirmMultipleRecipientDomainsCount    uint64   `json:"MinConfirmMultipleRecipientDomainsCount"`
-	FixedInternalDomains                       []string `json:"FixedInternalDomains"`
-	BuiltInAttentionDomainsItems               []string `json:"BuiltInAttentionDomainsItems"`
-	BuiltInAttentionTermsItems                 []string `json:"BuiltInAttentionTermsItems"`
+	CountdownAllowSkip                      bool     `json:"CountdownAllowSkip"`
+	ShowCountdown                           bool     `json:"ShowCountdown"`
+	CountdownSeconds                        uint64   `json:"CountdownSeconds"`
+	SkipConfirmationForInternalMail         bool     `json:"SkipConfirmationForInternalMail"`
+	ConfirmMultipleRecipientDomains         bool     `json:"ConfirmMultipleRecipientDomains"`
+	MinConfirmMultipleRecipientDomainsCount uint64   `json:"MinConfirmMultipleRecipientDomainsCount"`
+	FixedInternalDomains                    []string `json:"FixedInternalDomains"`
+	BuiltInAttentionDomainsItems            []string `json:"BuiltInAttentionDomainsItems"`
+	BuiltInAttentionTermsItems              []string `json:"BuiltInAttentionTermsItems"`
 
-	HasCountdownAllowSkip                      bool     `json:"HasCountdownAllowSkip"`
-	HasShowCountdown                           bool     `json:"HasShowCountdown"`
-	HasCountdownSeconds                        bool     `json:"HasCountdownSeconds"`
-	HasSkipConfirmationForInternalMail         bool     `json:"HasSkipConfirmationForInternalMail"`
-	HasConfirmMultipleRecipientDomains         bool     `json:"HasConfirmMultipleRecipientDomains"`
-	HasMinConfirmMultipleRecipientDomainsCount bool     `json:"HasMinConfirmMultipleRecipientDomainsCount"`
-	HasFixedInternalDomains                    bool     `json:"HasFixedInternalDomains"`
-	HasBuiltInAttentionDomainsItems            bool     `json:"HasBuiltInAttentionDomainsItems"`
-	HasBuiltInAttentionTermsItems              bool     `json:"HasBuiltInAttentionTermsItems"`
+	HasCountdownAllowSkip                      bool `json:"HasCountdownAllowSkip"`
+	HasShowCountdown                           bool `json:"HasShowCountdown"`
+	HasCountdownSeconds                        bool `json:"HasCountdownSeconds"`
+	HasSkipConfirmationForInternalMail         bool `json:"HasSkipConfirmationForInternalMail"`
+	HasConfirmMultipleRecipientDomains         bool `json:"HasConfirmMultipleRecipientDomains"`
+	HasMinConfirmMultipleRecipientDomainsCount bool `json:"HasMinConfirmMultipleRecipientDomainsCount"`
+	HasFixedInternalDomains                    bool `json:"HasFixedInternalDomains"`
+	HasBuiltInAttentionDomainsItems            bool `json:"HasBuiltInAttentionDomainsItems"`
+	HasBuiltInAttentionTermsItems              bool `json:"HasBuiltInAttentionTermsItems"`
 }
 
 type OutlookGPOConfigsResponse struct {

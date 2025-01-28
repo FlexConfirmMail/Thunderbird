@@ -1,10 +1,10 @@
+//go:build windows
+
 /*
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
-
-//go:build windows
 
 package main
 
@@ -18,7 +18,6 @@ import (
 	"strconv"
 	"strings"
 )
-
 
 func ChooseFile(params RequestParams) (path string, errorMessage string) {
 	result, err := cfdutil.ShowOpenFileDialog(cfd.DialogConfig{
@@ -42,14 +41,13 @@ func ChooseFile(params RequestParams) (path string, errorMessage string) {
 	return result, ""
 }
 
-
 func ReadIntegerRegValue(key registry.Key, valueName string) (data uint64, errorMessage string) {
 	data, _, err := key.GetIntegerValue(valueName)
 	if err != nil {
 		LogForDebug("Failed to get data of the value " + valueName)
 		return 0, err.Error()
 	}
-	LogForDebug("Successfully got data of the value " + valueName + ": " + strconv.FormatUint(data,10))
+	LogForDebug("Successfully got data of the value " + valueName + ": " + strconv.FormatUint(data, 10))
 	return data, ""
 }
 
@@ -131,11 +129,11 @@ func FetchOutlookGPOConfigsAndResponse(output io.Writer) error {
 	ReadAndApplyOutlookGPOConfigs(registry.CURRENT_USER, defaultKeyPath, &response.Default)
 
 	/*
-	lockedKeyPath := `SOFTWARE\Policies\FlexConfirmMail\Locked`
-	LogForDebug(`Read GPO configs from HKLM\` + lockedKeyPath)
-	ReadAndApplyOutlookGPOConfigs(registry.LOCAL_MACHINE, lockedKeyPath, &response.Locked)
-	LogForDebug(`Read GPO configs from HKCU\` + lockedKeyPath)
-	ReadAndApplyOutlookGPOConfigs(registry.CURRENT_USER, lockedKeyPath, &response.Locked)
+		lockedKeyPath := `SOFTWARE\Policies\FlexConfirmMail\Locked`
+		LogForDebug(`Read GPO configs from HKLM\` + lockedKeyPath)
+		ReadAndApplyOutlookGPOConfigs(registry.LOCAL_MACHINE, lockedKeyPath, &response.Locked)
+		LogForDebug(`Read GPO configs from HKCU\` + lockedKeyPath)
+		ReadAndApplyOutlookGPOConfigs(registry.CURRENT_USER, lockedKeyPath, &response.Locked)
 	*/
 
 	body, err := json.Marshal(response)
