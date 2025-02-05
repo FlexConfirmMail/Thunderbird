@@ -12,6 +12,7 @@ import (
 	"fmt"
 	rotatelogs "github.com/lestrrat/go-file-rotatelogs"
 	"github.com/lhside/chrome-go"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -19,19 +20,19 @@ import (
 	"time"
 )
 
-const VERSION = "4.2.3";
-
+const VERSION = "4.2.3"
 
 var RunInCLI bool
 var DebugLogs []string
 var Logging bool
 var Debug bool
+var ErrorOut io.Writer
 
 func LogForInfo(message string) {
 	DebugLogs = append(DebugLogs, message)
 	if Logging {
 		if !RunInCLI {
-			fmt.Fprintf(os.Stderr, "[info] "+message+"\n")
+			fmt.Fprintf(ErrorOut, "[info] "+message+"\n")
 		}
 		log.Print(message + "\r\n")
 	}
@@ -41,21 +42,20 @@ func LogForDebug(message string) {
 	DebugLogs = append(DebugLogs, message)
 	if Logging && Debug {
 		if !RunInCLI {
-			fmt.Fprintf(os.Stderr, "[debug] "+message+"\n")
+			fmt.Fprintf(ErrorOut, "[debug] "+message+"\n")
 		}
 		log.Print(message + "\r\n")
 	}
 }
 
-
 type RequestParams struct {
-	Path             string `json:path`
-	Title            string `json:title`
-	Role             string `json:role`
-	FileName         string `json:fileName`
-	DefaultExtension string `json:defaultExtension`
-	DisplayName      string `json:displayName`
-	Pattern          string `json:pattern`
+	Path             string `json:"path"`
+	Title            string `json:"title"`
+	Role             string `json:"role"`
+	FileName         string `json:"fileName"`
+	DefaultExtension string `json:"defaultExtension"`
+	DisplayName      string `json:"displayName"`
+	Pattern          string `json:"pattern"`
 }
 type Request struct {
 	Logging          bool          `json:"logging"`
@@ -66,68 +66,120 @@ type Request struct {
 	Params           RequestParams `json:"params"`
 }
 
+type Context struct {
+	ReportVersion bool
+	Command       string
+	CommandParams string
+	Debug         bool
+	Input         io.Reader
+	Output        io.Writer
+	ErrorOut      io.Writer
+}
+
 func main() {
-	shouldReportVersion := flag.Bool("v", false, "version information")
-	commandLineCommand := flag.String("c", "", "command to run")
-	commandLineCommandParams := flag.String("p", "", "parameters for the command (JSON string)")
-	commandLineDebug := flag.Bool("d", false, "debug mode")
-	flag.Parse()
-
-	log.SetOutput(os.Stderr)
-
-	if *shouldReportVersion == true {
-		fmt.Println(VERSION)
+	context, err := CreateCommandLineContext(os.Args[1:])
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
 		return
 	}
-	if *commandLineCommand != "" {
+
+	ErrorOut = context.ErrorOut
+
+	if err := ProcessRequest(context); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func CreateCommandLineContext(args []string) (context *Context, error error) {
+	flags := flag.NewFlagSet("app", flag.ContinueOnError)
+
+	reportVersion := flags.Bool("v", false, "version information")
+	command := flags.String("c", "", "command to run")
+	commandParams := flags.String("p", "", "parameters for the command (JSON string)")
+	debug := flags.Bool("d", false, "debug mode")
+
+	if err := flags.Parse(args); err != nil {
+		return nil, err
+	}
+
+	return &Context{
+		ReportVersion: *reportVersion,
+		Command:       *command,
+		CommandParams: *commandParams,
+		Debug:         *debug,
+		Input:         os.Stdin,
+		Output:        os.Stdout,
+		ErrorOut:      os.Stderr,
+	}, nil
+}
+
+func ProcessRequest(context *Context) error {
+	log.SetOutput(context.ErrorOut)
+
+	if context.ReportVersion {
+		fmt.Fprintln(context.Output, VERSION)
+		return nil
+	}
+	if context.Command != "" {
 		RunInCLI = true
-		if *commandLineDebug == true {
+		if context.Debug {
 			Logging = true
 			Debug = true
 		}
-		switch *commandLineCommand {
+		var err error
+		switch context.Command {
 		case "fetch":
-			if *commandLineCommandParams == "" {
-				fmt.Println(`missing required params via -p option, like: -p "{\"path":\"c:\\path\\to\\file\"}"`)
-				return
+			if context.CommandParams == "" {
+				fmt.Fprintln(context.ErrorOut, `missing required params via -p option, like: -p "{\"path":\"c:\\path\\to\\file\"}"`)
+				return fmt.Errorf("missing params")
 			}
 			var params RequestParams
-			err := json.Unmarshal([]byte(*commandLineCommandParams), &params)
+			err := json.Unmarshal([]byte(context.CommandParams), &params)
 			if err != nil {
-				log.Fatal(err)
+				fmt.Fprintln(context.ErrorOut, "invalid params: "+fmt.Sprint(err))
+				return err
 			}
-			FetchAndRespond(params.Path)
+			contents, errorMessage := Fetch(params.Path)
+			if errorMessage != "" {
+				return fmt.Errorf("failed to fetch: " + errorMessage)
+			}
+			fmt.Fprintln(context.Output, contents)
 		case "choose-file":
-			if *commandLineCommandParams == "" {
-				fmt.Println(`missing required params via -p option, like: -p "{\"title\":\"dialog title\",\"role\":\"role\",\"fileName\":\"txt\",\"displayName\":\"name of the filter\",\"pattern\":\"matching file pattern\"}" (or simply: -p \"{}\")`)
-				return
+			if context.CommandParams == "" {
+				fmt.Fprintln(context.ErrorOut, `missing required params via -p option, like: -p "{\"title\":\"dialog title\",\"role\":\"role\",\"fileName\":\"txt\",\"displayName\":\"name of the filter\",\"pattern\":\"matching file pattern\"}" (or simply: -p \"{}\")`)
+				return fmt.Errorf("missing params")
 			}
 			var params RequestParams
-			err := json.Unmarshal([]byte(*commandLineCommandParams), &params)
+			err := json.Unmarshal([]byte(context.CommandParams), &params)
 			if err != nil {
-				log.Fatal(err)
+				fmt.Fprintln(context.ErrorOut, "invalid params: "+fmt.Sprint(err))
+				return err
 			}
-			ChooseFileAndRespond(params)
+			path, errorMessage := ChooseFile(params)
+			if errorMessage != "" {
+				return fmt.Errorf("failed to open file chooser: " + errorMessage)
+			}
+			fmt.Fprintln(context.Output, path)
 		case "outlook-gpo-configs":
-			FetchOutlookGPOConfigsAndResponse()
+			FetchOutlookGPOConfigsAndResponse(context.Output)
 		default:
-			fmt.Println("unknown command: " + *commandLineCommand)
+			fmt.Fprintln(context.ErrorOut, "unknown command: "+context.Command)
 		}
-		return
+		return err
 	}
 
-	rawRequest, err := chrome.Receive(os.Stdin)
+	rawRequest, err := chrome.Receive(context.Input)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	request := &Request{
-		Logging: false,
-		Debug: false,
+		Logging:          false,
+		Debug:            false,
 		LogRotationCount: 7,
-		LogRotationTime: 24,
+		LogRotationTime:  24,
 	}
 	if err := json.Unmarshal(rawRequest, request); err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	Logging = request.Logging
@@ -145,7 +197,7 @@ func main() {
 			rotatelogs.WithRotationCount(logRotationCount),
 		)
 		if err != nil {
-			log.Fatal(err)
+			return err
 		}
 		defer rotateLog.Close()
 
@@ -159,17 +211,16 @@ func main() {
 
 	switch command := request.Command; command {
 	case "fetch":
-		FetchAndRespond(request.Params.Path)
+		err = FetchAndRespond(request.Params.Path, context.Output)
 	case "choose-file":
-		ChooseFileAndRespond(request.Params)
+		err = ChooseFileAndRespond(request.Params, context.Output)
 	case "outlook-gpo-configs":
-		FetchOutlookGPOConfigsAndResponse()
+		err = FetchOutlookGPOConfigsAndResponse(context.Output)
 	default: // just echo
-		err = chrome.Post(rawRequest, os.Stdout)
-		if err != nil {
-			log.Fatal(err)
-		}
+		err = chrome.Post(rawRequest, context.Output)
 	}
+
+	return err
 }
 
 type FetchResponse struct {
@@ -177,17 +228,18 @@ type FetchResponse struct {
 	Error    string `json:"error"`
 }
 
-func FetchAndRespond(path string) {
+func FetchAndRespond(path string, output io.Writer) error {
 	contents, errorMessage := Fetch(path)
 	response := &FetchResponse{contents, errorMessage}
 	body, err := json.Marshal(response)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-	err = chrome.Post(body, os.Stdout)
+	err = chrome.Post(body, output)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
+	return nil
 }
 
 func Fetch(path string) (contents string, errorMessage string) {
@@ -203,43 +255,43 @@ type ChooseFileResponse struct {
 	Error string `json:"error"`
 }
 
-func ChooseFileAndRespond(params RequestParams) {
+func ChooseFileAndRespond(params RequestParams, output io.Writer) error {
 	path, errorMessage := ChooseFile(params)
 	response := &ChooseFileResponse{path, errorMessage}
 	body, err := json.Marshal(response)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-	err = chrome.Post(body, os.Stdout)
+	err = chrome.Post(body, output)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
+	return nil
 }
 
-
 type TbStyleConfigs struct {
-	CountdownAllowSkip                         bool     `json:countdownAllowSkip`
-	ShowCountdown                              bool     `json:showCountdown`
-	CountdownSeconds                           uint64   `json:countdownSeconds`
-	SkipConfirmationForInternalMail            bool     `json:skipConfirmationForInternalMail`
-	ConfirmMultipleRecipientDomains            bool     `json:confirmMultipleRecipientDomains`
-	MinConfirmMultipleRecipientDomainsCount    uint64   `json:minConfirmMultipleRecipientDomainsCount`
-	FixedInternalDomains                       []string `json:fixedInternalDomains`
-	BuiltInAttentionDomainsItems               []string `json:builtInAttentionDomainsItems`
-	BuiltInAttentionTermsItems                 []string `json:builtInAttentionTermsItems`
+	CountdownAllowSkip                      bool     `json:"CountdownAllowSkip"`
+	ShowCountdown                           bool     `json:"ShowCountdown"`
+	CountdownSeconds                        uint64   `json:"CountdownSeconds"`
+	SkipConfirmationForInternalMail         bool     `json:"SkipConfirmationForInternalMail"`
+	ConfirmMultipleRecipientDomains         bool     `json:"ConfirmMultipleRecipientDomains"`
+	MinConfirmMultipleRecipientDomainsCount uint64   `json:"MinConfirmMultipleRecipientDomainsCount"`
+	FixedInternalDomains                    []string `json:"FixedInternalDomains"`
+	BuiltInAttentionDomainsItems            []string `json:"BuiltInAttentionDomainsItems"`
+	BuiltInAttentionTermsItems              []string `json:"BuiltInAttentionTermsItems"`
 
-	HasCountdownAllowSkip                      bool     `json:hasCountdownAllowSkip`
-	HasShowCountdown                           bool     `json:hasShowCountdown`
-	HasCountdownSeconds                        bool     `json:hasCountdownSeconds`
-	HasSkipConfirmationForInternalMail         bool     `json:hasSkipConfirmationForInternalMail`
-	HasConfirmMultipleRecipientDomains         bool     `json:hasConfirmMultipleRecipientDomains`
-	HasMinConfirmMultipleRecipientDomainsCount bool     `json:hasMinConfirmMultipleRecipientDomainsCount`
-	HasFixedInternalDomains                    bool     `json:hasFixedInternalDomains`
-	HasBuiltInAttentionDomainsItems            bool     `json:hasBuiltInAttentionDomainsItems`
-	HasBuiltInAttentionTermsItems              bool     `json:hasBuiltInAttentionTermsItems`
+	HasCountdownAllowSkip                      bool `json:"HasCountdownAllowSkip"`
+	HasShowCountdown                           bool `json:"HasShowCountdown"`
+	HasCountdownSeconds                        bool `json:"HasCountdownSeconds"`
+	HasSkipConfirmationForInternalMail         bool `json:"HasSkipConfirmationForInternalMail"`
+	HasConfirmMultipleRecipientDomains         bool `json:"HasConfirmMultipleRecipientDomains"`
+	HasMinConfirmMultipleRecipientDomainsCount bool `json:"HasMinConfirmMultipleRecipientDomainsCount"`
+	HasFixedInternalDomains                    bool `json:"HasFixedInternalDomains"`
+	HasBuiltInAttentionDomainsItems            bool `json:"HasBuiltInAttentionDomainsItems"`
+	HasBuiltInAttentionTermsItems              bool `json:"HasBuiltInAttentionTermsItems"`
 }
 
 type OutlookGPOConfigsResponse struct {
-	Default TbStyleConfigs `json:default`
-	Locked  TbStyleConfigs `json:locked`
+	Default TbStyleConfigs `json:"Default"`
+	Locked  TbStyleConfigs `json:"Locked"`
 }

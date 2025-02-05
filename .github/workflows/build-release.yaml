@@ -42,4 +42,16 @@ jobs:
             *.xpi
             *.zip
             *.msi
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+      - run: go version
+      - name: Install dependencies
+        run: cd webextensions && npm install && cd native-messaging-host && go mod tidy
+      - name: Run test
+        run: make unittest
 

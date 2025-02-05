@@ -1,11 +1,10 @@
+//go:build windows
+
 /*
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
-
-//go:build windows
-// +build windows
 
 package main
 
@@ -15,12 +14,10 @@ import (
 	"github.com/harry1453/go-common-file-dialog/cfdutil"
 	"github.com/lhside/chrome-go"
 	"golang.org/x/sys/windows/registry"
-	"log"
-	"os"
+	"io"
 	"strconv"
 	"strings"
 )
-
 
 func ChooseFile(params RequestParams) (path string, errorMessage string) {
 	result, err := cfdutil.ShowOpenFileDialog(cfd.DialogConfig{
@@ -39,21 +36,18 @@ func ChooseFile(params RequestParams) (path string, errorMessage string) {
 	if err == cfd.ErrorCancelled {
 		return result, ""
 	} else if err != nil {
-		log.Fatal(err)
 		return "", err.Error()
 	}
 	return result, ""
 }
 
-
 func ReadIntegerRegValue(key registry.Key, valueName string) (data uint64, errorMessage string) {
 	data, _, err := key.GetIntegerValue(valueName)
 	if err != nil {
 		LogForDebug("Failed to get data of the value " + valueName)
-		//log.Fatal(err)
 		return 0, err.Error()
 	}
-	LogForDebug("Successfully got data of the value " + valueName + ": " + strconv.FormatUint(data,10))
+	LogForDebug("Successfully got data of the value " + valueName + ": " + strconv.FormatUint(data, 10))
 	return data, ""
 }
 
@@ -61,21 +55,19 @@ func ReadStringsRegValue(key registry.Key, valueName string) (data []string, err
 	data, _, err := key.GetStringsValue(valueName)
 	if err != nil {
 		LogForDebug("Failed to get data of the value " + valueName)
-		//log.Fatal(err)
 		return data, err.Error()
 	}
 	LogForDebug("Successfully got data of the value " + valueName + ": " + strings.Join(data, " "))
 	return data, ""
 }
 
-func ReadAndApplyOutlookGPOConfigs(base registry.Key, keyPath string, configs *TbStyleConfigs) {
+func ReadAndApplyOutlookGPOConfigs(base registry.Key, keyPath string, configs *TbStyleConfigs) error {
 	key, err := registry.OpenKey(base,
 		keyPath,
 		registry.QUERY_VALUE)
 	if err != nil {
 		LogForDebug("Failed to open key " + keyPath)
-		//log.Fatal(err)
-		return
+		return err
 	}
 	defer key.Close()
 
@@ -124,9 +116,10 @@ func ReadAndApplyOutlookGPOConfigs(base registry.Key, keyPath string, configs *T
 		configs.BuiltInAttentionTermsItems = unsafeFiles
 		configs.HasBuiltInAttentionTermsItems = true
 	}
+	return nil
 }
 
-func FetchOutlookGPOConfigsAndResponse() {
+func FetchOutlookGPOConfigsAndResponse(output io.Writer) error {
 	response := OutlookGPOConfigsResponse{}
 
 	defaultKeyPath := `SOFTWARE\Policies\FlexConfirmMail\Default`
@@ -136,19 +129,20 @@ func FetchOutlookGPOConfigsAndResponse() {
 	ReadAndApplyOutlookGPOConfigs(registry.CURRENT_USER, defaultKeyPath, &response.Default)
 
 	/*
-	lockedKeyPath := `SOFTWARE\Policies\FlexConfirmMail\Locked`
-	LogForDebug(`Read GPO configs from HKLM\` + lockedKeyPath)
-	ReadAndApplyOutlookGPOConfigs(registry.LOCAL_MACHINE, lockedKeyPath, &response.Locked)
-	LogForDebug(`Read GPO configs from HKCU\` + lockedKeyPath)
-	ReadAndApplyOutlookGPOConfigs(registry.CURRENT_USER, lockedKeyPath, &response.Locked)
+		lockedKeyPath := `SOFTWARE\Policies\FlexConfirmMail\Locked`
+		LogForDebug(`Read GPO configs from HKLM\` + lockedKeyPath)
+		ReadAndApplyOutlookGPOConfigs(registry.LOCAL_MACHINE, lockedKeyPath, &response.Locked)
+		LogForDebug(`Read GPO configs from HKCU\` + lockedKeyPath)
+		ReadAndApplyOutlookGPOConfigs(registry.CURRENT_USER, lockedKeyPath, &response.Locked)
 	*/
 
 	body, err := json.Marshal(response)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-	err = chrome.Post(body, os.Stdout)
+	err = chrome.Post(body, output)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
+	return nil
 }
