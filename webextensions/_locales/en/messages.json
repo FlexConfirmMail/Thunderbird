@@ -26,7 +26,7 @@
   "confirmNewDomainRecipientsDialogTitle": { "message": "Recipients with domains not included in the recipients of the original message" },
   "confirmNewDomainRecipientsDialogMessage": { "message": "There are recipients with domains not included in the recipients of the original message.\n\n<strong>$RECIPIENTS$</strong>\n\nDo you really want to send this message?",
     "placeholders": {
-      "domains": { "content": "$1", "example": "user@example.com" }
+      "recipients": { "content": "$1", "example": "user@example.com" }
     }},
   "confirmNewDomainRecipientsAccept": { "message": "Send" },
   "confirmNewDomainRecipientsCancel": { "message": "Cancel" },
