@@ -105,6 +105,8 @@
   "config_minConfirmMultipleRecipientDomainsCount_label_after": { "message": "以上的域时发出警告" },
   "config_allowCheckAllInternals_label": { "message": "允许对组织中的目的地进行批量检查" },
   "config_allowCheckAllExternals_label": { "message": "允许对外部目的地进行批量检查" },
+  "config_confirmNewDomainRecipients_label": { "message": "当回复的收件人地址中新增了与现有收件人域名不同的地址时，系统将警告确认" },
+  "config_emphasizeNewDomainRecipients_label": { "message": "当回复的收件人地址中新增了与现有收件人域名不同的地址时，系统将高亮提示" },
 
 
   "config_userRules_caption":              { "message": "附加规则" },
