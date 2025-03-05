@@ -23,6 +23,14 @@
   "confirmMultipleRecipientDomainsAccept": { "message": "发送" },
   "confirmMultipleRecipientDomainsCancel": { "message": "取消" },
 
+  "confirmNewDomainRecipientsDialogTitle": { "message": "收件人添加了原邮件收件人中未包含的域名地址" },
+  "confirmNewDomainRecipientsDialogMessage": { "message": "收件人添加了以下原邮件收件人中未包含的域名地址。\n\n<strong>$RECIPIENTS$</strong>\n\n请确认是否要发送此邮件？",
+    "placeholders": {
+      "domains": { "content": "$1", "example": "user@example.com" }
+    }},
+  "confirmNewDomainRecipientsAccept": { "message": "发送" },
+  "confirmNewDomainRecipientsCancel": { "message": "取消" },
+
 
   "confirmAttentionDomainsTitle": { "message": "需要特别注意的目的地" },
   "confirmAttentionDomainsMessage": { "message": "以下目的地属于需要特别注意的领域。\n\n<strong>$RECIPIENTS$</strong>\n\n请在发送邮件前确认一切正常。",
@@ -105,6 +113,8 @@
   "config_minConfirmMultipleRecipientDomainsCount_label_after": { "message": "以上的域时发出警告" },
   "config_allowCheckAllInternals_label": { "message": "允许对组织中的目的地进行批量检查" },
   "config_allowCheckAllExternals_label": { "message": "允许对外部目的地进行批量检查" },
+  "config_confirmNewDomainRecipients_label": { "message": "当回复的收件人地址中新增了与现有收件人域名不同的地址时，系统将警告确认" },
+  "config_emphasizeNewDomainRecipients_label": { "message": "当回复的收件人地址中新增了与现有收件人域名不同的地址时，系统将高亮提示" },
 
 
   "config_userRules_caption":              { "message": "附加规则" },
