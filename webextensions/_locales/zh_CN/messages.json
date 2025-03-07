@@ -26,7 +26,7 @@
   "confirmNewDomainRecipientsDialogTitle": { "message": "收件人添加了原邮件收件人中未包含的域名地址" },
   "confirmNewDomainRecipientsDialogMessage": { "message": "收件人添加了以下原邮件收件人中未包含的域名地址。\n\n<strong>$RECIPIENTS$</strong>\n\n请确认是否要发送此邮件？",
     "placeholders": {
-      "domains": { "content": "$1", "example": "user@example.com" }
+      "recipients": { "content": "$1", "example": "user@example.com" }
     }},
   "confirmNewDomainRecipientsAccept": { "message": "发送" },
   "confirmNewDomainRecipientsCancel": { "message": "取消" },
