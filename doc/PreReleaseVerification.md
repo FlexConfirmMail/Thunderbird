@@ -17,6 +17,7 @@
     * inbox配下のemlファイルを受信トレイまたは通常のメールフォルダーにドラッグ＆ドロップしてインポートする。
     * draft配下のemlファイルを下書きフォルダーにドラッグ＆ドロップしてインポートする。
   * FlexConfirmMailをインストールする。
+    * このリポジトリーの最上位ディレクトリーで `make` を実行してローカルでビルドしたXPI、もしくはGitHub ActionsのArtifactからダウンロードしたXPIを拡張機能の管理画面にドラッグ＆ドロップしてインストールする。
     * FlexConfirmMailの設定画面において、`flexconfirmmail.json`をインポートする。
 
 
