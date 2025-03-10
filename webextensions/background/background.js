@@ -368,7 +368,7 @@ async function tryConfirm(tab, details, opener) {
     modal:  !configs.debug,
     opener,
     width:  configs.confirmDialogWidth,
-    height: configs.confirmDialogWidth
+    height: configs.confirmDialogHeight,
   };
   if (configs.alwaysLargeDialog) {
     dialogParams.width = Math.max(
