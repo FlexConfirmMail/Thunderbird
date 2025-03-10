@@ -1,0 +1,61 @@
+{
+  "__ConfigsMigration__userValeusSameToDefaultAreCleared": true,
+  "configsVersion": 3,
+  "confirmNewDomainRecipients": true,
+  "confirmationMode": 2,
+  "countdownSeconds": 10,
+  "emphasizeRecipientType": true,
+  "emphasizeTopMessage": true,
+  "extraStyleRules": ".rich-confirm-dialog.for-new-domain-recipients { background: red !important; padding: 1.5em; }  .rich-confirm-dialog.for-new-domain-recipients::before { color: white !important; content: \"⨉警告！\"; display: block; font-size: x-large !important; font-weight: bold !important; position: relative; text-align: center; top: -0.5em; } .rich-confirm-dialog.for-new-domain-recipients .rich-confirm-content { background: var(--bg-color) !important; padding: 1em; } .rich-confirm-dialog.for-new-domain-recipients .rich-confirm-content strong { font-size: large; font-weight: bold; }",
+  "internalDomains": [
+    "clear-code.com",
+    "*clear.code@gmail.com"
+  ],
+  "showCountdown": true,
+  "userRules": [
+    {
+      "id": "builtInAttentionDomains",
+      "itemsLocal": [
+        "example.net"
+      ]
+    },
+    {
+      "id": "builtInAttentionSuffixes",
+      "enabled": true,
+      "highlight": 1,
+      "itemsLocal": [
+        "png"
+      ]
+    },
+    {
+      "id": "builtInAttentionTerms",
+      "enabled": true,
+      "itemsLocal": [
+        "社外秘"
+      ]
+    },
+    {
+      "id": "builtInBlockedDomains",
+      "enabled": true,
+      "itemsLocal": [
+        "danger.example.org",
+        "danger.example.com"
+      ]
+    },
+    {
+      "id": "rule-1725946080436-15572",
+      "name": "社外秘の情報を件名または本文に含むメールの場合は再度警告する",
+      "enabled": true,
+      "matchTarget": 5,
+      "highlight": 3,
+      "action": 3,
+      "itemsSource": 0,
+      "itemsLocal": [
+        "社外秘"
+      ],
+      "itemsFile": "",
+      "confirmTitle": "",
+      "confirmMessage": "社外秘であることを示唆する以下の語句が件名または本文に含まれています。\n\n<strong>%S</strong>\n\n宛先に問題がない事を確認の上でメールを送信してください。"
+    }
+  ]
+}
