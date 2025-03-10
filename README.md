@@ -135,3 +135,48 @@ And, on macOS:
      The built file `.signed.pkg` is notarized, so you should distribute it instead of the unsigned version.
 
 
+### How to release a new version?
+
+1. `git switch master`
+2. `git log` (or `tig`) to confirm there is no needless/unexpected change from the last release.
+3. Run the [QA test before release](doc/PreReleaseVerification.md).
+4. Bump the version, and prepare packages.
+   1. Bump the version in the file [`manifest.json`](webextensions/manifest.json).
+   2. `make` to build XPI and `make host` to build the native messaging host.
+   3. Run `cd webextensions` and `./make_msi.bat` on `cmd.exe` to build MSI packages.
+   4. Build the package for macOS.
+   4. Commit changes of [`manifest.json`](webextensions/manifest.json) and [`host.go`](webextensions/native-messaging-host/host.go) around the version.
+   5. Rename built packages with the version number, like as:
+      * `flex-confirm-mail-we-x.x.x.xpi`
+      * `flex-confirm-mail-nmh-without-installer-x.x.x.zip`
+      * `flex-confirm-mail-nmh-386-x.x.x.msi`
+      * `flex-confirm-mail-nmh-amd64-x.x.x.msi`
+      * `com.clear_code.flexible_confirm_mail_we_host.signed-x.x.x.pkg`
+5. Create a tag for the new release.
+   1. List changes from the last release.
+   2. `git tag -a x.x.x`
+   3. `git push --tags`
+6. Create a GitHub release from the new tag.
+   1. Go to the [list of tags](https://github.com/FlexConfirmMail/Thunderbird/tags).
+   2. Click the title of the latest tag.
+   3. Create a new release from the tag.
+   4. Upload packages to the release.
+   5. Publish the release.
+7. Publish XPI to the addons store.
+   1. Go to the [dashboard](https://addons.thunderbird.net/developers/).
+   2. Log in with the account `firefox-support@clear-code.com`.
+   3. Go to the [edit page of the FlexConfirmMail](https://addons.thunderbird.net/developers/addon/flex-confirm-mail/edit).
+   4. Click the link "Upload New Version".
+   5. Upload the built XPI.
+   6. Check to "Thunderbird" and continue.
+   7. Upload the downloaded zip from the repository as the source code.
+   8. Enter developer information to the reviewer as:
+      ```
+      Here is descriptions how to build the native messaging host from the source.
+      https://github.com/FlexConfirmMail/Thunderbird/blob/master/README.md#how-to-build-the-native-messaging-host-and-its-installer
+      ```
+   9. Register a new release for the version.
+   10. Edit the listing information of the version.
+       * Copy the release notes from the GitHub page to the default locale `en-US`.
+       * Fill the release notes for locales `ja-JP` (and `zh-CN` if possible).
+8. Wait until the uploaded version is reviewed and published.
