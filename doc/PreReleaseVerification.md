@@ -242,7 +242,7 @@ Thunderbirdを起動し、以下の検証を実施する。
       8. 「キャンセル」を押してカウントダウンのダイアログを閉じる。
    3. Bccに対して警告が行われないことを検証する。
       1. 宛先欄から `user1@example.com` を削除する。
-      2. Bccに `user1@example.com, user1@example.net` を追加する。
+      2. Bccに `user1@example.com, user1@example.org` を追加する。
       3. 「送信」を押す。
          * [ ] チェックボックスがある確認画面が開かれる。
       4. すべてのチェックをオンにする。
