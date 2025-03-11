@@ -145,7 +145,7 @@ And, on macOS:
    2. `make` to build XPI and `make host` to build the native messaging host.
    3. Run `cd webextensions` and `./make_msi.bat` on `cmd.exe` to build MSI packages.
    4. Build the package for macOS.
-   4. Commit changes of [`manifest.json`](webextensions/manifest.json) and [`host.go`](webextensions/native-messaging-host/host.go) around the version.
+   5. Commit changes of [`manifest.json`](webextensions/manifest.json) and [`host.go`](webextensions/native-messaging-host/host.go) around the version.
    5. Rename built packages with the version number, like as:
       * `flex-confirm-mail-we-x.x.x.xpi`
       * `flex-confirm-mail-nmh-without-installer-x.x.x.zip`
