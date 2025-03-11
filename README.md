@@ -148,6 +148,8 @@ And, on macOS:
    5. `git push --set-upstream origin release-x.x.x`
    6. Create a new pull request for the release.
    7. Wait until it is reviewed and merged.
+   8. `git switch master`
+   9. `git pull master`
 5. Prepare packages.
    1. `make` to build XPI and `make host` to build the native messaging host.
    2. Run `cd webextensions` and `./make_msi.bat` on `cmd.exe` to build MSI packages.
