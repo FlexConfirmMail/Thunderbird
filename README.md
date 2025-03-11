@@ -143,7 +143,7 @@ And, on macOS:
 4. Bump the version if the version number has not incremented yet.
    1. `git switch -c release-x.x.x` to create a branch for the release.
    2. Bump the version in the file [`manifest.json`](webextensions/manifest.json).
-   3. `make` to build XPI and `make host` to build the native messaging host.
+   3. `make host` to update `host.go` with the updated version number.
    4. Commit changes of [`manifest.json`](webextensions/manifest.json) and [`host.go`](webextensions/native-messaging-host/host.go) around the version.
    5. `git push --set-upstream origin release-x.x.x`
    6. Create a new pull request for the release.
