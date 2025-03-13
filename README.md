@@ -137,7 +137,7 @@ And, on macOS:
 
 ### How to release a new version?
 
-1. `git switch master`
+1. `git switch master && git submodule update --init --recursive`
 2. `git log` (or `tig`) to confirm there is no needless/unexpected change from the last release.
 3. Run the [QA test before release](doc/PreReleaseVerification.md).
 4. Bump the version if the version number has not incremented yet.
@@ -150,6 +150,7 @@ And, on macOS:
    7. Wait until it is reviewed and merged.
    8. `git switch master`
    9. `git pull origin master`
+   10. `git submodule update --init --recursive`
 5. Prepare packages.
    1. `make` to build XPI and `make host` to build the native messaging host.
    2. Run `cd webextensions` and `./make_msi.bat` on `cmd.exe` to build MSI packages.
