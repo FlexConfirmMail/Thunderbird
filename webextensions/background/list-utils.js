@@ -19,7 +19,8 @@ async function getListFromAddress(address) {
       const mailingLists = await browser.mailingLists.list(addressbook.id);
       for (const mailingList of mailingLists) {
         log('checking list: ', mailingList);
-        if (address == `${mailingList.name} <${mailingList.description || mailingList.name}>`) {
+        if (address == `${mailingList.name} <${mailingList.description || mailingList.name}>` ||
+            address == `${mailingList.name} <"${mailingList.description || mailingList.name}">`) {
           log(' => matched!');
           return mailingList;
         }

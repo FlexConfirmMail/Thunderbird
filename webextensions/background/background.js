@@ -390,12 +390,14 @@ async function tryConfirm(tab, details, opener) {
 }
 
 async function shouldBlock(tab, details) {
-  const matchingRules = new MatchingRules(configs);
-  await matchingRules.populate(readFile);
-
-  const { internals, externals } = classifyRecipients(details);
-
   try {
+    log('shouldBlock ', tab, details);
+    const matchingRules = new MatchingRules(configs);
+    await matchingRules.populate(readFile);
+
+    const { internals, externals } = classifyRecipients(details);
+    log('  recipients: ', { internals, externals });
+
     const blocked = await matchingRules.tryBlock({
       internals,
       externals,

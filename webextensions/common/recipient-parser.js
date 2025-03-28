@@ -6,7 +6,7 @@
 'use strict';
 
 export function parse(recipient) {
-  if (/\s*([^<@]+)\s*<\1>\s*$/.test(recipient)) { // list like "list-name <list-name>"
+  if (/\s*([^<@]+)\s*<(?:\1|"\1")>\s*$/.test(recipient)) { // list like "list-name <list-name>"
     return {
       recipient,
       address: '',
