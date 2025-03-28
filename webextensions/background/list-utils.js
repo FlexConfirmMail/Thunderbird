@@ -6,17 +6,28 @@
 'use strict';
 
 import {
-  configs
+  configs,
+  log,
 } from '/common/common.js';
 
 async function getListFromAddress(address) {
-  const addressbooks = await browser.addressBooks.list();
-  for (const addressbook of addressbooks) {
-    const mailingLists = await browser.mailingLists.list(addressbook.id);
-    for (const mailingList of mailingLists) {
-      if (address == `${mailingList.name} <${mailingList.description || mailingList.name}>`)
-        return mailingList;
+  log('getListFromAddress: ', address);
+  try {
+    const addressbooks = await browser.addressBooks.list();
+    for (const addressbook of addressbooks) {
+      log('checking addressbook: ', addressbook);
+      const mailingLists = await browser.mailingLists.list(addressbook.id);
+      for (const mailingList of mailingLists) {
+        log('checking list: ', mailingList);
+        if (address == `${mailingList.name} <${mailingList.description || mailingList.name}>`) {
+          log(' => matched!');
+          return mailingList;
+        }
+      }
     }
+  }
+  catch(error) {
+    log(' => error: ', error);
   }
   return null;
 }
@@ -41,11 +52,17 @@ function contactToAddress(contact) {
 
 export async function populateListAddresses(addresses) {
   const populated = await Promise.all(addresses.map(async address => {
-    const list = await getListFromAddress(address);
-    if (!list)
-      return address;
-    const contacts = await browser.mailingLists.listMembers(list.id);
-    return contacts.map(contactToAddress);
+    try {
+      const list = await getListFromAddress(address);
+      if (!list)
+        return address;
+      const contacts = await browser.mailingLists.listMembers(list.id);
+      return contacts.map(contactToAddress);
+    }
+    catch(error) {
+      log(`failed to populate the list ${address}: `, error);
+      return [];
+    }
   }));
   return populated.flat();
 }
