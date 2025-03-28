@@ -50,7 +50,8 @@ function contactToAddress(contact) {
   return address;
 }
 
-export async function populateListAddresses(addresses) {
+async function populateListAddresses(addresses) {
+  const failedLists = [];
   const populated = await Promise.all(addresses.map(async address => {
     try {
       const list = await getListFromAddress(address);
@@ -61,8 +62,28 @@ export async function populateListAddresses(addresses) {
     }
     catch(error) {
       log(`failed to populate the list ${address}: `, error);
+      failedLists.push(address);
       return [];
     }
   }));
-  return populated.flat();
+  return [populated.flat(), failedLists];
+}
+
+export async function populateAllListAddresses(details) {
+  const failedLists = [];
+  const [to, cc, bcc] = await Promise.all([
+    populateListAddresses(details.to || details.recipients || []).then(([addresses, lists]) => {
+      failedLists.push(...lists);
+      return addresses;
+    }),
+    populateListAddresses(details.cc || details.ccList || []).then(([addresses, lists]) => {
+      failedLists.push(...lists);
+      return addresses;
+    }),
+    populateListAddresses(details.bcc || details.bccList || []).then(([addresses, lists]) => {
+      failedLists.push(...lists);
+      return addresses;
+    }),
+  ])
+  return { to, cc, bcc, failedLists };
 }

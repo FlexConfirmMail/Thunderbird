@@ -59,13 +59,10 @@ browser.runtime.onMessage.addListener((message, sender) => {
         const author = await getAddressFromIdentity(details.identityId);
         mAuthorForTab.set(sender.tab.id, author);
         log('author ', author);
-        const [
-          to, cc, bcc,
-        ] = await Promise.all([
-          ListUtils.populateListAddresses(details.to || details.recipients || []),
-          ListUtils.populateListAddresses(details.cc || details.ccList || []),
-          ListUtils.populateListAddresses(details.bcc || details.bccList || []),
-        ]);
+        const { to, cc, bcc, failedLists } = await ListUtils.populateAllListAddresses(details);
+        if (failedLists.length > 0) {
+          log('We could not populate lists: ', failedLists);
+        }
         mInitialRecipientsForTab.set(sender.tab.id, [...new Set([
           ...to,
           ...cc,
@@ -318,14 +315,7 @@ function classifyRecipients({ to, cc, bcc }) {
 
 async function tryConfirm(tab, details, opener) {
   log('tryConfirm: ', tab, details, opener);
-  const [
-    to, cc, bcc,
-  ] = await Promise.all([
-    ListUtils.populateListAddresses(details.to),
-    ListUtils.populateListAddresses(details.cc),
-    ListUtils.populateListAddresses(details.bcc),
-  ]);
-
+  const { to, cc, bcc, failedLists } = await ListUtils.populateAllListAddresses(details);
   const { internals, externals } = classifyRecipients({ to, cc, bcc });
 
   if (configs.skipConfirmationForInternalMail &&
@@ -394,31 +384,22 @@ async function tryConfirm(tab, details, opener) {
       externals: [...externals],
       attachments: details.attachments || await browser.compose.listAttachments(tab.id),
       newRecipientDomains: [...newRecipientDomains],
+      failedLists,
     }
   );
 }
 
 async function shouldBlock(tab, details) {
-  await applyOutlookGPOConfigs();
-
   const matchingRules = new MatchingRules(configs);
-  const [
-    to, cc, bcc, attachments,
-  ] = await Promise.all([
-    ListUtils.populateListAddresses(details.to),
-    ListUtils.populateListAddresses(details.cc),
-    ListUtils.populateListAddresses(details.bcc),
-    details.attachments || browser.compose.listAttachments(tab.id),
-    matchingRules.populate(readFile),
-  ]);
+  await matchingRules.populate(readFile);
 
-  const { internals, externals } = classifyRecipients({ to, cc, bcc });
+  const { internals, externals } = classifyRecipients(details);
 
   try {
     const blocked = await matchingRules.tryBlock({
       internals,
       externals,
-      attachments,
+      attachments: details.attachments,
       subject: details.subject,
       body: details.body,
       alert: async ({ title, message }) => {
@@ -446,10 +427,20 @@ async function shouldBlock(tab, details) {
 browser.compose.onBeforeSend.addListener(async (tab, details) => {
   log('onBeforeSend ', tab, details);
   await configs.$loaded;
-  const composeWin = await browser.windows.get(tab.windowId);
-  log('onBeforeSend: composeWin = ', composeWin);
 
-  if (await shouldBlock(tab, details)) {
+  const [
+    composeWin,
+    recipients,
+    attachments,
+  ] = await Promise.all([
+    browser.windows.get(tab.windowId),
+    ListUtils.populateAllListAddresses(details),
+    details.attachments || browser.compose.listAttachments(tab.id),
+    applyOutlookGPOConfigs(),
+  ]);
+  log('onBeforeSend: composeWin = ', composeWin, `, recipients = ${JSON.stringify(recipients)}, attachments = ${JSON.stringify(attachments)}`);
+
+  if (await shouldBlock(tab, { ...details, ...recipients, attachments })) {
     log(' => blocked');
     return { cancel: true };
   }
