@@ -51,6 +51,22 @@ test_parse.parameters = {
       domain:    '',
     },
   },
+  listWithQuotedName: {
+    input: '組 織 <"組 織">',
+    expected: {
+      recipient: '組 織 <"組 織">',
+      address:   '',
+      domain:    '',
+    },
+  },
+  withoutDomainPart: {
+    input: 'without-domain-part <local-part>',
+    expected: {
+      recipient: 'without-domain-part <local-part>',
+      address:   'without-domain-part <local-part>',
+      domain:    '',
+    },
+  },
 };
 export async function test_parse({ input, expected }) {
   is(expected, RecipientParser.parse(input));
