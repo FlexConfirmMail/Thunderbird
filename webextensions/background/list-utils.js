@@ -56,8 +56,14 @@ async function populateListAddresses(addresses) {
   const populated = await Promise.all(addresses.map(async address => {
     try {
       const list = await getListFromAddress(address);
-      if (!list)
+      if (!list) {
+        if (/\s*([^<@]+)\s*<(?:\1|"\1")>\s*$/.test(address)) {
+          log(`failed to populate unknown list: ${address}`);
+          failedLists.push(address);
+          return [];
+        }
         return address;
+      }
       const contacts = await browser.mailingLists.listMembers(list.id);
       return contacts.map(contactToAddress);
     }

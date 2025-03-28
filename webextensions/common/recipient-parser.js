@@ -15,7 +15,8 @@ export function parse(recipient) {
   }
 
   const address = /<([^@]+@[^>]+)>\s*$/.test(recipient) ? RegExp.$1 : recipient;
-  const domain = address.split('@')[1].toLowerCase();
+  const parts = address.split('@');
+  const domain = parts.length > 1 ? parts[1].toLowerCase() : '';
   return {
     recipient,
     address,
