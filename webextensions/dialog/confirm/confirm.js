@@ -201,7 +201,8 @@ function initInternals() {
   log('initInternals ', mParams.internals);
   mInternalsAllCheck.disabled = mParams.internals.length == 0;
   mInternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllInternals);
-  if (configs.skipCheckForInternalMail) {
+  if (configs.skipConfirmationForInternalMail &&
+      configs.skipCheckForInternalMail) {
     mInternalsAllCheck.checked = true;
     document.querySelector('#internalsContainer').classList.add('hidden');
     return;
