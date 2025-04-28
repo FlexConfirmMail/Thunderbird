@@ -108,6 +108,7 @@
   "config_fixedInternalDomains_label_editable": { "message": "You can deactivate individual patterns by adding \"-\" at the beginning, and wildcards (* and ?) are available." },
 
   "config_skipConfirmationForInternalMail_label": { "message": "Skip confirmation if all recipients are internals" },
+  "config_skipCheckForInternalMail_label": { "message": "Allow to skip checking of internal recipients even if there are any external recipients" },
   "config_minConfirmationRecipientsCount_label_before": { "message": "Skip confirmation if there are/is only" },
   "config_minConfirmationRecipientsCount_label_after": { "message": "or fewer recipient(s) (*0 means &quot;always confirm&quot;)" },
   "config_minConfirmMultipleRecipientDomainsCount_label_before": { "message": "Confirm when there are" },
