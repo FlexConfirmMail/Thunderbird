@@ -38,7 +38,7 @@ For example, if you use the `policies.json`:
   "policies": {
     "3rdparty": {
       "Extensions": {
-        "flexible-confirm-mail@clear-code.com": {
+        "flexible-confirm-mail-progressive@clear-code.com": {
           "internalDomains": [
             "clear-code.com"
           ],
