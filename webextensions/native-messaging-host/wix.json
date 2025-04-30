@@ -25,7 +25,7 @@
   },
   "choco": {
     "description": "Native Messaging Host for FlexConfirmMail",
-    "project-url": "https://github.com/clear-code/flex-confirm-mail-stable",
+    "project-url": "https://github.com/FlexConfirmMail/Thunderbird/tree/stable",
     "tags": "thunderbird addon",
     "license-url": "https://github.com/clear-code/flex-confirm-mail-stable/blob/master/webextensions/native-messaging-host/LICENSE"
   }
