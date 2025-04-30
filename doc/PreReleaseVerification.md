@@ -16,6 +16,13 @@
   * 検証用メールアカウント（`piro-test@clear-code.com`）を作成する。
     * inbox配下のemlファイルを受信トレイまたは通常のメールフォルダーにドラッグ＆ドロップしてインポートする。
     * draft配下のemlファイルを下書きフォルダーにドラッグ＆ドロップしてインポートする。
+  * 以下の内容のメーリングリストを作成する。
+    * 名前：`gmail mailing list`
+      * 説明文：`メーリング リスト`
+      * メンバー：`piro.outsider.reflex+1@gmail.com`、`piro.outsider.reflex+2@gmail.com`、`piro.outsider.reflex+3@gmail.com`
+    * 名前：`example ailing list`
+      * 説明文：`メーリング リスト`
+      * メンバー：`user1@example.com`、`user2@example.com`、`user3@example.com`
   * FlexConfirmMailをインストールする。
     * このリポジトリーの最上位ディレクトリーで `make` を実行してローカルでビルドしたXPI、もしくはGitHub ActionsのArtifactからダウンロードしたXPIを拡張機能の管理画面にドラッグ＆ドロップしてインストールする。
     * FlexConfirmMailの設定画面において、`flexconfirmmail.json`をインポートする。
@@ -117,9 +124,25 @@ Thunderbirdを起動し、以下の検証を実施する。
         * `user2@example.com`
         * `user3@example.com`
 20. 「キャンセル」を押して確認のダイアログを閉じる。
-21. メール編集ウィンドウを閉じる
-22. メール編集ウィンドウをそのまま残し、FlexConfirmMailの設定画面を開く。
-23. 「宛先」→「組織内の宛先の一括チェックを許可」のチェックを入れる。
+21. メール編集ウィンドウをそのまま残し、FlexConfirmMailの設定画面を開く。
+22. 「宛先」→「組織内の宛先の一括チェックを許可」のチェックを入れる。
+23. メール編集ウィンドウに戻る。
+24. 宛先、Cc、Bccを全て消去する。
+25. 宛先に `gmail mailing list <メーリング リスト>` を追加する。
+26. Ccに `example mailing list <メーリング リスト>` を追加する。
+27. 「送信」を押す。
+    * [ ] チェックボックスがある確認画面が開かれる。
+    * [ ] 組織外の宛先として以下がグループ化され列挙される。
+      * `gmail.com`
+        * `piro.outsider.reflex+1@gmail.com`
+        * `piro.outsider.reflex+2@gmail.com`
+        * `piro.outsider.reflex+3@gmail.com`
+      * `example.com`
+        * `user1@example.com`
+        * `user2@example.com`
+        * `user3@example.com`
+28. 「キャンセル」を押して確認のダイアログを閉じる。
+29. メール編集ウィンドウを閉じる
 
 #### 送信前の宛先確認を行うかどうかの判断
 
