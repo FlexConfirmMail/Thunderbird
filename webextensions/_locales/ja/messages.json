@@ -1,5 +1,5 @@
 {
-  "extensionName": { "message": "FlexConfirmMail" },
+  "extensionName": { "message": "FlexConfirmMail Stable" },
   "extensionDescription": { "message": "柔軟なルールに基づいて、送信前に宛先のアドレスや添付ファイルの確認を行うようにします。" },
 
 

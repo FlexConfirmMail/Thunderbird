@@ -1,5 +1,5 @@
 {
-  "extensionName": { "message": "FlexConfirmMail" },
+  "extensionName": { "message": "FlexConfirmMail Stable" },
   "extensionDescription": { "message": "确保在发送前根据灵活的规则检查目的地地址和附件" },
 
 
