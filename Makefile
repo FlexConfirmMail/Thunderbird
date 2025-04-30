@@ -1,4 +1,4 @@
-PACKAGE_NAME = flex-confirm-mail
+PACKAGE_NAME = flex-confirm-mail-stable
 
 .PHONY: xpi lint host
 

@@ -50,7 +50,7 @@ For example, if you use the `policies.json`:
 }
 ```
 
-It will help you to create such an managed storage manifest with exported configs: FlexConfirmMail options => "Development" => Check "Debug mode" => "All Configs" => "Export".
+It will help you to create such an managed storage manifest with exported configs: FlexConfirmMail Stable options => "Development" => Check "Debug mode" => "All Configs" => "Export".
 (Please remind that you should remove `"debug":true` from the managed manifest.)
 
 ## For Developers
@@ -70,7 +70,7 @@ It will help you to create such an managed storage manifest with exported config
 4. Start Thunderbird.
 5. Open the Add-ons Manager.
 6. Drag downloaded XPI file and drop it to the Add-ons Manager.
-7. Accept installation of the new FlexConfirmMail.
+7. Accept installation of the new FlexConfirmMail Stable.
 8. Open `sample.eml` with Thunderbird.
 9. Hit Ctrl-E to edit the mail as a new message.
 10. Try to send it.
@@ -157,7 +157,7 @@ And, on macOS:
    2. Run `cd webextensions` and `./make_msi.bat` on `cmd.exe` to build MSI packages.
    3. Build the package for macOS.
    4. Rename built packages with the version number, like as:
-      * `flex-confirm-mail-we-x.x.x.xpi`
+      * `flex-confirm-mail-stable-we-x.x.x.xpi`
       * `flex-confirm-mail-nmh-without-installer-x.x.x.zip`
       * `flex-confirm-mail-nmh-386-x.x.x.msi`
       * `flex-confirm-mail-nmh-amd64-x.x.x.msi`
@@ -175,7 +175,7 @@ And, on macOS:
 9. Publish XPI to the addons store.
    1. Go to the [dashboard](https://addons.thunderbird.net/developers/).
    2. Log in with the account `firefox-support@clear-code.com`.
-   3. Go to the [edit page of the FlexConfirmMail](https://addons.thunderbird.net/developers/addon/flex-confirm-mail/edit).
+   3. Go to the [edit page of the FlexConfirmMail Stable](https://addons.thunderbird.net/developers/addon/flex-confirm-mail-stable/edit).
    4. Click the link "Upload New Version".
    5. Upload the built XPI.
    6. Check to "Thunderbird" and continue.
