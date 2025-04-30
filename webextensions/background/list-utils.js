@@ -57,7 +57,7 @@ async function populateListAddresses(addresses) {
     try {
       const list = await getListFromAddress(address);
       if (!list) {
-        if (/\s*([^<@]+)\s*<(?:\1|"\1")>\s*$/.test(address)) {
+        if (/\s*([^<@]+)\s*<(?:\1|"\1"|[^>@]+)>\s*$/.test(address)) {
           log(`failed to populate unknown list: ${address}`);
           failedLists.push(address);
           return [];

@@ -51,10 +51,18 @@ test_parse.parameters = {
       domain:    '',
     },
   },
-  list: {
+  listWithWhitespaces: {
     input: '組 織 <組 織>',
     expected: {
       recipient: '組 織 <組 織>',
+      address:   '',
+      domain:    '',
+    },
+  },
+  listWithDescription: {
+    input: '組 織 <説明文>',
+    expected: {
+      recipient: '組 織 <説明文>',
       address:   '',
       domain:    '',
     },
