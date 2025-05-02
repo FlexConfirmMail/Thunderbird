@@ -446,7 +446,7 @@ async function confirmedFailedLists() {
     return true;
 
   log('confirmedFailedLists lists = ', mParams.failedLists);
-  if (mParams.failedLists == 0)
+  if (mParams.failedLists.length == 0)
     return true;
 
   const message = (
