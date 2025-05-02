@@ -15,6 +15,14 @@
   "confirmDialogCancel": { "message": "キャンセル" },
 
 
+  "confirmUnpopulatableListsTitle": { "message": "メンバーを確認できないメーリングリスト" },
+  "confirmUnpopulatableListsMessage": { "message": "メンバーを確認できないメーリングリストが宛先に含まれています。\n\n<strong>$LISTS$</strong>\n\n送信してよろしいですか？",
+    "placeholders": {
+      "lists": { "content": "$1", "example": "list <list>" }
+    }},
+  "confirmUnpopulatableListsAccept": { "message": "送信" },
+  "confirmUnpopulatableListsCancel": { "message": "キャンセル" },
+
   "confirmMultipleRecipientDomainsTitle": { "message": "複数のドメインがToまたはCcの宛先に含まれています" },
   "confirmMultipleRecipientDomainsMessage": { "message": "ToまたはCcの宛先に複数のドメインが含まれています。\n\n<strong>$DOMAINS$</strong>\n\n送信すると、他の宛先の情報が全ての宛先に通知されます。送信してよろしいですか？",
     "placeholders": {
@@ -116,6 +124,7 @@
   "config_allowCheckAllExternals_label": { "message": "外部の宛先の一括チェックを許可" },
   "config_confirmNewDomainRecipients_label": { "message": "返信の宛先に今まで含まれていなかったドメインのアドレスが追加された場合に警告する" },
   "config_emphasizeNewDomainRecipients_label": { "message": "返信の宛先に今まで含まれていなかったドメインのアドレスを強調表示する" },
+  "config_confirmUnpopulatableLists_label": { "message": "メンバーを確認できないメーリングリストが宛先に含まれる場合に警告する" },
 
 
   "config_userRules_caption":              { "message": "追加のルール" },
