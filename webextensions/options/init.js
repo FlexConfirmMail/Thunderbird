@@ -37,12 +37,25 @@ function onConfigChanged(key) {
     case 'overrideRules':
       mMatchingRules = new MatchingRules(configs);
       break;
+
+    case 'skipConfirmationForInternalMail':
+      updateSubcheckboxes();
+      break;
   }
 }
 configs.$addObserver(onConfigChanged);
 
 
-/*
+function updateSubcheckboxes() {
+  const skipCheckField = document.querySelector('#skipCheckForInternalMail').parentNode;
+  if (configs.skipConfirmationForInternalMail) {
+    activateField(skipCheckField)
+  }
+  else {
+    deactivateField(skipCheckField)
+  }
+}
+
 function activateField(field) {
   field.classList.remove('disabled');
   field.disabled = false;
@@ -60,7 +73,6 @@ function deactivateField(field) {
     subField.disabled = true;
   }
 }
-*/
 
 function initArrayTypeTextArea(textarea) {
   // Use dataset.arrayConfigKey instead of dataset.configKey,
@@ -685,6 +697,8 @@ function onUserRuleAdded(_event) {
 window.addEventListener('DOMContentLoaded', async () => {
   await configs.$loaded;
   await applyOutlookGPOConfigs();
+
+  updateSubcheckboxes();
 
   /* This always fails even if the native messaging host is available...
   const response = await sendToHost({ command: 'echo' });
