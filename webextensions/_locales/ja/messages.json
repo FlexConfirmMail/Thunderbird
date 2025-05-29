@@ -108,6 +108,7 @@
   "config_fixedInternalDomains_label_editable": { "message": "パターンの先頭に「-」をつけると、そのパターンを除外することができます。また、ワイルドカード（*および?）も使用可能です。" },
 
   "config_skipConfirmationForInternalMail_label": { "message": "すべての宛先が組織内のメール送信時は確認ダイアログを表示しない" },
+  "config_skipCheckForInternalMail_label": { "message": "組織外の宛先を含む場合も、組織内の宛先のチェックを省略する" },
   "config_minConfirmationRecipientsCount_label_before": { "message": "宛先が" },
   "config_minConfirmationRecipientsCount_label_after": { "message": "件以下の場合は確認ダイアログを表示しない（※0で常に確認）" },
   "config_minConfirmMultipleRecipientDomainsCount_label_before": { "message": "ToまたはCcの宛先に" },
