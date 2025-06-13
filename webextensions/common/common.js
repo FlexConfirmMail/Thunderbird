@@ -185,6 +185,7 @@ export const configs = new Configs({
   skipConfirmationForInternalMail: false,
   skipCheckForInternalMail: false,
 
+  confirmUnpopulatableLists: true,
   confirmMultipleRecipientDomains: false,
   minConfirmMultipleRecipientDomainsCount: 2,
   minConfirmationRecipientsCount: 0,

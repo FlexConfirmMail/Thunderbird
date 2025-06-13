@@ -15,6 +15,14 @@
   "confirmDialogCancel": { "message": "Cancel" },
 
 
+  "confirmUnpopulatableListsTitle": { "message": "Mailing lists impossible to confirm" },
+  "confirmUnpopulatableListsMessage": { "message": "There are mailing lists impossible to confirm their members.\n\n<strong>$LISTS$</strong>\n\nDo you really want to send this message?",
+    "placeholders": {
+      "lists": { "content": "$1", "example": "list <list>" }
+    }},
+  "confirmUnpopulatableListsAccept": { "message": "Send" },
+  "confirmUnpopulatableListsCancel": { "message": "Cancel" },
+
   "confirmMultipleRecipientDomainsTitle": { "message": "Multiple recipient domains in To or Cc" },
   "confirmMultipleRecipientDomainsMessage": { "message": "There are multiple recipient domains in To or Cc.\n\n<strong>$DOMAINS$</strong>\n\nAll recipients information will be disclosed to all other recipients. Do you really want to send this message?",
     "placeholders": {
@@ -117,6 +125,7 @@
   "config_allowCheckAllExternals_label": { "message": "Allow to make all external recipients to be checked with one checkbox" },
   "config_confirmNewDomainRecipients_label": { "message": "Confirm when any recipients with domains different from any existing recipients are added" },
   "config_emphasizeNewDomainRecipients_label": { "message": "Emphasize added recipients with domains different from any existing recipients" },
+  "config_confirmUnpopulatableLists_label": { "message": "Alert when there is any mailing list impossible to see its members in recipients" },
 
 
   "config_userRules_caption":              { "message": "More Rules" },
