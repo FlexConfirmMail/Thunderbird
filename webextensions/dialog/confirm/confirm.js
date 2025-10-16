@@ -299,7 +299,20 @@ function initBodyBlock() {
       hasExternal:   mParams.externals.length > 0,
       hasAttachment: mParams.attachments.length > 0,
     });
-    const styles = highlighted ? '<style type="text/css">:root { color: red; font-weight: bold; }</style>' : '';
+    const highlighing = `
+      :root {
+        color: red;
+        font-weight: bold;
+      }
+    `;
+    const styles = `<style type="text/css">
+      @import url(${browser.runtime.getURL('/resources/ui-color.css')});
+      :root {
+        background: var(--bg-color);
+        color: var(--text-color);
+      }
+      ${highlighted ? highlighing : ''}
+    </style>`;
     const source = `<!DOCTYPE html><html><meta charset="UTF-8">${styles}${mBodyHTML}</html>`;
     mBodyField.src = `data:text/html,${encodeURIComponent(source)}`;
   }
