@@ -299,7 +299,7 @@ function initBodyBlock() {
       hasExternal:   mParams.externals.length > 0,
       hasAttachment: mParams.attachments.length > 0,
     });
-    const highlighing = `
+    const highlighting = `
       :root {
         color: red;
         font-weight: bold;
@@ -311,7 +311,7 @@ function initBodyBlock() {
         background: var(--bg-color);
         color: var(--text-color);
       }
-      ${highlighted ? highlighing : ''}
+      ${highlighted ? highlighting : ''}
     </style>`;
     const source = `<!DOCTYPE html><html><meta charset="UTF-8">${styles}${mBodyHTML}</html>`;
     mBodyField.src = `data:text/html,${encodeURIComponent(source)}`;
