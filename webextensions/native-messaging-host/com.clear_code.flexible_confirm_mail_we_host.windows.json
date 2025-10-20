@@ -4,6 +4,7 @@
   "path": "host.exe",
   "type": "stdio",
   "allowed_extensions": [
-    "flexible-confirm-mail@clear-code.com"
+    "flexible-confirm-mail@clear-code.com",
+    "flexible-confirm-mail-progressive@clear-code.com"
   ]
 }

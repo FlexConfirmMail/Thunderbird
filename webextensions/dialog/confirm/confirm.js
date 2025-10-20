@@ -201,6 +201,12 @@ function initInternals() {
   log('initInternals ', mParams.internals);
   mInternalsAllCheck.disabled = !configs.allowCheckAllInternals || mParams.internals.length == 0;
   mInternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllInternals);
+  if (configs.skipConfirmationForInternalMail &&
+      configs.skipCheckForInternalMail) {
+    mInternalsAllCheck.checked = true;
+    document.querySelector('#internalsContainer').classList.add('hidden');
+    return;
+  }
   if (configs.allowCheckAllInternals) {
     mInternalsAllCheck.addEventListener('change', _event => {
       checkAll(mInternalsList, mInternalsAllCheck.checked);
@@ -297,7 +303,20 @@ function initBodyBlock() {
       hasExternal:   mParams.externals.length > 0,
       hasAttachment: mParams.attachments.length > 0,
     });
-    const styles = highlighted ? '<style type="text/css">:root { color: red; font-weight: bold; }</style>' : '';
+    const highlighting = `
+      :root {
+        color: red;
+        font-weight: bold;
+      }
+    `;
+    const styles = `<style type="text/css">
+      @import url(${browser.runtime.getURL('/resources/ui-color.css')});
+      :root {
+        background: var(--bg-color);
+        color: var(--text-color);
+      }
+      ${highlighted ? highlighting : ''}
+    </style>`;
     const source = `<!DOCTYPE html><html><meta charset="UTF-8">${styles}${mBodyHTML}</html>`;
     mBodyField.src = `data:text/html,${encodeURIComponent(source)}`;
   }

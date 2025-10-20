@@ -183,6 +183,7 @@ export const configs = new Configs({
   blockedDomainsDialogMessage: null,
 
   skipConfirmationForInternalMail: false,
+  skipCheckForInternalMail: false,
 
   confirmMultipleRecipientDomains: false,
   minConfirmMultipleRecipientDomainsCount: 2,

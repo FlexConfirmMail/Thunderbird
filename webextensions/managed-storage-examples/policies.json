@@ -2,7 +2,7 @@
   "policies": {
     "3rdparty": {
       "Extensions": {
-        "flexible-confirm-mail@clear-code.com": {
+        "flexible-confirm-mail-progressive@clear-code.com": {
           "// 宛先": 0,
 
           "// 送信前の宛先確認: 0=確認しない, 1=常に確認, 2=宛先が変更された時だけ確認": 0,
