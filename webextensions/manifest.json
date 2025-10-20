@@ -26,6 +26,9 @@
   "icons": {
     "32": "/resources/icon2.svg"
   },
+  "web_accessible_resources": [
+    "/resources/ui-color.css"
+  ],
   "default_locale": "en",
   "applications": {
     "gecko": {
