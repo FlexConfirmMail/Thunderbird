@@ -199,7 +199,7 @@ configs.$loaded.then(async () => {
 
 function initInternals() {
   log('initInternals ', mParams.internals);
-  mInternalsAllCheck.disabled = mParams.internals.length == 0;
+  mInternalsAllCheck.disabled = !configs.allowCheckAllInternals || mParams.internals.length == 0;
   mInternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllInternals);
   if (configs.skipConfirmationForInternalMail &&
       configs.skipCheckForInternalMail) {
@@ -207,9 +207,11 @@ function initInternals() {
     document.querySelector('#internalsContainer').classList.add('hidden');
     return;
   }
-  mInternalsAllCheck.addEventListener('change', _event => {
-    checkAll(mInternalsList, mInternalsAllCheck.checked);
-  });
+  if (configs.allowCheckAllInternals) {
+    mInternalsAllCheck.addEventListener('change', _event => {
+      checkAll(mInternalsList, mInternalsAllCheck.checked);
+    });
+  }
   mInternalsList.addEventListener('change', _event => {
     mInternalsAllCheck.checked = isAllChecked(mInternalsList);
   });
@@ -227,14 +229,16 @@ function initInternals() {
 
 function initExternals() {
   log('initExternals ', mParams.externals);
-  mExternalsAllCheck.disabled = mParams.externals.length == 0;
+  mExternalsAllCheck.disabled = !configs.allowCheckAllExternals || mParams.externals.length == 0;
   mExternalsAllCheck.classList.toggle('hidden', !configs.allowCheckAllExternals);
-  mExternalsAllCheck.addEventListener('change', _event => {
-    checkAll(mExternalsList, mExternalsAllCheck.checked);
-    for (const domainRow of mExternalsList.querySelectorAll('.row.domain')) {
-      domainRow.classList.toggle('checked', mExternalsAllCheck.checked);
-    }
-  });
+  if (configs.allowCheckAllExternals) {
+    mExternalsAllCheck.addEventListener('change', _event => {
+      checkAll(mExternalsList, mExternalsAllCheck.checked);
+      for (const domainRow of mExternalsList.querySelectorAll('.row.domain')) {
+        domainRow.classList.toggle('checked', mExternalsAllCheck.checked);
+      }
+    });
+  }
   mExternalsList.addEventListener('change', event => {
     const row = event.target.closest('.row');
     const domainRow = mExternalsList.querySelector(`.row.domain[data-domain="${row.dataset.domain}"]`);
@@ -326,11 +330,13 @@ function initAttachments() {
   if (!configs.requireCheckAttachment)
     return;
 
-  mAttachmentsAllCheck.disabled = configs.requireReinputAttachmentNames || (mParams.attachments.length == 0);
+  mAttachmentsAllCheck.disabled = !configs.allowCheckAllAttachments || configs.requireReinputAttachmentNames || (mParams.attachments.length == 0);
   mAttachmentsAllCheck.classList.toggle('hidden', !configs.allowCheckAllAttachments);
-  mAttachmentsAllCheck.addEventListener('change', _event => {
-    checkAll(mAttachmentsList, mAttachmentsAllCheck.checked);
-  });
+  if (configs.allowCheckAllAttachments) {
+    mAttachmentsAllCheck.addEventListener('change', _event => {
+      checkAll(mAttachmentsList, mAttachmentsAllCheck.checked);
+    });
+  }
   mAttachmentsList.addEventListener('change', _event => {
     mAttachmentsAllCheck.checked = isAllChecked(mAttachmentsList);
   });
