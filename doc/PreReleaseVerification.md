@@ -20,7 +20,7 @@
     * 名前：`gmail mailing list`
       * 説明文：`メーリング リスト`
       * メンバー：`piro.outsider.reflex+1@gmail.com`、`piro.outsider.reflex+2@gmail.com`、`piro.outsider.reflex+3@gmail.com`
-    * 名前：`example ailing list`
+    * 名前：`example mailing list`
       * 説明文：`メーリング リスト`
       * メンバー：`user1@example.com`、`user2@example.com`、`user3@example.com`
   * FlexConfirmMailをインストールする。
