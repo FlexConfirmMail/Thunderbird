@@ -2,7 +2,7 @@ on: [push]
 name: Build FlexConfirmMail
 jobs:
   build:
-    runs-on: windows-2019
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
@@ -11,7 +11,7 @@ jobs:
       - run: go version
       - name: Install go-msi
         run: choco install go-msi zip
-      # jq wixtoolset is already installed on windows-2019 image
+      # jq wixtoolset is already installed on windows-2022 image
       - name: Setup PATH
         run: |
           echo "c:/ProgramData/chocolatey/bin" >> $Env:GITHUB_PATH
