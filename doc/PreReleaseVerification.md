@@ -25,7 +25,7 @@
       * メンバー：`user1@example.com`、`user2@example.com`、`user3@example.com`
   * FlexConfirmMailをインストールする。
     * このリポジトリーの最上位ディレクトリーで `make` を実行してローカルでビルドしたXPI、もしくはGitHub ActionsのArtifactからダウンロードしたXPIを拡張機能の管理画面にドラッグ＆ドロップしてインストールする。
-    * FlexConfirmMailの設定画面において、`flexconfirmmail.json`をインポートする。
+    * FlexConfirmMailの設定画面において、「開発者向け」→「デバッグモード」を有効にして、「Reset All」をクリックして設定を初期化した上で、再度「デバッグモード」を有効にして、「Import」をクリックして`flexconfirmmail.json`をインポートする。
 
 
 ## 検証手順
