@@ -410,7 +410,7 @@ async function shouldBlock(tab, details) {
           type:  'common-dialog',
           url:   '/resources/blank.html',
           title,
-          message,
+          content: message,
           buttons: [
             browser.i18n.getMessage('alertBlockedAccept'),
           ],
