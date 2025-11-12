@@ -378,7 +378,8 @@ function createAttachmentRow(attachment) {
   row.classList.add('attachment');
   row.lastChild.classList.add('flexible');
 
-  if (configs.requireReinputAttachmentNames) {
+  if (mParams.externals.length > 0 &&
+      configs.requireReinputAttachmentNames) {
     const checkbox = row.querySelector('input[type="checkbox"]');
     checkbox.disabled = true;
 
