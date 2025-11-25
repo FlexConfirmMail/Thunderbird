@@ -203,6 +203,11 @@ const NO_REACTION_RULES = [
     highlight:   Constants.HIGHLIGHT_NEVER,
     action:      Constants.ACTION_NONE,
     itemsLocal:  ['never'] },
+  { id:          'blank items',
+    matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
+    highlight:   Constants.HIGHLIGHT_NEVER,
+    action:      Constants.ACTION_NONE,
+    itemsLocal:  [] },
 ];
 
 const DISABLED_RULES = [
@@ -242,6 +247,12 @@ const DISABLED_RULES = [
     highlight:   Constants.HIGHLIGHT_ALWAYS,
     action:      Constants.ACTION_BLOCK_ALWAYS,
     itemsLocal:  ['never'] },
+  { id:          'blank items',
+    enabled:     false,
+    matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
+    highlight:   Constants.HIGHLIGHT_NEVER,
+    action:      Constants.ACTION_NONE,
+    itemsLocal:  [] },
 ];
 
 const RECIPIENT_DOMAIN_RULES = [
@@ -305,6 +316,10 @@ const RECIPIENT_DOMAIN_RULES = [
       '@never-highlighted-with-negative-modifier.clear-code.com',
       '-never-highlighted-with-negative-modifier.clear-code.com',
     ] },
+  { id:          'blank items',
+    matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+    highlight:   Constants.HIGHLIGHT_ALWAYS,
+    itemsLocal:  [] },
 ];
 
 const RECIPIENT_ADDRESS_RULES = [
@@ -323,6 +338,10 @@ const RECIPIENT_ADDRESS_RULES = [
       '*+never-highlighted-with-negative-modifier@example.com',
       '-*+never-highlighted-with-negative-modifier@example.com',
     ] },
+  { id:          'blank items',
+    matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+    highlight:   Constants.HIGHLIGHT_ALWAYS,
+    itemsLocal:  [] },
 ];
 
 const ATTACHMENT_NAME_RULES = [
@@ -350,6 +369,10 @@ const ATTACHMENT_NAME_RULES = [
     matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
     action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS,
     itemsLocal:  ['blocked-external-name'] },
+  { id:          'blank items',
+    matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
+    action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS,
+    itemsLocal:  [] },
 ];
 
 const ATTACHMENT_SUFFIX_RULES = [
@@ -377,6 +400,10 @@ const ATTACHMENT_SUFFIX_RULES = [
     matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
     action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS,
     itemsLocal:  ['.blocked-external-ext'] },
+  { id:          'blank items',
+    matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
+    action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS,
+    itemsLocal:  [] },
 ];
 
 const SUBJECT_RULES = [
@@ -428,6 +455,10 @@ const SUBJECT_RULES = [
     matchTarget: Constants.MATCH_TO_SUBJECT,
     action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS,
     itemsLocal:  ['blocked-both-external-attachment'] },
+  { id:          'blank items',
+    matchTarget: Constants.MATCH_TO_SUBJECT,
+    action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS,
+    itemsLocal:  [] },
 ];
 
 const BODY_RULES = [
@@ -479,6 +510,10 @@ const BODY_RULES = [
     matchTarget: Constants.MATCH_TO_BODY,
     action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS,
     itemsLocal:  ['blocked-both-external-attachment'] },
+  { id:          'blank items',
+    matchTarget: Constants.MATCH_TO_BODY,
+    action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS,
+    itemsLocal:  [] },
 ];
 
 const SUBJECT_OR_BODY_RULES = [
@@ -530,6 +565,10 @@ const SUBJECT_OR_BODY_RULES = [
     matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
     action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS,
     itemsLocal:  ['blocked-both-external-attachment'] },
+  { id:          'blank items',
+    matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
+    action:      Constants.ACTION_BLOCK_ONLY_EXTERNALS_WITH_ATTACHMENTS,
+    itemsLocal:  [] },
 ];
 
 const RULES = [
@@ -1194,5 +1233,76 @@ export async function test_shouldAcceptWildcardInBody() {
       'body with question',
       'body  with  question',
     ].filter(body => matchingRules.shouldHighlightBody(body))
+  );
+}
+
+export async function test_shouldNotMatchBlankItems() {
+  const matchingRules = new MatchingRules({
+    baseRules: [
+      { id:          'recipient doain',
+        enabled:     true,
+        matchTarget: Constants.MATCH_TO_RECIPIENT_DOMAIN,
+        highlight:   Constants.HIGHLIGHT_ALWAYS,
+        itemsSource: Constants.SOURCE_LOCAL_CONFIG,
+        itemsLocal:  [] },
+      { id:          'body',
+        enabled:     true,
+        matchTarget: Constants.MATCH_TO_BODY,
+        highlight:   Constants.HIGHLIGHT_ALWAYS,
+        itemsSource: Constants.SOURCE_LOCAL_CONFIG,
+        itemsLocal:  [] },
+      { id:          'subject',
+        enabled:     true,
+        matchTarget: Constants.MATCH_TO_SUBJECT,
+        highlight:   Constants.HIGHLIGHT_ALWAYS,
+        itemsSource: Constants.SOURCE_LOCAL_CONFIG,
+        itemsLocal:  [] },
+      { id:          'subject or body',
+        enabled:     true,
+        matchTarget: Constants.MATCH_TO_SUBJECT_OR_BODY,
+        highlight:   Constants.HIGHLIGHT_ALWAYS,
+        itemsSource: Constants.SOURCE_LOCAL_CONFIG,
+        itemsLocal:  [] },
+      { id:          'attachment name',
+        enabled:     true,
+        matchTarget: Constants.MATCH_TO_ATTACHMENT_NAME,
+        highlight:   Constants.HIGHLIGHT_ALWAYS,
+        itemsSource: Constants.SOURCE_LOCAL_CONFIG,
+        itemsLocal:  [] },
+      { id:          'attachment suffix',
+        enabled:     true,
+        matchTarget: Constants.MATCH_TO_ATTACHMENT_SUFFIX,
+        highlight:   Constants.HIGHLIGHT_ALWAYS,
+        itemsSource: Constants.SOURCE_LOCAL_CONFIG,
+        itemsLocal:  [] },
+    ],
+  });
+  await matchingRules.populate();
+
+  is(
+    { recipients: [],
+      body:       false,
+      subject:    false,
+      attachmens: [], },
+    {
+      recipients: [...matchingRules.getHighlightedRecipientAddresses({
+        externals:   [
+          'user@.example.com',
+          'user@X.example.com',
+          '',
+        ],
+        attachments: [],
+      })],
+      body:       matchingRules.shouldHighlightBody('body'),
+      subject:    matchingRules.shouldHighlightSubject('subject'),
+      attachmens: [...matchingRules.getHighlightedAttachmentNames({
+        attachments: [
+          'a.txt',
+          'b.bin',
+          '',
+        ].map(name => ({ name })),
+        hasExternal: false,
+      })],
+    }
   );
 }
