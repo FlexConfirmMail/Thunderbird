@@ -26,6 +26,8 @@ const BASE_RULE = {
   confirmMessage: '', // string
 };
 
+const NEVER_MATCH_MATCHER = /[^\w\W]/;
+
 export class MatchingRules {
   constructor({ base, baseRules, overrideBase, overrideBaseRules, user, userRules, override, overrideRules } = {}) {
     this.$baseRules     = clone(base     || baseRules     || []);
@@ -117,29 +119,43 @@ export class MatchingRules {
             uniquePatterns.delete(negativeItem);
             uniquePatterns.delete(`-${negativeItem}`);
           }
-          this._$addressMatchers[rule.id] = new RegExp(`^(${[...uniquePatterns].map(this.$toRegExpSource).join('|')})$`, 'i');
+          this._$addressMatchers[rule.id] = uniquePatterns.size > 0 ?
+            new RegExp(`^(${[...uniquePatterns].map(this.$toRegExpSource).join('|')})$`, 'i') :
+            NEVER_MATCH_MATCHER;
           break;
 
         case Constants.MATCH_TO_ATTACHMENT_NAME:
-          this._$attachmentMatchers[rule.id] = new RegExp(`(${rule.items.map(this.$toRegExpSource).join('|')})`, 'i');
+          this._$attachmentMatchers[rule.id] = rule.items.length > 0 ?
+            new RegExp(`(${rule.items.map(this.$toRegExpSource).join('|')})`, 'i') :
+            NEVER_MATCH_MATCHER;
           break;
 
         case Constants.MATCH_TO_ATTACHMENT_SUFFIX:
-          this._$attachmentMatchers[rule.id] = new RegExp(`\\.(${rule.items.map(suffix => this.$toRegExpSource(suffix.replace(/^\./, ''))).join('|')})$`, 'i');
+          this._$attachmentMatchers[rule.id] = rule.items.length > 0 ?
+            new RegExp(`\\.(${rule.items.map(suffix => this.$toRegExpSource(suffix.replace(/^\./, ''))).join('|')})$`, 'i') :
+            NEVER_MATCH_MATCHER;
           break;
 
         case Constants.MATCH_TO_SUBJECT:
-          this._$subjectMatchers[rule.id] = new RegExp(`(${rule.items.map(this.$toRegExpSource).join('|')})`, 'gi');
+          this._$subjectMatchers[rule.id] = rule.items.length > 0 ?
+            new RegExp(`(${rule.items.map(this.$toRegExpSource).join('|')})`, 'gi') :
+            NEVER_MATCH_MATCHER;
           break;
 
         case Constants.MATCH_TO_BODY:
-          this._$bodyMatchers[rule.id] = new RegExp(`(${rule.items.map(this.$toRegExpSource).join('|')})`, 'gi');
+          this._$bodyMatchers[rule.id] = rule.items.length > 0 ?
+            new RegExp(`(${rule.items.map(this.$toRegExpSource).join('|')})`, 'gi') :
+            NEVER_MATCH_MATCHER;
           break;
 
         case Constants.MATCH_TO_SUBJECT_OR_BODY: {
           const sanitizedItems = rule.items.map(this.$toRegExpSource).join('|');
-          this._$subjectMatchers[rule.id] = new RegExp(`(${sanitizedItems})`, 'gi');
-          this._$bodyMatchers[rule.id] = new RegExp(`(${sanitizedItems})`, 'gi');
+          this._$subjectMatchers[rule.id] = sanitizedItems.length > 0 ?
+            new RegExp(`(${sanitizedItems})`, 'gi') :
+            NEVER_MATCH_MATCHER;
+          this._$bodyMatchers[rule.id] = sanitizedItems.length > 0 ?
+            new RegExp(`(${sanitizedItems})`, 'gi') :
+            NEVER_MATCH_MATCHER;
         }; break;
 
         default:
