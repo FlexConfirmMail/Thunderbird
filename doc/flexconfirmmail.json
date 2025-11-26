@@ -56,6 +56,84 @@
       "itemsFile": "",
       "confirmTitle": "",
       "confirmMessage": "社外秘であることを示唆する以下の語句が件名または本文に含まれています。\n\n<strong>%S</strong>\n\n宛先に問題がない事を確認の上でメールを送信してください。"
+    },
+    {
+      "id": "rule-1764121358414-8999",
+      "name": "リストが空のルール（宛先のアドレス）",
+      "enabled": true,
+      "matchTarget": 0,
+      "highlight": 1,
+      "action": 1,
+      "itemsSource": 0,
+      "itemsLocal": [],
+      "itemsFile": "",
+      "confirmTitle": "",
+      "confirmMessage": "宛先のアドレス部分に対するルールが意図せずマッチしてしまっています。不具合のため修正が必要です。"
+    },
+    {
+      "id": "rule-1764121460890-28669",
+      "name": "リストが空のルール（添付ファイル名）",
+      "enabled": true,
+      "matchTarget": 1,
+      "highlight": 1,
+      "action": 1,
+      "itemsSource": 0,
+      "itemsLocal": [],
+      "itemsFile": "",
+      "confirmTitle": "",
+      "confirmMessage": "添付ファイル名に対するルールが意図せずマッチしてしまっています。不具合のため修正が必要です。"
+    },
+    {
+      "id": "rule-1764121503296-17072",
+      "name": "リストが空のルール（添付ファイル拡張子）",
+      "enabled": true,
+      "matchTarget": 2,
+      "highlight": 1,
+      "action": 1,
+      "itemsSource": 0,
+      "itemsLocal": [],
+      "itemsFile": "",
+      "confirmTitle": "",
+      "confirmMessage": "添付ファイル拡張子に対するルールが意図せずマッチしてしまっています。不具合のため修正が必要です。"
+    },
+    {
+      "id": "rule-1764121533660-50559",
+      "name": "リストが空のルール（件名）",
+      "enabled": true,
+      "matchTarget": 3,
+      "highlight": 1,
+      "action": 1,
+      "itemsSource": 0,
+      "itemsLocal": [],
+      "itemsFile": "",
+      "confirmTitle": "",
+      "confirmMessage": "件名に対するルールが意図せずマッチしてしまっています。不具合のため修正が必要です。"
+    },
+    {
+      "id": "rule-1764121558970-4494",
+      "name": "リストが空のルール（本文）",
+      "enabled": true,
+      "matchTarget": 4,
+      "highlight": 1,
+      "action": 1,
+      "itemsSource": 0,
+      "itemsLocal": [],
+      "itemsFile": "",
+      "confirmTitle": "",
+      "confirmMessage": "本文に対するルールが意図せずマッチしてしまっています。不具合のため修正が必要です。"
+    },
+    {
+      "id": "rule-1764121576632-5395",
+      "name": "リストが空のルール（件名・本文）",
+      "enabled": true,
+      "matchTarget": 5,
+      "highlight": 1,
+      "action": 1,
+      "itemsSource": 0,
+      "itemsLocal": [],
+      "itemsFile": "",
+      "confirmTitle": "",
+      "confirmMessage": "件名・本文に対するルールが意図せずマッチしてしまっています。不具合のため修正が必要です。"
     }
   ]
 }
