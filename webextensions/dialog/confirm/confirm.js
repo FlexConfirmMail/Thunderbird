@@ -169,7 +169,8 @@ configs.$loaded.then(async () => {
   });
 
   Dialog.initButton(mAcceptButton, async _event => {
-    if (!isAllChecked() ||
+    if (!(await confirmedFailedLists()) ||
+        !isAllChecked() ||
         !(await confirmedMultipleRecipientDomains()) ||
         !(await confirmedNewDomainRecipients()) ||
         !(await confirmedWithRules()))
@@ -436,6 +437,48 @@ function isAllChecked(container = document) {
       return false;
   }
   return true;
+}
+
+
+async function confirmedFailedLists() {
+  log('confirmedFailedLists shouldConfirm = ', configs.confirmUnpopulatableLists);
+  if (!configs.confirmUnpopulatableLists)
+    return true;
+
+  log('confirmedFailedLists lists = ', mParams.failedLists);
+  if (mParams.failedLists == 0)
+    return true;
+
+  const message = (
+    browser.i18n.getMessage('confirmUnpopulatableListsMessage', [[...mParams.failedLists].join('\n')])
+  );
+  let result;
+  try {
+    result = await RichConfirm.show({
+      modal: true,
+      type:  'common-dialog',
+      url:   '/resources/blank.html',
+      title: browser.i18n.getMessage('confirmUnpopulatableListsTitle'),
+      content: message,
+      buttons: [
+        browser.i18n.getMessage('confirmUnpopulatableListsAccept'),
+        browser.i18n.getMessage('confirmUnpopulatableListsCancel')
+      ],
+      onShown(content) {
+        content.closest('.rich-confirm-dialog').classList.add('for-unpopulatable-lists');
+      },
+    });
+  }
+  catch(_error) {
+    result = { buttonIndex: -1 };
+  }
+  log('confirmUnpopulatableListsMessage result.buttonIndex = ', result.buttonIndex);
+  switch (result.buttonIndex) {
+    case 0:
+      return true;
+    default:
+      return false;
+  }
 }
 
 

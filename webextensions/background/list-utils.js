@@ -6,17 +6,29 @@
 'use strict';
 
 import {
-  configs
+  configs,
+  log,
 } from '/common/common.js';
 
 async function getListFromAddress(address) {
-  const addressbooks = await browser.addressBooks.list();
-  for (const addressbook of addressbooks) {
-    const mailingLists = await browser.mailingLists.list(addressbook.id);
-    for (const mailingList of mailingLists) {
-      if (address == `${mailingList.name} <${mailingList.description || mailingList.name}>`)
-        return mailingList;
+  log('getListFromAddress: ', address);
+  try {
+    const addressbooks = await browser.addressBooks.list();
+    for (const addressbook of addressbooks) {
+      log('checking addressbook: ', addressbook);
+      const mailingLists = await browser.mailingLists.list(addressbook.id);
+      for (const mailingList of mailingLists) {
+        log('checking list: ', mailingList);
+        if (address == `${mailingList.name} <${mailingList.description || mailingList.name}>` ||
+            address == `${mailingList.name} <"${mailingList.description || mailingList.name}">`) {
+          log(' => matched!');
+          return mailingList;
+        }
+      }
     }
+  }
+  catch(error) {
+    log(' => error: ', error);
   }
   return null;
 }
@@ -39,13 +51,46 @@ function contactToAddress(contact) {
   return address;
 }
 
-export async function populateListAddresses(addresses) {
+async function populateListAddresses(addresses) {
+  const failedLists = [];
   const populated = await Promise.all(addresses.map(async address => {
-    const list = await getListFromAddress(address);
-    if (!list)
-      return address;
-    const contacts = await browser.mailingLists.listMembers(list.id);
-    return contacts.map(contactToAddress);
+    try {
+      const list = await getListFromAddress(address);
+      if (!list) {
+        if (/\s*([^<@]+)\s*<(?:\1|"\1")>\s*$/.test(address)) {
+          log(`failed to populate unknown list: ${address}`);
+          failedLists.push(address);
+          return [];
+        }
+        return address;
+      }
+      const contacts = await browser.mailingLists.listMembers(list.id);
+      return contacts.map(contactToAddress);
+    }
+    catch(error) {
+      log(`failed to populate the list ${address}: `, error);
+      failedLists.push(address);
+      return [];
+    }
   }));
-  return populated.flat();
+  return [populated.flat(), failedLists];
+}
+
+export async function populateAllListAddresses(details) {
+  const failedLists = [];
+  const [to, cc, bcc] = await Promise.all([
+    populateListAddresses(details.to || details.recipients || []).then(([addresses, lists]) => {
+      failedLists.push(...lists);
+      return addresses;
+    }),
+    populateListAddresses(details.cc || details.ccList || []).then(([addresses, lists]) => {
+      failedLists.push(...lists);
+      return addresses;
+    }),
+    populateListAddresses(details.bcc || details.bccList || []).then(([addresses, lists]) => {
+      failedLists.push(...lists);
+      return addresses;
+    }),
+  ])
+  return { to, cc, bcc, failedLists };
 }

@@ -15,6 +15,14 @@
   "confirmDialogCancel": { "message": "取消" },
 
 
+  "confirmUnpopulatableListsTitle": { "message": "Mailing lists impossible to confirm" },
+  "confirmUnpopulatableListsMessage": { "message": "There are mailing lists impossible to confirm their members.\n\n<strong>$LISTS$</strong>\n\n请确认是否要发送此邮件？",
+    "placeholders": {
+      "lists": { "content": "$1", "example": "list <list>" }
+    }},
+  "confirmUnpopulatableListsAccept": { "message": "发送" },
+  "confirmUnpopulatableListsCancel": { "message": "取消" },
+
   "confirmMultipleRecipientDomainsTitle": { "message": "多个域被包含在收件人或抄送目的地中" },
   "confirmMultipleRecipientDomainsMessage": { "message": "收件人或抄送目的地包含一个以上的域。\n\n<strong>$DOMAINS$</strong>\n\n一旦发送，所有其他目的地将被告知。 你确定你要发送这个吗？",
     "placeholders": {
