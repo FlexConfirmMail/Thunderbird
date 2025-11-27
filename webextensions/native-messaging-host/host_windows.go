@@ -13,10 +13,13 @@ import (
 	"github.com/harry1453/go-common-file-dialog/cfd"
 	"github.com/harry1453/go-common-file-dialog/cfdutil"
 	"github.com/lhside/chrome-go"
+	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/registry"
 	"io"
+	"path/filepath"
 	"strconv"
 	"strings"
+	"unsafe"
 )
 
 func ChooseFile(params RequestParams) (path string, errorMessage string) {
@@ -146,3 +149,65 @@ func FetchOutlookGPOConfigsAndResponse(output io.Writer) error {
 	}
 	return nil
 }
+
+func GetParentProcessExePath() (string, error) {
+	snapshot, err := windows.CreateToolhelp32Snapshot(windows.TH32CS_SNAPPROCESS, 0)
+	if err != nil {
+		return "", err
+	}
+	defer windows.CloseHandle(snapshot)
+
+	var pe windows.ProcessEntry32
+	pe.Size = uint32(unsafe.Sizeof(pe))
+
+	currentPID := windows.GetCurrentProcessId()
+
+	err = windows.Process32First(snapshot, &pe)
+	if err != nil {
+		return "", err
+	}
+
+	var parentPID uint32
+
+	for {
+		if pe.ProcessID == currentPID {
+			parentPID = pe.ParentProcessID
+			break
+		}
+		err = windows.Process32Next(snapshot, &pe)
+		if err != nil {
+			return "", err
+		}
+	}
+
+	h, err := windows.OpenProcess(
+		windows.PROCESS_QUERY_LIMITED_INFORMATION,
+		false,
+		parentPID,
+	)
+	if err != nil {
+		return "", err
+	}
+	defer windows.CloseHandle(h)
+
+	buf := make([]uint16, windows.MAX_PATH)
+	size := uint32(len(buf))
+
+	err = windows.QueryFullProcessImageName(h, 0, &buf[0], &size)
+	if err != nil {
+		return "", err
+	}
+
+	return windows.UTF16ToString(buf[:size]), nil
+}
+
+func GetParentProcessDir() (string, error) {
+	exePath, err := GetParentProcessExePath()
+	if err != nil {
+		return "", err
+	}
+
+	dir := filepath.Dir(exePath)
+	return dir, nil
+}
+

@@ -53,6 +53,38 @@ For example, if you use the `policies.json`:
 It will help you to create such an managed storage manifest with exported configs: FlexConfirmMail options => "Development" => Check "Debug mode" => "All Configs" => "Export".
 (Please remind that you should remove `"debug":true` from the managed manifest.)
 
+`itemsFile` under `overrideBaseRules` or other configs will contain path to a pattern file.
+It is regularly a complete file path on the platform, but you can use environment variables with formats "%VAR%", "$VAR", or "${VAR}".
+For example:
+
+```json
+{
+  "policies": {
+    "3rdparty": {
+      "Extensions": {
+        "flexible-confirm-mail-progressive@clear-code.com": {
+          "overrideBaseRules": [
+            { "id": "builtInAttentionDomains" },
+            { "id": "builtInAttentionSuffixes" },
+            { "id": "builtInAttentionSuffixes2" },
+            {
+               "id": "builtInAttentionTerms",
+               "enabled": true,
+               "itemsSource": 1,
+               "itemsFile": "${ParentProcessDir}\\distribution\\attention_terms.csv"
+            },
+            { "id": "builtInBlockedDomains" }
+          ]
+        }
+      }
+    }
+  }
+}
+```
+
+`ParentProcessDir` is a special variable which will be expanded to the path to the directory Thunderbird is installed.
+
+
 ## For Developers
 
 ### How to run automated unittest?

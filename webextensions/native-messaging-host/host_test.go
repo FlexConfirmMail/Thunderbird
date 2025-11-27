@@ -143,3 +143,66 @@ func TestFetch_Success(t *testing.T) {
 		"\n", `\n`)
 	assert.Equal(t, `{"contents":"`+escapedContents+`","error":""}`, ReadOutput(&output))
 }
+
+func CreateTempFileToFetch(t *testing.T, dir, name, content string) string {
+	t.Helper()
+
+	err := os.MkdirAll(dir, 0755)
+	if err != nil {
+		t.Fatalf("mkdir failed: %v", err)
+	}
+
+	path := filepath.Join(dir, name)
+	err = os.WriteFile(path, []byte(content), 0644)
+	if err != nil {
+		t.Fatalf("write failed: %v", err)
+	}
+
+	return path
+}
+
+func TestFetch_EnvironmentVariableExpansion(t *testing.T) {
+	tmpDir := t.TempDir()
+
+	os.Setenv("TEST_FETCH_DIR", tmpDir)
+	defer os.Unsetenv("TEST_FETCH_DIR")
+
+	expected := "hello from env test"
+	CreateTempFileToFetch(t, tmpDir, "test.txt", expected)
+
+	cases := []struct {
+		name string
+		path string
+	}{
+		{
+			name: "percent style",
+			path: "%TEST_FETCH_DIR%/test.txt",
+		},
+		{
+			name: "dollar style",
+			path: "$TEST_FETCH_DIR/test.txt",
+		},
+		{
+			name: "brace style",
+			path: "${TEST_FETCH_DIR}/test.txt",
+		},
+		{
+			name: "lowercase env name",
+			path: "%test_fetch_dir%/test.txt",
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			contents, errMsg := Fetch(c.path)
+
+			if errMsg != "" {
+				t.Fatalf("unexpected error: %s", errMsg)
+			}
+
+			if contents != expected {
+				t.Fatalf("unexpected contents: got %q, want %q", contents, expected)
+			}
+		})
+	}
+}

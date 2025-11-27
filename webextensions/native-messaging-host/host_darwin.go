@@ -13,6 +13,11 @@ import (
 	"github.com/lhside/chrome-go"
 	"github.com/ncruces/zenity"
 	"io"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strconv"
+	"strings"
 )
 
 func ChooseFile(params RequestParams) (path string, errorMessage string) {
@@ -44,4 +49,33 @@ func FetchOutlookGPOConfigsAndResponse(output io.Writer) error {
 		return err
 	}
 	return nil
+}
+
+func GetParentProcessBinPath() (string, error) {
+	ppid := os.Getppid()
+
+	out, err := exec.Command("ps", "-p", strconv.Itoa(ppid), "-o", "comm=").Output()
+	if err != nil {
+		return "", err
+	}
+
+	binPath := strings.TrimSpace(string(out))
+	return binPath, nil
+}
+
+func GetParentProcessDir() (string, error) {
+	binPath, err := GetParentProcessBinPath()
+	if err != nil {
+		return "", err
+	}
+
+	if !filepath.IsAbs(binPath) {
+		full, err := exec.LookPath(binPath)
+		if err == nil {
+			binPath = full
+		}
+	}
+
+	dir := filepath.Dir(binPath)
+	return dir, nil
 }
