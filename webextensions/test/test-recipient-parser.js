@@ -51,6 +51,22 @@ test_parse.parameters = {
       domain:    '',
     },
   },
+  listWithWhitespaces: {
+    input: '組 織 <組 織>',
+    expected: {
+      recipient: '組 織 <組 織>',
+      address:   '',
+      domain:    '',
+    },
+  },
+  listWithDescription: {
+    input: '組 織 <説明文>',
+    expected: {
+      recipient: '組 織 <説明文>',
+      address:   '',
+      domain:    '',
+    },
+  },
 };
 export async function test_parse({ input, expected }) {
   is(expected, RecipientParser.parse(input));
