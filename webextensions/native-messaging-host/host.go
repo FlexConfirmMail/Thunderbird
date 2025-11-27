@@ -22,7 +22,7 @@ import (
 	"time"
 )
 
-const VERSION = "4.2.8"
+const VERSION = "4.2.9"
 
 var RunInCLI bool
 var DebugLogs []string
