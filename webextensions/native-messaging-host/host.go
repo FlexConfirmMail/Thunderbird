@@ -17,10 +17,12 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
+	"strings"
 	"time"
 )
 
-const VERSION = "4.2.8"
+const VERSION = "4.2.9"
 
 var RunInCLI bool
 var DebugLogs []string
@@ -242,8 +244,88 @@ func FetchAndRespond(path string, output io.Writer) error {
 	return nil
 }
 
+func IsParentProcessDirKey(key string) bool {
+	return strings.EqualFold(key, "ParentProcessDir")
+}
+
+func ExpandParentProcessDir(path string) (string, error) {
+	if !strings.Contains(strings.ToLower(path), "parentprocessdir") {
+		return path, nil
+	}
+
+	dir, err := GetParentProcessDir()
+	if err != nil {
+		return "", err
+	}
+
+	patterns := []string{
+		`%ParentProcessDir%`,
+		`$ParentProcessDir`,
+		`${ParentProcessDir}`,
+	}
+
+	result := path
+
+	for _, p := range patterns {
+		re := regexp.MustCompile(`(?i)` + regexp.QuoteMeta(p))
+		result = re.ReplaceAllString(result, dir)
+	}
+
+	return result, nil
+}
+
+func GetEnvVarValue(name string) string {
+	val := os.Getenv(name)
+	if val == "" {
+		val = os.Getenv(strings.ToUpper(name))
+	}
+	if val == "" {
+		val = os.Getenv(strings.ToLower(name))
+	}
+	return val
+}
+
+func ExpandAllEnvVars(path string) string {
+	// %VAR% format (for Windows, allowed only at the beginning of the input string)
+	rePercent := regexp.MustCompile(`^%([^%]+)%`)
+	path = rePercent.ReplaceAllStringFunc(path, func(m string) string {
+		key := strings.Trim(m, "%")
+		if IsParentProcessDirKey(key) {
+			return m
+		}
+		val := GetEnvVarValue(key)
+		if val == "" {
+			return m
+		}
+		return val
+	})
+
+	// ${VAR} format (for Linux, macOS)
+	reBrace := regexp.MustCompile(`\$\{([^}]+)\}`)
+	path = reBrace.ReplaceAllStringFunc(path, func(m string) string {
+		key := m[2 : len(m)-1]
+		if IsParentProcessDirKey(key) {
+			return m
+		}
+		val := GetEnvVarValue(key)
+		if val == "" {
+			return m
+		}
+		return val
+	})
+
+	return path
+}
+
 func Fetch(path string) (contents string, errorMessage string) {
-	buffer, err := ioutil.ReadFile(path)
+	pathWithExpandedParentProcessDir, err := ExpandParentProcessDir(path)
+	if err != nil {
+		return "", path + ": Failed to resolve parent process dir: " + err.Error()
+	}
+
+	pathWithExpandedEnvVars := ExpandAllEnvVars(pathWithExpandedParentProcessDir)
+
+	buffer, err := ioutil.ReadFile(pathWithExpandedEnvVars)
 	if err != nil {
 		return "", path + ": " + err.Error()
 	}

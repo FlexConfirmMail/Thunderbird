@@ -19,3 +19,7 @@ func ChooseFile(params RequestParams) (path string, errorMessage string) {
 func FetchOutlookGPOConfigsAndResponse(output io.Writer) error {
 	return nil
 }
+
+func GetParentProcessDir() (string, error) {
+	return "", nil
+}
