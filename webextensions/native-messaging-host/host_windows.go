@@ -10,8 +10,7 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/harry1453/go-common-file-dialog/cfd"
-	"github.com/harry1453/go-common-file-dialog/cfdutil"
+	"fmt"
 	"github.com/lhside/chrome-go"
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/registry"
@@ -19,29 +18,89 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"syscall"
 	"unsafe"
 )
 
+var (
+	comdlg32              = syscall.NewLazyDLL("comdlg32.dll")
+	ProcGetOpenFileNameW  = comdlg32.NewProc("GetOpenFileNameW")
+)
+
+type OpenFileNameW struct {
+	lStructSize       uint32
+	hwndOwner         uintptr
+	hInstance         uintptr
+	lpstrFilter       *uint16
+	lpstrCustomFilter *uint16
+	nMaxCustFilter    uint32
+	nFilterIndex      uint32
+	lpstrFile         *uint16
+	nMaxFile          uint32
+	lpstrFileTitle    *uint16
+	nMaxFileTitle     uint32
+	lpstrInitialDir   *uint16
+	lpstrTitle        *uint16
+	flags             uint32
+	nFileOffset       uint16
+	nFileExtension    uint16
+	lpstrDefExt       *uint16
+	lCustData         uintptr
+	lpfnHook          uintptr
+	lpTemplateName    *uint16
+	pvReserved        unsafe.Pointer
+	dwReserved        uint32
+	flagsEx           uint32
+}
+
+const (
+	OFN_EXPLORER         = 0x00080000
+	OFN_FILEMUSTEXIST    = 0x00001000
+	OFN_PATHMUSTEXIST    = 0x00000800
+)
+
+func Utf16Ptr(s string) *uint16 {
+	if s == "" {
+		return nil
+	}
+	ptr, _ := syscall.UTF16PtrFromString(s)
+	return ptr
+}
+
+func BuildFilter(displayName, pattern string) *uint16 {
+	if displayName == "" || pattern == "" {
+		return nil
+	}
+
+	filter := fmt.Sprintf("%s (%s)\x00%s\x00\x00", displayName, pattern, pattern)
+	ptr, _ := syscall.UTF16PtrFromString(filter)
+	return ptr
+}
+
 func ChooseFile(params RequestParams) (path string, errorMessage string) {
-	result, err := cfdutil.ShowOpenFileDialog(cfd.DialogConfig{
-		Title: params.Title,
-		Role:  params.Role,
-		FileFilters: []cfd.FileFilter{
-			{
-				DisplayName: params.DisplayName,
-				Pattern:     params.Pattern,
-			},
-		},
-		SelectedFileFilterIndex: 0,
-		FileName:                params.FileName,
-		DefaultExtension:        params.DefaultExtension,
-	})
-	if err == cfd.ErrorCancelled {
-		return result, ""
-	} else if err != nil {
+	buf := make([]uint16, syscall.MAX_PATH)
+
+	if params.FileName != "" {
+		copy(buf, syscall.StringToUTF16(params.FileName))
+	}
+
+	ofn := OpenFileNameW{
+		lStructSize:     uint32(unsafe.Sizeof(OpenFileNameW{})),
+		lpstrTitle:      Utf16Ptr(params.Title),
+		lpstrInitialDir: Utf16Ptr(params.Path),
+		lpstrDefExt:     Utf16Ptr(params.DefaultExtension),
+		lpstrFilter:     BuildFilter(params.DisplayName, params.Pattern),
+		lpstrFile:       &buf[0],
+		nMaxFile:        uint32(len(buf)),
+		flags:           OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST,
+	}
+
+	ret, _, err := ProcGetOpenFileNameW.Call(uintptr(unsafe.Pointer(&ofn)))
+	if ret == 0 {
 		return "", err.Error()
 	}
-	return result, ""
+
+	return syscall.UTF16ToString(buf), ""
 }
 
 func ReadIntegerRegValue(key registry.Key, valueName string) (data uint64, errorMessage string) {
