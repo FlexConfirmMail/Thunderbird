@@ -179,16 +179,16 @@ func TestFetch_EnvironmentVariableExpansion(t *testing.T) {
 			path: "%TEST_FETCH_DIR%/test.txt",
 		},
 		{
-			name: "dollar style",
-			path: "$TEST_FETCH_DIR/test.txt",
+			name: "percent style lowercase env name",
+			path: "%test_fetch_dir%/test.txt",
 		},
 		{
 			name: "brace style",
 			path: "${TEST_FETCH_DIR}/test.txt",
 		},
 		{
-			name: "lowercase env name",
-			path: "%test_fetch_dir%/test.txt",
+			name: "brace style lowercase env name",
+			path: "${test_fetch_dir}/test.txt",
 		},
 	}
 

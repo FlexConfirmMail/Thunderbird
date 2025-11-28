@@ -54,7 +54,7 @@ It will help you to create such an managed storage manifest with exported config
 (Please remind that you should remove `"debug":true` from the managed manifest.)
 
 `itemsFile` under `overrideBaseRules` or other configs will contain path to a pattern file.
-It is regularly a complete file path on the platform, but you can use environment variables with formats "%VAR%", "$VAR", or "${VAR}".
+It is regularly a complete file path on the platform, but you can use environment variables with formats `%VAR%` or `${VAR}`.
 For example:
 
 ```json
@@ -83,6 +83,7 @@ For example:
 ```
 
 `ParentProcessDir` is a special variable which will be expanded to the path to the directory Thunderbird is installed.
+`"%VAR%"` style is available only at the beginning of the path, for safety.
 
 
 ## For Developers

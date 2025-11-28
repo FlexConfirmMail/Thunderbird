@@ -286,8 +286,8 @@ func GetEnvVarValue(name string) string {
 }
 
 func ExpandAllEnvVars(path string) string {
-	// %VAR% format (for Windows)
-	rePercent := regexp.MustCompile(`%([^%]+)%`)
+	// %VAR% format (for Windows, allowed only at the beginning of the input string)
+	rePercent := regexp.MustCompile(`^%([^%]+)%`)
 	path = rePercent.ReplaceAllStringFunc(path, func(m string) string {
 		key := strings.Trim(m, "%")
 		if IsParentProcessDirKey(key) {
@@ -304,20 +304,6 @@ func ExpandAllEnvVars(path string) string {
 	reBrace := regexp.MustCompile(`\$\{([^}]+)\}`)
 	path = reBrace.ReplaceAllStringFunc(path, func(m string) string {
 		key := m[2 : len(m)-1]
-		if IsParentProcessDirKey(key) {
-			return m
-		}
-		val := GetEnvVarValue(key)
-		if val == "" {
-			return m
-		}
-		return val
-	})
-
-	// $VAR format (for Linux, macOS)
-	reDollar := regexp.MustCompile(`\$(\w+)`)
-	path = reDollar.ReplaceAllStringFunc(path, func(m string) string {
-		key := m[1:]
 		if IsParentProcessDirKey(key) {
 			return m
 		}
