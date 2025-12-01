@@ -191,7 +191,6 @@ And, on macOS:
    3. Build the package for macOS.
    4. Rename built packages with the version number, like as:
       * `flex-confirm-mail-we-x.x.x.xpi`
-      * `flex-confirm-mail-nmh-without-installer-x.x.x.zip`
       * `flex-confirm-mail-nmh-386-x.x.x.msi`
       * `flex-confirm-mail-nmh-amd64-x.x.x.msi`
       * `com.clear_code.flexible_confirm_mail_we_host.signed-x.x.x.pkg`
