@@ -40,8 +40,7 @@ install_extlib:
 	cp ../submodules/webextensions-lib-dom-updater/src/dom-updater.js extlib/
 
 host:
-	rm -f flex-confirm-mail-nmh-without-installer.zip
-	cd native-messaging-host && make && mv *.zip ../
+	cd native-messaging-host && make
 
 test:
 	npm run test
