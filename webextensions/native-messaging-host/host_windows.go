@@ -78,7 +78,6 @@ func BuildFilter(displayName, pattern string) *uint16 {
 }
 
 func ChooseFile(params RequestParams) (path string, errorMessage string) {
-	LogForDebug("ChooseFile called")
 	buf := make([]uint16, syscall.MAX_PATH)
 
 	LogForDebug("ChooseFile, filename = " + params.FileName)

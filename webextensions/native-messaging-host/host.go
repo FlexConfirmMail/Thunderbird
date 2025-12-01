@@ -338,7 +338,6 @@ type ChooseFileResponse struct {
 }
 
 func ChooseFileAndRespond(params RequestParams, output io.Writer) error {
-	LogForDebug("ChooseFileAndRespond called")
 	path, errorMessage := ChooseFile(params)
 	response := &ChooseFileResponse{path, errorMessage}
 	body, err := json.Marshal(response)
