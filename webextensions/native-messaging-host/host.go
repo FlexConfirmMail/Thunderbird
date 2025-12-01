@@ -22,7 +22,7 @@ import (
 	"time"
 )
 
-const VERSION = "4.2.9"
+const VERSION = "4.2.10"
 
 var RunInCLI bool
 var DebugLogs []string
@@ -53,7 +53,7 @@ func LogForDebug(message string) {
 type RequestParams struct {
 	Path             string `json:"path"`
 	Title            string `json:"title"`
-	Role             string `json:"role"`
+	Role             string `json:"role"` // obsolete, not used
 	FileName         string `json:"fileName"`
 	DefaultExtension string `json:"defaultExtension"`
 	DisplayName      string `json:"displayName"`
