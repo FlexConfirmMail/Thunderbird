@@ -40,7 +40,7 @@ install_extlib:
 	cp ../submodules/webextensions-lib-dom-updater/src/dom-updater.js extlib/
 
 host:
-	cd native-messaging-host && make && mv *.zip ../
+	cd native-messaging-host && make
 
 test:
 	npm run test
