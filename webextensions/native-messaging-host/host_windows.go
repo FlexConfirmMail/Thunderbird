@@ -80,6 +80,7 @@ func BuildFilter(displayName, pattern string) *uint16 {
 func ChooseFile(params RequestParams) (path string, errorMessage string) {
 	buf := make([]uint16, syscall.MAX_PATH)
 
+	LogForDebug("ChooseFile, filename = " + params.FileName)
 	if params.FileName != "" {
 		copy(buf, syscall.StringToUTF16(params.FileName))
 	}
@@ -97,6 +98,7 @@ func ChooseFile(params RequestParams) (path string, errorMessage string) {
 
 	ret, _, err := ProcGetOpenFileNameW.Call(uintptr(unsafe.Pointer(&ofn)))
 	if ret == 0 {
+		LogForDebug("Canceled or failed: " + err.Error())
 		return "", err.Error()
 	}
 
