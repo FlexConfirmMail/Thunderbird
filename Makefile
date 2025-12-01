@@ -8,7 +8,7 @@ xpi:
 	cd webextensions && make && cp ./*.xpi ../
 
 host:
-	cd webextensions && make host && cp ./*.zip ../
+	cd webextensions && make host
 
 unittest:
 	cd webextensions && make test
