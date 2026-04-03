@@ -41,6 +41,8 @@ let mAttachmentsList;
 let mAcceptButton;
 let mCancelButton;
 
+RichConfirm.init('/extlib/RichConfirmDialog.html');
+
 function onConfigChange(key) {
   const value = configs[key];
   switch (key) {
@@ -483,16 +485,13 @@ async function confirmedFailedLists() {
     result = await RichConfirm.show({
       modal: true,
       type:  'common-dialog',
-      url:   '/resources/blank.html',
       title: browser.i18n.getMessage('confirmUnpopulatableListsTitle'),
       content: message,
       buttons: [
         browser.i18n.getMessage('confirmUnpopulatableListsAccept'),
-        browser.i18n.getMessage('confirmUnpopulatableListsCancel')
+        browser.i18n.getMessage('confirmUnpopulatableListsCancel'),
       ],
-      onShown(content) {
-        content.closest('.rich-confirm-dialog').classList.add('for-unpopulatable-lists');
-      },
+      extraClass: 'for-unpopulatable-lists',
     });
   }
   catch(_error) {
@@ -527,16 +526,13 @@ async function confirmedMultipleRecipientDomains() {
     result = await RichConfirm.show({
       modal: true,
       type:  'common-dialog',
-      url:   '/resources/blank.html',
       title: configs.confirmMultipleRecipientDomainsDialogTitle || browser.i18n.getMessage('confirmMultipleRecipientDomainsTitle'),
       content: message,
       buttons: [
         browser.i18n.getMessage('confirmMultipleRecipientDomainsAccept'),
-        browser.i18n.getMessage('confirmMultipleRecipientDomainsCancel')
+        browser.i18n.getMessage('confirmMultipleRecipientDomainsCancel'),
       ],
-      onShown(content) {
-        content.closest('.rich-confirm-dialog').classList.add('for-multiple-recipient-domains');
-      },
+      extraClass: 'for-multiple-recipient-domains',
     });
   }
   catch(_error) {
@@ -570,16 +566,13 @@ async function confirmedNewDomainRecipients() {
     result = await RichConfirm.show({
       modal: true,
       type:  'common-dialog',
-      url:   '/resources/blank.html',
       title: configs.confirmNewDomainRecipientsDialogTitle || browser.i18n.getMessage('confirmNewDomainRecipientsDialogTitle'),
       content: message,
       buttons: [
         browser.i18n.getMessage('confirmNewDomainRecipientsAccept'),
-        browser.i18n.getMessage('confirmNewDomainRecipientsCancel')
+        browser.i18n.getMessage('confirmNewDomainRecipientsCancel'),
       ],
-      onShown(content) {
-        content.closest('.rich-confirm-dialog').classList.add('for-new-domain-recipients');
-      },
+      extraClass: 'for-new-domain-recipients',
     });
   }
   catch(_error) {
@@ -608,16 +601,13 @@ async function confirmedWithRules() {
         result = await RichConfirm.show({
           modal: true,
           type:  'common-dialog',
-          url:   '/resources/blank.html',
           title,
           content: message,
           buttons: [
             browser.i18n.getMessage('reconfirmAccept'),
             browser.i18n.getMessage('reconfirmCancel'),
           ],
-          onShown(content) {
-            content.closest('.rich-confirm-dialog').classList.add(`for-${rule.name.replace(/[\s\|:()\[\]<>{}!?*\.\/\\~+]/g, '_')}`);
-          },
+          extraClass: `for-${rule.name.replace(/[\s\|:()\[\]<>{}!?*\.\/\\~+]/g, '_')}`,
         });
       }
       catch(_error) {

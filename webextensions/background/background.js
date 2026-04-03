@@ -28,6 +28,8 @@ const TYPE_DRAFT            = 'draft';
 const TYPE_TEMPLATE         = 'template';
 const TYPE_EXISTING_MESSAGE = 'edit-as-new-message';
 
+RichConfirm.init('/extlib/RichConfirmDialog.html');
+
 function getMessageSignature(message) {
   const author = message.from || message.author || '';
   const authorAddressMatched = author.match(/<([^>]+)>$/);
@@ -408,7 +410,6 @@ async function shouldBlock(tab, details) {
         return RichConfirm.showInPopup(tab.windowId, {
           modal: !configs.debug,
           type:  'common-dialog',
-          url:   '/resources/blank.html',
           title,
           content: message,
           buttons: [
