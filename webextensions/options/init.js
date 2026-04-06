@@ -21,6 +21,8 @@ import { DOMUpdater } from '/extlib/dom-updater.js';
 import RichConfirm from '/extlib/RichConfirm.js';
 import { MatchingRules } from '/common/matching-rules.js';
 
+RichConfirm.init('/extlib/RichConfirmDialog.html');
+
 let mMatchingRules;
 
 const options = new Options(configs);
@@ -452,12 +454,11 @@ async function removeRule(id) {
     result = await RichConfirm.show({
       modal: true,
       type:  'common-dialog',
-      url:   '/resources/blank.html',
       message: browser.i18n.getMessage('config_userRules_remove_confirmMessage', [mMatchingRules.get(id).name]),
       buttons: [
         browser.i18n.getMessage('config_userRules_remove_accept'),
-        browser.i18n.getMessage('config_userRules_remove_cancel')
-      ]
+        browser.i18n.getMessage('config_userRules_remove_cancel'),
+      ],
     });
   }
   catch(_error) {
@@ -476,12 +477,11 @@ async function resetRuleItemsLocal(id) {
     result = await RichConfirm.show({
       modal: true,
       type:  'common-dialog',
-      url:   '/resources/blank.html',
       message: browser.i18n.getMessage('config_userRules_resetItemsLocal_confirmMessage', [mMatchingRules.get(id).name]),
       buttons: [
         browser.i18n.getMessage('config_userRules_reset_accept'),
-        browser.i18n.getMessage('config_userRules_reset_cancel')
-      ]
+        browser.i18n.getMessage('config_userRules_reset_cancel'),
+      ],
     });
   }
   catch(_error) {
