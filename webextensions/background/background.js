@@ -407,12 +407,11 @@ async function shouldBlock(tab, details) {
       subject: details.subject,
       body: details.body,
       alert: async ({ title, message }) => {
-        const isHtml = /<[^>]+>/.test(message);
         return RichConfirm.showInPopup(tab.windowId, {
           modal: !configs.debug,
           type:  'common-dialog',
           title,
-          ...(isHtml ? { content: message } : { message }),
+          message,
           buttons: [
             browser.i18n.getMessage('alertBlockedAccept'),
           ],
