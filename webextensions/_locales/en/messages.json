@@ -67,7 +67,7 @@
 
 
   "confirmAttentionTermsTitle": { "message": "Attachments including attention term in their name" },
-  "confirmAttentionTermsMessage": { "message": "These attachments including attention term in their name are found:\n\n<strong>$ATTACHMENTS$</strong>\n\nIf there is no problem, continue to send.",
+  "confirmAttentionTermsMessage": { "message": "These attachments including attention term in their name are found:\n\n<strong>$ATTACHMENTS</strong>$\n\nIf there is no problem, continue to send.",
     "placeholders": {
       "attachments": { "content": "$1", "example": "file.txt" }
     }},
