@@ -223,6 +223,22 @@ hr.splitter {
 }
 */
 
+@media (prefers-color-scheme: dark) {
+  :root.highlight-external-domains .listbox#externals .row.recipient.domain-even label {
+    background: rgb(255, 84, 0);
+  }
+  :root.highlight-external-domains .listbox#externals .row.recipient.domain-even:hover label {
+    background: rgba(255, 60, 0, 0.5);
+  }
+
+  :root.highlight-external-domains .listbox#externals .row.recipient.domain-odd label {
+    background: rgb(0, 113, 205);
+  }
+  :root.highlight-external-domains .listbox#externals .row.recipient.domain-odd:hover label {
+    background: rgba(33, 80, 119, 0.5);
+  }
+}
+
 :root.emphasize-recipient-type .listbox .row.recipient .column:first-of-type {
   font-weight:  bold;
   font-size: 150%;
