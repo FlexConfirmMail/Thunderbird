@@ -108,7 +108,7 @@ hr.splitter {
 }
 
 .listbox .column.flexible > .flexible-container > *:not(input) {
-  line-height: 1.25;
+  line-height: 1.75;
   /* We need to specify these properties instead of the flexible-container because text-overflow doesn't work for display:flex elements. */
   overflow: hidden;
   text-overflow: ellipsis;
@@ -222,6 +222,22 @@ hr.splitter {
   background: rgb(72, 146, 206);
 }
 */
+
+@media (prefers-color-scheme: dark) {
+  :root.highlight-external-domains .listbox#externals .row.recipient.domain-even label {
+    background: rgb(255, 84, 0);
+  }
+  :root.highlight-external-domains .listbox#externals .row.recipient.domain-even:hover label {
+    background: rgba(255, 60, 0, 0.5);
+  }
+
+  :root.highlight-external-domains .listbox#externals .row.recipient.domain-odd label {
+    background: rgb(0, 113, 205);
+  }
+  :root.highlight-external-domains .listbox#externals .row.recipient.domain-odd:hover label {
+    background: rgba(33, 80, 119, 0.5);
+  }
+}
 
 :root.emphasize-recipient-type .listbox .row.recipient .column:first-of-type {
   font-weight:  bold;

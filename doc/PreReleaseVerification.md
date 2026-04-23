@@ -363,7 +363,7 @@ Thunderbirdを起動し、以下の検証を実施する。
    1. 新規にメール作成を開始する。
    2. 宛先に `piro-test+1@clear-code.com` を追加する。
    3. 画像ファイル `attachment/image.svg` を添付する。
-   4. zipファイル `attachment/json.svg` を添付する。
+   4. zipファイル `attachment/json.zip` を添付する。
    5. 「送信」を押す。
       * [ ] チェックボックスがある確認画面が開かれる。
       * [ ] 添付ファイルセクションの見出しにチェックボックスがない。
