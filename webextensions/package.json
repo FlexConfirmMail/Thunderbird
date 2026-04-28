@@ -19,5 +19,8 @@
     "node-fetch": "^2.6.0",
     "tiny-esm-test-runner": "^0.0.5",
     "tunnel-agent": ">=0.6.0"
+  },
+  "devDependencies": {
+    "dompurify": "^3.4.1"
   }
 }
