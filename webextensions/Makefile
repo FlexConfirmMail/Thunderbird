@@ -29,7 +29,7 @@ update_extlib:
 	git submodule foreach 'git checkout trunk || git checkout main || git checkout master && git pull'
 
 install_extlib:
-	rm -f extlib/*.js extlib/*.css
+	rm -f extlib/*.css extlib/*.html extlib/*.js extlib/*.map extlib/*.mjs
 	cp ../submodules/webextensions-lib-configs/Configs.js extlib/; echo 'export default Configs;' >> extlib/Configs.js
 	cp ../submodules/webextensions-lib-options/Options.js extlib/; echo 'export default Options;' >> extlib/Options.js
 	cp ../submodules/webextensions-lib-l10n/l10n.js extlib/; echo 'export default l10n;' >> extlib/l10n.js
@@ -38,6 +38,7 @@ install_extlib:
 	cp ../submodules/webextensions-lib-dialog/dialog.css extlib/
 	cp ../submodules/webextensions-lib-dom-updater/src/diff.js extlib/
 	cp ../submodules/webextensions-lib-dom-updater/src/dom-updater.js extlib/
+	cp $(CURDIR)/node_modules/dompurify/dist/purify.es.mjs* extlib/
 
 host:
 	cd native-messaging-host && make
