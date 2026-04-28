@@ -28,7 +28,7 @@ init_extlib:
 update_extlib:
 	git submodule foreach 'git checkout trunk || git checkout main || git checkout master && git pull'
 
-install_extlib:
+install_extlib: install_dependency
 	rm -f extlib/*.css extlib/*.html extlib/*.js extlib/*.map extlib/*.mjs
 	cp ../submodules/webextensions-lib-configs/Configs.js extlib/; echo 'export default Configs;' >> extlib/Configs.js
 	cp ../submodules/webextensions-lib-options/Options.js extlib/; echo 'export default Options;' >> extlib/Options.js
