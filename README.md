@@ -170,8 +170,8 @@ And, on macOS:
 
 ### How to release a new version?
 
-1. `cd %temp% && git clone https://github.com/FlexConfirmMail/Thunderbird.git flex-confirm-mail-thunderbird && cd flex-confirm-mail-thunderbird` to prepare working repository with clean state.
-2. `git switch master && git submodule update --init --recursive`
+1. `cd /tmp && git clone https://github.com/FlexConfirmMail/Thunderbird.git flex-confirm-mail-thunderbird && cd flex-confirm-mail-thunderbird` to prepare working repository with clean state.
+2. `git switch master && git checkout (the revision to release) && git submodule update --init --recursive`
 3. `git log` (or `tig`) to confirm there is no needless/unexpected change from the last release.
 4. Run the [QA test before release](doc/PreReleaseVerification.md).
 5. Bump the version if the version number has not incremented yet.
@@ -187,7 +187,8 @@ And, on macOS:
    10. `git submodule update --init --recursive`
 6. Prepare packages.
    1. `make` to build XPI and `make host` to build the native messaging host.
-   2. Run `cd webextensions` and `./make_msi.bat` on `cmd.exe` to build MSI packages.
+   2. Copy `webextensions/native-messaging-host` to a Windows local folder, and run `make_msi.bat` on `cmd.exe` to build MSI packages.
+      * Note: a version with segments over 3 will block to build MSI packages, thus you may need to edit the version number to 3 segments with extra after hyphen like `x.x.x-x` in the generated `make_msi_config.bat` manually.
    3. Build the package for macOS.
    4. Rename built packages with the version number, like as:
       * `flex-confirm-mail-we-x.x.x.xpi`
