@@ -130,7 +130,7 @@ jobs:
 
           sed -i -E \
             -e "s/(\"version\"\\s*:\\s*)\"[^\"]+\"/\\1\"$NEXT_VERSION\"/" \
-            manifest.json
+            webextensions/manifest.json
 
       - name: Commit version update
         env:
@@ -142,7 +142,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add manifest.json
+          git add webextensions/manifest.json
           git commit -m "Bump version to $NEXT_VERSION"
 
       - name: Push version update
