@@ -128,9 +128,20 @@ jobs:
         run: |
           set -euo pipefail
 
-          sed -i -E \
-            -e "s/(\"version\"\\s*:\\s*)\"[^\"]+\"/\\1\"$NEXT_VERSION\"/" \
-            webextensions/manifest.json
+          cp webextensions/manifest.json webextensions/manifest.json.orig
+          if ! sed -i -E \
+                 -e "s/(\"version\"\\s*:\\s*)\"[^\"]+\"/\\1\"$NEXT_VERSION\"/" \
+                 webextensions/manifest.json
+          then
+            echo "Error: Failed to update the version in manifest.json." >&2
+            rm -f webextensions/manifest.json.orig
+            exit 1
+          fi
+          if cmp -s webextensions/manifest.json.orig webextensions/manifest.json; then
+            echo "Error: No version field was updated in manifest.json." >&2
+            rm -f webextensions/manifest.json.orig
+            exit 1
+          fi
 
       - name: Commit version update
         env:
