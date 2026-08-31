@@ -45,16 +45,16 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Consider tags in the X.Y, X.Y.Z or X.Y.Z.W format.
+          # Consider tags in the X.Y or X.Y.Z format.
           latest_tag=$(
             git tag --list |
-              grep -E '^[0-9]+\.[0-9]+(\.[0-9]+(\.[0-9]+)?)?$' |
+              grep -E '^[0-9]+\.[0-9]+(\.[0-9]+)?$' |
               sort -V |
               tail -n 1
           ) || true
 
           if [[ -z "$latest_tag" ]]; then
-            echo "Error: No version tag in the X.Y, X.Y.Z or X.Y.Z.W format was found." >&2
+            echo "Error: No version tag in the X.Y or X.Y.Z format was found." >&2
             exit 1
           fi
 
@@ -62,16 +62,13 @@ jobs:
 
           IFS='.' read -r major minor patch revision <<< "$version"
 
-          # Treat X.Y as X.Y.0.0, X.Y.Z as X.Y.Z.0
+          # Treat X.Y as X.Y.0
           if [[ -z "${patch:-}" ]]; then
             patch=0
           fi
-          if [[ -z "${revision:-}" ]]; then
-            revision=0
-          fi
 
           echo "Latest tag: $latest_tag"
-          echo "Latest version: ${major}.${minor}.${patch}.${revision}"
+          echo "Latest version: ${major}.${minor}.${patch}"
           echo "Target branch: $TARGET_BRANCH"
           echo "Default branch: $DEFAULT_BRANCH"
           echo "Requested increment: $REQUESTED_INCREMENT"
@@ -101,16 +98,13 @@ jobs:
             patch)
               patch=$((patch + 1))
               ;;
-            revision)
-              revision=$((revision + 1))
-              ;;
             *)
               echo "Error: Invalid increment method: $increment" >&2
               exit 1
               ;;
           esac
 
-          next_version="${major}.${minor}.${patch}.${revision}"
+          next_version="${major}.${minor}.${patch}"
           next_tag="${next_version}"
 
           echo "New version: $next_version"
