@@ -1,0 +1,199 @@
+name: Version and Package for External Delivery
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_increment:
+        description: 'Version increment method'
+        required: true
+        type: choice
+        options:
+          - auto
+          - major
+          - minor
+          - patch
+        default: auto
+
+concurrency:
+  group: external-delivery-versioning
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  version:
+    name: Assign Version and Build Package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          ref: ${{ github.ref_name }}
+          persist-credentials: true
+
+      - name: Calculate version
+        id: version
+        shell: bash
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          TARGET_BRANCH: ${{ github.ref_name }}
+          REQUESTED_INCREMENT: ${{ inputs.version_increment }}
+        run: |
+          set -euo pipefail
+
+          # Consider tags in the X.Y, X.Y.Z or X.Y.Z.W format.
+          latest_tag=$(
+            git tag --list |
+              grep -E '^[0-9]+\.[0-9]+(\.[0-9]+(\.[0-9]+)?)?$' |
+              sort -V |
+              tail -n 1
+          ) || true
+
+          if [[ -z "$latest_tag" ]]; then
+            echo "Error: No version tag in the X.Y, X.Y.Z or X.Y.Z.W format was found." >&2
+            exit 1
+          fi
+
+          version="${latest_tag#v}"
+
+          IFS='.' read -r major minor patch revision <<< "$version"
+
+          # Treat X.Y as X.Y.0.0, X.Y.Z as X.Y.Z.0
+          if [[ -z "${patch:-}" ]]; then
+            patch=0
+          fi
+          if [[ -z "${revision:-}" ]]; then
+            revision=0
+          fi
+
+          echo "Latest tag: $latest_tag"
+          echo "Latest version: ${major}.${minor}.${patch}.${revision}"
+          echo "Target branch: $TARGET_BRANCH"
+          echo "Default branch: $DEFAULT_BRANCH"
+          echo "Requested increment: $REQUESTED_INCREMENT"
+
+          if [[ "$REQUESTED_INCREMENT" == "auto" ]]; then
+            if [[ "$TARGET_BRANCH" == "$DEFAULT_BRANCH" ]]; then
+              increment="minor"
+            else
+              increment="patch"
+            fi
+          else
+            increment="$REQUESTED_INCREMENT"
+          fi
+
+          echo "Actual increment: $increment"
+
+          case "$increment" in
+            major)
+              major=$((major + 1))
+              minor=0
+              patch=0
+              ;;
+            minor)
+              minor=$((minor + 1))
+              patch=0
+              ;;
+            patch)
+              patch=$((patch + 1))
+              ;;
+            revision)
+              revision=$((revision + 1))
+              ;;
+            *)
+              echo "Error: Invalid increment method: $increment" >&2
+              exit 1
+              ;;
+          esac
+
+          next_version="${major}.${minor}.${patch}.${revision}"
+          next_tag="${next_version}"
+
+          echo "New version: $next_version"
+          echo "New tag: $next_tag"
+
+          if git rev-parse "$next_tag" >/dev/null 2>&1; then
+            echo "Error: Tag $next_tag already exists." >&2
+            exit 1
+          fi
+
+          {
+            echo "version=$next_version"
+            echo "tag=$next_tag"
+            echo "increment=$increment"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Update version in manifest.json
+        env:
+          NEXT_VERSION: ${{ steps.version.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          sed -i -E \
+            -e "s/(\"version\"\\s*:\\s*)\"[^\"]+\"/\\1\"$NEXT_VERSION\"/" \
+            manifest.json
+
+      - name: Commit version update
+        env:
+          NEXT_VERSION: ${{ steps.version.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add manifest.json
+          git commit -m "Bump version to $NEXT_VERSION"
+
+      - name: Push version update
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git push origin "HEAD:${{ github.ref_name }}"
+
+      - name: Create tag
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git tag "$TAG"
+          git push origin "$TAG"
+
+      - name: Build package
+        run: make
+
+      - name: Upload XPI package
+        uses: actions/upload-artifact@v4
+        with:
+          name: xpi-package
+          path: '*.xpi'
+          if-no-files-found: error
+
+      - name: Display versioning result
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+          INCREMENT: ${{ steps.version.outputs.increment }}
+          TARGET_BRANCH: ${{ github.ref_name }}
+          TARGET_SHA: ${{ github.sha }}
+        run: |
+          {
+            echo "## External Delivery Versioning Result"
+            echo
+            echo "| Item | Value |"
+            echo "|---|---|"
+            echo "| Version | \`$VERSION\` |"
+            echo "| Tag | \`$TAG\` |"
+            echo "| Branch | \`$TARGET_BRANCH\` |"
+            echo "| Increment | \`$INCREMENT\` |"
+            echo "| Version commit | \`$(git rev-parse HEAD)\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
