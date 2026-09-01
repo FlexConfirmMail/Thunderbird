@@ -1,3 +1,51 @@
+# This workflow expects the project has versioning policies:
+#
+# * Versioned with the format: "<major>.<minor>.<patch>"
+# * Tagged with the format: "v<major>.<minor>.<patch>"
+# * Packaged (and released) with incremented minor version from the default branch.
+# * Packaged (and delivered to someone) with incremented patch version form feature branches.
+#
+# How to use this workflow on GitHub.com
+#
+# 1. Go to "Settings" of the owner of the target repository (user or organization) and
+#    "Developer Settings" => "GitHub Apps" => click "New GitHub App".
+# 2. Create a GitHub App like as:
+#    * Name: External Delivery Versioning
+#    * Homepaeg URL: the URL of your repository, or somewhere
+#    * Redirect URI: blank
+#    * Webhook => Active: unchecked
+#    * Permissions => Repository permissions => Contents: Read and write
+#    * Where can this GitHub App be installed?: Only on this account
+# 3. You'll see the settings page of the created app, after creation.
+#    See the "App ID" field and remember it, assume it is "1234567".
+# 4. "General" => "Private keys" => click "Generate a private key".
+#    A private key named like as "external-delivery-versioning.xxxx-xx-xx.private-key.pem"
+#    will be downloaded.
+# 5. "Install App" => click "Install" for the owner of the target repository.
+# 6. You'll see a confirmation for the installation.
+#    Choose "Only select repositories" => the target repository, and click "Install".
+# 7. Go to "Settings" of the target repository again.
+# 8. "Secrets and variables" => "Actions" => "Variables" => click "New repository variable"
+#    and add a variable as:
+#    * Name: VERSIONING_APP_ID
+#    * Value: the ID of the app, e.g. 1234567
+# 9. "Secrets and variables" => "Actions" => "Secrets" => click "New repository secret"
+#    and add a secret as:
+#    * Name: VERSIONING_APP_PRIVATE_KEY
+#    * Value: the full contents of the downloaded private key.
+# 10. "Rulesets" => the ruleset protecting the default branch => "Bypass list" => "Add bypass"
+#     => choose the created app "External Delivery Versioning", and set as "Always allow".
+# 11. Click "Save changes".
+#
+# After that you can create new version with following steps:
+#
+# 1. On GitHub: "Actions" => click "Version and Package for External Delivery".
+# 2. Click "Run workflow".
+# 3. Choose the branch from the default (versioned with incremented minor versin) or others (versioned with incremented patch version).
+# 4. Choose the version increment method from "auto" or "major".
+#    Please remind that you need to choose "major" to release a new major version explicitly.
+# 4. Run workflow.
+
 name: Version and Package for External Delivery
 
 on:
