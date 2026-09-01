@@ -35,6 +35,28 @@ jobs:
           ref: ${{ github.ref_name }}
           persist-credentials: true
 
+      - name: Verify target branch has not changed
+        shell: bash
+        env:
+          TARGET_BRANCH: ${{ github.ref_name }}
+          START_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          git fetch origin "$TARGET_BRANCH"
+
+          current_sha="$(git rev-parse "origin/$TARGET_BRANCH")"
+
+          echo "Workflow start commit: $START_SHA"
+          echo "Current branch commit:  $current_sha"
+
+          if [[ "$current_sha" != "$START_SHA" ]]; then
+            echo "Error: The target branch has changed since this workflow started." >&2
+            echo "The workflow was started at $START_SHA, but the current" >&2
+            echo "tip of $TARGET_BRANCH is $current_sha." >&2
+            exit 1
+          fi
+
       - name: Calculate version
         id: version
         shell: bash
