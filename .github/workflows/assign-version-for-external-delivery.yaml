@@ -223,6 +223,28 @@ jobs:
             exit 1
           fi
 
+      - name: Update version in native messaging host
+        env:
+          NEXT_VERSION: ${{ steps.version.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          cp webextensions/native-messaging-host/host.go webextensions/native-messaging-host/host.go.orig
+          if ! sed -i -E \
+                 -e "s/(const\\s+VERSION\\s+=\\s+)\"[^\"]+\"/\\1\"$NEXT_VERSION\"/" \
+                 webextensions/native-messaging-host/host.go
+          then
+            echo "Error: Failed to update the version in manifest.json." >&2
+            rm -f webextensions/native-messaging-host/host.go.orig
+            exit 1
+          fi
+          if cmp -s webextensions/native-messaging-host/host.go.orig webextensions/native-messaging-host/host.go; then
+            echo "Error: No version field was updated in manifest.json." >&2
+            rm -f webextensions/native-messaging-host/host.go.orig
+            exit 1
+          fi
+
       - name: Commit version update
         env:
           NEXT_VERSION: ${{ steps.version.outputs.version }}
@@ -234,6 +256,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add webextensions/manifest.json
+          git add webextensions/native-messaging-host/host.go
           git commit -m "Bump version to $NEXT_VERSION"
 
       - name: Push version update
@@ -253,7 +276,7 @@ jobs:
           git tag "$TAG"
           git push origin "$TAG"
 
-      - name: Build package
+      - name: Build XPI packages
         run: make
 
       - name: Upload XPI package
@@ -282,3 +305,47 @@ jobs:
             echo "| Increment | \`$INCREMENT\` |"
             echo "| Version commit | \`$(git rev-parse HEAD)\` |"
           } >> "$GITHUB_STEP_SUMMARY"
+
+  build-msi:
+    name: Build Native Messaging Host MSI
+    needs: version
+    runs-on: windows-2022
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Show Go version
+        run: go version
+
+      - name: Install go-msi
+        run: choco install go-msi zip -y
+
+      # jq and WiX Toolset are already installed on windows-2022 image
+      - name: Setup PATH
+        shell: pwsh
+        run: |
+          echo "c:/ProgramData/chocolatey/bin" >> $Env:GITHUB_PATH
+          echo "c:/Program Files/go-msi" >> $Env:GITHUB_PATH
+          echo "c:/Program Files (x86)/WiX Toolset v3.11/bin" >> $Env:GITHUB_PATH
+
+      - name: Build Native Messaging Host MSI
+        shell: cmd
+        run: |
+          .\webextensions\native-messaging-host\build_msi.bat
+          dir
+          xcopy /I /Y .\webextensions\native-messaging-host\*.msi .
+
+      - name: Upload Native Messaging Host MSI
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-messaging-host-msi
+          path: '*.msi'
+          if-no-files-found: error
