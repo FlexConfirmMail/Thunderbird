@@ -7,35 +7,56 @@
 #
 # How to use this workflow on GitHub.com
 #
-# 1. Go to "Settings" of the owner of the target repository (user or organization) and
-#    "Developer Settings" => "GitHub Apps" => click "New GitHub App".
-# 2. Create a GitHub App like as:
-#    * Name: External Delivery Versioning by <organization name>
-#    * Homepaeg URL: the URL of your repository, or somewhere
-#    * Redirect URI: blank
-#    * Webhook => Active: unchecked
-#    * Permissions => Repository permissions => Contents: Read and write
-#    * Where can this GitHub App be installed?: Only on this account
-# 3. You'll see the settings page of the created app, after creation.
-#    See the "App ID" field and remember it, assume it is "1234567".
-# 4. "General" => "Private keys" => click "Generate a private key".
-#    A private key named like as "external-delivery-versioning.xxxx-xx-xx.private-key.pem"
-#    will be downloaded.
-# 5. "Install App" => click "Install" for the owner of the target repository.
-# 6. You'll see a confirmation for the installation.
-#    Choose "Only select repositories" => the target repository, and click "Install".
-# 7. Go to "Settings" of the target repository again.
-# 8. "Secrets and variables" => "Actions" => "Variables" => click "New repository variable"
+# 1. Decide to use which of GitHub App to give special permission to push changes to
+#    protected branches: your own app or the ClearCode's one.
+#    * If you a member of ClearCode Inc, you shoud use our app:
+#      https://github.com/apps/external-delivery-versioning
+#      The name is "External Delivery Versioning", its App ID is 4858475.
+#      Go to https://github.com/organizations/clear-code/settings/apps/external-delivery-versioning
+#      => "Private keys" => click "Generate a private key".
+#      A private key named like as "external-delivery-versioning.xxxx-xx-xx.private-key.pem"
+#      will be downloaded for your new use.
+#    * Otherwise, you need to create a new app by yourself with steps:
+#      1. Go to "Settings" of the owner of the target repository (user or organization) and
+#         "Developer Settings" => "GitHub Apps" => click "New GitHub App".
+#      2. Create a GitHub App like as:
+#         * Name: any
+#         * Homepaeg URL: the URL of your repository, or somewhere
+#         * Redirect URI: blank
+#         * Webhook => Active: unchecked
+#         * Permissions => Repository permissions => Contents: Read and write
+#         * Where can this GitHub App be installed?: Only on this account
+#      3. You'll see the settings page of the created app, after creation.
+#         See the "App ID" field and remember it.
+#      4. "General" => "Private keys" => click "Generate a private key".
+#         A private key named like as "your-app-name.xxxx-xx-xx.private-key.pem"
+#         will be downloaded.
+#         You should generate new private keys for each use.
+# 2. Install the app to the target repository.
+#    * If you use ClearCode's app, so go to
+#      https://github.com/apps/external-delivery-versioning
+#      and click "Install".
+#    * If you use your own app, go to the "Install App" of your app.
+#    * You'll see a list of accounts and organizations if you are a member,
+#      then choose the owner of the target repository, and click "Install".
+#      Otherwise you'll see just a single "Install" button, then click it.
+# 3. You'll see a confirmation for the installation. Choose
+#    "Only select repositories" => the target repository, and click "Install".
+# 4. Go to "Settings" of the target repository.
+# 5. "Secrets and variables" => "Actions" => "Variables" => click "New repository variable"
 #    and add a variable as:
 #    * Name: VERSIONING_APP_ID
-#    * Value: the ID of the app, e.g. 1234567
-# 9. "Secrets and variables" => "Actions" => "Secrets" => click "New repository secret"
+#    * Value: the ID of the app you decided to use. It  is 4858475 if you use ClearCode's app,
+#             otherwise you remember the ID of it like 1234567.
+# 6. "Secrets and variables" => "Actions" => "Secrets" => click "New repository secret"
 #    and add a secret as:
 #    * Name: VERSIONING_APP_PRIVATE_KEY
 #    * Value: the full contents of the downloaded private key.
-# 10. "Rulesets" => the ruleset protecting the default branch => "Bypass list" => "Add bypass"
-#     => choose the created app "External Delivery Versioning by <organization name>", and set as "Always allow".
-# 11. Click "Save changes".
+# 7. "Rulesets" => the ruleset protecting the default branch => "Bypass list" => "Add bypass"
+#    => choose the app you decided to use, and set as "Always allow".
+#    * Important note: classic protection feature under "Branches" cannobt be bypassed.
+#      You must migrate classic protection settings to rulesets at first.
+# 8. Click "Save changes".
 #
 # After that you can create new version with following steps:
 #
