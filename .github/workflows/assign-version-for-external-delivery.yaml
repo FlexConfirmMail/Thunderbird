@@ -1,0 +1,396 @@
+# This workflow expects the project has versioning policies:
+#
+# * Versioned with the format: "<major>.<minor>.<patch>"
+# * Tagged with the format: "v<major>.<minor>.<patch>"
+# * Packaged (and released) with incremented minor version from the default branch.
+# * Packaged (and delivered to someone) with incremented patch version form feature branches.
+#
+# How to use this workflow on GitHub.com
+#
+# 1. Decide to use which of GitHub App to give special permission to push changes to
+#    protected branches: your own app or the ClearCode's one.
+#    * If you a member of ClearCode Inc, you shoud use our app:
+#      https://github.com/apps/external-delivery-versioning
+#      The name is "External Delivery Versioning", its App ID is 4858475.
+#      Go to https://github.com/organizations/clear-code/settings/apps/external-delivery-versioning
+#      => "Private keys" => click "Generate a private key".
+#      A private key named like as "external-delivery-versioning.xxxx-xx-xx.private-key.pem"
+#      will be downloaded for your new use.
+#    * Otherwise, you need to create a new app by yourself with steps:
+#      1. Go to "Settings" of the owner of the target repository (user or organization) and
+#         "Developer Settings" => "GitHub Apps" => click "New GitHub App".
+#      2. Create a GitHub App like as:
+#         * Name: any
+#         * Homepaeg URL: the URL of your repository, or somewhere
+#         * Redirect URI: blank
+#         * Webhook => Active: unchecked
+#         * Permissions => Repository permissions => Contents: Read and write
+#         * Where can this GitHub App be installed?: Only on this account
+#      3. You'll see the settings page of the created app, after creation.
+#         See the "App ID" field and remember it.
+#      4. "General" => "Private keys" => click "Generate a private key".
+#         A private key named like as "your-app-name.xxxx-xx-xx.private-key.pem"
+#         will be downloaded.
+#         You should generate new private keys for each use.
+# 2. Install the app to the target repository.
+#    * If you use ClearCode's app, so go to
+#      https://github.com/apps/external-delivery-versioning
+#      and click "Install".
+#    * If you use your own app, go to the "Install App" of your app.
+#    * You'll see a list of accounts and organizations if you are a member,
+#      then choose the owner of the target repository, and click "Install".
+#      Otherwise you'll see just a single "Install" button, then click it.
+# 3. You'll see a confirmation for the installation. Choose
+#    "Only select repositories" => the target repository, and click "Install".
+# 4. Go to "Settings" of the target repository.
+# 5. "Secrets and variables" => "Actions" => "Variables" => click "New repository variable"
+#    and add a variable as:
+#    * Name: VERSIONING_APP_ID
+#    * Value: the ID of the app you decided to use. It  is 4858475 if you use ClearCode's app,
+#             otherwise you remember the ID of it like 1234567.
+# 6. "Secrets and variables" => "Actions" => "Secrets" => click "New repository secret"
+#    and add a secret as:
+#    * Name: VERSIONING_APP_PRIVATE_KEY
+#    * Value: the full contents of the downloaded private key.
+# 7. "Rulesets" => the ruleset protecting the default branch => "Bypass list" => "Add bypass"
+#    => choose the app you decided to use, and set as "Always allow".
+#    * Important note: classic protection feature under "Branches" cannobt be bypassed.
+#      You must migrate classic protection settings to rulesets at first.
+# 8. Click "Save changes".
+#
+# After that you can create new version with following steps:
+#
+# 1. On GitHub: "Actions" => click "Version and Package for External Delivery".
+# 2. Click "Run workflow".
+# 3. Choose the branch from the default (versioned with incremented minor version) or others (versioned with incremented patch version).
+# 4. Choose the version increment method from "auto" or "major".
+#    Please remind that you need to choose "major" to release a new major version explicitly.
+# 5. Run workflow.
+
+name: Version and Package for External Delivery
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_increment:
+        description: 'Version increment method'
+        required: true
+        type: choice
+        options:
+          - auto
+          - major
+          - minor
+          - patch
+        default: auto
+
+concurrency:
+  group: external-delivery-versioning
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  version:
+    name: Assign Version and Build Package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.VERSIONING_APP_ID }}
+          private-key: ${{ secrets.VERSIONING_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: write
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          ref: ${{ github.ref_name }}
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Verify target branch has not changed
+        shell: bash
+        env:
+          TARGET_BRANCH: ${{ github.ref_name }}
+          START_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          git fetch origin "$TARGET_BRANCH"
+
+          current_sha="$(git rev-parse "origin/$TARGET_BRANCH")"
+
+          echo "Workflow start commit: $START_SHA"
+          echo "Current branch commit:  $current_sha"
+
+          if [[ "$current_sha" != "$START_SHA" ]]; then
+            echo "Error: The target branch has changed since this workflow started." >&2
+            echo "The workflow was started at $START_SHA, but the current" >&2
+            echo "tip of $TARGET_BRANCH is $current_sha." >&2
+            exit 1
+          fi
+
+      - name: Calculate version
+        id: version
+        shell: bash
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          TARGET_BRANCH: ${{ github.ref_name }}
+          REQUESTED_INCREMENT: ${{ inputs.version_increment }}
+        run: |
+          set -euo pipefail
+
+          # Consider tags in the X.Y or X.Y.Z format.
+          latest_tag=$(
+            git tag --list |
+              grep -E '^[0-9]+\.[0-9]+(\.[0-9]+)?$' |
+              sort -V |
+              tail -n 1
+          ) || true
+
+          if [[ -z "$latest_tag" ]]; then
+            echo "Error: No version tag in the X.Y or X.Y.Z format was found." >&2
+            exit 1
+          fi
+
+          version="${latest_tag#v}"
+
+          IFS='.' read -r major minor patch revision <<< "$version"
+
+          # Treat X.Y as X.Y.0
+          if [[ -z "${patch:-}" ]]; then
+            patch=0
+          fi
+
+          echo "Latest tag: $latest_tag"
+          echo "Latest version: ${major}.${minor}.${patch}"
+          echo "Target branch: $TARGET_BRANCH"
+          echo "Default branch: $DEFAULT_BRANCH"
+          echo "Requested increment: $REQUESTED_INCREMENT"
+
+          if [[ "$REQUESTED_INCREMENT" == "auto" ]]; then
+            if [[ "$TARGET_BRANCH" == "$DEFAULT_BRANCH" ]]; then
+              increment="minor"
+            else
+              increment="patch"
+            fi
+          else
+            increment="$REQUESTED_INCREMENT"
+          fi
+
+          echo "Actual increment: $increment"
+
+          case "$increment" in
+            major)
+              major=$((major + 1))
+              minor=0
+              patch=0
+              ;;
+            minor)
+              minor=$((minor + 1))
+              patch=0
+              ;;
+            patch)
+              patch=$((patch + 1))
+              ;;
+            *)
+              echo "Error: Invalid increment method: $increment" >&2
+              exit 1
+              ;;
+          esac
+
+          next_version="${major}.${minor}.${patch}"
+          next_tag="${next_version}"
+
+          echo "New version: $next_version"
+          echo "New tag: $next_tag"
+
+          if git rev-parse "$next_tag" >/dev/null 2>&1; then
+            echo "Error: Tag $next_tag already exists." >&2
+            exit 1
+          fi
+
+          {
+            echo "version=$next_version"
+            echo "tag=$next_tag"
+            echo "increment=$increment"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Update version in manifest.json
+        env:
+          NEXT_VERSION: ${{ steps.version.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          cp webextensions/manifest.json webextensions/manifest.json.orig
+          if ! sed -i -E \
+                 -e "s/(\"version\"\\s*:\\s*)\"[^\"]+\"/\\1\"$NEXT_VERSION\"/" \
+                 webextensions/manifest.json
+          then
+            echo "Error: Failed to update the version in manifest.json." >&2
+            rm -f webextensions/manifest.json.orig
+            exit 1
+          fi
+          if cmp -s webextensions/manifest.json.orig webextensions/manifest.json; then
+            echo "Error: No version field was updated in manifest.json." >&2
+            rm -f webextensions/manifest.json.orig
+            exit 1
+          fi
+
+      - name: Update version in native messaging host
+        env:
+          NEXT_VERSION: ${{ steps.version.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          cp webextensions/native-messaging-host/host.go webextensions/native-messaging-host/host.go.orig
+          if ! sed -i -E \
+                 -e "s/(const\\s+VERSION\\s+=\\s+)\"[^\"]+\"/\\1\"$NEXT_VERSION\"/" \
+                 webextensions/native-messaging-host/host.go
+          then
+            echo "Error: Failed to update the version in manifest.json." >&2
+            rm -f webextensions/native-messaging-host/host.go.orig
+            exit 1
+          fi
+          if cmp -s webextensions/native-messaging-host/host.go.orig webextensions/native-messaging-host/host.go; then
+            echo "Error: No version field was updated in manifest.json." >&2
+            rm -f webextensions/native-messaging-host/host.go.orig
+            exit 1
+          fi
+
+      - name: Commit version update
+        env:
+          NEXT_VERSION: ${{ steps.version.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add webextensions/manifest.json
+          git add webextensions/native-messaging-host/host.go
+          git commit -m "Bump version to $NEXT_VERSION"
+
+      - name: Push version update
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git push origin "HEAD:${{ github.ref_name }}"
+
+      - name: Create tag
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git tag "$TAG"
+          git push origin "$TAG"
+
+      - name: Build XPI packages
+        run: make
+
+      - name: Upload XPI package
+        uses: actions/upload-artifact@v4
+        with:
+          name: xpi-package
+          path: '*.xpi'
+          if-no-files-found: error
+
+      - name: Display versioning result
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+          INCREMENT: ${{ steps.version.outputs.increment }}
+          TARGET_BRANCH: ${{ github.ref_name }}
+          TARGET_SHA: ${{ github.sha }}
+        run: |
+          {
+            echo "## External Delivery Versioning Result"
+            echo
+            echo "| Item | Value |"
+            echo "|---|---|"
+            echo "| Version | \`$VERSION\` |"
+            echo "| Tag | \`$TAG\` |"
+            echo "| Branch | \`$TARGET_BRANCH\` |"
+            echo "| Increment | \`$INCREMENT\` |"
+            echo "| Version commit | \`$(git rev-parse HEAD)\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  build-msi:
+    name: Build Native Messaging Host MSI
+    needs: version
+    runs-on: windows-2022
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Show Go version
+        run: go version
+
+      - name: Install go-msi
+        run: choco install go-msi zip -y
+
+      # jq and WiX Toolset are already installed on windows-2022 image
+      - name: Setup PATH
+        shell: pwsh
+        run: |
+          echo "c:/ProgramData/chocolatey/bin" >> $Env:GITHUB_PATH
+          echo "c:/Program Files/go-msi" >> $Env:GITHUB_PATH
+          echo "c:/Program Files (x86)/WiX Toolset v3.11/bin" >> $Env:GITHUB_PATH
+
+      - name: Install gox
+        run: go install github.com/mitchellh/gox@latest
+
+      - name: Make Installer
+        run: make host
+        env:
+          GOPATH: C:\Users\runneradmin\go
+
+      - name: Build Native Messaging Host MSI
+        shell: cmd
+        run: |
+          cd /d webextensions\native-messaging-host
+          echo === Current directory ===
+          cd
+          echo === Files ===
+          dir
+          echo === Config ===
+          type build_msi_configs.bat
+          echo === Tools ===
+          where go-msi
+          where go
+          echo === Host binaries ===
+          dir 386\host.exe
+          dir amd64\host.exe
+          echo === Run build_msi.bat ===
+          call build_msi.bat
+          echo === Result ===
+          echo ERRORLEVEL=%ERRORLEVEL%
+          dir *.msi
+          xcopy /I /Y *.msi ..\..\
+
+      - name: Upload Native Messaging Host MSI
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-messaging-host-msi
+          path: '*.msi'
+          if-no-files-found: error
