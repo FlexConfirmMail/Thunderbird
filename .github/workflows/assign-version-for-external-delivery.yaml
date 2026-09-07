@@ -10,7 +10,7 @@
 # 1. Go to "Settings" of the owner of the target repository (user or organization) and
 #    "Developer Settings" => "GitHub Apps" => click "New GitHub App".
 # 2. Create a GitHub App like as:
-#    * Name: External Delivery Versioning
+#    * Name: External Delivery Versioning by <organization name>
 #    * Homepaeg URL: the URL of your repository, or somewhere
 #    * Redirect URI: blank
 #    * Webhook => Active: unchecked
@@ -34,7 +34,7 @@
 #    * Name: VERSIONING_APP_PRIVATE_KEY
 #    * Value: the full contents of the downloaded private key.
 # 10. "Rulesets" => the ruleset protecting the default branch => "Bypass list" => "Add bypass"
-#     => choose the created app "External Delivery Versioning", and set as "Always allow".
+#     => choose the created app "External Delivery Versioning by <organization name>", and set as "Always allow".
 # 11. Click "Save changes".
 #
 # After that you can create new version with following steps:
