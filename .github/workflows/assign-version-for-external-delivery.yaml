@@ -62,7 +62,7 @@
 #
 # 1. On GitHub: "Actions" => click "Version and Package for External Delivery".
 # 2. Click "Run workflow".
-# 3. Choose the branch from the default (versioned with incremented minor versin) or others (versioned with incremented patch version).
+# 3. Choose the branch from the default (versioned with incremented minor version) or others (versioned with incremented patch version).
 # 4. Choose the version increment method from "auto" or "major".
 #    Please remind that you need to choose "major" to release a new major version explicitly.
 # 5. Run workflow.
